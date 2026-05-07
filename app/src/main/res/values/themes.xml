@@ -1,0 +1,7 @@
+<resources>
+    <style name="Theme.LearnLiftAI" parent="android:style/Theme.Material.Light.NoActionBar">
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:statusBarColor">@color/primary_purple</item>
+        <item name="android:navigationBarColor">@color/white</item>
+    </style>
+</resources>
