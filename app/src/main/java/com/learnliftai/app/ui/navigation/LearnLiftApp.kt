@@ -26,6 +26,7 @@ import com.learnliftai.app.ui.screens.FlashcardsScreen
 import com.learnliftai.app.ui.screens.HomeScreen
 import com.learnliftai.app.ui.screens.ProgressScreen
 import com.learnliftai.app.ui.screens.QuizScreen
+import com.learnliftai.app.ui.screens.SettingsScreen
 import com.learnliftai.app.ui.screens.StudyPathSelectionScreen
 import kotlinx.coroutines.launch
 
@@ -44,6 +45,9 @@ fun LearnLiftApp() {
     var isDailySessionActive by rememberSaveable {
         mutableStateOf(false)
     }
+    var isSettingsOpen by rememberSaveable {
+        mutableStateOf(false)
+    }
     val selectedDestination = LearnLiftDestination.valueOf(selectedDestinationName)
     val studyPaths = StudyPathRepository.studyPaths
     val selectedStudyPath = StudyPathRepository.findById(userProgress.selectedStudyPathId)
@@ -59,12 +63,33 @@ fun LearnLiftApp() {
                 onDestinationSelected = {
                     isChoosingStudyPath = false
                     isDailySessionActive = false
+                    isSettingsOpen = false
                     selectedDestinationName = it.name
                 }
             )
         }
     ) { innerPadding ->
-        if (isDailySessionActive) {
+        if (isSettingsOpen) {
+            SettingsScreen(
+                selectedStudyPath = selectedStudyPath,
+                onChooseStudyPath = {
+                    isSettingsOpen = false
+                    isChoosingStudyPath = true
+                },
+                onResetProgress = {
+                    coroutineScope.launch {
+                        progressRepository.resetProgressStats()
+                    }
+                },
+                onBackToHome = {
+                    isSettingsOpen = false
+                    isChoosingStudyPath = false
+                    isDailySessionActive = false
+                    selectedDestinationName = LearnLiftDestination.Home.name
+                },
+                modifier = Modifier.padding(innerPadding)
+            )
+        } else if (isDailySessionActive) {
             DailyStudySessionScreen(
                 selectedStudyPath = selectedStudyPath,
                 selectedStudyContent = selectedStudyContent,
@@ -111,6 +136,7 @@ fun LearnLiftApp() {
                     selectedStudyContent = selectedStudyContent,
                     userProgress = userProgress,
                     onChooseStudyPath = { isChoosingStudyPath = true },
+                    onOpenSettings = { isSettingsOpen = true },
                     onStartDailySession = { isDailySessionActive = true },
                     onStartFlashcards = {
                         isChoosingStudyPath = false
@@ -152,6 +178,7 @@ fun LearnLiftApp() {
                 LearnLiftDestination.Progress -> ProgressScreen(
                     selectedStudyPath = selectedStudyPath,
                     userProgress = userProgress,
+                    onOpenSettings = { isSettingsOpen = true },
                     onResetProgress = {
                         coroutineScope.launch {
                             progressRepository.resetProgressStats()

@@ -4,8 +4,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -14,6 +16,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,6 +42,7 @@ fun HomeScreen(
     selectedStudyContent: StudyContent?,
     userProgress: UserProgress,
     onChooseStudyPath: () -> Unit,
+    onOpenSettings: () -> Unit,
     onStartDailySession: () -> Unit,
     onStartFlashcards: () -> Unit,
     onStartQuiz: () -> Unit,
@@ -51,7 +55,7 @@ fun HomeScreen(
             .padding(LearnLiftSpacing.screenPadding),
         verticalArrangement = Arrangement.spacedBy(LearnLiftSpacing.contentGap)
     ) {
-        HomeBrandHeader()
+        HomeBrandHeader(onOpenSettings = onOpenSettings)
 
         if (selectedStudyPath == null) {
             EmptyState(
@@ -218,41 +222,55 @@ private fun QuickActions(
 }
 
 @Composable
-private fun HomeBrandHeader() {
-    Column {
-        Box(
-            modifier = Modifier
-                .size(LearnLiftSpacing.homeLogoSize)
-                .clip(RoundedCornerShape(LearnLiftCorners.logo))
-                .background(
-                    brush = Brush.linearGradient(
-                        colors = listOf(
-                            MaterialTheme.colorScheme.primary,
-                            MaterialTheme.colorScheme.secondary
+private fun HomeBrandHeader(onOpenSettings: () -> Unit) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.Top
+    ) {
+        Column(modifier = Modifier.weight(1f)) {
+            Box(
+                modifier = Modifier
+                    .size(LearnLiftSpacing.homeLogoSize)
+                    .clip(RoundedCornerShape(LearnLiftCorners.logo))
+                    .background(
+                        brush = Brush.linearGradient(
+                            colors = listOf(
+                                MaterialTheme.colorScheme.primary,
+                                MaterialTheme.colorScheme.secondary
+                            )
                         )
-                    )
-                ),
-            contentAlignment = Alignment.Center
-        ) {
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "LA",
+                    color = MaterialTheme.colorScheme.onPrimary,
+                    fontSize = LearnLiftTypographySizes.homeLogoText,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+            Spacer(modifier = Modifier.height(LearnLiftSpacing.logoToTitle))
             Text(
-                text = "LA",
-                color = MaterialTheme.colorScheme.onPrimary,
-                fontSize = LearnLiftTypographySizes.homeLogoText,
+                text = "LearnLift AI",
+                color = MaterialTheme.colorScheme.primary,
+                style = MaterialTheme.typography.displaySmall,
                 fontWeight = FontWeight.Bold
             )
+            Spacer(modifier = Modifier.height(LearnLiftSpacing.titleToTagline))
+            Text(
+                text = "Elevate Your Skills, Effortlessly.",
+                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.76f),
+                style = MaterialTheme.typography.titleMedium
+            )
         }
-        Spacer(modifier = Modifier.height(LearnLiftSpacing.logoToTitle))
-        Text(
-            text = "LearnLift AI",
-            color = MaterialTheme.colorScheme.primary,
-            style = MaterialTheme.typography.displaySmall,
-            fontWeight = FontWeight.Bold
-        )
-        Spacer(modifier = Modifier.height(LearnLiftSpacing.titleToTagline))
-        Text(
-            text = "Elevate Your Skills, Effortlessly.",
-            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.76f),
-            style = MaterialTheme.typography.titleMedium
-        )
+        TextButton(onClick = onOpenSettings) {
+            Text(
+                text = "Settings",
+                color = MaterialTheme.colorScheme.primary,
+                style = MaterialTheme.typography.labelMedium,
+                fontWeight = FontWeight.SemiBold
+            )
+        }
     }
 }

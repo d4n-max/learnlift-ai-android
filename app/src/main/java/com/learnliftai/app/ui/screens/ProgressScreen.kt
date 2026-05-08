@@ -32,6 +32,7 @@ import com.learnliftai.app.ui.theme.LearnLiftSpacing
 fun ProgressScreen(
     selectedStudyPath: StudyPath?,
     userProgress: UserProgress,
+    onOpenSettings: () -> Unit,
     onResetProgress: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -47,6 +48,10 @@ fun ProgressScreen(
         SectionHeader(
             title = "Your Progress",
             subtitle = "Small steps compound into real skills."
+        )
+        SecondaryActionButton(
+            text = "Settings",
+            onClick = onOpenSettings
         )
 
         StreakHighlightCard(userProgress = userProgress)
