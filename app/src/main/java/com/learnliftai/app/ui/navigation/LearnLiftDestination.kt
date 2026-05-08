@@ -5,7 +5,7 @@ enum class LearnLiftDestination(
     val marker: String
 ) {
     Home("Home", "H"),
-    Flashcards("Flashcards", "F"),
+    Flashcards("Cards", "F"),
     Quiz("Quiz", "Q"),
     Progress("Progress", "P")
 }

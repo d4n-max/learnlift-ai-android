@@ -70,16 +70,16 @@ fun HomeScreen(
                 selectedStudyContent = selectedStudyContent,
                 onChangeStudyPath = onChooseStudyPath
             )
-            DashboardStats(
-                selectedStudyPath = selectedStudyPath,
-                selectedStudyContent = selectedStudyContent,
-                userProgress = userProgress
-            )
             QuickActions(
                 onStartDailySession = onStartDailySession,
                 onStartFlashcards = onStartFlashcards,
                 onStartQuiz = onStartQuiz,
                 onChangeStudyPath = onChooseStudyPath
+            )
+            DashboardStats(
+                selectedStudyPath = selectedStudyPath,
+                selectedStudyContent = selectedStudyContent,
+                userProgress = userProgress
             )
         }
     }

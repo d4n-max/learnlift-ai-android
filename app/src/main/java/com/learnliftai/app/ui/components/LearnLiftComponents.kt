@@ -1,6 +1,7 @@
 package com.learnliftai.app.ui.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -37,7 +38,8 @@ fun LearnLiftCard(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface
         ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.08f)),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(
             modifier = Modifier.padding(LearnLiftSpacing.screenContent),
@@ -198,7 +200,7 @@ fun EmptyState(
         Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
         Text(
             text = description,
-            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.76f),
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.78f),
             style = MaterialTheme.typography.bodyMedium
         )
         if (actionText != null && onActionClick != null) {

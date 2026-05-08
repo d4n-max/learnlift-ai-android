@@ -2,8 +2,10 @@ package com.learnliftai.app.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -49,10 +51,6 @@ fun ProgressScreen(
             title = "Your Progress",
             subtitle = "Small steps compound into real skills."
         )
-        SecondaryActionButton(
-            text = "Settings",
-            onClick = onOpenSettings
-        )
 
         StreakHighlightCard(userProgress = userProgress)
         StudyPathProgressCard(selectedStudyPath = selectedStudyPath)
@@ -86,6 +84,19 @@ fun ProgressScreen(
             text = "Reset Progress Stats",
             onClick = { showResetConfirmation = true }
         )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            TextButton(onClick = onOpenSettings) {
+                Text(
+                    text = "Settings",
+                    color = MaterialTheme.colorScheme.primary,
+                    style = MaterialTheme.typography.labelMedium,
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
+        }
     }
 
     if (showResetConfirmation) {
