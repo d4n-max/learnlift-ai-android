@@ -75,6 +75,14 @@ fun LearnLiftApp() {
                     selectedStudyPath = selectedStudyPath,
                     selectedStudyContent = selectedStudyContent,
                     onChooseStudyPath = { isChoosingStudyPath = true },
+                    onStartFlashcards = {
+                        isChoosingStudyPath = false
+                        selectedDestinationName = LearnLiftDestination.Flashcards.name
+                    },
+                    onStartQuiz = {
+                        isChoosingStudyPath = false
+                        selectedDestinationName = LearnLiftDestination.Quiz.name
+                    },
                     modifier = Modifier.padding(innerPadding)
                 )
                 LearnLiftDestination.Flashcards -> FlashcardsScreen(

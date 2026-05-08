@@ -20,9 +20,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import com.learnliftai.app.domain.model.StudyContent
 import com.learnliftai.app.domain.model.StudyPath
+import com.learnliftai.app.ui.components.EmptyState
 import com.learnliftai.app.ui.components.LearnLiftCard
 import com.learnliftai.app.ui.components.PrimaryActionButton
 import com.learnliftai.app.ui.components.SecondaryActionButton
@@ -37,6 +37,8 @@ fun HomeScreen(
     selectedStudyPath: StudyPath?,
     selectedStudyContent: StudyContent?,
     onChooseStudyPath: () -> Unit,
+    onStartFlashcards: () -> Unit,
+    onStartQuiz: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -47,95 +49,139 @@ fun HomeScreen(
         verticalArrangement = Arrangement.spacedBy(LearnLiftSpacing.contentGap)
     ) {
         HomeBrandHeader()
-        SectionHeader(
-            title = "Today's focus",
-            subtitle = "Build steady progress with short, achievable practice."
-        )
-        SelectedStudyPathCard(
-            selectedStudyPath = selectedStudyPath,
-            selectedStudyContent = selectedStudyContent,
-            onChooseStudyPath = onChooseStudyPath
-        )
-        LearnLiftCard {
-            Text(
-                text = "Welcome to your study coach",
-                color = MaterialTheme.colorScheme.primary,
-                style = MaterialTheme.typography.headlineSmall,
-                fontWeight = FontWeight.Bold
+
+        if (selectedStudyPath == null) {
+            EmptyState(
+                title = "Choose your first study path",
+                description = "Pick one goal to unlock flashcards, quiz questions, and a focused dashboard for your practice.",
+                actionText = "Choose Study Path",
+                onActionClick = onChooseStudyPath
             )
-            Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
-            Text(
-                text = "Soon you will be able to choose study paths, practice flashcards, take quizzes, and track your progress in one focused place.",
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.76f),
-                style = MaterialTheme.typography.bodyMedium
+        } else {
+            SelectedPathOverview(
+                selectedStudyPath = selectedStudyPath,
+                selectedStudyContent = selectedStudyContent,
+                onChangeStudyPath = onChooseStudyPath
             )
-            Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
-            PrimaryActionButton(
-                text = if (selectedStudyPath == null) "Choose a study path" else "Start daily session",
-                onClick = if (selectedStudyPath == null) onChooseStudyPath else ({})
+            DashboardStats(
+                selectedStudyPath = selectedStudyPath,
+                selectedStudyContent = selectedStudyContent
             )
-            Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
-            SecondaryActionButton(
-                text = if (selectedStudyPath == null) "View study paths" else "Change study path",
-                onClick = onChooseStudyPath
-            )
-        }
-        StatCard(
-            label = "Current streak",
-            value = "0 days",
-            helperText = "Ready when daily sessions are added"
-        )
-        if (selectedStudyContent != null) {
-            StatCard(
-                label = "Available starter content",
-                value = "${selectedStudyContent.flashcards.size} cards",
-                helperText = "${selectedStudyContent.quizQuestions.size} quiz questions ready"
+            QuickActions(
+                onStartFlashcards = onStartFlashcards,
+                onStartQuiz = onStartQuiz,
+                onChangeStudyPath = onChooseStudyPath
             )
         }
     }
 }
 
 @Composable
-private fun SelectedStudyPathCard(
-    selectedStudyPath: StudyPath?,
+private fun SelectedPathOverview(
+    selectedStudyPath: StudyPath,
     selectedStudyContent: StudyContent?,
-    onChooseStudyPath: () -> Unit
+    onChangeStudyPath: () -> Unit
 ) {
+    SectionHeader(
+        title = "Today's focus",
+        subtitle = "Start with one focused step for ${selectedStudyPath.accentLabel.lowercase()} practice."
+    )
     LearnLiftCard {
         Text(
-            text = if (selectedStudyPath == null) "No study path selected yet" else "Selected study path",
+            text = "Selected study path",
             color = MaterialTheme.colorScheme.secondary,
             style = MaterialTheme.typography.labelLarge,
             fontWeight = FontWeight.Bold
         )
         Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
         Text(
-            text = selectedStudyPath?.title ?: "Choose one path to focus your daily practice.",
+            text = selectedStudyPath.title,
             color = MaterialTheme.colorScheme.primary,
-            style = MaterialTheme.typography.titleLarge,
+            style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold
         )
-        if (selectedStudyPath != null) {
-            Spacer(modifier = Modifier.height(6.dp))
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+        Text(
+            text = selectedStudyPath.subtitle,
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.84f),
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.SemiBold
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+        Text(
+            text = selectedStudyPath.description,
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.72f),
+            style = MaterialTheme.typography.bodyMedium
+        )
+        if (selectedStudyContent != null) {
+            Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
             Text(
-                text = "${selectedStudyPath.difficultyLabel} - ${selectedStudyPath.estimatedDailyTime}",
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.72f),
-                style = MaterialTheme.typography.bodyMedium
+                text = "${selectedStudyContent.flashcards.size} flashcards and ${selectedStudyContent.quizQuestions.size} quiz questions ready",
+                color = MaterialTheme.colorScheme.secondary,
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.SemiBold
             )
-            if (selectedStudyContent != null) {
-                Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
-                Text(
-                    text = "${selectedStudyContent.flashcards.size} flashcards and ${selectedStudyContent.quizQuestions.size} quiz questions loaded",
-                    color = MaterialTheme.colorScheme.secondary,
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.SemiBold
-                )
-            }
         }
         Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
         SecondaryActionButton(
-            text = if (selectedStudyPath == null) "Choose study path" else "Change study path",
-            onClick = onChooseStudyPath
+            text = "Change Study Path",
+            onClick = onChangeStudyPath
+        )
+    }
+}
+
+@Composable
+private fun DashboardStats(
+    selectedStudyPath: StudyPath,
+    selectedStudyContent: StudyContent?
+) {
+    SectionHeader(title = "Content stats")
+    StatCard(
+        label = "Flashcards available",
+        value = (selectedStudyContent?.flashcards?.size ?: 0).toString(),
+        helperText = "Loaded from local study content"
+    )
+    StatCard(
+        label = "Quiz questions available",
+        value = (selectedStudyContent?.quizQuestions?.size ?: 0).toString(),
+        helperText = "Ready for Quiz Mode"
+    )
+    StatCard(
+        label = "Daily time",
+        value = selectedStudyPath.estimatedDailyTime,
+        helperText = "Suggested study rhythm"
+    )
+    StatCard(
+        label = "Difficulty",
+        value = selectedStudyPath.difficultyLabel,
+        helperText = selectedStudyPath.accentLabel
+    )
+}
+
+@Composable
+private fun QuickActions(
+    onStartFlashcards: () -> Unit,
+    onStartQuiz: () -> Unit,
+    onChangeStudyPath: () -> Unit
+) {
+    SectionHeader(
+        title = "Quick actions",
+        subtitle = "Jump into the study mode you want right now."
+    )
+    LearnLiftCard {
+        PrimaryActionButton(
+            text = "Start Flashcards",
+            onClick = onStartFlashcards
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+        PrimaryActionButton(
+            text = "Start Quiz",
+            onClick = onStartQuiz
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+        SecondaryActionButton(
+            text = "Change Study Path",
+            onClick = onChangeStudyPath
         )
     }
 }
