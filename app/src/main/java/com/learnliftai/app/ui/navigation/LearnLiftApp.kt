@@ -10,9 +10,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import com.learnliftai.app.data.AssetStudyContentRepository
 import com.learnliftai.app.data.StudyPathRepository
 import com.learnliftai.app.ui.screens.FlashcardsScreen
 import com.learnliftai.app.ui.screens.HomeScreen
@@ -22,6 +25,7 @@ import com.learnliftai.app.ui.screens.StudyPathSelectionScreen
 
 @Composable
 fun LearnLiftApp() {
+    val context = LocalContext.current
     var selectedDestinationName by rememberSaveable {
         mutableStateOf(LearnLiftDestination.Home.name)
     }
@@ -34,6 +38,9 @@ fun LearnLiftApp() {
     val selectedDestination = LearnLiftDestination.valueOf(selectedDestinationName)
     val studyPaths = StudyPathRepository.studyPaths
     val selectedStudyPath = StudyPathRepository.findById(selectedStudyPathId)
+    val selectedStudyContent = remember(selectedStudyPathId) {
+        selectedStudyPathId?.let { AssetStudyContentRepository.loadStudyContent(context, it) }
+    }
 
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
@@ -66,15 +73,18 @@ fun LearnLiftApp() {
             when (selectedDestination) {
                 LearnLiftDestination.Home -> HomeScreen(
                     selectedStudyPath = selectedStudyPath,
+                    selectedStudyContent = selectedStudyContent,
                     onChooseStudyPath = { isChoosingStudyPath = true },
                     modifier = Modifier.padding(innerPadding)
                 )
                 LearnLiftDestination.Flashcards -> FlashcardsScreen(
                     selectedStudyPath = selectedStudyPath,
+                    selectedStudyContent = selectedStudyContent,
                     modifier = Modifier.padding(innerPadding)
                 )
                 LearnLiftDestination.Quiz -> QuizScreen(
                     selectedStudyPath = selectedStudyPath,
+                    selectedStudyContent = selectedStudyContent,
                     modifier = Modifier.padding(innerPadding)
                 )
                 LearnLiftDestination.Progress -> ProgressScreen(

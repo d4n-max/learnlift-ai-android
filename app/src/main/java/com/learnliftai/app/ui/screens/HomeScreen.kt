@@ -21,12 +21,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.learnliftai.app.domain.model.StudyContent
+import com.learnliftai.app.domain.model.StudyPath
 import com.learnliftai.app.ui.components.LearnLiftCard
 import com.learnliftai.app.ui.components.PrimaryActionButton
 import com.learnliftai.app.ui.components.SecondaryActionButton
 import com.learnliftai.app.ui.components.SectionHeader
 import com.learnliftai.app.ui.components.StatCard
-import com.learnliftai.app.domain.model.StudyPath
 import com.learnliftai.app.ui.theme.LearnLiftCorners
 import com.learnliftai.app.ui.theme.LearnLiftSpacing
 import com.learnliftai.app.ui.theme.LearnLiftTypographySizes
@@ -34,6 +35,7 @@ import com.learnliftai.app.ui.theme.LearnLiftTypographySizes
 @Composable
 fun HomeScreen(
     selectedStudyPath: StudyPath?,
+    selectedStudyContent: StudyContent?,
     onChooseStudyPath: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -51,6 +53,7 @@ fun HomeScreen(
         )
         SelectedStudyPathCard(
             selectedStudyPath = selectedStudyPath,
+            selectedStudyContent = selectedStudyContent,
             onChooseStudyPath = onChooseStudyPath
         )
         LearnLiftCard {
@@ -82,12 +85,20 @@ fun HomeScreen(
             value = "0 days",
             helperText = "Ready when daily sessions are added"
         )
+        if (selectedStudyContent != null) {
+            StatCard(
+                label = "Available starter content",
+                value = "${selectedStudyContent.flashcards.size} cards",
+                helperText = "${selectedStudyContent.quizQuestions.size} quiz questions ready"
+            )
+        }
     }
 }
 
 @Composable
 private fun SelectedStudyPathCard(
     selectedStudyPath: StudyPath?,
+    selectedStudyContent: StudyContent?,
     onChooseStudyPath: () -> Unit
 ) {
     LearnLiftCard {
@@ -111,6 +122,15 @@ private fun SelectedStudyPathCard(
                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.72f),
                 style = MaterialTheme.typography.bodyMedium
             )
+            if (selectedStudyContent != null) {
+                Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+                Text(
+                    text = "${selectedStudyContent.flashcards.size} flashcards and ${selectedStudyContent.quizQuestions.size} quiz questions loaded",
+                    color = MaterialTheme.colorScheme.secondary,
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
         }
         Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
         SecondaryActionButton(
