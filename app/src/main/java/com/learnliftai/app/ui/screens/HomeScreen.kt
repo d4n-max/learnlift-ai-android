@@ -20,17 +20,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import com.learnliftai.app.ui.components.LearnLiftCard
 import com.learnliftai.app.ui.components.PrimaryActionButton
 import com.learnliftai.app.ui.components.SecondaryActionButton
 import com.learnliftai.app.ui.components.SectionHeader
 import com.learnliftai.app.ui.components.StatCard
+import com.learnliftai.app.domain.model.StudyPath
 import com.learnliftai.app.ui.theme.LearnLiftCorners
 import com.learnliftai.app.ui.theme.LearnLiftSpacing
 import com.learnliftai.app.ui.theme.LearnLiftTypographySizes
 
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier) {
+fun HomeScreen(
+    selectedStudyPath: StudyPath?,
+    onChooseStudyPath: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -42,6 +48,10 @@ fun HomeScreen(modifier: Modifier = Modifier) {
         SectionHeader(
             title = "Today's focus",
             subtitle = "Build steady progress with short, achievable practice."
+        )
+        SelectedStudyPathCard(
+            selectedStudyPath = selectedStudyPath,
+            onChooseStudyPath = onChooseStudyPath
         )
         LearnLiftCard {
             Text(
@@ -58,19 +68,54 @@ fun HomeScreen(modifier: Modifier = Modifier) {
             )
             Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
             PrimaryActionButton(
-                text = "Start daily session",
-                onClick = {}
+                text = if (selectedStudyPath == null) "Choose a study path" else "Start daily session",
+                onClick = if (selectedStudyPath == null) onChooseStudyPath else ({})
             )
             Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
             SecondaryActionButton(
-                text = "Choose study path",
-                onClick = {}
+                text = if (selectedStudyPath == null) "View study paths" else "Change study path",
+                onClick = onChooseStudyPath
             )
         }
         StatCard(
             label = "Current streak",
             value = "0 days",
             helperText = "Ready when daily sessions are added"
+        )
+    }
+}
+
+@Composable
+private fun SelectedStudyPathCard(
+    selectedStudyPath: StudyPath?,
+    onChooseStudyPath: () -> Unit
+) {
+    LearnLiftCard {
+        Text(
+            text = if (selectedStudyPath == null) "No study path selected yet" else "Selected study path",
+            color = MaterialTheme.colorScheme.secondary,
+            style = MaterialTheme.typography.labelLarge,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+        Text(
+            text = selectedStudyPath?.title ?: "Choose one path to focus your daily practice.",
+            color = MaterialTheme.colorScheme.primary,
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.Bold
+        )
+        if (selectedStudyPath != null) {
+            Spacer(modifier = Modifier.height(6.dp))
+            Text(
+                text = "${selectedStudyPath.difficultyLabel} - ${selectedStudyPath.estimatedDailyTime}",
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.72f),
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
+        SecondaryActionButton(
+            text = if (selectedStudyPath == null) "Choose study path" else "Change study path",
+            onClick = onChooseStudyPath
         )
     }
 }

@@ -6,11 +6,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.learnliftai.app.domain.model.StudyPath
 import com.learnliftai.app.ui.components.EmptyState
 import com.learnliftai.app.ui.theme.LearnLiftSpacing
 
 @Composable
-fun QuizScreen(modifier: Modifier = Modifier) {
+fun QuizScreen(
+    selectedStudyPath: StudyPath?,
+    modifier: Modifier = Modifier
+) {
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -19,7 +23,9 @@ fun QuizScreen(modifier: Modifier = Modifier) {
     ) {
         EmptyState(
             title = "Quiz",
-            description = "Quiz mode will offer quick practice questions and feedback after the initial content model is ready."
+            description = selectedStudyPath?.let {
+                "Quick practice questions for ${it.title} will appear here after the initial content model is ready."
+            } ?: "Choose a study path from Home, then quiz mode will offer quick practice questions and feedback after the initial content model is ready."
         )
     }
 }

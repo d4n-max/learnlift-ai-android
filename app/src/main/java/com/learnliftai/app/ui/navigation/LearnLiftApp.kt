@@ -13,32 +13,75 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import com.learnliftai.app.data.StudyPathRepository
 import com.learnliftai.app.ui.screens.FlashcardsScreen
 import com.learnliftai.app.ui.screens.HomeScreen
 import com.learnliftai.app.ui.screens.ProgressScreen
 import com.learnliftai.app.ui.screens.QuizScreen
+import com.learnliftai.app.ui.screens.StudyPathSelectionScreen
 
 @Composable
 fun LearnLiftApp() {
     var selectedDestinationName by rememberSaveable {
         mutableStateOf(LearnLiftDestination.Home.name)
     }
+    var isChoosingStudyPath by rememberSaveable {
+        mutableStateOf(false)
+    }
+    var selectedStudyPathId by rememberSaveable {
+        mutableStateOf<String?>(null)
+    }
     val selectedDestination = LearnLiftDestination.valueOf(selectedDestinationName)
+    val studyPaths = StudyPathRepository.studyPaths
+    val selectedStudyPath = StudyPathRepository.findById(selectedStudyPathId)
 
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
         bottomBar = {
             LearnLiftBottomNavigation(
                 selectedDestination = selectedDestination,
-                onDestinationSelected = { selectedDestinationName = it.name }
+                onDestinationSelected = {
+                    isChoosingStudyPath = false
+                    selectedDestinationName = it.name
+                }
             )
         }
     ) { innerPadding ->
-        when (selectedDestination) {
-            LearnLiftDestination.Home -> HomeScreen(modifier = Modifier.padding(innerPadding))
-            LearnLiftDestination.Flashcards -> FlashcardsScreen(modifier = Modifier.padding(innerPadding))
-            LearnLiftDestination.Quiz -> QuizScreen(modifier = Modifier.padding(innerPadding))
-            LearnLiftDestination.Progress -> ProgressScreen(modifier = Modifier.padding(innerPadding))
+        if (isChoosingStudyPath) {
+            StudyPathSelectionScreen(
+                studyPaths = studyPaths,
+                selectedStudyPath = selectedStudyPath,
+                onStudyPathSelected = {
+                    selectedStudyPathId = it.id
+                    isChoosingStudyPath = false
+                    selectedDestinationName = LearnLiftDestination.Home.name
+                },
+                onBackToHome = {
+                    isChoosingStudyPath = false
+                    selectedDestinationName = LearnLiftDestination.Home.name
+                },
+                modifier = Modifier.padding(innerPadding)
+            )
+        } else {
+            when (selectedDestination) {
+                LearnLiftDestination.Home -> HomeScreen(
+                    selectedStudyPath = selectedStudyPath,
+                    onChooseStudyPath = { isChoosingStudyPath = true },
+                    modifier = Modifier.padding(innerPadding)
+                )
+                LearnLiftDestination.Flashcards -> FlashcardsScreen(
+                    selectedStudyPath = selectedStudyPath,
+                    modifier = Modifier.padding(innerPadding)
+                )
+                LearnLiftDestination.Quiz -> QuizScreen(
+                    selectedStudyPath = selectedStudyPath,
+                    modifier = Modifier.padding(innerPadding)
+                )
+                LearnLiftDestination.Progress -> ProgressScreen(
+                    selectedStudyPath = selectedStudyPath,
+                    modifier = Modifier.padding(innerPadding)
+                )
+            }
         }
     }
 }
