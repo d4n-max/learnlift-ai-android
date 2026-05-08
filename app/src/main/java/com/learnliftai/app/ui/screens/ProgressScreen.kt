@@ -45,76 +45,42 @@ fun ProgressScreen(
         verticalArrangement = Arrangement.spacedBy(LearnLiftSpacing.contentGap)
     ) {
         SectionHeader(
-            title = "Progress",
-            subtitle = selectedStudyPath?.title ?: "Choose a study path from Home to focus your progress."
+            title = "Your Progress",
+            subtitle = "Small steps compound into real skills."
         )
 
-        if (selectedStudyPath == null && !userProgress.hasAnySavedProgress()) {
-            EmptyState(
-                title = "No progress yet",
-                description = "Choose a study path, review flashcards, or complete a quiz to start saving local progress."
-            )
-        } else {
-            LearnLiftCard {
-                Text(
-                    text = selectedStudyPath?.title ?: "No study path selected",
-                    color = MaterialTheme.colorScheme.primary,
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold
-                )
-                Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
-                Text(
-                    text = "Saved on this device only.",
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.72f),
-                    style = MaterialTheme.typography.bodyMedium
-                )
-            }
+        StreakHighlightCard(userProgress = userProgress)
+        StudyPathProgressCard(selectedStudyPath = selectedStudyPath)
 
-            StatCard(
-                label = "Current study streak",
-                value = "${userProgress.currentStudyStreak} days",
-                helperText = userProgress.lastStudyDate?.let { "Last studied $it" } ?: "Study today to start a streak"
-            )
-            StatCard(
-                label = "Total flashcards reviewed",
-                value = userProgress.totalFlashcardsReviewed.toString(),
-                helperText = "Saved after first rating per card in a session"
-            )
-            StatCard(
-                label = "Known cards",
-                value = userProgress.totalKnownCards.toString(),
-                helperText = "Cards marked Known"
-            )
-            StatCard(
-                label = "Needs review cards",
-                value = userProgress.totalNeedsReviewCards.toString(),
-                helperText = "Cards marked Needs Review"
-            )
-            StatCard(
-                label = "Total quizzes completed",
-                value = userProgress.totalQuizzesCompleted.toString(),
-                helperText = "Saved when the quiz summary is reached"
-            )
-            StatCard(
-                label = "Last quiz score",
-                value = if (userProgress.totalQuizzesCompleted == 0) "Not yet" else userProgress.lastQuizScore.toString(),
-                helperText = if (userProgress.totalQuizzesCompleted == 0) {
-                    "Complete a quiz to save a score"
-                } else {
-                    "${userProgress.lastQuizPercentage}% on the last completed quiz"
-                }
-            )
-            StatCard(
-                label = "Last quiz percentage",
-                value = if (userProgress.totalQuizzesCompleted == 0) "Not yet" else "${userProgress.lastQuizPercentage}%",
-                helperText = "Most recent completed quiz"
-            )
+        SectionHeader(title = "Study stats")
+        StatCard(
+            label = "Flashcards reviewed",
+            value = userProgress.totalFlashcardsReviewed.toString(),
+            helperText = "Total cards marked during review"
+        )
+        StatCard(
+            label = "Known cards",
+            value = userProgress.totalKnownCards.toString(),
+            helperText = "Cards marked Known"
+        )
+        StatCard(
+            label = "Needs review",
+            value = userProgress.totalNeedsReviewCards.toString(),
+            helperText = "Cards marked Needs Review"
+        )
+        StatCard(
+            label = "Quizzes completed",
+            value = userProgress.totalQuizzesCompleted.toString(),
+            helperText = "Completed quiz sessions"
+        )
 
-            SecondaryActionButton(
-                text = "Reset Progress Stats",
-                onClick = { showResetConfirmation = true }
-            )
-        }
+        KnownNeedsReviewBreakdown(userProgress = userProgress)
+        QuizPerformanceCard(userProgress = userProgress)
+
+        SecondaryActionButton(
+            text = "Reset Progress Stats",
+            onClick = { showResetConfirmation = true }
+        )
     }
 
     if (showResetConfirmation) {
@@ -133,7 +99,10 @@ fun ProgressScreen(
                         onResetProgress()
                     }
                 ) {
-                    Text(text = "Reset")
+                    Text(
+                        text = "Reset",
+                        color = MaterialTheme.colorScheme.secondary
+                    )
                 }
             },
             dismissButton = {
@@ -145,10 +114,155 @@ fun ProgressScreen(
     }
 }
 
-private fun UserProgress.hasAnySavedProgress(): Boolean {
-    return totalFlashcardsReviewed > 0 ||
-        totalKnownCards > 0 ||
-        totalNeedsReviewCards > 0 ||
-        totalQuizzesCompleted > 0 ||
-        currentStudyStreak > 0
+@Composable
+private fun StreakHighlightCard(userProgress: UserProgress) {
+    LearnLiftCard {
+        Text(
+            text = "Current study streak",
+            color = MaterialTheme.colorScheme.secondary,
+            style = MaterialTheme.typography.labelLarge,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+        Text(
+            text = "${userProgress.currentStudyStreak} days",
+            color = MaterialTheme.colorScheme.primary,
+            style = MaterialTheme.typography.displaySmall,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+        Text(
+            text = userProgress.lastStudyDate?.let {
+                "Last studied $it. Keep the rhythm steady."
+            } ?: "Review a card or complete a quiz to start your streak.",
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.76f),
+            style = MaterialTheme.typography.bodyMedium
+        )
+    }
+}
+
+@Composable
+private fun StudyPathProgressCard(selectedStudyPath: StudyPath?) {
+    if (selectedStudyPath == null) {
+        EmptyState(
+            title = "Choose a study path",
+            description = "Select a path from Home to connect your progress to a clear goal."
+        )
+    } else {
+        LearnLiftCard {
+            Text(
+                text = "Study path",
+                color = MaterialTheme.colorScheme.secondary,
+                style = MaterialTheme.typography.labelLarge,
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+            Text(
+                text = selectedStudyPath.title,
+                color = MaterialTheme.colorScheme.primary,
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+            Text(
+                text = selectedStudyPath.subtitle,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.84f),
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold
+            )
+            Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+            Text(
+                text = selectedStudyPath.description,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.72f),
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
+    }
+}
+
+@Composable
+private fun KnownNeedsReviewBreakdown(userProgress: UserProgress) {
+    if (userProgress.totalFlashcardsReviewed <= 0) {
+        LearnLiftCard {
+            Text(
+                text = "Flashcard breakdown",
+                color = MaterialTheme.colorScheme.primary,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+            Text(
+                text = "Review flashcards to see Known and Needs Review totals here.",
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.76f),
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
+        return
+    }
+
+    val knownPercentage = (userProgress.totalKnownCards * 100) / userProgress.totalFlashcardsReviewed
+    val needsReviewPercentage = (userProgress.totalNeedsReviewCards * 100) / userProgress.totalFlashcardsReviewed
+
+    LearnLiftCard {
+        Text(
+            text = "Flashcard breakdown",
+            color = MaterialTheme.colorScheme.primary,
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+        Text(
+            text = "${userProgress.totalKnownCards} known ($knownPercentage%)",
+            color = MaterialTheme.colorScheme.secondary,
+            style = MaterialTheme.typography.bodyLarge,
+            fontWeight = FontWeight.SemiBold
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+        Text(
+            text = "${userProgress.totalNeedsReviewCards} need review ($needsReviewPercentage%)",
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.78f),
+            style = MaterialTheme.typography.bodyLarge
+        )
+    }
+}
+
+@Composable
+private fun QuizPerformanceCard(userProgress: UserProgress) {
+    LearnLiftCard {
+        Text(
+            text = "Quiz performance",
+            color = MaterialTheme.colorScheme.primary,
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+        Text(
+            text = if (userProgress.totalQuizzesCompleted == 0) {
+                "No quiz completed yet"
+            } else {
+                "${userProgress.lastQuizScore} correct - ${userProgress.lastQuizPercentage}%"
+            },
+            color = MaterialTheme.colorScheme.secondary,
+            style = MaterialTheme.typography.headlineSmall,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+        Text(
+            text = quizPerformanceMessage(userProgress),
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.76f),
+            style = MaterialTheme.typography.bodyMedium
+        )
+    }
+}
+
+private fun quizPerformanceMessage(userProgress: UserProgress): String {
+    if (userProgress.totalQuizzesCompleted == 0) {
+        return "Complete a quiz to see your score."
+    }
+
+    return when {
+        userProgress.lastQuizPercentage >= 80 -> "Great work - keep the momentum going."
+        userProgress.lastQuizPercentage >= 50 -> "Good progress - review weak areas."
+        else -> "Keep practicing - every session helps."
+    }
 }
