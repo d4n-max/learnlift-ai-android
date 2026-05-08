@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.text.font.FontWeight
 import com.learnliftai.app.domain.model.StudyContent
 import com.learnliftai.app.domain.model.StudyPath
+import com.learnliftai.app.domain.model.UserProgress
 import com.learnliftai.app.ui.components.EmptyState
 import com.learnliftai.app.ui.components.LearnLiftCard
 import com.learnliftai.app.ui.components.PrimaryActionButton
@@ -36,6 +37,7 @@ import com.learnliftai.app.ui.theme.LearnLiftTypographySizes
 fun HomeScreen(
     selectedStudyPath: StudyPath?,
     selectedStudyContent: StudyContent?,
+    userProgress: UserProgress,
     onChooseStudyPath: () -> Unit,
     onStartFlashcards: () -> Unit,
     onStartQuiz: () -> Unit,
@@ -65,7 +67,8 @@ fun HomeScreen(
             )
             DashboardStats(
                 selectedStudyPath = selectedStudyPath,
-                selectedStudyContent = selectedStudyContent
+                selectedStudyContent = selectedStudyContent,
+                userProgress = userProgress
             )
             QuickActions(
                 onStartFlashcards = onStartFlashcards,
@@ -133,9 +136,29 @@ private fun SelectedPathOverview(
 @Composable
 private fun DashboardStats(
     selectedStudyPath: StudyPath,
-    selectedStudyContent: StudyContent?
+    selectedStudyContent: StudyContent?,
+    userProgress: UserProgress
 ) {
     SectionHeader(title = "Content stats")
+    StatCard(
+        label = "Current streak",
+        value = "${userProgress.currentStudyStreak} days",
+        helperText = userProgress.lastStudyDate?.let { "Last studied $it" } ?: "Complete a quiz or review a card to start"
+    )
+    StatCard(
+        label = "Flashcards reviewed",
+        value = userProgress.totalFlashcardsReviewed.toString(),
+        helperText = "${userProgress.totalKnownCards} known - ${userProgress.totalNeedsReviewCards} need review"
+    )
+    StatCard(
+        label = "Last quiz score",
+        value = if (userProgress.totalQuizzesCompleted == 0) "Not yet" else "${userProgress.lastQuizPercentage}%",
+        helperText = if (userProgress.totalQuizzesCompleted == 0) {
+            "Take a quiz to save your first score"
+        } else {
+            "${userProgress.lastQuizScore} correct on the last completed quiz"
+        }
+    )
     StatCard(
         label = "Flashcards available",
         value = (selectedStudyContent?.flashcards?.size ?: 0).toString(),

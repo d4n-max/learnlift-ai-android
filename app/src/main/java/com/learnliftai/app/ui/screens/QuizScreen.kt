@@ -46,6 +46,7 @@ import com.learnliftai.app.ui.theme.LearnLiftSpacing
 fun QuizScreen(
     selectedStudyPath: StudyPath?,
     selectedStudyContent: StudyContent?,
+    onQuizCompleted: (score: Int, percentage: Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val quizQuestions = selectedStudyContent?.quizQuestions.orEmpty()
@@ -126,6 +127,7 @@ fun QuizScreen(
                     text = if (safeIndex == quizQuestions.lastIndex) "See summary" else "Next question",
                     onClick = {
                         if (safeIndex == quizQuestions.lastIndex) {
+                            onQuizCompleted(score.correctAnswers, score.percentage)
                             isQuizComplete = true
                         } else {
                             currentIndex = safeIndex + 1

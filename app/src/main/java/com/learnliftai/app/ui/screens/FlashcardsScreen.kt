@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -41,6 +42,7 @@ import com.learnliftai.app.ui.theme.LearnLiftSpacing
 fun FlashcardsScreen(
     selectedStudyPath: StudyPath?,
     selectedStudyContent: StudyContent?,
+    onFlashcardReviewed: (reviewedDelta: Int, knownDelta: Int, needsReviewDelta: Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val flashcards = selectedStudyContent?.flashcards.orEmpty()
@@ -67,12 +69,14 @@ fun FlashcardsScreen(
     var isAnswerRevealed by remember { mutableStateOf(false) }
     var knownCardIds by remember { mutableStateOf(emptySet<String>()) }
     var needsReviewCardIds by remember { mutableStateOf(emptySet<String>()) }
+    val persistedSessionRatings = remember { mutableStateMapOf<String, String>() }
 
     LaunchedEffect(selectedStudyPath.id) {
         currentIndex = 0
         isAnswerRevealed = false
         knownCardIds = emptySet()
         needsReviewCardIds = emptySet()
+        persistedSessionRatings.clear()
     }
 
     val safeIndex = currentIndex.coerceIn(0, flashcards.lastIndex)
@@ -105,10 +109,28 @@ fun FlashcardsScreen(
         FlashcardReviewActions(
             isAnswerRevealed = isAnswerRevealed,
             onKnown = {
+                val previousRating = persistedSessionRatings[currentFlashcard.id]
+                if (previousRating != FlashcardRatingKnown) {
+                    onFlashcardReviewed(
+                        if (previousRating == null) 1 else 0,
+                        1,
+                        if (previousRating == FlashcardRatingNeedsReview) -1 else 0
+                    )
+                    persistedSessionRatings[currentFlashcard.id] = FlashcardRatingKnown
+                }
                 knownCardIds = knownCardIds + currentFlashcard.id
                 needsReviewCardIds = needsReviewCardIds - currentFlashcard.id
             },
             onNeedsReview = {
+                val previousRating = persistedSessionRatings[currentFlashcard.id]
+                if (previousRating != FlashcardRatingNeedsReview) {
+                    onFlashcardReviewed(
+                        if (previousRating == null) 1 else 0,
+                        if (previousRating == FlashcardRatingKnown) -1 else 0,
+                        1
+                    )
+                    persistedSessionRatings[currentFlashcard.id] = FlashcardRatingNeedsReview
+                }
                 needsReviewCardIds = needsReviewCardIds + currentFlashcard.id
                 knownCardIds = knownCardIds - currentFlashcard.id
             }
@@ -134,6 +156,9 @@ fun FlashcardsScreen(
         )
     }
 }
+
+private const val FlashcardRatingKnown = "known"
+private const val FlashcardRatingNeedsReview = "needsReview"
 
 @Composable
 private fun FlashcardsEmptyState(
