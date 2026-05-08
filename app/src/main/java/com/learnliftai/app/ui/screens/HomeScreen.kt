@@ -9,7 +9,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,7 +20,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.text.font.FontWeight
-import com.learnliftai.app.ui.components.PlaceholderPanel
+import com.learnliftai.app.ui.components.LearnLiftCard
+import com.learnliftai.app.ui.components.PrimaryActionButton
+import com.learnliftai.app.ui.components.SecondaryActionButton
+import com.learnliftai.app.ui.components.SectionHeader
+import com.learnliftai.app.ui.components.StatCard
 import com.learnliftai.app.ui.theme.LearnLiftCorners
 import com.learnliftai.app.ui.theme.LearnLiftSpacing
 import com.learnliftai.app.ui.theme.LearnLiftTypographySizes
@@ -28,14 +34,43 @@ fun HomeScreen(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .fillMaxSize()
+            .verticalScroll(rememberScrollState())
             .padding(LearnLiftSpacing.screenPadding),
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.spacedBy(LearnLiftSpacing.contentGap)
     ) {
         HomeBrandHeader()
-        Spacer(modifier = Modifier.height(LearnLiftSpacing.sectionGap))
-        PlaceholderPanel(
-            title = "Welcome to your study coach",
-            description = "Soon you will be able to choose study paths, practice flashcards, take quizzes, and track your progress in one focused place."
+        SectionHeader(
+            title = "Today's focus",
+            subtitle = "Build steady progress with short, achievable practice."
+        )
+        LearnLiftCard {
+            Text(
+                text = "Welcome to your study coach",
+                color = MaterialTheme.colorScheme.primary,
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+            Text(
+                text = "Soon you will be able to choose study paths, practice flashcards, take quizzes, and track your progress in one focused place.",
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.76f),
+                style = MaterialTheme.typography.bodyMedium
+            )
+            Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
+            PrimaryActionButton(
+                text = "Start daily session",
+                onClick = {}
+            )
+            Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+            SecondaryActionButton(
+                text = "Choose study path",
+                onClick = {}
+            )
+        }
+        StatCard(
+            label = "Current streak",
+            value = "0 days",
+            helperText = "Ready when daily sessions are added"
         )
     }
 }
