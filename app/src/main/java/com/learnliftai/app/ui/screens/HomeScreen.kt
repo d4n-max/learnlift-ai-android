@@ -39,6 +39,7 @@ fun HomeScreen(
     selectedStudyContent: StudyContent?,
     userProgress: UserProgress,
     onChooseStudyPath: () -> Unit,
+    onStartDailySession: () -> Unit,
     onStartFlashcards: () -> Unit,
     onStartQuiz: () -> Unit,
     modifier: Modifier = Modifier
@@ -71,6 +72,7 @@ fun HomeScreen(
                 userProgress = userProgress
             )
             QuickActions(
+                onStartDailySession = onStartDailySession,
                 onStartFlashcards = onStartFlashcards,
                 onStartQuiz = onStartQuiz,
                 onChangeStudyPath = onChooseStudyPath
@@ -183,6 +185,7 @@ private fun DashboardStats(
 
 @Composable
 private fun QuickActions(
+    onStartDailySession: () -> Unit,
     onStartFlashcards: () -> Unit,
     onStartQuiz: () -> Unit,
     onChangeStudyPath: () -> Unit
@@ -192,6 +195,11 @@ private fun QuickActions(
         subtitle = "Jump into the study mode you want right now."
     )
     LearnLiftCard {
+        PrimaryActionButton(
+            text = "Start Daily Session",
+            onClick = onStartDailySession
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
         PrimaryActionButton(
             text = "Start Flashcards",
             onClick = onStartFlashcards

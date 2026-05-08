@@ -21,6 +21,7 @@ import com.learnliftai.app.data.AssetStudyContentRepository
 import com.learnliftai.app.data.LocalProgressRepository
 import com.learnliftai.app.data.StudyPathRepository
 import com.learnliftai.app.domain.model.UserProgress
+import com.learnliftai.app.ui.screens.DailyStudySessionScreen
 import com.learnliftai.app.ui.screens.FlashcardsScreen
 import com.learnliftai.app.ui.screens.HomeScreen
 import com.learnliftai.app.ui.screens.ProgressScreen
@@ -40,6 +41,9 @@ fun LearnLiftApp() {
     var isChoosingStudyPath by rememberSaveable {
         mutableStateOf(false)
     }
+    var isDailySessionActive by rememberSaveable {
+        mutableStateOf(false)
+    }
     val selectedDestination = LearnLiftDestination.valueOf(selectedDestinationName)
     val studyPaths = StudyPathRepository.studyPaths
     val selectedStudyPath = StudyPathRepository.findById(userProgress.selectedStudyPathId)
@@ -54,12 +58,36 @@ fun LearnLiftApp() {
                 selectedDestination = selectedDestination,
                 onDestinationSelected = {
                     isChoosingStudyPath = false
+                    isDailySessionActive = false
                     selectedDestinationName = it.name
                 }
             )
         }
     ) { innerPadding ->
-        if (isChoosingStudyPath) {
+        if (isDailySessionActive) {
+            DailyStudySessionScreen(
+                selectedStudyPath = selectedStudyPath,
+                selectedStudyContent = selectedStudyContent,
+                onFinishSession = { reviewedCards, knownCards, needsReviewCards, quizAnswered, quizCorrect, quizPercentage ->
+                    coroutineScope.launch {
+                        progressRepository.recordDailySessionCompleted(
+                            reviewedCards = reviewedCards,
+                            knownCards = knownCards,
+                            needsReviewCards = needsReviewCards,
+                            quizAnswered = quizAnswered,
+                            quizCorrect = quizCorrect,
+                            quizPercentage = quizPercentage
+                        )
+                    }
+                },
+                onReturnHome = {
+                    isDailySessionActive = false
+                    isChoosingStudyPath = false
+                    selectedDestinationName = LearnLiftDestination.Home.name
+                },
+                modifier = Modifier.padding(innerPadding)
+            )
+        } else if (isChoosingStudyPath) {
             StudyPathSelectionScreen(
                 studyPaths = studyPaths,
                 selectedStudyPath = selectedStudyPath,
@@ -83,6 +111,7 @@ fun LearnLiftApp() {
                     selectedStudyContent = selectedStudyContent,
                     userProgress = userProgress,
                     onChooseStudyPath = { isChoosingStudyPath = true },
+                    onStartDailySession = { isDailySessionActive = true },
                     onStartFlashcards = {
                         isChoosingStudyPath = false
                         selectedDestinationName = LearnLiftDestination.Flashcards.name

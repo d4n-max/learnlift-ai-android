@@ -83,6 +83,35 @@ class LocalProgressRepository(
         }
     }
 
+    suspend fun recordDailySessionCompleted(
+        reviewedCards: Int,
+        knownCards: Int,
+        needsReviewCards: Int,
+        quizAnswered: Int,
+        quizCorrect: Int,
+        quizPercentage: Int
+    ) {
+        context.learnLiftProgressDataStore.edit { preferences ->
+            preferences[ProgressKeys.TotalFlashcardsReviewed] =
+                ((preferences[ProgressKeys.TotalFlashcardsReviewed] ?: 0) + reviewedCards).coerceAtLeast(0)
+            preferences[ProgressKeys.TotalKnownCards] =
+                ((preferences[ProgressKeys.TotalKnownCards] ?: 0) + knownCards).coerceAtLeast(0)
+            preferences[ProgressKeys.TotalNeedsReviewCards] =
+                ((preferences[ProgressKeys.TotalNeedsReviewCards] ?: 0) + needsReviewCards).coerceAtLeast(0)
+
+            if (quizAnswered > 0) {
+                preferences[ProgressKeys.TotalQuizzesCompleted] =
+                    (preferences[ProgressKeys.TotalQuizzesCompleted] ?: 0) + 1
+                preferences[ProgressKeys.LastQuizScore] = quizCorrect
+                preferences[ProgressKeys.LastQuizPercentage] = quizPercentage
+            }
+
+            if (reviewedCards > 0 || quizAnswered > 0) {
+                updateStudyStreak(preferences)
+            }
+        }
+    }
+
     suspend fun resetProgressStats() {
         context.learnLiftProgressDataStore.edit { preferences ->
             preferences[ProgressKeys.TotalFlashcardsReviewed] = 0
