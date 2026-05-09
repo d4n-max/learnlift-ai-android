@@ -46,6 +46,18 @@
 - [ ] Tester opt-in link copied.
 - [ ] Tester instructions shared with internal testers.
 
+## Build Artifact Checklist
+
+- [x] Version name checked: `0.1.0`.
+- [x] Version code checked: `1`.
+- [x] Package name checked: `com.learnliftai.app`.
+- [x] `.gitignore` protects signing files.
+- [x] Debug build passes.
+- [ ] Release AAB generated.
+- [ ] AAB path confirmed: `app\build\outputs\bundle\release\app-release.aab`.
+- [x] AAB not committed to Git.
+- [x] Keystore not committed to Git.
+
 ## Manual Pre-Upload Checklist
 
 - [x] Build succeeds.

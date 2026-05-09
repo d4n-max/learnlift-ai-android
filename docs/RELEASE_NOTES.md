@@ -3,6 +3,7 @@
 ## Version 0.1.0 MVP
 
 - Release type: Internal testing
+- Build artifact: AAB for Google Play Internal Testing
 - Package name: `com.learnliftai.app`
 - Version code: `1`
 
