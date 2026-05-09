@@ -78,15 +78,14 @@ Codex shell note:
 
 ### Emulator Verification
 
-Partially passed by manual local verification.
+Passed by manual local verification.
 
 Verified manually:
 
 - `.\gradlew.bat installDebug` works.
 - The app installs on the Android emulator.
 - The app launches on the Android emulator.
-
-Feature-specific emulator flows still need manual checklist confirmation.
+- The full feature checklist passed on the Android emulator.
 
 ## Passed Checks From Static Review
 
@@ -109,7 +108,7 @@ Feature-specific emulator flows still need manual checklist confirmation.
 
 - Codex shell build verification is blocked by Android SDK license/file permission access limitations in this shell.
 - `adb devices` could not be run from this shell because `adb` was not found on PATH.
-- Full feature-by-feature emulator QA remains pending manual confirmation.
+- No blocking app failures are currently documented.
 
 ## Small Fixes Made
 
@@ -121,7 +120,7 @@ After the initial internal QA pass, the appropriate small MVP-safe findings were
 - Home and Progress wording now clarifies that progress is overall local-device progress, not per-study-path progress.
 - Daily Session now guards flashcard actions, quiz answer selection, quiz advancement, and final session saving against rapid repeated taps.
 
-Full manual feature checklist testing has not been claimed as passed yet.
+Full manual emulator feature checklist testing has now been completed and passed.
 
 ## Emulator QA Pass After Task 20
 
@@ -168,7 +167,43 @@ The Task 20 fixes remain documented as implemented from code/documentation revie
 - Home and Progress wording describes overall/local-device progress rather than per-path progress.
 - Daily Session rapid repeated-tap guards are present for flashcard actions, quiz answer selection, quiz advancement, and final session saving.
 
-These fixes still need manual feature checklist confirmation. Build, install, and app launch are no longer considered blockers based on manual local verification.
+These fixes were included in the completed manual emulator feature checklist. Build, install, and app launch are no longer considered blockers based on manual local verification.
+
+## Final Manual Emulator QA Confirmation
+
+- Environment: Android emulator
+- Build type: debug
+- Build command: `.\gradlew.bat assembleDebug`
+- Install command: `.\gradlew.bat installDebug`
+
+Local PowerShell / Android Studio verification succeeded for debug build, debug install, emulator installation, and app launch.
+
+Codex shell Android SDK / `adb` issues are environment-specific and are not considered app blockers because the developer's local emulator environment can build, install, and launch the app.
+
+The full emulator feature checklist was manually completed and passed.
+
+| Check | Status | Notes |
+| --- | --- | --- |
+| Build debug APK | Passed | Developer manually confirmed `.\gradlew.bat assembleDebug` succeeds locally. |
+| Install debug APK on emulator | Passed | Developer manually confirmed `.\gradlew.bat installDebug` succeeds locally. |
+| App launch | Passed | Developer manually confirmed the app launches on the Android emulator. |
+| Home Dashboard | Passed | Developer manually confirmed this feature on the Android emulator. |
+| Study Path Selection | Passed | Developer manually confirmed this feature on the Android emulator. |
+| English Vocabulary & Speaking Prep flashcards | Passed | Developer manually confirmed this feature on the Android emulator. |
+| English Vocabulary & Speaking Prep quiz | Passed | Developer manually confirmed this feature on the Android emulator. |
+| Job Interview Prep flashcards | Passed | Developer manually confirmed this feature on the Android emulator. |
+| Job Interview Prep quiz | Passed | Developer manually confirmed this feature on the Android emulator. |
+| IT / QA Interview Prep flashcards | Passed | Developer manually confirmed this feature on the Android emulator. |
+| IT / QA Interview Prep quiz | Passed | Developer manually confirmed this feature on the Android emulator. |
+| Daily Study Session | Passed | Developer manually confirmed this feature on the Android emulator. |
+| Daily Session progress save | Passed | Developer manually confirmed this feature on the Android emulator. |
+| Progress Screen | Passed | Developer manually confirmed this feature on the Android emulator. |
+| DataStore persistence after app restart | Passed | Developer manually confirmed this feature on the Android emulator. |
+| Settings Screen | Passed | Developer manually confirmed this feature on the Android emulator. |
+| Reset Progress | Passed | Developer manually confirmed this feature on the Android emulator. |
+| Bottom navigation | Passed | Developer manually confirmed this feature on the Android emulator. |
+| Light theme quick check | Passed | Developer manually confirmed this feature on the Android emulator. |
+| Dark theme quick check | Passed | Developer manually confirmed this feature on the Android emulator. |
 
 ### Bottom Navigation Label
 
@@ -185,28 +220,23 @@ See `docs/BUG_BACKLOG.md` for the detailed backlog.
 Key known issues:
 
 - Codex shell still cannot access the Android SDK / `adb` the same way as the local PowerShell / Android Studio environment.
-- Full feature checklist confirmation on emulator is still pending.
+- Full manual emulator feature checklist passed.
 - Progress is still overall local-device progress, not per-study-path progress. This is now reflected in UI wording and remains a deferred future improvement.
 
 ## Risk Areas
 
-- Persistence behavior needs manual emulator confirmation after app restart.
-- Reset behavior needs manual emulator confirmation from both Settings and Progress.
 - Small emulator screens need visual testing with the expanded 25-card / 20-question content.
-- Dark theme needs manual visual review.
-- Rapid tab switching and system Back behavior need manual emulator testing.
 - Daily Session has several state transitions and should be tested carefully.
 
 ## Recommended Next Fixes
 
-1. Run the full manual emulator checklist across all three study paths.
-2. Confirm DataStore persistence after app restart.
-3. Confirm Reset Progress from Settings and/or Progress.
-4. Optionally clean up Android SDK `platform-tools` PATH access for Codex shell convenience.
-5. Consider path-specific progress tracking after MVP validation if tester feedback shows it is needed.
+1. Proceed with internal testing distribution.
+2. Continue watching for tester feedback around Daily Session state transitions and small-screen layout.
+3. Optionally clean up Android SDK `platform-tools` PATH access for Codex shell convenience.
+4. Consider path-specific progress tracking after MVP validation if tester feedback shows it is needed.
 
 ## Internal Testing Readiness Verdict
 
-Mostly ready for internal testing, pending manual feature checklist confirmation.
+Ready for internal testing.
 
-Reason: manual local PowerShell / Android Studio verification confirms that the debug build, install, emulator installation, and app launch work. Remaining risk is feature-by-feature manual validation on the emulator, not a build/install blocker.
+Reason: manual local PowerShell / Android Studio verification confirms that the debug build, install, emulator installation, app launch, and full emulator feature checklist passed. Codex shell SDK / `adb` limitations remain environment-specific and are not app blockers.
