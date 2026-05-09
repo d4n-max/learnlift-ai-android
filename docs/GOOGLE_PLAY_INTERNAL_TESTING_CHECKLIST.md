@@ -98,3 +98,17 @@
 - [ ] Internal release created.
 - [ ] Opt-in link copied.
 - [ ] Tester feedback collected.
+
+## Closed Testing Preparation
+
+- [ ] Closed testing track created.
+- [ ] Tester recruitment source chosen.
+- [ ] 15-20 tester target list prepared.
+- [ ] Tester instructions sent.
+- [ ] Feedback template prepared.
+- [ ] Tester opt-in link shared.
+- [ ] Tester installs confirmed.
+- [ ] 14-day period started.
+- [ ] Mid-test feedback collected.
+- [ ] Final feedback collected.
+- [ ] Production access notes prepared.
