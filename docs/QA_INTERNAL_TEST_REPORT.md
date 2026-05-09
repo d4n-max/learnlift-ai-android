@@ -63,32 +63,30 @@ Validation covered:
 
 ### Build Verification
 
-Failed due to local Android SDK environment setup, not an app-code failure observed during this pass.
+Passed by manual local PowerShell verification.
 
-Command attempted:
+Command verified manually:
 
 ```powershell
-.\gradlew.bat assembleDebug --no-daemon
+.\gradlew.bat assembleDebug
 ```
 
-Observed blocker:
+Codex shell note:
 
-- Android SDK Build-Tools 35 license not accepted.
-- Android SDK Platform 35 license not accepted.
-- `C:\Users\Dan\AppData\Local\Android\Sdk\platforms\android-35\package.xml` returned `Access is denied`.
-
-Build must be rerun after fixing Android SDK Manager licenses/file permissions.
+- The Codex shell could not verify Android SDK Build-Tools / Platform access because of local environment access limitations.
+- Manual local PowerShell / Android Studio verification succeeded, so this is not currently considered an app build blocker.
 
 ### Emulator Verification
 
-Not completed from this shell.
+Partially passed by manual local verification.
 
-Blockers:
+Verified manually:
 
-- Debug APK was not produced because the Gradle build was blocked by Android SDK setup.
-- `adb` was not available on PATH from this shell.
+- `.\gradlew.bat installDebug` works.
+- The app installs on the Android emulator.
+- The app launches on the Android emulator.
 
-Manual emulator testing should continue after the SDK and `adb` environment are fixed.
+Feature-specific emulator flows still need manual checklist confirmation.
 
 ## Passed Checks From Static Review
 
@@ -109,9 +107,9 @@ Manual emulator testing should continue after the SDK and `adb` environment are 
 
 ## Failed Or Blocked Checks
 
-- Build verification is blocked by Android SDK license/file permission issues.
-- Emulator install/run verification is blocked until build succeeds.
+- Codex shell build verification is blocked by Android SDK license/file permission access limitations in this shell.
 - `adb devices` could not be run from this shell because `adb` was not found on PATH.
+- Full feature-by-feature emulator QA remains pending manual confirmation.
 
 ## Small Fixes Made
 
@@ -123,7 +121,54 @@ After the initial internal QA pass, the appropriate small MVP-safe findings were
 - Home and Progress wording now clarifies that progress is overall local-device progress, not per-study-path progress.
 - Daily Session now guards flashcard actions, quiz answer selection, quiz advancement, and final session saving against rapid repeated taps.
 
-Full manual emulator testing has not been claimed as passed yet because the local Android SDK build blocker still needs to be resolved.
+Full manual feature checklist testing has not been claimed as passed yet.
+
+## Emulator QA Pass After Task 20
+
+- Test date: 2026-05-09
+- Environment: Android emulator
+- Build type: debug
+- Build command: `.\gradlew.bat assembleDebug`
+- Install command: `.\gradlew.bat installDebug`
+
+### Verification Status
+
+Codex shell could not verify Android SDK/adb due to local environment access limitations, but manual local PowerShell verification succeeded.
+
+| Check | Status | Notes |
+| --- | --- | --- |
+| Debug build with `.\gradlew.bat assembleDebug` | Passed | Passed by manual local PowerShell verification. Codex shell still has Android SDK access limitations. |
+| Debug install with `.\gradlew.bat installDebug` | Passed | Passed by manual local PowerShell verification. |
+| App install on emulator | Passed | Confirmed by manual local emulator verification. |
+| App launch on emulator | Passed | Confirmed by manual local emulator verification. |
+| `adb` device verification from Codex shell | Not tested | `adb` is still not available on PATH from this shell. Android Studio Run / local install succeeded. |
+
+### Emulator Checklist Results
+
+| Area | Result | Evidence / notes |
+| --- | --- | --- |
+| App launch | Passed | App launch was manually verified on the Android emulator. |
+| Home Dashboard | Needs manual confirmation | App launch passed, but this flow has not been fully checked against the manual feature checklist. |
+| Study Path Selection | Needs manual confirmation | Requires manual path selection and restart confirmation. |
+| Flashcards | Needs manual confirmation | Requires manual review/reveal/Known/Needs Review checks. |
+| Quiz | Needs manual confirmation | Requires manual answer lock, explanation, weak topics, and restart checks. |
+| Daily Study Session | Needs manual confirmation | Requires manual flashcard phase, quiz phase, summary, and finish checks. |
+| Progress | Needs manual confirmation | Requires manual persisted stats review. |
+| Settings | Needs manual confirmation | Requires manual settings screen and app info review. |
+| Reset Progress | Needs manual confirmation | Requires manual cancel/reset confirmation. |
+| DataStore persistence after restart | Needs manual confirmation | Requires manual app restart after selecting path and recording progress. |
+| Bottom navigation | Needs manual confirmation | Requires manual tab switching check. |
+| Light/dark theme quick check | Needs manual confirmation | Requires manual visual check in both themes. |
+
+### Task 20 Fix Status
+
+The Task 20 fixes remain documented as implemented from code/documentation review:
+
+- Emulator and physical-device testing steps are present in `docs/TESTING_CHECKLIST.md`.
+- Home and Progress wording describes overall/local-device progress rather than per-path progress.
+- Daily Session rapid repeated-tap guards are present for flashcard actions, quiz answer selection, quiz advancement, and final session saving.
+
+These fixes still need manual feature checklist confirmation. Build, install, and app launch are no longer considered blockers based on manual local verification.
 
 ### Bottom Navigation Label
 
@@ -139,8 +184,8 @@ See `docs/BUG_BACKLOG.md` for the detailed backlog.
 
 Key known issues:
 
-- Local SDK environment currently blocks build verification.
-- `adb` is not available on PATH from this shell.
+- Codex shell still cannot access the Android SDK / `adb` the same way as the local PowerShell / Android Studio environment.
+- Full feature checklist confirmation on emulator is still pending.
 - Progress is still overall local-device progress, not per-study-path progress. This is now reflected in UI wording and remains a deferred future improvement.
 
 ## Risk Areas
@@ -154,13 +199,14 @@ Key known issues:
 
 ## Recommended Next Fixes
 
-1. Fix Android SDK license/file permission issues and rerun `.\gradlew.bat assembleDebug`.
-2. Add Android SDK `platform-tools` to PATH or use Android Studio Terminal so `adb devices` works.
-3. Run the full manual emulator checklist across all three study paths.
-4. Consider path-specific progress tracking after MVP validation if tester feedback shows it is needed.
+1. Run the full manual emulator checklist across all three study paths.
+2. Confirm DataStore persistence after app restart.
+3. Confirm Reset Progress from Settings and/or Progress.
+4. Optionally clean up Android SDK `platform-tools` PATH access for Codex shell convenience.
+5. Consider path-specific progress tracking after MVP validation if tester feedback shows it is needed.
 
 ## Internal Testing Readiness Verdict
 
-Not ready.
+Mostly ready for internal testing, pending manual feature checklist confirmation.
 
-Reason: the app cannot currently be verified on the emulator from this environment because the debug build is blocked by Android SDK license/file permission issues. Static review and content validation look good, and the app appears close to internal-testing ready once the Android SDK environment is repaired.
+Reason: manual local PowerShell / Android Studio verification confirms that the debug build, install, emulator installation, and app launch work. Remaining risk is feature-by-feature manual validation on the emulator, not a build/install blocker.
