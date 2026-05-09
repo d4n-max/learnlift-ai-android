@@ -94,6 +94,10 @@ fun DailyStudySessionScreen(
     var needsReviewCount by remember { mutableIntStateOf(0) }
     var quizCorrectCount by remember { mutableIntStateOf(0) }
     var hasSavedSession by remember { mutableStateOf(false) }
+    var isFlashcardActionLocked by remember { mutableStateOf(false) }
+    var isQuizAnswerLocked by remember { mutableStateOf(false) }
+    var isQuizAdvanceLocked by remember { mutableStateOf(false) }
+    var isFinishingSession by remember { mutableStateOf(false) }
     val incorrectTopics = remember { mutableStateListOf<String>() }
     val needsReviewTopics = remember { mutableStateListOf<String>() }
 
@@ -107,8 +111,18 @@ fun DailyStudySessionScreen(
         needsReviewCount = 0
         quizCorrectCount = 0
         hasSavedSession = false
+        isFlashcardActionLocked = false
+        isQuizAnswerLocked = false
+        isQuizAdvanceLocked = false
+        isFinishingSession = false
         incorrectTopics.clear()
         needsReviewTopics.clear()
+    }
+
+    LaunchedEffect(phase, flashcardIndex, quizIndex) {
+        isFlashcardActionLocked = false
+        isQuizAnswerLocked = false
+        isQuizAdvanceLocked = false
     }
 
     Column(
@@ -140,39 +154,45 @@ fun DailyStudySessionScreen(
                 isAnswerRevealed = isAnswerRevealed,
                 onRevealAnswer = { isAnswerRevealed = true },
                 onKnown = {
-                    knownCount += 1
-                    moveFromFlashcard(
-                        flashcardIndex = flashcardIndex,
-                        lastFlashcardIndex = sessionFlashcards.lastIndex,
-                        hasQuizQuestions = sessionQuestions.isNotEmpty(),
-                        onMoveNextCard = {
-                            flashcardIndex += 1
-                            isAnswerRevealed = false
-                        },
-                        onMoveToQuiz = {
-                            phase = DailySessionPhase.Quiz
-                            isAnswerRevealed = false
-                        },
-                        onMoveToSummary = { phase = DailySessionPhase.Summary }
-                    )
+                    if (!isFlashcardActionLocked) {
+                        isFlashcardActionLocked = true
+                        knownCount += 1
+                        moveFromFlashcard(
+                            flashcardIndex = flashcardIndex,
+                            lastFlashcardIndex = sessionFlashcards.lastIndex,
+                            hasQuizQuestions = sessionQuestions.isNotEmpty(),
+                            onMoveNextCard = {
+                                flashcardIndex += 1
+                                isAnswerRevealed = false
+                            },
+                            onMoveToQuiz = {
+                                phase = DailySessionPhase.Quiz
+                                isAnswerRevealed = false
+                            },
+                            onMoveToSummary = { phase = DailySessionPhase.Summary }
+                        )
+                    }
                 },
                 onNeedsReview = {
-                    needsReviewCount += 1
-                    needsReviewTopics.add(sessionFlashcards[flashcardIndex].topic)
-                    moveFromFlashcard(
-                        flashcardIndex = flashcardIndex,
-                        lastFlashcardIndex = sessionFlashcards.lastIndex,
-                        hasQuizQuestions = sessionQuestions.isNotEmpty(),
-                        onMoveNextCard = {
-                            flashcardIndex += 1
-                            isAnswerRevealed = false
-                        },
-                        onMoveToQuiz = {
-                            phase = DailySessionPhase.Quiz
-                            isAnswerRevealed = false
-                        },
-                        onMoveToSummary = { phase = DailySessionPhase.Summary }
-                    )
+                    if (!isFlashcardActionLocked) {
+                        isFlashcardActionLocked = true
+                        needsReviewCount += 1
+                        needsReviewTopics.add(sessionFlashcards[flashcardIndex].topic)
+                        moveFromFlashcard(
+                            flashcardIndex = flashcardIndex,
+                            lastFlashcardIndex = sessionFlashcards.lastIndex,
+                            hasQuizQuestions = sessionQuestions.isNotEmpty(),
+                            onMoveNextCard = {
+                                flashcardIndex += 1
+                                isAnswerRevealed = false
+                            },
+                            onMoveToQuiz = {
+                                phase = DailySessionPhase.Quiz
+                                isAnswerRevealed = false
+                            },
+                            onMoveToSummary = { phase = DailySessionPhase.Summary }
+                        )
+                    }
                 }
             )
 
@@ -182,7 +202,8 @@ fun DailyStudySessionScreen(
                 totalQuestions = sessionQuestions.size,
                 selectedAnswerId = selectedQuizAnswerId,
                 onAnswerSelected = { optionId ->
-                    if (selectedQuizAnswerId == null) {
+                    if (selectedQuizAnswerId == null && !isQuizAnswerLocked) {
+                        isQuizAnswerLocked = true
                         selectedQuizAnswerId = optionId
                         val question = sessionQuestions[quizIndex]
                         if (optionId == question.correctAnswerId) {
@@ -193,11 +214,14 @@ fun DailyStudySessionScreen(
                     }
                 },
                 onNext = {
-                    if (quizIndex == sessionQuestions.lastIndex) {
-                        phase = DailySessionPhase.Summary
-                    } else {
-                        quizIndex += 1
-                        selectedQuizAnswerId = null
+                    if (!isQuizAdvanceLocked) {
+                        isQuizAdvanceLocked = true
+                        if (quizIndex == sessionQuestions.lastIndex) {
+                            phase = DailySessionPhase.Summary
+                        } else {
+                            quizIndex += 1
+                            selectedQuizAnswerId = null
+                        }
                     }
                 }
             )
@@ -209,13 +233,15 @@ fun DailyStudySessionScreen(
                 quizCorrect = quizCorrectCount,
                 quizTotal = sessionQuestions.size,
                 topicsToReview = (incorrectTopics + needsReviewTopics).distinct(),
+                isFinishEnabled = !isFinishingSession,
                 onFinish = {
                     val quizPercentage = if (sessionQuestions.isEmpty()) {
                         0
                     } else {
                         (quizCorrectCount * 100) / sessionQuestions.size
                     }
-                    if (!hasSavedSession) {
+                    if (!hasSavedSession && !isFinishingSession) {
+                        isFinishingSession = true
                         hasSavedSession = true
                         onFinishSession(
                             knownCount + needsReviewCount,
@@ -225,8 +251,8 @@ fun DailyStudySessionScreen(
                             quizCorrectCount,
                             quizPercentage
                         )
+                        onReturnHome()
                     }
-                    onReturnHome()
                 }
             )
         }
@@ -421,6 +447,7 @@ private fun DailySessionSummary(
     quizCorrect: Int,
     quizTotal: Int,
     topicsToReview: List<String>,
+    isFinishEnabled: Boolean,
     onFinish: () -> Unit
 ) {
     val quizPercentage = if (quizTotal == 0) 0 else (quizCorrect * 100) / quizTotal
@@ -459,7 +486,8 @@ private fun DailySessionSummary(
         Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
         PrimaryActionButton(
             text = "Finish and return Home",
-            onClick = onFinish
+            onClick = onFinish,
+            enabled = isFinishEnabled
         )
     }
 }

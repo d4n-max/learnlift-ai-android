@@ -48,8 +48,8 @@ fun ProgressScreen(
         verticalArrangement = Arrangement.spacedBy(LearnLiftSpacing.contentGap)
     ) {
         SectionHeader(
-            title = "Your Progress",
-            subtitle = "Small steps compound into real skills."
+            title = "Overall Progress",
+            subtitle = "Progress on this device is saved locally across all study paths."
         )
 
         StreakHighlightCard(userProgress = userProgress)
@@ -57,24 +57,24 @@ fun ProgressScreen(
 
         SectionHeader(title = "Study stats")
         StatCard(
-            label = "Flashcards reviewed",
+            label = "Total flashcards reviewed",
             value = userProgress.totalFlashcardsReviewed.toString(),
-            helperText = "Total cards marked during review"
+            helperText = "All cards marked during review on this device"
         )
         StatCard(
             label = "Known cards",
             value = userProgress.totalKnownCards.toString(),
-            helperText = "Cards marked Known"
+            helperText = "Cards marked Known across all paths"
         )
         StatCard(
             label = "Needs review",
             value = userProgress.totalNeedsReviewCards.toString(),
-            helperText = "Cards marked Needs Review"
+            helperText = "Cards marked Needs Review across all paths"
         )
         StatCard(
             label = "Quizzes completed",
             value = userProgress.totalQuizzesCompleted.toString(),
-            helperText = "Completed quiz sessions"
+            helperText = "Completed quiz sessions on this device"
         )
 
         KnownNeedsReviewBreakdown(userProgress = userProgress)
@@ -162,12 +162,12 @@ private fun StudyPathProgressCard(selectedStudyPath: StudyPath?) {
     if (selectedStudyPath == null) {
         EmptyState(
             title = "Choose a study path",
-            description = "Select a path from Home to connect your progress to a clear goal."
+            description = "Select a path from Home. Overall progress totals will continue to stay local on this device."
         )
     } else {
         LearnLiftCard {
             Text(
-                text = "Study path",
+                text = "Selected study path",
                 color = MaterialTheme.colorScheme.secondary,
                 style = MaterialTheme.typography.labelLarge,
                 fontWeight = FontWeight.Bold
@@ -208,7 +208,7 @@ private fun KnownNeedsReviewBreakdown(userProgress: UserProgress) {
             )
             Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
             Text(
-                text = "Review flashcards to see Known and Needs Review totals here.",
+                text = "Review flashcards to see overall Known and Needs Review totals here.",
                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.76f),
                 style = MaterialTheme.typography.bodyMedium
             )

@@ -1,8 +1,31 @@
 # LearnLift AI Internal Testing Checklist
 
-Use a real Android device connected by USB.
+Use either an Android emulator or a real Android device connected by USB.
 
 ## Setup
+
+### Android Emulator
+
+- Open Android Studio.
+- Open Device Manager.
+- Start the target emulator.
+- If `adb` is available, confirm the emulator is visible:
+
+```powershell
+adb devices
+```
+
+- The emulator should appear in the list as `device`.
+- Build and install the debug app:
+
+```powershell
+.\gradlew.bat assembleDebug
+.\gradlew.bat installDebug
+```
+
+- Alternatively, select the emulator in Android Studio and press Run.
+
+### Physical Android Device
 
 - Confirm USB debugging is enabled on the Android device.
 - Confirm the device is visible:
@@ -18,11 +41,13 @@ adb devices
 .\gradlew.bat installDebug
 ```
 
+- Alternatively, select the connected device in Android Studio and press Run.
+
 ## Manual Test Checklist
 
 ### App Launch
 
-- App installs successfully on a real device.
+- App installs successfully on the emulator or physical device.
 - Launcher label shows `LearnLift AI`.
 - App opens without crashing.
 - Home shows LearnLift AI branding and tagline.
@@ -38,7 +63,7 @@ adb devices
 
 ### Flashcards
 
-- Open Cards from bottom navigation.
+- Open Flashcards from bottom navigation.
 - Confirm selected path flashcards load.
 - Reveal an answer.
 - Mark Known.
@@ -89,7 +114,8 @@ adb devices
 
 ### Navigation
 
-- Bottom navigation opens Home, Cards, Quiz, and Progress.
+- Bottom navigation opens Home, Flashcards, Quiz, and Progress.
 - Settings can return to Home.
+- System Back from Settings, Study Path Selection, and Daily Session returns to Home.
 - Daily Session can return to Home after completion.
-- No screen content is cut off on the test device.
+- No screen content is cut off on the emulator or physical device.

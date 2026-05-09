@@ -145,14 +145,17 @@ private fun DashboardStats(
     selectedStudyContent: StudyContent?,
     userProgress: UserProgress
 ) {
-    SectionHeader(title = "Content stats")
+    SectionHeader(
+        title = "Overall progress on this device",
+        subtitle = "These totals are saved locally and are not separated by study path yet."
+    )
     StatCard(
         label = "Current streak",
         value = "${userProgress.currentStudyStreak} days",
         helperText = userProgress.lastStudyDate?.let { "Last studied $it" } ?: "Complete a quiz or review a card to start"
     )
     StatCard(
-        label = "Flashcards reviewed",
+        label = "Total flashcards reviewed",
         value = userProgress.totalFlashcardsReviewed.toString(),
         helperText = "${userProgress.totalKnownCards} known - ${userProgress.totalNeedsReviewCards} need review"
     )

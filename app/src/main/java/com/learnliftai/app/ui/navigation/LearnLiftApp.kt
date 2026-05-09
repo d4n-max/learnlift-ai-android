@@ -1,6 +1,7 @@
 package com.learnliftai.app.ui.navigation
 
 import androidx.compose.foundation.layout.padding
+import androidx.activity.compose.BackHandler
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -53,6 +54,14 @@ fun LearnLiftApp() {
     val selectedStudyPath = StudyPathRepository.findById(userProgress.selectedStudyPathId)
     val selectedStudyContent = remember(userProgress.selectedStudyPathId) {
         userProgress.selectedStudyPathId?.let { AssetStudyContentRepository.loadStudyContent(context, it) }
+    }
+    val isSubFlowOpen = isSettingsOpen || isDailySessionActive || isChoosingStudyPath
+
+    BackHandler(enabled = isSubFlowOpen) {
+        isSettingsOpen = false
+        isDailySessionActive = false
+        isChoosingStudyPath = false
+        selectedDestinationName = LearnLiftDestination.Home.name
     }
 
     Scaffold(

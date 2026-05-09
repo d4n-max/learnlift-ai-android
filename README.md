@@ -36,8 +36,8 @@ LearnLift AI is an Android skill-building and study coach MVP. It helps learners
 
 1. Open this repository in Android Studio.
 2. Let Gradle sync finish.
-3. Connect a real Android device with USB debugging enabled.
-4. Select the connected device.
+3. Start an Android emulator from Device Manager, or connect a real Android device with USB debugging enabled.
+4. Select the emulator or connected device.
 5. Run the `app` configuration.
 
 ## Verify Connected Android Device
@@ -86,4 +86,4 @@ app/build/outputs/apk/debug/app-debug.apk
 - Progress values persist after app restart.
 - Reset progress clears stats while keeping the selected path.
 - Settings shows app info, current path, future features, and reset action.
-- Bottom navigation works across Home, Cards, Quiz, and Progress.
+- Bottom navigation works across Home, Flashcards, Quiz, and Progress.
