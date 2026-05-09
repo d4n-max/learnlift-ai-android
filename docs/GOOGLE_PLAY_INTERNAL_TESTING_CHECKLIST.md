@@ -85,3 +85,16 @@
 - Do not create or commit production signing keys.
 - Do not add Firebase, authentication, payments, backend code, cloud sync, analytics, or AI API calls for this internal testing prep.
 - Confirm Data Safety answers again before submitting the internal testing release.
+
+## Play Console Setup Status
+
+- [ ] App created.
+- [ ] Store listing draft copied.
+- [ ] Privacy policy URL added.
+- [ ] Data Safety completed.
+- [ ] Content rating completed.
+- [ ] Internal tester list created.
+- [ ] AAB uploaded.
+- [ ] Internal release created.
+- [ ] Opt-in link copied.
+- [ ] Tester feedback collected.
