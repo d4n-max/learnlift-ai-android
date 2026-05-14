@@ -19,13 +19,14 @@ Future responsibilities:
 - Apply client-side timeout handling.
 - Return typed success or error results.
 
-Not part of the current task:
+Task 35 implements a minimal `HttpURLConnection` client for the Supabase backend proxy. The app still does not include:
 
 - Retrofit.
 - Ktor.
 - OkHttp.
-- API base URL configuration.
-- Network permission.
+- OpenAI API keys.
+- Supabase service role keys.
+- Direct OpenAI calls.
 
 ### `AiCoachRepository`
 
@@ -143,13 +144,26 @@ data class StudyPlanDay(
 )
 ```
 
-## Backend Endpoints
+## Backend Endpoint
 
-Android should call only these backend proxy endpoints:
+Task 34 adds a Supabase Edge Function backend proxy. Future Android code should call only this backend proxy endpoint:
 
-- `POST /ai/explain-answer`
-- `POST /ai/quiz-summary`
-- `POST /ai/study-plan`
+- `POST /functions/v1/ai-coach`
+
+The request body selects the action:
+
+```json
+{
+  "action": "explain_answer",
+  "payload": {}
+}
+```
+
+Supported actions:
+
+- `explain_answer`
+- `quiz_summary`
+- `study_plan`
 
 The app should not call AI provider URLs.
 
@@ -231,9 +245,7 @@ Billing, entitlements, RevenueCat, or Google Play Billing must be implemented in
 
 This contract does not add:
 
-- Network permission.
 - Retrofit, Ktor, OkHttp, or any network library.
-- Backend implementation.
 - AI provider SDK.
 - API keys.
 - Billing.

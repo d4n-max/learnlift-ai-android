@@ -62,3 +62,9 @@ No API keys, backend credentials, payment credentials, or AI provider keys shoul
 If AI Coach, analytics, authentication, crash reporting, payments, cloud sync, remote content, or backend services are added later, the Data Safety form must be reviewed and updated before release.
 
 Future AI Coach work must also avoid placing secret API keys in the Android app. Any AI provider integration should use a secure backend proxy as described in `docs/AI_COACH_PLAN.md`.
+
+Task 34 adds Supabase Edge Function backend proxy scaffolding for future AI Coach features.
+
+Task 35 adds Android client integration for optional, user-initiated AI Coach actions. When a user taps an AI action, the app may send limited study context to the Supabase backend proxy, such as the current quiz question, selected answer, correct answer, static explanation, quiz score, weak topics, selected study path, and a short study goal. The app should not send personal profile data, email, account data, resumes, private notes, device identifiers, or sensitive personal data for these AI actions.
+
+Before enabling real AI in production or broader testing, update the Privacy Policy and Google Play Data Safety answers to describe this backend data transfer. Real AI responses also require the backend to have OpenAI API billing/quota active.

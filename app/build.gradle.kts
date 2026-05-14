@@ -7,6 +7,10 @@ plugins {
 android {
     namespace = "com.learnliftai.app"
     compileSdk = 35
+    val aiCoachUrl = providers
+        .gradleProperty("SUPABASE_AI_COACH_URL")
+        .orElse("https://YOUR_PROJECT_REF.supabase.co/functions/v1/ai-coach")
+        .get()
 
     defaultConfig {
         applicationId = "com.learnliftai.app"
@@ -14,9 +18,11 @@ android {
         targetSdk = 35
         versionCode = 2
         versionName = "0.1.1"
+        buildConfigField("String", "SUPABASE_AI_COACH_URL", "\"$aiCoachUrl\"")
     }
 
     buildFeatures {
+        buildConfig = true
         compose = true
     }
 

@@ -184,7 +184,7 @@ Response:
 
 ## Recommendation
 
-Primary recommendation for LearnLift AI v1: **Railway-hosted Node.js API**.
+Original primary recommendation for LearnLift AI v1: **Railway-hosted Node.js API**.
 
 Why Railway is best for this project right now:
 
@@ -195,9 +195,23 @@ Why Railway is best for this project right now:
 - Clear deployment path from a small Git repository.
 - Avoids introducing Firebase, auth, or database decisions too early.
 
-Secondary recommendation: **Supabase Edge Functions**.
+Selected implementation for Task 34: **Supabase Edge Functions**.
 
-Supabase is a strong option if LearnLift AI soon needs authentication, cloud sync, or server-side storage. It is slightly more platform-shaped than Railway, but it could become the better long-term choice if the product roadmap moves toward Supabase anyway.
+Supabase is a strong option if LearnLift AI soon needs authentication, cloud sync, or server-side storage. It is slightly more platform-shaped than Railway, but it becomes a good practical choice when the project wants deployable serverless functions without adding a separate Node hosting service.
+
+Task 34 adds a Supabase Edge Function scaffold named `ai-coach`. It exposes one action-routed endpoint:
+
+```text
+POST /functions/v1/ai-coach
+```
+
+Supported actions:
+
+- `explain_answer`
+- `quiz_summary`
+- `study_plan`
+
+Android is not integrated with this backend yet.
 
 ## Implementation Phases
 

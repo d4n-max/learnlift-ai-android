@@ -18,20 +18,28 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import com.learnliftai.app.data.ai.AiCoachRepository
+import com.learnliftai.app.data.ai.AiCoachResult
+import com.learnliftai.app.data.ai.AiCoachUiState
+import com.learnliftai.app.data.ai.StudyPlanRequest
+import com.learnliftai.app.data.ai.StudyPlanResponse
 import com.learnliftai.app.domain.SmartCoachAdvisor
 import com.learnliftai.app.domain.model.StudyPath
 import com.learnliftai.app.domain.model.UserProgress
 import com.learnliftai.app.ui.components.EmptyState
 import com.learnliftai.app.ui.components.LearnLiftCard
 import com.learnliftai.app.ui.components.PremiumTeaserCard
+import com.learnliftai.app.ui.components.PrimaryActionButton
 import com.learnliftai.app.ui.components.SecondaryActionButton
 import com.learnliftai.app.ui.components.SectionHeader
 import com.learnliftai.app.ui.components.SmartCoachRecommendationCard
 import com.learnliftai.app.ui.components.StatCard
 import com.learnliftai.app.ui.theme.LearnLiftSpacing
+import kotlinx.coroutines.launch
 
 @Composable
 fun ProgressScreen(
@@ -43,6 +51,7 @@ fun ProgressScreen(
     modifier: Modifier = Modifier
 ) {
     var showResetConfirmation by remember { mutableStateOf(false) }
+    val aiCoachRepository = remember { AiCoachRepository() }
 
     Column(
         modifier = modifier
@@ -84,6 +93,10 @@ fun ProgressScreen(
 
         KnownNeedsReviewBreakdown(userProgress = userProgress)
         QuizPerformanceCard(userProgress = userProgress)
+        StudyPlanAiSection(
+            selectedStudyPath = selectedStudyPath,
+            aiCoachRepository = aiCoachRepository
+        )
         AdvancedInsightsTeaser(onViewPremium = onViewPremium)
 
         SecondaryActionButton(
@@ -133,6 +146,106 @@ fun ProgressScreen(
                 }
             }
         )
+    }
+}
+
+@Composable
+private fun StudyPlanAiSection(
+    selectedStudyPath: StudyPath?,
+    aiCoachRepository: AiCoachRepository
+) {
+    val coroutineScope = rememberCoroutineScope()
+    var studyPlanState by remember(selectedStudyPath?.id) {
+        mutableStateOf<AiCoachUiState<StudyPlanResponse>>(AiCoachUiState.Idle)
+    }
+
+    LearnLiftCard {
+        Text(
+            text = "7-Day Study Plan",
+            color = MaterialTheme.colorScheme.primary,
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+        Text(
+            text = "Optional AI planning based on your selected study path. No personal profile data is sent.",
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.76f),
+            style = MaterialTheme.typography.bodyMedium
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
+        PrimaryActionButton(
+            text = if (studyPlanState is AiCoachUiState.Loading) {
+                "Generating plan..."
+            } else {
+                "Generate 7-Day Study Plan"
+            },
+            onClick = {
+                val path = selectedStudyPath ?: return@PrimaryActionButton
+                coroutineScope.launch {
+                    studyPlanState = AiCoachUiState.Loading
+                    studyPlanState = when (
+                        val result = aiCoachRepository.studyPlan(
+                            StudyPlanRequest(
+                                studyPathId = path.id,
+                                goal = "Build confidence with ${path.title}",
+                                days = 7,
+                                level = "beginner"
+                            )
+                        )
+                    ) {
+                        is AiCoachResult.Success -> AiCoachUiState.Success(result.data)
+                        is AiCoachResult.Error -> AiCoachUiState.Error(result.message)
+                    }
+                }
+            },
+            enabled = selectedStudyPath != null && studyPlanState !is AiCoachUiState.Loading
+        )
+        when (val state = studyPlanState) {
+            AiCoachUiState.Idle -> Unit
+            AiCoachUiState.Loading -> {
+                Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+                Text(
+                    text = "AI Coach is drafting a short plan.",
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    style = MaterialTheme.typography.bodySmall
+                )
+            }
+
+            is AiCoachUiState.Success -> {
+                Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
+                Text(
+                    text = state.data.title,
+                    color = MaterialTheme.colorScheme.secondary,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold
+                )
+                Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+                state.data.days.forEach { day ->
+                    Text(
+                        text = "Day ${day.day}: ${day.focus}",
+                        color = MaterialTheme.colorScheme.primary,
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                    Text(
+                        text = day.tasks.joinToString(separator = " - "),
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.78f),
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                    Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+                }
+            }
+
+            is AiCoachUiState.Error -> {
+                Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+                Text(
+                    text = "${state.message} Keep using the local Recommended Focus above for now.",
+                    color = MaterialTheme.colorScheme.secondary,
+                    style = MaterialTheme.typography.bodySmall,
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
+        }
     }
 }
 

@@ -26,10 +26,18 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.learnliftai.app.data.ai.AiCoachRepository
+import com.learnliftai.app.data.ai.AiCoachResult
+import com.learnliftai.app.data.ai.AiCoachUiState
+import com.learnliftai.app.data.ai.ExplainAnswerRequest
+import com.learnliftai.app.data.ai.ExplainAnswerResponse
+import com.learnliftai.app.data.ai.QuizSummaryRequest
+import com.learnliftai.app.data.ai.QuizSummaryResponse
 import com.learnliftai.app.domain.SmartCoachAdvisor
 import com.learnliftai.app.domain.model.QuizOption
 import com.learnliftai.app.domain.model.QuizQuestion
@@ -38,11 +46,13 @@ import com.learnliftai.app.domain.model.StudyPath
 import com.learnliftai.app.ui.components.EmptyState
 import com.learnliftai.app.ui.components.LearnLiftCard
 import com.learnliftai.app.ui.components.PrimaryActionButton
+import com.learnliftai.app.ui.components.SecondaryActionButton
 import com.learnliftai.app.ui.components.SectionHeader
 import com.learnliftai.app.ui.components.SmartCoachRecommendationCard
 import com.learnliftai.app.ui.components.StatCard
 import com.learnliftai.app.ui.theme.LearnLiftCorners
 import com.learnliftai.app.ui.theme.LearnLiftSpacing
+import kotlinx.coroutines.launch
 
 @Composable
 fun QuizScreen(
@@ -52,6 +62,7 @@ fun QuizScreen(
     modifier: Modifier = Modifier
 ) {
     val quizQuestions = selectedStudyContent?.quizQuestions.orEmpty()
+    val aiCoachRepository = remember { AiCoachRepository() }
 
     if (selectedStudyPath == null) {
         QuizEmptyState(
@@ -98,8 +109,10 @@ fun QuizScreen(
 
         if (isQuizComplete) {
             QuizSummary(
+                studyPathId = selectedStudyPath.id,
                 score = score,
                 weakTopics = rememberWeakTopics(quizQuestions, selectedAnswers),
+                aiCoachRepository = aiCoachRepository,
                 onRestartQuiz = {
                     currentIndex = 0
                     isQuizComplete = false
@@ -115,8 +128,10 @@ fun QuizScreen(
                 totalQuestions = quizQuestions.size
             )
             QuizQuestionCard(
+                studyPathId = selectedStudyPath.id,
                 question = currentQuestion,
                 selectedAnswerId = selectedAnswerId,
+                aiCoachRepository = aiCoachRepository,
                 onAnswerSelected = { optionId ->
                     if (selectedAnswers[currentQuestion.id] == null) {
                         selectedAnswers[currentQuestion.id] = optionId
@@ -186,10 +201,17 @@ private fun QuizProgress(
 
 @Composable
 private fun QuizQuestionCard(
+    studyPathId: String,
     question: QuizQuestion,
     selectedAnswerId: String?,
+    aiCoachRepository: AiCoachRepository,
     onAnswerSelected: (String) -> Unit
 ) {
+    val coroutineScope = rememberCoroutineScope()
+    var aiExplanationState by remember(question.id, selectedAnswerId) {
+        mutableStateOf<AiCoachUiState<ExplainAnswerResponse>>(AiCoachUiState.Idle)
+    }
+
     LearnLiftCard {
         Row(
             horizontalArrangement = Arrangement.spacedBy(LearnLiftSpacing.smallGap)
@@ -216,6 +238,8 @@ private fun QuizQuestionCard(
         }
         if (selectedAnswerId != null) {
             val isCorrect = selectedAnswerId == question.correctAnswerId
+            val selectedOption = question.options.firstOrNull { it.id == selectedAnswerId }
+            val correctOption = question.options.firstOrNull { it.id == question.correctAnswerId }
             Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
             Text(
                 text = if (isCorrect) "Correct" else "Not quite",
@@ -229,6 +253,39 @@ private fun QuizQuestionCard(
                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.78f),
                 style = MaterialTheme.typography.bodyMedium
             )
+            if (!isCorrect && selectedOption != null && correctOption != null) {
+                Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
+                SecondaryActionButton(
+                    text = if (aiExplanationState is AiCoachUiState.Loading) {
+                        "Asking AI Coach..."
+                    } else {
+                        "Explain with AI Coach"
+                    },
+                    onClick = {
+                        coroutineScope.launch {
+                            aiExplanationState = AiCoachUiState.Loading
+                            aiExplanationState = when (
+                                val result = aiCoachRepository.explainAnswer(
+                                    ExplainAnswerRequest(
+                                        studyPathId = studyPathId,
+                                        topic = question.topic,
+                                        difficulty = question.difficulty,
+                                        question = question.question,
+                                        selectedAnswer = selectedOption.text,
+                                        correctAnswer = correctOption.text,
+                                        staticExplanation = question.explanation
+                                    )
+                                )
+                            ) {
+                                is AiCoachResult.Success -> AiCoachUiState.Success(result.data)
+                                is AiCoachResult.Error -> AiCoachUiState.Error(result.message)
+                            }
+                        }
+                    },
+                    enabled = aiExplanationState !is AiCoachUiState.Loading
+                )
+                AiExplainAnswerResult(state = aiExplanationState)
+            }
         }
     }
 }
@@ -285,14 +342,20 @@ private fun QuizScoreStats(score: QuizScore) {
 
 @Composable
 private fun QuizSummary(
+    studyPathId: String,
     score: QuizScore,
     weakTopics: List<String>,
+    aiCoachRepository: AiCoachRepository,
     onRestartQuiz: () -> Unit
 ) {
     val recommendation = SmartCoachAdvisor.quizSummaryRecommendation(
         percentage = score.percentage,
         weakTopics = weakTopics
     )
+    val coroutineScope = rememberCoroutineScope()
+    var aiSummaryState by remember(score, weakTopics) {
+        mutableStateOf<AiCoachUiState<QuizSummaryResponse>>(AiCoachUiState.Idle)
+    }
 
     LearnLiftCard {
         Text(
@@ -338,6 +401,163 @@ private fun QuizSummary(
         )
     }
     SmartCoachRecommendationCard(recommendation = recommendation)
+    AiQuizSummarySection(
+        state = aiSummaryState,
+        onGenerate = {
+            coroutineScope.launch {
+                aiSummaryState = AiCoachUiState.Loading
+                aiSummaryState = when (
+                    val result = aiCoachRepository.quizSummary(
+                        QuizSummaryRequest(
+                            studyPathId = studyPathId,
+                            score = score.correctAnswers,
+                            totalQuestions = score.totalQuestions,
+                            incorrectTopics = weakTopics,
+                            weakTopics = weakTopics
+                        )
+                    )
+                ) {
+                    is AiCoachResult.Success -> AiCoachUiState.Success(result.data)
+                    is AiCoachResult.Error -> AiCoachUiState.Error(result.message)
+                }
+            }
+        }
+    )
+}
+
+@Composable
+private fun AiExplainAnswerResult(state: AiCoachUiState<ExplainAnswerResponse>) {
+    when (state) {
+        AiCoachUiState.Idle -> Unit
+        AiCoachUiState.Loading -> {
+            Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+            Text(
+                text = "AI Coach is preparing a short explanation.",
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                style = MaterialTheme.typography.bodySmall
+            )
+        }
+
+        is AiCoachUiState.Success -> {
+            Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
+            Text(
+                text = state.data.title,
+                color = MaterialTheme.colorScheme.primary,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+            Text(
+                text = state.data.conciseExplanation,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.78f),
+                style = MaterialTheme.typography.bodyMedium
+            )
+            Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+            Text(
+                text = state.data.whyCorrectAnswerWorks,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.78f),
+                style = MaterialTheme.typography.bodyMedium
+            )
+            Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+            Text(
+                text = "Study tip: ${state.data.studyTip}",
+                color = MaterialTheme.colorScheme.secondary,
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.SemiBold
+            )
+        }
+
+        is AiCoachUiState.Error -> {
+            Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+            Text(
+                text = state.message,
+                color = MaterialTheme.colorScheme.secondary,
+                style = MaterialTheme.typography.bodySmall,
+                fontWeight = FontWeight.SemiBold
+            )
+        }
+    }
+}
+
+@Composable
+private fun AiQuizSummarySection(
+    state: AiCoachUiState<QuizSummaryResponse>,
+    onGenerate: () -> Unit
+) {
+    LearnLiftCard {
+        Text(
+            text = "AI Study Review",
+            color = MaterialTheme.colorScheme.primary,
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+        Text(
+            text = "Optional AI help. Uses only this quiz score and missed topics.",
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.76f),
+            style = MaterialTheme.typography.bodyMedium
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
+        SecondaryActionButton(
+            text = if (state is AiCoachUiState.Loading) {
+                "Generating review..."
+            } else {
+                "Generate AI Study Review"
+            },
+            onClick = onGenerate,
+            enabled = state !is AiCoachUiState.Loading
+        )
+        when (state) {
+            AiCoachUiState.Idle -> Unit
+            AiCoachUiState.Loading -> {
+                Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+                Text(
+                    text = "AI Coach is reviewing this quiz.",
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    style = MaterialTheme.typography.bodySmall
+                )
+            }
+
+            is AiCoachUiState.Success -> {
+                Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
+                Text(
+                    text = state.data.summary,
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.82f),
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+                Text(
+                    text = "Focus: ${state.data.recommendedFocus.joinToString(", ")}",
+                    color = MaterialTheme.colorScheme.secondary,
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.SemiBold
+                )
+                Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+                Text(
+                    text = state.data.nextSessionSuggestion,
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.78f),
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+                Text(
+                    text = state.data.encouragement,
+                    color = MaterialTheme.colorScheme.primary,
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
+
+            is AiCoachUiState.Error -> {
+                Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+                Text(
+                    text = "${state.message} The local Recommended Focus above is still available.",
+                    color = MaterialTheme.colorScheme.secondary,
+                    style = MaterialTheme.typography.bodySmall,
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
+        }
+    }
 }
 
 @Composable
