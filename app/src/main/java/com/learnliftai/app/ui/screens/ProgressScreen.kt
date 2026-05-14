@@ -21,12 +21,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import com.learnliftai.app.domain.SmartCoachAdvisor
 import com.learnliftai.app.domain.model.StudyPath
 import com.learnliftai.app.domain.model.UserProgress
 import com.learnliftai.app.ui.components.EmptyState
 import com.learnliftai.app.ui.components.LearnLiftCard
+import com.learnliftai.app.ui.components.PremiumTeaserCard
 import com.learnliftai.app.ui.components.SecondaryActionButton
 import com.learnliftai.app.ui.components.SectionHeader
+import com.learnliftai.app.ui.components.SmartCoachRecommendationCard
 import com.learnliftai.app.ui.components.StatCard
 import com.learnliftai.app.ui.theme.LearnLiftSpacing
 
@@ -35,6 +38,7 @@ fun ProgressScreen(
     selectedStudyPath: StudyPath?,
     userProgress: UserProgress,
     onOpenSettings: () -> Unit,
+    onViewPremium: () -> Unit,
     onResetProgress: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -54,6 +58,7 @@ fun ProgressScreen(
 
         StreakHighlightCard(userProgress = userProgress)
         StudyPathProgressCard(selectedStudyPath = selectedStudyPath)
+        ProgressRecommendationSection(userProgress = userProgress)
 
         SectionHeader(title = "Study stats")
         StatCard(
@@ -79,6 +84,7 @@ fun ProgressScreen(
 
         KnownNeedsReviewBreakdown(userProgress = userProgress)
         QuizPerformanceCard(userProgress = userProgress)
+        AdvancedInsightsTeaser(onViewPremium = onViewPremium)
 
         SecondaryActionButton(
             text = "Reset Progress Stats",
@@ -128,6 +134,28 @@ fun ProgressScreen(
             }
         )
     }
+}
+
+@Composable
+private fun AdvancedInsightsTeaser(onViewPremium: () -> Unit) {
+    PremiumTeaserCard(
+        title = "Advanced Insights",
+        description = "Premium will unlock deeper topic trends and personalized guidance.",
+        actionText = "View Premium",
+        onActionClick = onViewPremium
+    )
+}
+
+@Composable
+private fun ProgressRecommendationSection(userProgress: UserProgress) {
+    SectionHeader(
+        title = "Recommended Focus",
+        subtitle = "Local guidance based only on progress saved on this device."
+    )
+    SmartCoachRecommendationCard(
+        recommendation = SmartCoachAdvisor.progressRecommendation(userProgress),
+        localGuidanceLabel = "Local rule-based guidance - no live AI or data sharing"
+    )
 }
 
 @Composable

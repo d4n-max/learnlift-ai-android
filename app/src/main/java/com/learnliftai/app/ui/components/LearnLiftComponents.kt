@@ -35,6 +35,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.learnliftai.app.R
+import com.learnliftai.app.domain.model.SmartCoachRecommendation
+import com.learnliftai.app.domain.model.SmartCoachRecommendationType
 import com.learnliftai.app.ui.theme.LearnLiftCorners
 import com.learnliftai.app.ui.theme.LearnLiftElevation
 import com.learnliftai.app.ui.theme.LearnLiftGradients
@@ -407,6 +409,89 @@ fun EmptyState(
             SecondaryActionButton(
                 text = actionText,
                 onClick = onActionClick
+            )
+        }
+    }
+}
+
+@Composable
+fun SmartCoachRecommendationCard(
+    recommendation: SmartCoachRecommendation,
+    modifier: Modifier = Modifier,
+    localGuidanceLabel: String? = "Local rule-based guidance"
+) {
+    val accentColor = when (recommendation.type) {
+        SmartCoachRecommendationType.Encouragement -> MaterialTheme.colorScheme.primary
+        SmartCoachRecommendationType.Review -> MaterialTheme.colorScheme.secondary
+        SmartCoachRecommendationType.Warning -> MaterialTheme.colorScheme.error
+        SmartCoachRecommendationType.NextStep -> MaterialTheme.colorScheme.secondary
+    }
+
+    LearnLiftCard(
+        modifier = modifier,
+        borderColor = accentColor.copy(alpha = 0.28f),
+        containerColor = MaterialTheme.colorScheme.surface
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(LearnLiftSpacing.smallGap),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Spacer(
+                modifier = Modifier
+                    .width(6.dp)
+                    .height(36.dp)
+                    .background(
+                        color = accentColor,
+                        shape = RoundedCornerShape(LearnLiftCorners.highlight)
+                    )
+            )
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = recommendation.title,
+                    color = MaterialTheme.colorScheme.primary,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold
+                )
+                if (recommendation.actionLabel != null) {
+                    Spacer(modifier = Modifier.height(3.dp))
+                    Text(
+                        text = recommendation.actionLabel,
+                        color = accentColor,
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                }
+            }
+        }
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+        Text(
+            text = recommendation.message,
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.82f),
+            style = MaterialTheme.typography.bodyMedium
+        )
+        if (recommendation.focusTopics.isNotEmpty()) {
+            Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
+            Text(
+                text = "Topics to review",
+                color = MaterialTheme.colorScheme.primary,
+                style = MaterialTheme.typography.labelLarge,
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+            Text(
+                text = recommendation.focusTopics.joinToString(separator = ", "),
+                color = MaterialTheme.colorScheme.secondary,
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.SemiBold
+            )
+        }
+        if (localGuidanceLabel != null) {
+            Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
+            Text(
+                text = localGuidanceLabel,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                style = MaterialTheme.typography.bodySmall
             )
         }
     }

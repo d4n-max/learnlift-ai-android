@@ -30,6 +30,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.learnliftai.app.domain.SmartCoachAdvisor
 import com.learnliftai.app.domain.model.QuizOption
 import com.learnliftai.app.domain.model.QuizQuestion
 import com.learnliftai.app.domain.model.StudyContent
@@ -38,6 +39,7 @@ import com.learnliftai.app.ui.components.EmptyState
 import com.learnliftai.app.ui.components.LearnLiftCard
 import com.learnliftai.app.ui.components.PrimaryActionButton
 import com.learnliftai.app.ui.components.SectionHeader
+import com.learnliftai.app.ui.components.SmartCoachRecommendationCard
 import com.learnliftai.app.ui.components.StatCard
 import com.learnliftai.app.ui.theme.LearnLiftCorners
 import com.learnliftai.app.ui.theme.LearnLiftSpacing
@@ -287,6 +289,11 @@ private fun QuizSummary(
     weakTopics: List<String>,
     onRestartQuiz: () -> Unit
 ) {
+    val recommendation = SmartCoachAdvisor.quizSummaryRecommendation(
+        percentage = score.percentage,
+        weakTopics = weakTopics
+    )
+
     LearnLiftCard {
         Text(
             text = "Quiz summary",
@@ -330,6 +337,7 @@ private fun QuizSummary(
             onClick = onRestartQuiz
         )
     }
+    SmartCoachRecommendationCard(recommendation = recommendation)
 }
 
 @Composable

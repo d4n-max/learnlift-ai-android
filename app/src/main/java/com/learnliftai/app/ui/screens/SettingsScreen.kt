@@ -19,10 +19,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import com.learnliftai.app.domain.model.PremiumPlanStatus
 import com.learnliftai.app.domain.model.StudyPath
 import com.learnliftai.app.ui.components.EmptyState
 import com.learnliftai.app.ui.components.LearnLiftCard
 import com.learnliftai.app.ui.components.LearnLiftLogo
+import com.learnliftai.app.ui.components.PremiumTeaserCard
 import com.learnliftai.app.ui.components.SecondaryActionButton
 import com.learnliftai.app.ui.components.SectionHeader
 import com.learnliftai.app.ui.components.StatCard
@@ -32,6 +34,7 @@ import com.learnliftai.app.ui.theme.LearnLiftSpacing
 fun SettingsScreen(
     selectedStudyPath: StudyPath?,
     onChooseStudyPath: () -> Unit,
+    onViewPremium: () -> Unit,
     onResetProgress: () -> Unit,
     onBackToHome: () -> Unit,
     modifier: Modifier = Modifier
@@ -50,6 +53,7 @@ fun SettingsScreen(
             selectedStudyPath = selectedStudyPath,
             onChooseStudyPath = onChooseStudyPath
         )
+        PremiumSettingsSection(onViewPremium = onViewPremium)
         AppInfoSection()
         FutureFeaturesSection()
         LearnLiftCard {
@@ -106,6 +110,38 @@ fun SettingsScreen(
             }
         )
     }
+}
+
+@Composable
+private fun PremiumSettingsSection(onViewPremium: () -> Unit) {
+    SectionHeader(title = "Premium")
+    LearnLiftCard {
+        Text(
+            text = "Current plan",
+            color = MaterialTheme.colorScheme.secondary,
+            style = MaterialTheme.typography.labelLarge,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+        Text(
+            text = PremiumPlanStatus.Free.label,
+            color = MaterialTheme.colorScheme.primary,
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+        Text(
+            text = PremiumPlanStatus.Free.helperText,
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.76f),
+            style = MaterialTheme.typography.bodyMedium
+        )
+    }
+    PremiumTeaserCard(
+        title = PremiumPlanStatus.PremiumComingSoon.label,
+        description = "AI explanations, study plans, unlimited practice, full study packs, and advanced insights are planned for Premium.",
+        actionText = "View Premium benefits",
+        onActionClick = onViewPremium
+    )
 }
 
 @Composable

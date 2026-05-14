@@ -17,15 +17,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import com.learnliftai.app.domain.SmartCoachAdvisor
 import com.learnliftai.app.domain.model.StudyContent
 import com.learnliftai.app.domain.model.StudyPath
 import com.learnliftai.app.domain.model.UserProgress
 import com.learnliftai.app.ui.components.EmptyState
 import com.learnliftai.app.ui.components.LearnLiftCard
 import com.learnliftai.app.ui.components.LearnLiftLogo
+import com.learnliftai.app.ui.components.PremiumTeaserCard
 import com.learnliftai.app.ui.components.PrimaryActionButton
 import com.learnliftai.app.ui.components.SecondaryActionButton
 import com.learnliftai.app.ui.components.SectionHeader
+import com.learnliftai.app.ui.components.SmartCoachRecommendationCard
 import com.learnliftai.app.ui.components.StatCard
 import com.learnliftai.app.ui.theme.LearnLiftSpacing
 
@@ -36,6 +39,7 @@ fun HomeScreen(
     userProgress: UserProgress,
     onChooseStudyPath: () -> Unit,
     onOpenSettings: () -> Unit,
+    onViewPremium: () -> Unit,
     onStartDailySession: () -> Unit,
     onStartFlashcards: () -> Unit,
     onStartQuiz: () -> Unit,
@@ -69,6 +73,8 @@ fun HomeScreen(
                 onStartQuiz = onStartQuiz,
                 onChangeStudyPath = onChooseStudyPath
             )
+            HomeRecommendation(userProgress = userProgress)
+            HomePremiumTeaser(onViewPremium = onViewPremium)
             DashboardStats(
                 selectedStudyPath = selectedStudyPath,
                 selectedStudyContent = selectedStudyContent,
@@ -76,6 +82,24 @@ fun HomeScreen(
             )
         }
     }
+}
+
+@Composable
+private fun HomePremiumTeaser(onViewPremium: () -> Unit) {
+    PremiumTeaserCard(
+        title = "Premium coming soon",
+        description = "AI explanations, study plans, and unlimited practice are planned for Premium.",
+        actionText = "View benefits",
+        onActionClick = onViewPremium
+    )
+}
+
+@Composable
+private fun HomeRecommendation(userProgress: UserProgress) {
+    SmartCoachRecommendationCard(
+        recommendation = SmartCoachAdvisor.homeRecommendation(userProgress),
+        localGuidanceLabel = "Local guidance"
+    )
 }
 
 @Composable

@@ -29,6 +29,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.learnliftai.app.domain.SmartCoachAdvisor
 import com.learnliftai.app.domain.model.Flashcard
 import com.learnliftai.app.domain.model.QuizOption
 import com.learnliftai.app.domain.model.QuizQuestion
@@ -39,6 +40,7 @@ import com.learnliftai.app.ui.components.LearnLiftCard
 import com.learnliftai.app.ui.components.PrimaryActionButton
 import com.learnliftai.app.ui.components.SecondaryActionButton
 import com.learnliftai.app.ui.components.SectionHeader
+import com.learnliftai.app.ui.components.SmartCoachRecommendationCard
 import com.learnliftai.app.ui.components.StatCard
 import com.learnliftai.app.ui.theme.LearnLiftCorners
 import com.learnliftai.app.ui.theme.LearnLiftSpacing
@@ -451,6 +453,12 @@ private fun DailySessionSummary(
     onFinish: () -> Unit
 ) {
     val quizPercentage = if (quizTotal == 0) 0 else (quizCorrect * 100) / quizTotal
+    val recommendation = SmartCoachAdvisor.dailySessionRecommendation(
+        quizPercentage = if (quizTotal == 0) null else quizPercentage,
+        reviewedCards = reviewedCards,
+        needsReviewCards = needsReviewCards,
+        topicsToReview = topicsToReview
+    )
 
     SectionHeader(
         title = "Session Summary",
@@ -466,6 +474,7 @@ private fun DailySessionSummary(
         value = if (quizTotal == 0) "No quiz" else "$quizPercentage%",
         helperText = "$quizCorrect correct out of $quizTotal questions"
     )
+    SmartCoachRecommendationCard(recommendation = recommendation)
     LearnLiftCard {
         Text(
             text = "Topics to review",

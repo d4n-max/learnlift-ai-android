@@ -25,6 +25,7 @@ import com.learnliftai.app.domain.model.UserProgress
 import com.learnliftai.app.ui.screens.DailyStudySessionScreen
 import com.learnliftai.app.ui.screens.FlashcardsScreen
 import com.learnliftai.app.ui.screens.HomeScreen
+import com.learnliftai.app.ui.screens.PremiumScreen
 import com.learnliftai.app.ui.screens.ProgressScreen
 import com.learnliftai.app.ui.screens.QuizScreen
 import com.learnliftai.app.ui.screens.SettingsScreen
@@ -49,16 +50,20 @@ fun LearnLiftApp() {
     var isSettingsOpen by rememberSaveable {
         mutableStateOf(false)
     }
+    var isPremiumOpen by rememberSaveable {
+        mutableStateOf(false)
+    }
     val selectedDestination = LearnLiftDestination.valueOf(selectedDestinationName)
     val studyPaths = StudyPathRepository.studyPaths
     val selectedStudyPath = StudyPathRepository.findById(userProgress.selectedStudyPathId)
     val selectedStudyContent = remember(userProgress.selectedStudyPathId) {
         userProgress.selectedStudyPathId?.let { AssetStudyContentRepository.loadStudyContent(context, it) }
     }
-    val isSubFlowOpen = isSettingsOpen || isDailySessionActive || isChoosingStudyPath
+    val isSubFlowOpen = isSettingsOpen || isPremiumOpen || isDailySessionActive || isChoosingStudyPath
 
     BackHandler(enabled = isSubFlowOpen) {
         isSettingsOpen = false
+        isPremiumOpen = false
         isDailySessionActive = false
         isChoosingStudyPath = false
         selectedDestinationName = LearnLiftDestination.Home.name
@@ -73,17 +78,29 @@ fun LearnLiftApp() {
                     isChoosingStudyPath = false
                     isDailySessionActive = false
                     isSettingsOpen = false
+                    isPremiumOpen = false
                     selectedDestinationName = it.name
                 }
             )
         }
     ) { innerPadding ->
-        if (isSettingsOpen) {
+        if (isPremiumOpen) {
+            PremiumScreen(
+                onBack = {
+                    isPremiumOpen = false
+                },
+                modifier = Modifier.padding(innerPadding)
+            )
+        } else if (isSettingsOpen) {
             SettingsScreen(
                 selectedStudyPath = selectedStudyPath,
                 onChooseStudyPath = {
                     isSettingsOpen = false
                     isChoosingStudyPath = true
+                },
+                onViewPremium = {
+                    isSettingsOpen = false
+                    isPremiumOpen = true
                 },
                 onResetProgress = {
                     coroutineScope.launch {
@@ -92,6 +109,7 @@ fun LearnLiftApp() {
                 },
                 onBackToHome = {
                     isSettingsOpen = false
+                    isPremiumOpen = false
                     isChoosingStudyPath = false
                     isDailySessionActive = false
                     selectedDestinationName = LearnLiftDestination.Home.name
@@ -117,6 +135,7 @@ fun LearnLiftApp() {
                 onReturnHome = {
                     isDailySessionActive = false
                     isChoosingStudyPath = false
+                    isPremiumOpen = false
                     selectedDestinationName = LearnLiftDestination.Home.name
                 },
                 modifier = Modifier.padding(innerPadding)
@@ -134,6 +153,7 @@ fun LearnLiftApp() {
                 },
                 onBackToHome = {
                     isChoosingStudyPath = false
+                    isPremiumOpen = false
                     selectedDestinationName = LearnLiftDestination.Home.name
                 },
                 modifier = Modifier.padding(innerPadding)
@@ -146,6 +166,7 @@ fun LearnLiftApp() {
                     userProgress = userProgress,
                     onChooseStudyPath = { isChoosingStudyPath = true },
                     onOpenSettings = { isSettingsOpen = true },
+                    onViewPremium = { isPremiumOpen = true },
                     onStartDailySession = { isDailySessionActive = true },
                     onStartFlashcards = {
                         isChoosingStudyPath = false
@@ -188,6 +209,7 @@ fun LearnLiftApp() {
                     selectedStudyPath = selectedStudyPath,
                     userProgress = userProgress,
                     onOpenSettings = { isSettingsOpen = true },
+                    onViewPremium = { isPremiumOpen = true },
                     onResetProgress = {
                         coroutineScope.launch {
                             progressRepository.resetProgressStats()
