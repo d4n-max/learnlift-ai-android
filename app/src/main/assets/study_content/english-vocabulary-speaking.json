@@ -1,52 +1,2380 @@
 {
   "pathId": "english-vocabulary-speaking",
   "flashcards": [
-    {"id": "eng-fc-001", "pathId": "english-vocabulary-speaking", "question": "What does 'clarify' mean?", "answer": "To make something easier to understand. Example: Could you clarify the deadline?", "topic": "workplace English", "difficulty": "easy"},
-    {"id": "eng-fc-002", "pathId": "english-vocabulary-speaking", "question": "Polite way to ask someone to repeat something?", "answer": "Could you please repeat that?", "topic": "polite phrases", "difficulty": "easy"},
-    {"id": "eng-fc-003", "pathId": "english-vocabulary-speaking", "question": "What does 'available' mean at work?", "answer": "Free or able to help at a certain time. Example: I am available after 2 PM.", "topic": "workplace English", "difficulty": "easy"},
-    {"id": "eng-fc-004", "pathId": "english-vocabulary-speaking", "question": "Confident phrase for describing experience in an interview?", "answer": "I have experience with... Then add a specific skill or example.", "topic": "interview phrases", "difficulty": "easy"},
-    {"id": "eng-fc-005", "pathId": "english-vocabulary-speaking", "question": "Difference between 'borrow' and 'lend'?", "answer": "Borrow means receive temporarily. Lend means give temporarily.", "topic": "common mistakes", "difficulty": "medium"},
-    {"id": "eng-fc-006", "pathId": "english-vocabulary-speaking", "question": "What does 'deadline' mean?", "answer": "The latest time or date when something must be finished.", "topic": "workplace English", "difficulty": "easy"},
-    {"id": "eng-fc-007", "pathId": "english-vocabulary-speaking", "question": "How can you take a moment to think before answering?", "answer": "That's a good question. Let me think for a moment.", "topic": "speaking confidence", "difficulty": "medium"},
-    {"id": "eng-fc-008", "pathId": "english-vocabulary-speaking", "question": "What does 'reliable' mean?", "answer": "Able to be trusted or depended on.", "topic": "everyday vocabulary", "difficulty": "easy"},
-    {"id": "eng-fc-009", "pathId": "english-vocabulary-speaking", "question": "Professional way to say 'I don't know'?", "answer": "I'm not sure yet, but I can find out.", "topic": "professional phrases", "difficulty": "medium"},
-    {"id": "eng-fc-010", "pathId": "english-vocabulary-speaking", "question": "What does 'improve' mean?", "answer": "To become better or make something better.", "topic": "everyday vocabulary", "difficulty": "easy"},
-    {"id": "eng-fc-011", "pathId": "english-vocabulary-speaking", "question": "What does 'follow up' mean?", "answer": "To contact someone again after a meeting, message, or interview.", "topic": "phrasal verbs", "difficulty": "medium"},
-    {"id": "eng-fc-012", "pathId": "english-vocabulary-speaking", "question": "What does 'look into' mean at work?", "answer": "To investigate or check something. Example: I will look into the issue.", "topic": "phrasal verbs", "difficulty": "medium"},
-    {"id": "eng-fc-013", "pathId": "english-vocabulary-speaking", "question": "Natural way to ask for help at work?", "answer": "Could you help me with this when you have a moment?", "topic": "polite phrases", "difficulty": "easy"},
-    {"id": "eng-fc-014", "pathId": "english-vocabulary-speaking", "question": "What does 'responsible for' mean?", "answer": "Having a duty or task. Example: I am responsible for testing reports.", "topic": "workplace English", "difficulty": "easy"},
-    {"id": "eng-fc-015", "pathId": "english-vocabulary-speaking", "question": "Better phrase than 'I want this job'?", "answer": "I am interested in this role because it matches my skills and goals.", "topic": "interview phrases", "difficulty": "medium"},
-    {"id": "eng-fc-016", "pathId": "english-vocabulary-speaking", "question": "What does 'achieve' mean?", "answer": "To successfully complete or reach a goal.", "topic": "everyday vocabulary", "difficulty": "easy"},
-    {"id": "eng-fc-017", "pathId": "english-vocabulary-speaking", "question": "Common mistake: 'I am agree' or 'I agree'?", "answer": "Correct: I agree. Do not use 'am' before agree.", "topic": "common mistakes", "difficulty": "easy"},
-    {"id": "eng-fc-018", "pathId": "english-vocabulary-speaking", "question": "Professional way to disagree politely?", "answer": "I see your point, but I have a different view.", "topic": "professional phrases", "difficulty": "medium"},
-    {"id": "eng-fc-019", "pathId": "english-vocabulary-speaking", "question": "What does 'on track' mean?", "answer": "Progressing as planned. Example: The project is on track.", "topic": "workplace English", "difficulty": "medium"},
-    {"id": "eng-fc-020", "pathId": "english-vocabulary-speaking", "question": "What does 'prepare for' mean?", "answer": "To get ready for something. Example: I prepare for interviews by practicing answers.", "topic": "everyday vocabulary", "difficulty": "easy"},
-    {"id": "eng-fc-021", "pathId": "english-vocabulary-speaking", "question": "How can you sound confident when speaking?", "answer": "Speak a little slower, pause between ideas, and use clear short sentences.", "topic": "speaking confidence", "difficulty": "medium"},
-    {"id": "eng-fc-022", "pathId": "english-vocabulary-speaking", "question": "What does 'strength' mean in an interview?", "answer": "A skill or quality you do well and can support with an example.", "topic": "interview phrases", "difficulty": "easy"},
-    {"id": "eng-fc-023", "pathId": "english-vocabulary-speaking", "question": "What does 'weakness' mean in an interview?", "answer": "An area you are improving. Choose something real but manageable.", "topic": "interview phrases", "difficulty": "medium"},
-    {"id": "eng-fc-024", "pathId": "english-vocabulary-speaking", "question": "Polite phrase to ask about the next step?", "answer": "Could you let me know what the next step in the process is?", "topic": "interview phrases", "difficulty": "easy"},
-    {"id": "eng-fc-025", "pathId": "english-vocabulary-speaking", "question": "What does 'carry out' mean?", "answer": "To do or complete a task. Example: I carried out user testing.", "topic": "phrasal verbs", "difficulty": "medium"}
+    {
+      "id": "eng-fc-001",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What does 'clarify' mean?",
+      "answer": "To make something easier to understand.",
+      "topic": "everyday vocabulary",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-fc-002",
+      "pathId": "english-vocabulary-speaking",
+      "question": "How can you politely ask someone to repeat something?",
+      "answer": "Could you please repeat that?",
+      "topic": "speaking confidence",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-fc-003",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What does 'available' mean at work?",
+      "answer": "Free or able to help at a certain time.",
+      "topic": "workplace English",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-fc-004",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What is a confident interview phrase for describing experience?",
+      "answer": "I have experience with...",
+      "topic": "interview phrases",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-fc-005",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What is the difference between 'borrow' and 'lend'?",
+      "answer": "Borrow means receive temporarily. Lend means give temporarily.",
+      "topic": "common mistakes",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-fc-006",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What does 'deadline' mean?",
+      "answer": "The latest time or date when something must be finished.",
+      "topic": "workplace English",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-fc-007",
+      "pathId": "english-vocabulary-speaking",
+      "question": "How can you start an answer when you need a moment to think?",
+      "answer": "That's a good question. Let me think for a moment.",
+      "topic": "speaking confidence",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-fc-008",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What does 'reliable' mean?",
+      "answer": "Able to be trusted or depended on.",
+      "topic": "everyday vocabulary",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-fc-009",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What is a professional way to say 'I don't know'?",
+      "answer": "I'm not sure yet, but I can find out.",
+      "topic": "workplace English",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-fc-010",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What does 'improve' mean?",
+      "answer": "To become better or make something better.",
+      "topic": "everyday vocabulary",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-fc-011",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What does \"prioritize\" mean?",
+      "answer": "To decide which tasks are most important and do them first.",
+      "topic": "everyday useful vocabulary",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-fc-012",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What does \"concise\" mean?",
+      "answer": "Short, clear, and without unnecessary words.",
+      "topic": "everyday useful vocabulary",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-fc-013",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What does \"collaborate\" mean?",
+      "answer": "To work together with others on a shared goal.",
+      "topic": "everyday useful vocabulary",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-fc-014",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What does \"initiative\" mean?",
+      "answer": "The ability to start useful action without waiting to be told.",
+      "topic": "everyday useful vocabulary",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-fc-015",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What does \"adapt\" mean?",
+      "answer": "To change your approach for a new situation.",
+      "topic": "everyday useful vocabulary",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-fc-016",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What does \"efficient\" mean?",
+      "answer": "Working well without wasting time or resources.",
+      "topic": "everyday useful vocabulary",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-fc-017",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What does \"accurate\" mean?",
+      "answer": "Correct and free from mistakes.",
+      "topic": "everyday useful vocabulary",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-fc-018",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What does \"consistent\" mean?",
+      "answer": "Staying steady in quality, behavior, or results.",
+      "topic": "everyday useful vocabulary",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-fc-019",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What does \"recommend\" mean?",
+      "answer": "To suggest something as a good choice.",
+      "topic": "everyday useful vocabulary",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-fc-020",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What does \"resolve\" mean?",
+      "answer": "To solve a problem or disagreement.",
+      "topic": "everyday useful vocabulary",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-fc-021",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What does \"emphasize\" mean?",
+      "answer": "To give special importance to something.",
+      "topic": "everyday useful vocabulary",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-fc-022",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What does \"relevant\" mean?",
+      "answer": "Closely connected to the topic or situation.",
+      "topic": "everyday useful vocabulary",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-fc-023",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What does \"approach\" mean?",
+      "answer": "A way of doing or thinking about a task.",
+      "topic": "everyday useful vocabulary",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-fc-024",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What does \"confident\" mean?",
+      "answer": "Feeling or showing belief in your ability.",
+      "topic": "everyday useful vocabulary",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-fc-025",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What does \"specific\" mean?",
+      "answer": "Clear and exact, not general or vague.",
+      "topic": "everyday useful vocabulary",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-fc-026",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What does \"on track\" mean?",
+      "answer": "Progressing as planned.",
+      "topic": "workplace English",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-fc-027",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What does \"blocked\" mean?",
+      "answer": "Unable to continue because something is missing or stopping progress.",
+      "topic": "workplace English",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-fc-028",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What does \"handover\" mean?",
+      "answer": "Passing information or responsibility to another person.",
+      "topic": "workplace English",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-fc-029",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What does \"scope\" mean?",
+      "answer": "The agreed size or limits of a task or project.",
+      "topic": "workplace English",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-fc-030",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What does \"status update\" mean?",
+      "answer": "A short message about current progress.",
+      "topic": "workplace English",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-fc-031",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What does \"available\" mean?",
+      "answer": "Free or able to help at a certain time.",
+      "topic": "workplace English",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-fc-032",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What does \"deadline\" mean?",
+      "answer": "The latest time or date something must be finished.",
+      "topic": "workplace English",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-fc-033",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What does \"feedback\" mean?",
+      "answer": "Comments that help improve work.",
+      "topic": "workplace English",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-fc-034",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What does \"agenda\" mean?",
+      "answer": "A list of topics for a meeting.",
+      "topic": "workplace English",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-fc-035",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What does \"outcome\" mean?",
+      "answer": "The result of an action or meeting.",
+      "topic": "workplace English",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-fc-036",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What is a professional way to ask for clarification?",
+      "answer": "Could you clarify what you mean by that?",
+      "topic": "polite professional phrases",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-fc-037",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What is a professional way to ask for feedback?",
+      "answer": "Could you share feedback when you have time?",
+      "topic": "polite professional phrases",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-fc-038",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What is a professional way to ask about priorities?",
+      "answer": "Which task should I prioritize first?",
+      "topic": "polite professional phrases",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-fc-039",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What is a professional way to give a short update?",
+      "answer": "I completed the first part and I am working on the next step.",
+      "topic": "polite professional phrases",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-fc-040",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What is a professional way to say you need more time?",
+      "answer": "I need a little more time to review this carefully.",
+      "topic": "polite professional phrases",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-fc-041",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What is a professional way to politely disagree?",
+      "answer": "I see your point, but I have a different perspective.",
+      "topic": "polite professional phrases",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-fc-042",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What is a professional way to make a suggestion?",
+      "answer": "May I suggest another option?",
+      "topic": "polite professional phrases",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-fc-043",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What is a professional way to ask someone to wait?",
+      "answer": "Could you give me a moment to check that?",
+      "topic": "polite professional phrases",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-fc-044",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What is a professional way to request help?",
+      "answer": "Could you help me understand this part?",
+      "topic": "polite professional phrases",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-fc-045",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What is a professional way to thank someone?",
+      "answer": "Thank you for your help; I appreciate it.",
+      "topic": "polite professional phrases",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-fc-046",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What is a professional way to describe experience?",
+      "answer": "I have experience with customer support, scheduling, and clear communication.",
+      "topic": "interview phrases",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-fc-047",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What is a professional way to describe a strength?",
+      "answer": "One of my strengths is staying organized under pressure.",
+      "topic": "interview phrases",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-fc-048",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What is a professional way to describe learning quickly?",
+      "answer": "I learn quickly by practicing, asking questions, and applying feedback.",
+      "topic": "interview phrases",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-fc-049",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What is a professional way to describe teamwork?",
+      "answer": "I am happy to support the team where needed.",
+      "topic": "interview phrases",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-fc-050",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What is a professional way to describe problem solving?",
+      "answer": "I try to understand the root cause before choosing a solution.",
+      "topic": "interview phrases",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-fc-051",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What is a professional way to describe career goals?",
+      "answer": "I want to grow in a role where I can keep learning and contribute consistently.",
+      "topic": "interview phrases",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-fc-052",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What is a professional way to answer about availability?",
+      "answer": "I am available to start after the agreed notice period.",
+      "topic": "interview phrases",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-fc-053",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What is a professional way to answer about motivation?",
+      "answer": "This role matches my skills and the kind of work I want to develop.",
+      "topic": "interview phrases",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-fc-054",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What is a professional way to say you do not know?",
+      "answer": "I am not sure yet, but I can find out.",
+      "topic": "short professional responses",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-fc-055",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What is a professional way to say you missed a detail?",
+      "answer": "I missed that detail; I will check it now.",
+      "topic": "short professional responses",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-fc-056",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What is a professional way to say no professionally?",
+      "answer": "I cannot take that on right now, but I can suggest another option.",
+      "topic": "short professional responses",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-fc-057",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What is a professional way to say you are busy?",
+      "answer": "I am currently focused on another task, but I can help after that.",
+      "topic": "short professional responses",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-fc-058",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What is a professional way to accept a correction?",
+      "answer": "Thank you for pointing that out; I will update it.",
+      "topic": "short professional responses",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-fc-059",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What is a professional way to confirm understanding?",
+      "answer": "Just to confirm, you would like me to finish this by Friday.",
+      "topic": "short professional responses",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-fc-060",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What does \"follow up\" mean?",
+      "answer": "To contact someone again after a previous message or meeting.",
+      "topic": "phrasal verbs used at work",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-fc-061",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What does \"look into\" mean?",
+      "answer": "To investigate or check something.",
+      "topic": "phrasal verbs used at work",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-fc-062",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What does \"bring up\" mean?",
+      "answer": "To mention or introduce a topic.",
+      "topic": "phrasal verbs used at work",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-fc-063",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What does \"carry out\" mean?",
+      "answer": "To perform or complete a task.",
+      "topic": "phrasal verbs used at work",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-fc-064",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What does \"figure out\" mean?",
+      "answer": "To understand or solve something.",
+      "topic": "phrasal verbs used at work",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-fc-065",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What does \"get back to someone\" mean?",
+      "answer": "To reply later with information.",
+      "topic": "phrasal verbs used at work",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-fc-066",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What does \"set up\" mean?",
+      "answer": "To arrange or prepare something.",
+      "topic": "phrasal verbs used at work",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-fc-067",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What does \"point out\" mean?",
+      "answer": "To draw attention to something.",
+      "topic": "phrasal verbs used at work",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-fc-068",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What does \"run into a problem\" mean?",
+      "answer": "To unexpectedly meet or experience a problem.",
+      "topic": "phrasal verbs used at work",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-fc-069",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What does \"hand in\" mean?",
+      "answer": "To submit work or documents.",
+      "topic": "phrasal verbs used at work",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-fc-070",
+      "pathId": "english-vocabulary-speaking",
+      "question": "How do you fix \"I am agree\"?",
+      "answer": "Say \"I agree.\"",
+      "topic": "common grammar mistakes",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-fc-071",
+      "pathId": "english-vocabulary-speaking",
+      "question": "How do you fix \"I have 25 years\"?",
+      "answer": "Say \"I am 25 years old.\"",
+      "topic": "common grammar mistakes",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-fc-072",
+      "pathId": "english-vocabulary-speaking",
+      "question": "How do you fix \"more better\"?",
+      "answer": "Say \"better\" or \"much better.\"",
+      "topic": "common grammar mistakes",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-fc-073",
+      "pathId": "english-vocabulary-speaking",
+      "question": "How do you fix \"people is\"?",
+      "answer": "Say \"people are.\"",
+      "topic": "common grammar mistakes",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-fc-074",
+      "pathId": "english-vocabulary-speaking",
+      "question": "How do you fix \"I did a mistake\"?",
+      "answer": "Say \"I made a mistake.\"",
+      "topic": "common grammar mistakes",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-fc-075",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What is correct: \"depend of\" or \"depend on\"?",
+      "answer": "Use \"depend on.\"",
+      "topic": "common grammar mistakes",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-fc-076",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What is correct: \"discuss about the plan\" or \"discuss the plan\"?",
+      "answer": "Use \"discuss the plan.\"",
+      "topic": "common grammar mistakes",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-fc-077",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What is correct: \"explain me\" or \"explain it to me\"?",
+      "answer": "Use \"explain it to me.\"",
+      "topic": "common grammar mistakes",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-fc-078",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What is more natural than \"I am waiting your answer\"?",
+      "answer": "I am waiting for your answer.",
+      "topic": "natural vs unnatural English",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-fc-079",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What is more natural than \"How is called this?\"",
+      "answer": "What is this called?",
+      "topic": "natural vs unnatural English",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-fc-080",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What is more natural than \"Can you give me an advice?\"",
+      "answer": "Can you give me some advice?",
+      "topic": "natural vs unnatural English",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-fc-081",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What helps pronunciation clarity in interviews?",
+      "answer": "Speak a little slower and stress key words.",
+      "topic": "pronunciation/confidence tips",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-fc-082",
+      "pathId": "english-vocabulary-speaking",
+      "question": "How can you reduce filler words like \"um\"?",
+      "answer": "Pause silently for a second instead of filling every gap.",
+      "topic": "speaking confidence",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-fc-083",
+      "pathId": "english-vocabulary-speaking",
+      "question": "How can you end an answer cleanly?",
+      "answer": "Finish with the result or lesson, then stop.",
+      "topic": "speaking confidence",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-fc-084",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What is active listening?",
+      "answer": "Showing you understand by focusing, confirming, and responding clearly.",
+      "topic": "speaking confidence",
+      "difficulty": "medium"
+    }
   ],
   "quizQuestions": [
-    {"id": "eng-qz-001", "pathId": "english-vocabulary-speaking", "question": "Which phrase is the most polite way to ask for repetition?", "options": [{"id": "a", "text": "Say it again."}, {"id": "b", "text": "Could you please repeat that?"}, {"id": "c", "text": "What?"}, {"id": "d", "text": "You spoke badly."}], "correctAnswerId": "b", "explanation": "This phrase is polite, clear, and appropriate in work or interview settings.", "topic": "polite phrases", "difficulty": "easy"},
-    {"id": "eng-qz-002", "pathId": "english-vocabulary-speaking", "question": "What does 'deadline' mean?", "options": [{"id": "a", "text": "A meeting room"}, {"id": "b", "text": "A task list"}, {"id": "c", "text": "The latest time something must be finished"}, {"id": "d", "text": "A break time"}], "correctAnswerId": "c", "explanation": "A deadline is the required finish time or date for a task.", "topic": "workplace English", "difficulty": "easy"},
-    {"id": "eng-qz-003", "pathId": "english-vocabulary-speaking", "question": "Which sentence uses 'borrow' correctly?", "options": [{"id": "a", "text": "Can I borrow your pen?"}, {"id": "b", "text": "Can I borrow you my pen?"}, {"id": "c", "text": "I borrowed him money."}, {"id": "d", "text": "She borrow me a book."}], "correctAnswerId": "a", "explanation": "Borrow means receive something temporarily from someone.", "topic": "common mistakes", "difficulty": "medium"},
-    {"id": "eng-qz-004", "pathId": "english-vocabulary-speaking", "question": "Which word means 'able to be trusted'?", "options": [{"id": "a", "text": "Reliable"}, {"id": "b", "text": "Recent"}, {"id": "c", "text": "Common"}, {"id": "d", "text": "Available"}], "correctAnswerId": "a", "explanation": "Reliable describes someone or something people can depend on.", "topic": "everyday vocabulary", "difficulty": "easy"},
-    {"id": "eng-qz-005", "pathId": "english-vocabulary-speaking", "question": "Which phrase sounds most natural in an interview?", "options": [{"id": "a", "text": "I don't care."}, {"id": "b", "text": "I have experience with customer support."}, {"id": "c", "text": "Give me job."}, {"id": "d", "text": "No questions."}], "correctAnswerId": "b", "explanation": "It introduces relevant experience in a professional way.", "topic": "interview phrases", "difficulty": "easy"},
-    {"id": "eng-qz-006", "pathId": "english-vocabulary-speaking", "question": "What does 'clarify' mean?", "options": [{"id": "a", "text": "Make unclear"}, {"id": "b", "text": "Make easier to understand"}, {"id": "c", "text": "Cancel a plan"}, {"id": "d", "text": "Arrive late"}], "correctAnswerId": "b", "explanation": "To clarify is to make meaning clearer.", "topic": "workplace English", "difficulty": "easy"},
-    {"id": "eng-qz-007", "pathId": "english-vocabulary-speaking", "question": "What is a professional response when you do not know an answer?", "options": [{"id": "a", "text": "I'm not sure yet, but I can find out."}, {"id": "b", "text": "Don't ask me."}, {"id": "c", "text": "Impossible."}, {"id": "d", "text": "No idea, bye."}], "correctAnswerId": "a", "explanation": "It is honest while showing responsibility and willingness to learn.", "topic": "professional phrases", "difficulty": "medium"},
-    {"id": "eng-qz-008", "pathId": "english-vocabulary-speaking", "question": "Which word means 'make better'?", "options": [{"id": "a", "text": "Repeat"}, {"id": "b", "text": "Improve"}, {"id": "c", "text": "Borrow"}, {"id": "d", "text": "Delay"}], "correctAnswerId": "b", "explanation": "Improve means to become better or make something better.", "topic": "everyday vocabulary", "difficulty": "easy"},
-    {"id": "eng-qz-009", "pathId": "english-vocabulary-speaking", "question": "What does 'follow up' mean?", "options": [{"id": "a", "text": "Contact again after a previous message or meeting"}, {"id": "b", "text": "Walk behind someone"}, {"id": "c", "text": "Cancel a task"}, {"id": "d", "text": "Forget a topic"}], "correctAnswerId": "a", "explanation": "In work English, to follow up means to contact again about something.", "topic": "phrasal verbs", "difficulty": "medium"},
-    {"id": "eng-qz-010", "pathId": "english-vocabulary-speaking", "question": "Choose the more natural sentence.", "options": [{"id": "a", "text": "I am agree with you."}, {"id": "b", "text": "I agree with you."}, {"id": "c", "text": "I agreeing with you."}, {"id": "d", "text": "I do agree with you yesterday."}], "correctAnswerId": "b", "explanation": "The verb 'agree' does not need 'am' in this sentence.", "topic": "common mistakes", "difficulty": "easy"},
-    {"id": "eng-qz-011", "pathId": "english-vocabulary-speaking", "question": "Which phrase is best for politely asking for help?", "options": [{"id": "a", "text": "Help me now."}, {"id": "b", "text": "Could you help me with this when you have a moment?"}, {"id": "c", "text": "You must explain."}, {"id": "d", "text": "I cannot do anything."}], "correctAnswerId": "b", "explanation": "It is polite, specific, and respectful of the other person's time.", "topic": "polite phrases", "difficulty": "easy"},
-    {"id": "eng-qz-012", "pathId": "english-vocabulary-speaking", "question": "What does 'look into the issue' mean?", "options": [{"id": "a", "text": "Ignore the issue"}, {"id": "b", "text": "Investigate or check the issue"}, {"id": "c", "text": "Translate the issue"}, {"id": "d", "text": "Make the issue larger"}], "correctAnswerId": "b", "explanation": "Look into means investigate or examine something.", "topic": "phrasal verbs", "difficulty": "medium"},
-    {"id": "eng-qz-013", "pathId": "english-vocabulary-speaking", "question": "Which sentence sounds most professional?", "options": [{"id": "a", "text": "I want job because money."}, {"id": "b", "text": "I am interested in this role because it matches my skills and goals."}, {"id": "c", "text": "This job is okay maybe."}, {"id": "d", "text": "I need you to hire me."}], "correctAnswerId": "b", "explanation": "It connects interest in the role with skills and goals.", "topic": "interview phrases", "difficulty": "medium"},
-    {"id": "eng-qz-014", "pathId": "english-vocabulary-speaking", "question": "What does 'on track' mean in a work update?", "options": [{"id": "a", "text": "Progressing as planned"}, {"id": "b", "text": "Lost completely"}, {"id": "c", "text": "Not started"}, {"id": "d", "text": "Only about trains"}], "correctAnswerId": "a", "explanation": "On track means the work is moving according to the plan.", "topic": "workplace English", "difficulty": "medium"},
-    {"id": "eng-qz-015", "pathId": "english-vocabulary-speaking", "question": "Which is a polite way to disagree?", "options": [{"id": "a", "text": "You are wrong."}, {"id": "b", "text": "I see your point, but I have a different view."}, {"id": "c", "text": "Bad idea."}, {"id": "d", "text": "No, never."}], "correctAnswerId": "b", "explanation": "It respects the other person while clearly sharing another opinion.", "topic": "professional phrases", "difficulty": "medium"},
-    {"id": "eng-qz-016", "pathId": "english-vocabulary-speaking", "question": "What does 'carry out a task' mean?", "options": [{"id": "a", "text": "Complete or perform a task"}, {"id": "b", "text": "Delete a task"}, {"id": "c", "text": "Carry a box"}, {"id": "d", "text": "Ask someone to stop"}], "correctAnswerId": "a", "explanation": "Carry out means do or complete an action or task.", "topic": "phrasal verbs", "difficulty": "medium"},
-    {"id": "eng-qz-017", "pathId": "english-vocabulary-speaking", "question": "Choose the best speaking confidence tip.", "options": [{"id": "a", "text": "Speak as fast as possible."}, {"id": "b", "text": "Pause, breathe, and use clear short sentences."}, {"id": "c", "text": "Avoid eye contact always."}, {"id": "d", "text": "Use long words you do not know."}], "correctAnswerId": "b", "explanation": "Pausing and using clear sentences helps you sound calm and understandable.", "topic": "speaking confidence", "difficulty": "easy"},
-    {"id": "eng-qz-018", "pathId": "english-vocabulary-speaking", "question": "What does 'responsible for reports' mean?", "options": [{"id": "a", "text": "You avoid reports"}, {"id": "b", "text": "Reports are your duty or task"}, {"id": "c", "text": "Reports are late"}, {"id": "d", "text": "You dislike reports"}], "correctAnswerId": "b", "explanation": "Responsible for means having a duty or ownership of something.", "topic": "workplace English", "difficulty": "easy"},
-    {"id": "eng-qz-019", "pathId": "english-vocabulary-speaking", "question": "Which question is appropriate at the end of an interview?", "options": [{"id": "a", "text": "Could you tell me what the next step in the process is?"}, {"id": "b", "text": "Did I win?"}, {"id": "c", "text": "Why is this taking long?"}, {"id": "d", "text": "Can I leave now?"}], "correctAnswerId": "a", "explanation": "It is polite and asks for useful process information.", "topic": "interview phrases", "difficulty": "easy"},
-    {"id": "eng-qz-020", "pathId": "english-vocabulary-speaking", "question": "Which word best fits: 'I want to ___ my speaking skills.'", "options": [{"id": "a", "text": "improve"}, {"id": "b", "text": "deadline"}, {"id": "c", "text": "borrow"}, {"id": "d", "text": "available"}], "correctAnswerId": "a", "explanation": "Improve fits because it means make something better.", "topic": "everyday vocabulary", "difficulty": "easy"}
+    {
+      "id": "eng-qz-001",
+      "pathId": "english-vocabulary-speaking",
+      "question": "Which phrase is the most polite way to ask for repetition?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Say it again."
+        },
+        {
+          "id": "b",
+          "text": "Could you please repeat that?"
+        },
+        {
+          "id": "c",
+          "text": "What?"
+        },
+        {
+          "id": "d",
+          "text": "You spoke badly."
+        }
+      ],
+      "correctAnswerId": "b",
+      "explanation": "The phrase uses polite wording and a clear request.",
+      "topic": "speaking confidence",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-qz-002",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What does 'deadline' mean?",
+      "options": [
+        {
+          "id": "a",
+          "text": "A meeting room"
+        },
+        {
+          "id": "b",
+          "text": "A task list"
+        },
+        {
+          "id": "c",
+          "text": "The latest time something must be finished"
+        },
+        {
+          "id": "d",
+          "text": "A break time"
+        }
+      ],
+      "correctAnswerId": "c",
+      "explanation": "A deadline is the required finish time or date.",
+      "topic": "workplace English",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-qz-003",
+      "pathId": "english-vocabulary-speaking",
+      "question": "Which sentence uses 'borrow' correctly?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Can I borrow your pen?"
+        },
+        {
+          "id": "b",
+          "text": "Can I borrow you my pen?"
+        },
+        {
+          "id": "c",
+          "text": "I borrowed him money."
+        },
+        {
+          "id": "d",
+          "text": "She borrow me a book."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "Borrow means receive something temporarily from someone.",
+      "topic": "common mistakes",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-qz-004",
+      "pathId": "english-vocabulary-speaking",
+      "question": "Which word means 'able to be trusted'?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Reliable"
+        },
+        {
+          "id": "b",
+          "text": "Recent"
+        },
+        {
+          "id": "c",
+          "text": "Common"
+        },
+        {
+          "id": "d",
+          "text": "Available"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "Reliable describes someone or something people can depend on.",
+      "topic": "everyday vocabulary",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-qz-005",
+      "pathId": "english-vocabulary-speaking",
+      "question": "Which phrase is useful in an interview?",
+      "options": [
+        {
+          "id": "a",
+          "text": "I don't care."
+        },
+        {
+          "id": "b",
+          "text": "I have experience with..."
+        },
+        {
+          "id": "c",
+          "text": "Give me job."
+        },
+        {
+          "id": "d",
+          "text": "No questions."
+        }
+      ],
+      "correctAnswerId": "b",
+      "explanation": "It introduces relevant experience in a professional way.",
+      "topic": "interview phrases",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-qz-006",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What does 'clarify' mean?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Make unclear"
+        },
+        {
+          "id": "b",
+          "text": "Make easier to understand"
+        },
+        {
+          "id": "c",
+          "text": "Cancel a plan"
+        },
+        {
+          "id": "d",
+          "text": "Arrive late"
+        }
+      ],
+      "correctAnswerId": "b",
+      "explanation": "To clarify is to make meaning clearer.",
+      "topic": "everyday vocabulary",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-qz-007",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What is a professional response when you do not know an answer?",
+      "options": [
+        {
+          "id": "a",
+          "text": "I can find out."
+        },
+        {
+          "id": "b",
+          "text": "Don't ask me."
+        },
+        {
+          "id": "c",
+          "text": "Impossible."
+        },
+        {
+          "id": "d",
+          "text": "No idea, bye."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "It is honest while showing responsibility.",
+      "topic": "workplace English",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-qz-008",
+      "pathId": "english-vocabulary-speaking",
+      "question": "Which word means 'make better'?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Repeat"
+        },
+        {
+          "id": "b",
+          "text": "Improve"
+        },
+        {
+          "id": "c",
+          "text": "Borrow"
+        },
+        {
+          "id": "d",
+          "text": "Delay"
+        }
+      ],
+      "correctAnswerId": "b",
+      "explanation": "Improve means to become better or make better.",
+      "topic": "everyday vocabulary",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-qz-009",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What does \"prioritize\" mean?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Decide what is most important first"
+        },
+        {
+          "id": "b",
+          "text": "Cancel every task"
+        },
+        {
+          "id": "c",
+          "text": "Work randomly"
+        },
+        {
+          "id": "d",
+          "text": "Avoid deadlines"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "\"prioritize\" means decide what is most important first",
+      "topic": "everyday useful vocabulary",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-qz-010",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What does \"concise\" mean?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Short and clear"
+        },
+        {
+          "id": "b",
+          "text": "Very long"
+        },
+        {
+          "id": "c",
+          "text": "Unclear"
+        },
+        {
+          "id": "d",
+          "text": "Angry"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "\"concise\" means short and clear",
+      "topic": "everyday useful vocabulary",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-qz-011",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What does \"collaborate\" mean?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Work together"
+        },
+        {
+          "id": "b",
+          "text": "Work alone only"
+        },
+        {
+          "id": "c",
+          "text": "Complain about work"
+        },
+        {
+          "id": "d",
+          "text": "Cancel the task"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "\"collaborate\" means work together",
+      "topic": "everyday useful vocabulary",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-qz-012",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What does \"accurate\" mean?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Correct and free from mistakes"
+        },
+        {
+          "id": "b",
+          "text": "Late"
+        },
+        {
+          "id": "c",
+          "text": "Casual"
+        },
+        {
+          "id": "d",
+          "text": "Polite"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "\"accurate\" means correct and free from mistakes",
+      "topic": "everyday useful vocabulary",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-qz-013",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What does \"resolve\" mean?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Solve a problem or disagreement"
+        },
+        {
+          "id": "b",
+          "text": "Create confusion"
+        },
+        {
+          "id": "c",
+          "text": "Repeat words"
+        },
+        {
+          "id": "d",
+          "text": "Delay a task"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "\"resolve\" means solve a problem or disagreement",
+      "topic": "everyday useful vocabulary",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-qz-014",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What does \"initiative\" mean?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Starting useful action without waiting to be told"
+        },
+        {
+          "id": "b",
+          "text": "Avoiding responsibility"
+        },
+        {
+          "id": "c",
+          "text": "Waiting for every instruction"
+        },
+        {
+          "id": "d",
+          "text": "Ignoring the task"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "\"initiative\" means starting useful action without waiting to be told",
+      "topic": "everyday useful vocabulary",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-qz-015",
+      "pathId": "english-vocabulary-speaking",
+      "question": "Which phrase politely asks for clarification?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Could you clarify what you mean by that?"
+        },
+        {
+          "id": "b",
+          "text": "Speak better."
+        },
+        {
+          "id": "c",
+          "text": "This is confusing only."
+        },
+        {
+          "id": "d",
+          "text": "Why are you unclear?"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "A polite clarification request asks directly without blaming the other person.",
+      "topic": "polite professional phrases",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-qz-016",
+      "pathId": "english-vocabulary-speaking",
+      "question": "Which phrase is best for asking priorities?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Which task should I prioritize first?"
+        },
+        {
+          "id": "b",
+          "text": "What task is boss?"
+        },
+        {
+          "id": "c",
+          "text": "I do anything random."
+        },
+        {
+          "id": "d",
+          "text": "Priorities are not needed."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "The correct phrase clearly asks how to order work.",
+      "topic": "workplace English",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-qz-017",
+      "pathId": "english-vocabulary-speaking",
+      "question": "Choose the professional apology.",
+      "options": [
+        {
+          "id": "a",
+          "text": "I apologize for the delay and will send the update today."
+        },
+        {
+          "id": "b",
+          "text": "My bad, whatever."
+        },
+        {
+          "id": "c",
+          "text": "It is not my problem."
+        },
+        {
+          "id": "d",
+          "text": "Stop asking."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "A good apology accepts responsibility and gives a next step.",
+      "topic": "polite professional phrases",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-qz-018",
+      "pathId": "english-vocabulary-speaking",
+      "question": "Which sentence is correct?",
+      "options": [
+        {
+          "id": "a",
+          "text": "I agree."
+        },
+        {
+          "id": "b",
+          "text": "I am agree."
+        },
+        {
+          "id": "c",
+          "text": "I agreeing."
+        },
+        {
+          "id": "d",
+          "text": "I do agree with it to."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "\"Agree\" is a verb, so \"I agree\" is correct.",
+      "topic": "common grammar mistakes",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-qz-019",
+      "pathId": "english-vocabulary-speaking",
+      "question": "Which sentence is more natural?",
+      "options": [
+        {
+          "id": "a",
+          "text": "What is this called?"
+        },
+        {
+          "id": "b",
+          "text": "How is called this?"
+        },
+        {
+          "id": "c",
+          "text": "How called this?"
+        },
+        {
+          "id": "d",
+          "text": "What this is called?"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "The natural question order is \"What is this called?\"",
+      "topic": "natural vs unnatural English",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-qz-020",
+      "pathId": "english-vocabulary-speaking",
+      "question": "Which phrase means to investigate something?",
+      "options": [
+        {
+          "id": "a",
+          "text": "look into"
+        },
+        {
+          "id": "b",
+          "text": "look after"
+        },
+        {
+          "id": "c",
+          "text": "look over"
+        },
+        {
+          "id": "d",
+          "text": "look away"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "At work, \"look into\" means investigate or check.",
+      "topic": "phrasal verbs used at work",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-qz-021",
+      "pathId": "english-vocabulary-speaking",
+      "question": "Which phrase means to reply later?",
+      "options": [
+        {
+          "id": "a",
+          "text": "get back to someone"
+        },
+        {
+          "id": "b",
+          "text": "get away with someone"
+        },
+        {
+          "id": "c",
+          "text": "get up someone"
+        },
+        {
+          "id": "d",
+          "text": "get down someone"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "\"Get back to someone\" means respond later with information.",
+      "topic": "phrasal verbs used at work",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-qz-022",
+      "pathId": "english-vocabulary-speaking",
+      "question": "Which phrase is best for a short update?",
+      "options": [
+        {
+          "id": "a",
+          "text": "I completed the first part and I am working on the next step."
+        },
+        {
+          "id": "b",
+          "text": "Nothing."
+        },
+        {
+          "id": "c",
+          "text": "I work maybe."
+        },
+        {
+          "id": "d",
+          "text": "It is doing."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "A useful update states what is done and what is next.",
+      "topic": "workplace English",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-qz-023",
+      "pathId": "english-vocabulary-speaking",
+      "question": "Which phrase is correct?",
+      "options": [
+        {
+          "id": "a",
+          "text": "We discussed the plan."
+        },
+        {
+          "id": "b",
+          "text": "We discussed about the plan."
+        },
+        {
+          "id": "c",
+          "text": "We discussed on the plan."
+        },
+        {
+          "id": "d",
+          "text": "We discussed to the plan."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "\"Discuss\" usually takes a direct object without \"about.\"",
+      "topic": "common grammar mistakes",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-qz-024",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What is the best response when you need thinking time?",
+      "options": [
+        {
+          "id": "a",
+          "text": "That is a good question. Let me think for a moment."
+        },
+        {
+          "id": "b",
+          "text": "I do not answer."
+        },
+        {
+          "id": "c",
+          "text": "Wait, I panic."
+        },
+        {
+          "id": "d",
+          "text": "Why ask me?"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "This buys time politely and calmly.",
+      "topic": "speaking confidence",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-qz-025",
+      "pathId": "english-vocabulary-speaking",
+      "question": "Which phrase asks for feedback professionally?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Could you share feedback when you have time?"
+        },
+        {
+          "id": "b",
+          "text": "Tell me what is wrong now."
+        },
+        {
+          "id": "c",
+          "text": "You must check this."
+        },
+        {
+          "id": "d",
+          "text": "Give feedback fast."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "The correct option is polite and realistic.",
+      "topic": "workplace English",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-qz-026",
+      "pathId": "english-vocabulary-speaking",
+      "question": "Which answer sounds confident but not arrogant?",
+      "options": [
+        {
+          "id": "a",
+          "text": "I have improved this skill through practice and feedback."
+        },
+        {
+          "id": "b",
+          "text": "I am perfect at everything."
+        },
+        {
+          "id": "c",
+          "text": "Nobody is better than me."
+        },
+        {
+          "id": "d",
+          "text": "I never need feedback."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "Specific improvement sounds credible and professional.",
+      "topic": "speaking confidence",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-qz-027",
+      "pathId": "english-vocabulary-speaking",
+      "question": "Which phrase best handles \"I do not know\" at work?",
+      "options": [
+        {
+          "id": "a",
+          "text": "I am not sure yet, but I can find out."
+        },
+        {
+          "id": "b",
+          "text": "Do not ask me."
+        },
+        {
+          "id": "c",
+          "text": "Impossible."
+        },
+        {
+          "id": "d",
+          "text": "No idea, bye."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "It is honest and shows ownership.",
+      "topic": "short professional responses",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-qz-028",
+      "pathId": "english-vocabulary-speaking",
+      "question": "Which sentence fixes \"I have 25 years\"?",
+      "options": [
+        {
+          "id": "a",
+          "text": "I am 25 years old."
+        },
+        {
+          "id": "b",
+          "text": "I have 25 old."
+        },
+        {
+          "id": "c",
+          "text": "I am 25 years."
+        },
+        {
+          "id": "d",
+          "text": "I have old 25."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "Age uses \"I am ... years old\" in English.",
+      "topic": "common grammar mistakes",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-qz-029",
+      "pathId": "english-vocabulary-speaking",
+      "question": "Which phrase shows teamwork in an interview?",
+      "options": [
+        {
+          "id": "a",
+          "text": "I am happy to support the team where needed."
+        },
+        {
+          "id": "b",
+          "text": "I only work alone always."
+        },
+        {
+          "id": "c",
+          "text": "Teamwork wastes time."
+        },
+        {
+          "id": "d",
+          "text": "I do not help anyone."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "It shows flexibility and collaboration.",
+      "topic": "interview phrases",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-qz-030",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What does \"set up a meeting\" mean?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Arrange a meeting"
+        },
+        {
+          "id": "b",
+          "text": "Cancel a meeting"
+        },
+        {
+          "id": "c",
+          "text": "Attend late"
+        },
+        {
+          "id": "d",
+          "text": "Write notes after a meeting"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "\"Set up\" means arrange or prepare.",
+      "topic": "phrasal verbs used at work",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-qz-031",
+      "pathId": "english-vocabulary-speaking",
+      "question": "Which sentence sounds natural with this grammar pattern?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Can you give me some advice?"
+        },
+        {
+          "id": "b",
+          "text": "Can you give me an advice?"
+        },
+        {
+          "id": "c",
+          "text": "Can you give me advices?"
+        },
+        {
+          "id": "d",
+          "text": "Can you give me one advices?"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "\"Advice\" is usually uncountable.",
+      "topic": "common grammar mistakes",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-qz-032",
+      "pathId": "english-vocabulary-speaking",
+      "question": "Which phrase politely disagrees?",
+      "options": [
+        {
+          "id": "a",
+          "text": "I see your point, but I have a different perspective."
+        },
+        {
+          "id": "b",
+          "text": "You are wrong."
+        },
+        {
+          "id": "c",
+          "text": "Bad idea."
+        },
+        {
+          "id": "d",
+          "text": "I do not listen to you."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "It acknowledges the other person before adding another view.",
+      "topic": "polite professional phrases",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-qz-033",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What does \"run into a problem\" mean?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Experience an unexpected problem"
+        },
+        {
+          "id": "b",
+          "text": "Run outside"
+        },
+        {
+          "id": "c",
+          "text": "Solve all issues"
+        },
+        {
+          "id": "d",
+          "text": "Start a meeting"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "The phrase means a problem appeared unexpectedly.",
+      "topic": "phrasal verbs used at work",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-qz-034",
+      "pathId": "english-vocabulary-speaking",
+      "question": "Which phrase confirms understanding?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Just to confirm, you would like this by Friday."
+        },
+        {
+          "id": "b",
+          "text": "Maybe Friday maybe not."
+        },
+        {
+          "id": "c",
+          "text": "I think something."
+        },
+        {
+          "id": "d",
+          "text": "You said many things."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "Confirmation reduces misunderstandings.",
+      "topic": "workplace English",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-qz-035",
+      "pathId": "english-vocabulary-speaking",
+      "question": "Which response is best after missing a detail?",
+      "options": [
+        {
+          "id": "a",
+          "text": "I missed that detail; I will check it now."
+        },
+        {
+          "id": "b",
+          "text": "Not my fault."
+        },
+        {
+          "id": "c",
+          "text": "You should know."
+        },
+        {
+          "id": "d",
+          "text": "I forgot, so nothing."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "It is honest and gives a responsible next action.",
+      "topic": "short professional responses",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-qz-036",
+      "pathId": "english-vocabulary-speaking",
+      "question": "Which answer best shows speaking confidence?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Clear examples, calm pace, and honest answers."
+        },
+        {
+          "id": "b",
+          "text": "Speaking fast with no pauses."
+        },
+        {
+          "id": "c",
+          "text": "Using only memorized text."
+        },
+        {
+          "id": "d",
+          "text": "Avoiding every question."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "Confidence comes from clarity and preparation, not speed.",
+      "topic": "speaking confidence",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-qz-037",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What does \"hand in\" mean?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Submit work or documents"
+        },
+        {
+          "id": "b",
+          "text": "Start a meeting"
+        },
+        {
+          "id": "c",
+          "text": "Ask for a raise"
+        },
+        {
+          "id": "d",
+          "text": "Delete a file"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "\"Hand in\" means submit something required.",
+      "topic": "phrasal verbs used at work",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-qz-038",
+      "pathId": "english-vocabulary-speaking",
+      "question": "Which phrase is best for professional availability?",
+      "options": [
+        {
+          "id": "a",
+          "text": "I am available to start after the agreed notice period."
+        },
+        {
+          "id": "b",
+          "text": "I start maybe anytime."
+        },
+        {
+          "id": "c",
+          "text": "No idea when."
+        },
+        {
+          "id": "d",
+          "text": "Do not ask timing."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "It gives a clear and professional answer.",
+      "topic": "interview phrases",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-qz-039",
+      "pathId": "english-vocabulary-speaking",
+      "question": "Which pronunciation habit improves clarity?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Stress key words and avoid speaking too fast."
+        },
+        {
+          "id": "b",
+          "text": "Mumble quickly"
+        },
+        {
+          "id": "c",
+          "text": "Skip endings always"
+        },
+        {
+          "id": "d",
+          "text": "Speak with no pauses"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "Clear pace and word stress help listeners understand.",
+      "topic": "pronunciation/confidence tips",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-qz-040",
+      "pathId": "english-vocabulary-speaking",
+      "question": "Which sentence fixes \"more better\"?",
+      "options": [
+        {
+          "id": "a",
+          "text": "This is better."
+        },
+        {
+          "id": "b",
+          "text": "This is more better."
+        },
+        {
+          "id": "c",
+          "text": "This is most better than."
+        },
+        {
+          "id": "d",
+          "text": "This is better more."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "\"Better\" already means more good.",
+      "topic": "common grammar mistakes",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-qz-041",
+      "pathId": "english-vocabulary-speaking",
+      "question": "Which phrase means to mention a topic?",
+      "options": [
+        {
+          "id": "a",
+          "text": "bring up"
+        },
+        {
+          "id": "b",
+          "text": "bring down"
+        },
+        {
+          "id": "c",
+          "text": "bring away"
+        },
+        {
+          "id": "d",
+          "text": "bring after"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "To bring up a topic is to introduce it.",
+      "topic": "phrasal verbs used at work",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-qz-042",
+      "pathId": "english-vocabulary-speaking",
+      "question": "Which phrase is best for asking someone to wait?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Could you give me a moment to check that?"
+        },
+        {
+          "id": "b",
+          "text": "Wait there."
+        },
+        {
+          "id": "c",
+          "text": "Stop talking."
+        },
+        {
+          "id": "d",
+          "text": "I am busy, no."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "It is polite and explains why you need a moment.",
+      "topic": "polite professional phrases",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-qz-043",
+      "pathId": "english-vocabulary-speaking",
+      "question": "Which interview phrase shows learning from feedback?",
+      "options": [
+        {
+          "id": "a",
+          "text": "I use feedback to adjust my approach and improve."
+        },
+        {
+          "id": "b",
+          "text": "I ignore feedback."
+        },
+        {
+          "id": "c",
+          "text": "Feedback is useless."
+        },
+        {
+          "id": "d",
+          "text": "I never change."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "Employers value people who learn and adapt.",
+      "topic": "interview phrases",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-qz-044",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What does \"point out\" mean?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Draw attention to something"
+        },
+        {
+          "id": "b",
+          "text": "Hide a fact"
+        },
+        {
+          "id": "c",
+          "text": "Forget a point"
+        },
+        {
+          "id": "d",
+          "text": "End a meeting"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "To point out something is to mention it clearly.",
+      "topic": "phrasal verbs used at work",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-qz-045",
+      "pathId": "english-vocabulary-speaking",
+      "question": "Choose the natural sentence.",
+      "options": [
+        {
+          "id": "a",
+          "text": "I am waiting for your answer."
+        },
+        {
+          "id": "b",
+          "text": "I am waiting your answer."
+        },
+        {
+          "id": "c",
+          "text": "I wait answer."
+        },
+        {
+          "id": "d",
+          "text": "I am waiting to your answer."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "The verb \"wait\" needs \"for\" before the object.",
+      "topic": "natural vs unnatural English",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-qz-046",
+      "pathId": "english-vocabulary-speaking",
+      "question": "Which phrase reduces filler words?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Pause silently for a second."
+        },
+        {
+          "id": "b",
+          "text": "Say um louder."
+        },
+        {
+          "id": "c",
+          "text": "Repeat every word."
+        },
+        {
+          "id": "d",
+          "text": "Rush faster."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "A short pause sounds more confident than filler.",
+      "topic": "speaking confidence",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-qz-047",
+      "pathId": "english-vocabulary-speaking",
+      "question": "Which phrase is a polite suggestion?",
+      "options": [
+        {
+          "id": "a",
+          "text": "May I suggest another option?"
+        },
+        {
+          "id": "b",
+          "text": "My idea is only good."
+        },
+        {
+          "id": "c",
+          "text": "Do this now."
+        },
+        {
+          "id": "d",
+          "text": "Your option is bad."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "It opens discussion respectfully.",
+      "topic": "polite professional phrases",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-qz-048",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What is active listening?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Focusing, confirming, and responding clearly"
+        },
+        {
+          "id": "b",
+          "text": "Only waiting to talk"
+        },
+        {
+          "id": "c",
+          "text": "Ignoring details"
+        },
+        {
+          "id": "d",
+          "text": "Speaking over people"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "Active listening shows understanding and respect.",
+      "topic": "speaking confidence",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-qz-049",
+      "pathId": "english-vocabulary-speaking",
+      "question": "Which sentence uses the correct plural verb form?",
+      "options": [
+        {
+          "id": "a",
+          "text": "People are different."
+        },
+        {
+          "id": "b",
+          "text": "People is different."
+        },
+        {
+          "id": "c",
+          "text": "People be different."
+        },
+        {
+          "id": "d",
+          "text": "People am different."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "\"People\" is plural, so use \"are.\"",
+      "topic": "common grammar mistakes",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-qz-050",
+      "pathId": "english-vocabulary-speaking",
+      "question": "Which response is best when you need more time?",
+      "options": [
+        {
+          "id": "a",
+          "text": "I need a little more time to review this carefully."
+        },
+        {
+          "id": "b",
+          "text": "I cannot, bye."
+        },
+        {
+          "id": "c",
+          "text": "Maybe never."
+        },
+        {
+          "id": "d",
+          "text": "Too hard."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "It sets a professional expectation.",
+      "topic": "polite professional phrases",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-qz-051",
+      "pathId": "english-vocabulary-speaking",
+      "question": "Which word best describes steady quality over time?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Consistent"
+        },
+        {
+          "id": "b",
+          "text": "Random"
+        },
+        {
+          "id": "c",
+          "text": "Temporary"
+        },
+        {
+          "id": "d",
+          "text": "Confusing"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "Consistent means steady in quality or behavior.",
+      "topic": "everyday useful vocabulary",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-qz-052",
+      "pathId": "english-vocabulary-speaking",
+      "question": "Which phrase best ends an interview answer?",
+      "options": [
+        {
+          "id": "a",
+          "text": "The result was successful, and I learned how to plan earlier."
+        },
+        {
+          "id": "b",
+          "text": "And then many things happened forever."
+        },
+        {
+          "id": "c",
+          "text": "That is all maybe nothing."
+        },
+        {
+          "id": "d",
+          "text": "I have no ending."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "A clean ending uses an outcome or lesson.",
+      "topic": "speaking confidence",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-qz-053",
+      "pathId": "english-vocabulary-speaking",
+      "question": "Which phrase means to perform a task?",
+      "options": [
+        {
+          "id": "a",
+          "text": "carry out"
+        },
+        {
+          "id": "b",
+          "text": "carry under"
+        },
+        {
+          "id": "c",
+          "text": "carry beside"
+        },
+        {
+          "id": "d",
+          "text": "carry away only"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "\"Carry out\" means perform or complete work.",
+      "topic": "phrasal verbs used at work",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-qz-054",
+      "pathId": "english-vocabulary-speaking",
+      "question": "Which sentence uses the correct verb with \"people\"?",
+      "options": [
+        {
+          "id": "a",
+          "text": "I made a mistake."
+        },
+        {
+          "id": "b",
+          "text": "I did a mistake."
+        },
+        {
+          "id": "c",
+          "text": "I make mistake yesterday."
+        },
+        {
+          "id": "d",
+          "text": "I mistake did."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "The common collocation is \"make a mistake.\"",
+      "topic": "common grammar mistakes",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-qz-055",
+      "pathId": "english-vocabulary-speaking",
+      "question": "Which word means closely connected to the topic?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Relevant"
+        },
+        {
+          "id": "b",
+          "text": "Reliable"
+        },
+        {
+          "id": "c",
+          "text": "Remote"
+        },
+        {
+          "id": "d",
+          "text": "Recent"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "Relevant means connected to the subject or situation.",
+      "topic": "everyday useful vocabulary",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-qz-056",
+      "pathId": "english-vocabulary-speaking",
+      "question": "Which phrase is best for requesting help?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Could you help me understand this part?"
+        },
+        {
+          "id": "b",
+          "text": "You must explain now."
+        },
+        {
+          "id": "c",
+          "text": "I cannot do anything."
+        },
+        {
+          "id": "d",
+          "text": "This is your problem."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "The correct phrase is specific and respectful.",
+      "topic": "polite professional phrases",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-qz-057",
+      "pathId": "english-vocabulary-speaking",
+      "question": "Which phrase means to solve after thinking?",
+      "options": [
+        {
+          "id": "a",
+          "text": "figure out"
+        },
+        {
+          "id": "b",
+          "text": "figure down"
+        },
+        {
+          "id": "c",
+          "text": "figure away"
+        },
+        {
+          "id": "d",
+          "text": "figure beside"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "\"Figure out\" means understand or solve something.",
+      "topic": "phrasal verbs used at work",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-qz-058",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What is a good habit before saying a difficult word?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Practice it aloud in a short sentence."
+        },
+        {
+          "id": "b",
+          "text": "Avoid all speaking."
+        },
+        {
+          "id": "c",
+          "text": "Say it as fast as possible."
+        },
+        {
+          "id": "d",
+          "text": "Skip the whole answer."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "Short sentence practice improves confidence and pronunciation.",
+      "topic": "pronunciation/confidence tips",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-qz-059",
+      "pathId": "english-vocabulary-speaking",
+      "question": "Which phrase best describes problem solving?",
+      "options": [
+        {
+          "id": "a",
+          "text": "I try to understand the root cause before choosing a solution."
+        },
+        {
+          "id": "b",
+          "text": "I guess randomly."
+        },
+        {
+          "id": "c",
+          "text": "I ignore the problem."
+        },
+        {
+          "id": "d",
+          "text": "I blame the system."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "It shows a thoughtful process.",
+      "topic": "interview phrases",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-qz-060",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What does \"specific\" mean?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Clear and exact"
+        },
+        {
+          "id": "b",
+          "text": "Very vague"
+        },
+        {
+          "id": "c",
+          "text": "Unrelated"
+        },
+        {
+          "id": "d",
+          "text": "Hidden"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "Specific language gives clear details.",
+      "topic": "everyday useful vocabulary",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-qz-061",
+      "pathId": "english-vocabulary-speaking",
+      "question": "Which phrase is best for saying no professionally?",
+      "options": [
+        {
+          "id": "a",
+          "text": "I cannot take that on right now, but I can suggest another option."
+        },
+        {
+          "id": "b",
+          "text": "No. Go away."
+        },
+        {
+          "id": "c",
+          "text": "Never ask me."
+        },
+        {
+          "id": "d",
+          "text": "This is bad."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "It is clear while still being helpful.",
+      "topic": "short professional responses",
+      "difficulty": "medium"
+    },
+    {
+      "id": "eng-qz-062",
+      "pathId": "english-vocabulary-speaking",
+      "question": "Which phrase means to contact again after a meeting?",
+      "options": [
+        {
+          "id": "a",
+          "text": "follow up"
+        },
+        {
+          "id": "b",
+          "text": "fall down"
+        },
+        {
+          "id": "c",
+          "text": "go away"
+        },
+        {
+          "id": "d",
+          "text": "turn over"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "To follow up is to continue communication after an earlier contact.",
+      "topic": "phrasal verbs used at work",
+      "difficulty": "easy"
+    },
+    {
+      "id": "eng-qz-063",
+      "pathId": "english-vocabulary-speaking",
+      "question": "What does \"approach\" mean?",
+      "options": [
+        {
+          "id": "a",
+          "text": "A way of doing a task"
+        },
+        {
+          "id": "b",
+          "text": "A type of chair"
+        },
+        {
+          "id": "c",
+          "text": "A vacation day"
+        },
+        {
+          "id": "d",
+          "text": "A spelling mistake"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "An approach is a method or way of handling something.",
+      "topic": "everyday useful vocabulary",
+      "difficulty": "medium"
+    }
   ]
 }

@@ -1,52 +1,2267 @@
 {
   "pathId": "job-interview-prep",
   "flashcards": [
-    {"id": "job-fc-001", "pathId": "job-interview-prep", "question": "What does STAR stand for?", "answer": "Situation, Task, Action, Result.", "topic": "STAR method", "difficulty": "easy"},
-    {"id": "job-fc-002", "pathId": "job-interview-prep", "question": "What should a behavioral answer demonstrate?", "answer": "A real example, your specific actions, and the result or lesson.", "topic": "behavioral questions", "difficulty": "medium"},
-    {"id": "job-fc-003", "pathId": "job-interview-prep", "question": "How should you discuss a weakness?", "answer": "Name a real but manageable weakness and explain how you are improving it.", "topic": "strengths and weaknesses", "difficulty": "medium"},
-    {"id": "job-fc-004", "pathId": "job-interview-prep", "question": "Good answer structure for 'Why do you want this role'?", "answer": "Connect the role, your skills, your motivation, and the company's needs.", "topic": "motivation and career goals", "difficulty": "medium"},
-    {"id": "job-fc-005", "pathId": "job-interview-prep", "question": "How should you prepare for salary expectations?", "answer": "Research a realistic range and practice a flexible, professional answer.", "topic": "salary expectations", "difficulty": "medium"},
-    {"id": "job-fc-006", "pathId": "job-interview-prep", "question": "What makes a strength credible?", "answer": "A strength is stronger when supported by a specific example.", "topic": "strengths and weaknesses", "difficulty": "easy"},
-    {"id": "job-fc-007", "pathId": "job-interview-prep", "question": "What should you research before an interview?", "answer": "The company, role, product, values, and likely interview questions.", "topic": "preparation", "difficulty": "easy"},
-    {"id": "job-fc-008", "pathId": "job-interview-prep", "question": "What belongs in the Result part of STAR?", "answer": "The outcome, impact, metric, feedback, or lesson learned.", "topic": "STAR method", "difficulty": "easy"},
-    {"id": "job-fc-009", "pathId": "job-interview-prep", "question": "How can you answer a conflict question well?", "answer": "Stay calm, explain your actions, and show a constructive result.", "topic": "conflict and teamwork", "difficulty": "medium"},
-    {"id": "job-fc-010", "pathId": "job-interview-prep", "question": "What should career goals sound like?", "answer": "Realistic, relevant to the role, and focused on growth.", "topic": "motivation and career goals", "difficulty": "easy"},
-    {"id": "job-fc-011", "pathId": "job-interview-prep", "question": "What is a good way to start 'Tell me about yourself'?", "answer": "Give a brief present-past-future summary focused on the role.", "topic": "answer structure", "difficulty": "medium"},
-    {"id": "job-fc-012", "pathId": "job-interview-prep", "question": "What is the present-past-future structure?", "answer": "Current situation, relevant background, and why this role is your next step.", "topic": "answer structure", "difficulty": "medium"},
-    {"id": "job-fc-013", "pathId": "job-interview-prep", "question": "How should you talk about a career gap?", "answer": "Be brief, honest, and redirect to your readiness and recent preparation.", "topic": "career changes and gaps", "difficulty": "medium"},
-    {"id": "job-fc-014", "pathId": "job-interview-prep", "question": "What should you avoid when talking about a previous employer?", "answer": "Avoid blaming, insulting, or sharing confidential information.", "topic": "professional communication", "difficulty": "easy"},
-    {"id": "job-fc-015", "pathId": "job-interview-prep", "question": "What is a good question to ask the interviewer?", "answer": "What would success look like in this role after the first three months?", "topic": "questions to ask", "difficulty": "easy"},
-    {"id": "job-fc-016", "pathId": "job-interview-prep", "question": "How can you answer 'Why should we hire you'?", "answer": "Summarize your most relevant skills, evidence, and motivation for the role.", "topic": "answer structure", "difficulty": "medium"},
-    {"id": "job-fc-017", "pathId": "job-interview-prep", "question": "How should you discuss failure?", "answer": "Own your part, explain what you learned, and show what changed afterward.", "topic": "failure and learning", "difficulty": "medium"},
-    {"id": "job-fc-018", "pathId": "job-interview-prep", "question": "What is a weak answer to 'Why this company'?", "answer": "An answer that is generic, unresearched, or only about salary.", "topic": "motivation and career goals", "difficulty": "easy"},
-    {"id": "job-fc-019", "pathId": "job-interview-prep", "question": "How can you show teamwork in an answer?", "answer": "Explain your role, how you communicated, and how the team reached a result.", "topic": "conflict and teamwork", "difficulty": "medium"},
-    {"id": "job-fc-020", "pathId": "job-interview-prep", "question": "What is an interview red flag when answering questions?", "answer": "Giving only vague opinions without examples or evidence.", "topic": "common mistakes", "difficulty": "easy"},
-    {"id": "job-fc-021", "pathId": "job-interview-prep", "question": "How long should many interview answers be?", "answer": "Usually about one to two minutes, unless the interviewer asks for more detail.", "topic": "answer structure", "difficulty": "easy"},
-    {"id": "job-fc-022", "pathId": "job-interview-prep", "question": "How should you answer if you lack one requirement?", "answer": "Be honest, connect related experience, and show how you will learn quickly.", "topic": "career changes and gaps", "difficulty": "medium"},
-    {"id": "job-fc-023", "pathId": "job-interview-prep", "question": "What should you do after an interview?", "answer": "Send a short thank-you message and, if needed, follow up politely later.", "topic": "professional communication", "difficulty": "easy"},
-    {"id": "job-fc-024", "pathId": "job-interview-prep", "question": "What should a salary answer avoid?", "answer": "Avoid an unresearched number, pressure, or refusing to discuss expectations.", "topic": "salary expectations", "difficulty": "medium"},
-    {"id": "job-fc-025", "pathId": "job-interview-prep", "question": "What makes a final interview impression stronger?", "answer": "Clear interest, thoughtful questions, and a concise summary of fit.", "topic": "questions to ask", "difficulty": "medium"}
+    {
+      "id": "job-fc-001",
+      "pathId": "job-interview-prep",
+      "question": "What does STAR stand for?",
+      "answer": "Situation, Task, Action, Result.",
+      "topic": "STAR method",
+      "difficulty": "easy"
+    },
+    {
+      "id": "job-fc-002",
+      "pathId": "job-interview-prep",
+      "question": "What should a behavioral answer demonstrate?",
+      "answer": "A real example, your actions, and the result.",
+      "topic": "behavioral questions",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-fc-003",
+      "pathId": "job-interview-prep",
+      "question": "How should you discuss a weakness?",
+      "answer": "Name a real but manageable weakness and explain how you are improving it.",
+      "topic": "strengths and weaknesses",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-fc-004",
+      "pathId": "job-interview-prep",
+      "question": "What is a good way to answer 'Why do you want this role?'",
+      "answer": "Connect your skills, motivation, and the company's needs.",
+      "topic": "motivation and career goals",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-fc-005",
+      "pathId": "job-interview-prep",
+      "question": "When discussing salary, what should you prepare?",
+      "answer": "A researched range and a flexible, professional explanation.",
+      "topic": "salary expectations",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-fc-006",
+      "pathId": "job-interview-prep",
+      "question": "What is a strong interview strength?",
+      "answer": "A strength supported by a specific example.",
+      "topic": "strengths and weaknesses",
+      "difficulty": "easy"
+    },
+    {
+      "id": "job-fc-007",
+      "pathId": "job-interview-prep",
+      "question": "What should you do before an interview?",
+      "answer": "Research the company, role, and likely questions.",
+      "topic": "motivation and career goals",
+      "difficulty": "easy"
+    },
+    {
+      "id": "job-fc-008",
+      "pathId": "job-interview-prep",
+      "question": "What should the Result part of STAR include?",
+      "answer": "The outcome, impact, or lesson learned.",
+      "topic": "STAR method",
+      "difficulty": "easy"
+    },
+    {
+      "id": "job-fc-009",
+      "pathId": "job-interview-prep",
+      "question": "How can you answer a question about conflict?",
+      "answer": "Describe the situation calmly, focus on your actions, and show a constructive result.",
+      "topic": "behavioral questions",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-fc-010",
+      "pathId": "job-interview-prep",
+      "question": "What should career goals sound like?",
+      "answer": "Realistic, relevant to the role, and focused on growth.",
+      "topic": "motivation and career goals",
+      "difficulty": "easy"
+    },
+    {
+      "id": "job-fc-011",
+      "pathId": "job-interview-prep",
+      "question": "What is a professional way to structure \"Tell me about yourself\"?",
+      "answer": "Present role, relevant experience, key strengths, and why this role fits.",
+      "topic": "professional communication choices",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-fc-012",
+      "pathId": "job-interview-prep",
+      "question": "What is a professional way to answer a teamwork question?",
+      "answer": "Give an example of cooperation, communication, and shared results.",
+      "topic": "professional communication choices",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-fc-013",
+      "pathId": "job-interview-prep",
+      "question": "What is a professional way to answer a conflict question?",
+      "answer": "Stay respectful, explain the facts, and show how you helped resolve it.",
+      "topic": "professional communication choices",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-fc-014",
+      "pathId": "job-interview-prep",
+      "question": "What is a professional way to talk about failure?",
+      "answer": "Own your part, explain what you learned, and show what changed.",
+      "topic": "professional communication choices",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-fc-015",
+      "pathId": "job-interview-prep",
+      "question": "What is a professional way to explain an employment gap?",
+      "answer": "Be honest, brief, and redirect to readiness and relevant skills.",
+      "topic": "professional communication choices",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-fc-016",
+      "pathId": "job-interview-prep",
+      "question": "What is a professional way to explain a career change?",
+      "answer": "Connect transferable skills, motivation, and preparation for the new field.",
+      "topic": "professional communication choices",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-fc-017",
+      "pathId": "job-interview-prep",
+      "question": "What is a professional way to ask a thoughtful interviewer question?",
+      "answer": "What would success look like in this role after six months?",
+      "topic": "professional communication choices",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-fc-018",
+      "pathId": "job-interview-prep",
+      "question": "What is a professional way to avoid sounding arrogant?",
+      "answer": "Use examples and team-aware language instead of exaggerated claims.",
+      "topic": "professional communication choices",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-fc-019",
+      "pathId": "job-interview-prep",
+      "question": "What does \"Situation\" mean?",
+      "answer": "The background context needed to understand your example.",
+      "topic": "STAR method",
+      "difficulty": "easy"
+    },
+    {
+      "id": "job-fc-020",
+      "pathId": "job-interview-prep",
+      "question": "What does \"Task\" mean?",
+      "answer": "The responsibility, goal, or challenge you needed to handle.",
+      "topic": "STAR method",
+      "difficulty": "easy"
+    },
+    {
+      "id": "job-fc-021",
+      "pathId": "job-interview-prep",
+      "question": "What does \"Action\" mean?",
+      "answer": "The specific steps you personally took.",
+      "topic": "STAR method",
+      "difficulty": "easy"
+    },
+    {
+      "id": "job-fc-022",
+      "pathId": "job-interview-prep",
+      "question": "What does \"Result\" mean?",
+      "answer": "The outcome, impact, or lesson learned.",
+      "topic": "STAR method",
+      "difficulty": "easy"
+    },
+    {
+      "id": "job-fc-023",
+      "pathId": "job-interview-prep",
+      "question": "What does \"transferable skills\" mean?",
+      "answer": "Skills useful across roles, such as communication and problem solving.",
+      "topic": "STAR method",
+      "difficulty": "easy"
+    },
+    {
+      "id": "job-fc-024",
+      "pathId": "job-interview-prep",
+      "question": "What does \"behavioral question\" mean?",
+      "answer": "A question asking how you handled a past situation.",
+      "topic": "STAR method",
+      "difficulty": "easy"
+    },
+    {
+      "id": "job-fc-025",
+      "pathId": "job-interview-prep",
+      "question": "What does \"employment gap\" mean?",
+      "answer": "A period when you were not formally employed.",
+      "topic": "STAR method",
+      "difficulty": "easy"
+    },
+    {
+      "id": "job-fc-026",
+      "pathId": "job-interview-prep",
+      "question": "What does \"salary range\" mean?",
+      "answer": "A researched minimum-to-maximum compensation expectation.",
+      "topic": "STAR method",
+      "difficulty": "easy"
+    },
+    {
+      "id": "job-fc-027",
+      "pathId": "job-interview-prep",
+      "question": "Why should STAR answers be concise?",
+      "answer": "Concise answers are easier to follow and sound more prepared.",
+      "topic": "concise answer structure",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-fc-028",
+      "pathId": "job-interview-prep",
+      "question": "How long should a typical interview example be?",
+      "answer": "Usually one to two minutes, unless the interviewer asks for more detail.",
+      "topic": "concise answer structure",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-fc-029",
+      "pathId": "job-interview-prep",
+      "question": "What makes a weak behavioral answer?",
+      "answer": "It is vague and has no specific example or result.",
+      "topic": "behavioral questions",
+      "difficulty": "easy"
+    },
+    {
+      "id": "job-fc-030",
+      "pathId": "job-interview-prep",
+      "question": "What makes a strong behavioral answer?",
+      "answer": "It uses a relevant example with context, action, and outcome.",
+      "topic": "behavioral questions",
+      "difficulty": "easy"
+    },
+    {
+      "id": "job-fc-031",
+      "pathId": "job-interview-prep",
+      "question": "How can you describe leadership without a manager title?",
+      "answer": "Show how you took responsibility, supported others, or improved a process.",
+      "topic": "behavioral questions",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-fc-032",
+      "pathId": "job-interview-prep",
+      "question": "How can you answer about working under pressure?",
+      "answer": "Use an example where you prioritized, stayed calm, and delivered.",
+      "topic": "behavioral questions",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-fc-033",
+      "pathId": "job-interview-prep",
+      "question": "What should you avoid when discussing conflict?",
+      "answer": "Blaming, insulting, or sharing confidential details.",
+      "topic": "conflict",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-fc-034",
+      "pathId": "job-interview-prep",
+      "question": "What makes a failure answer strong?",
+      "answer": "A clear lesson and evidence of improvement.",
+      "topic": "failure and learning",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-fc-035",
+      "pathId": "job-interview-prep",
+      "question": "How can you answer \"Why did you leave your last job?\"",
+      "answer": "Keep it factual, professional, and focused on growth or fit.",
+      "topic": "difficult questions",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-fc-036",
+      "pathId": "job-interview-prep",
+      "question": "How can you answer if you lack one requirement?",
+      "answer": "Acknowledge it, show related experience, and explain how you will learn.",
+      "topic": "difficult questions",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-fc-037",
+      "pathId": "job-interview-prep",
+      "question": "How can you discuss being overqualified?",
+      "answer": "Explain your genuine interest and why the role fits your goals now.",
+      "topic": "difficult questions",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-fc-038",
+      "pathId": "job-interview-prep",
+      "question": "How can you answer \"Why should we hire you?\"",
+      "answer": "Match your skills and examples to the role's needs.",
+      "topic": "motivation and career goals",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-fc-039",
+      "pathId": "job-interview-prep",
+      "question": "How can you handle nervousness?",
+      "answer": "Prepare examples, breathe, pause, and focus on the interviewer's question.",
+      "topic": "confidence without arrogance",
+      "difficulty": "easy"
+    },
+    {
+      "id": "job-fc-040",
+      "pathId": "job-interview-prep",
+      "question": "Why avoid memorized scripts?",
+      "answer": "Scripts can sound unnatural and may not answer the exact question.",
+      "topic": "professional communication choices",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-fc-041",
+      "pathId": "job-interview-prep",
+      "question": "What should you do after an interview?",
+      "answer": "Send a brief thank-you message and mention your continued interest.",
+      "topic": "professional communication choices",
+      "difficulty": "easy"
+    },
+    {
+      "id": "job-fc-042",
+      "pathId": "job-interview-prep",
+      "question": "What belongs in a thank-you note?",
+      "answer": "Appreciation, one role-specific detail, and a short expression of interest.",
+      "topic": "professional communication choices",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-fc-043",
+      "pathId": "job-interview-prep",
+      "question": "How can you answer \"Describe your work style\"?",
+      "answer": "Mention habits that help you deliver, communicate, and collaborate.",
+      "topic": "teamwork",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-fc-044",
+      "pathId": "job-interview-prep",
+      "question": "How can you answer \"How do you prioritize tasks\"?",
+      "answer": "Explain how you consider deadlines, impact, dependencies, and communication.",
+      "topic": "behavioral questions",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-fc-045",
+      "pathId": "job-interview-prep",
+      "question": "How can you answer \"Are you a team player\"?",
+      "answer": "Say yes with a specific example of collaboration and shared success.",
+      "topic": "teamwork",
+      "difficulty": "easy"
+    },
+    {
+      "id": "job-fc-046",
+      "pathId": "job-interview-prep",
+      "question": "How can you describe receiving feedback?",
+      "answer": "Show that you listen, apply it, and improve.",
+      "topic": "failure and learning",
+      "difficulty": "easy"
+    },
+    {
+      "id": "job-fc-047",
+      "pathId": "job-interview-prep",
+      "question": "What should you avoid in weakness answers?",
+      "answer": "Fake weaknesses, jokes, or answers that damage trust.",
+      "topic": "strengths and weaknesses",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-fc-048",
+      "pathId": "job-interview-prep",
+      "question": "What is a good weakness example?",
+      "answer": "A real skill you are actively improving, such as prioritization or public speaking.",
+      "topic": "strengths and weaknesses",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-fc-049",
+      "pathId": "job-interview-prep",
+      "question": "How can you discuss remote work experience?",
+      "answer": "Mention communication habits, reliability, tools, and self-management.",
+      "topic": "teamwork",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-fc-050",
+      "pathId": "job-interview-prep",
+      "question": "How can you show problem-solving skills?",
+      "answer": "Explain how you identified the issue, chose an action, and measured the result.",
+      "topic": "behavioral questions",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-fc-051",
+      "pathId": "job-interview-prep",
+      "question": "How should you answer illegal or personal questions?",
+      "answer": "Redirect politely to your ability to perform the role.",
+      "topic": "difficult questions",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-fc-052",
+      "pathId": "job-interview-prep",
+      "question": "What is a good final question to ask?",
+      "answer": "Is there anything in my background you would like me to clarify?",
+      "topic": "questions to ask interviewer",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-fc-053",
+      "pathId": "job-interview-prep",
+      "question": "What should you learn from the job description?",
+      "answer": "Required skills, responsibilities, keywords, and likely success measures.",
+      "topic": "motivation and career goals",
+      "difficulty": "easy"
+    },
+    {
+      "id": "job-fc-054",
+      "pathId": "job-interview-prep",
+      "question": "How can you make answers more concise?",
+      "answer": "Prepare a clear beginning, example, result, and stop point.",
+      "topic": "concise answer structure",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-fc-055",
+      "pathId": "job-interview-prep",
+      "question": "What is a red flag in an interview answer?",
+      "answer": "Blaming others without owning any action or learning.",
+      "topic": "common interview mistakes",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-fc-056",
+      "pathId": "job-interview-prep",
+      "question": "What is a good way to discuss achievements?",
+      "answer": "Use numbers, outcomes, or specific impact when possible.",
+      "topic": "confidence without arrogance",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-fc-057",
+      "pathId": "job-interview-prep",
+      "question": "How can you handle a panel interview?",
+      "answer": "Address the person who asked, but include the whole panel with eye contact.",
+      "topic": "professional communication choices",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-fc-058",
+      "pathId": "job-interview-prep",
+      "question": "How can you explain limited experience?",
+      "answer": "Focus on relevant projects, learning speed, and transferable skills.",
+      "topic": "career change explanation",
+      "difficulty": "easy"
+    },
+    {
+      "id": "job-fc-059",
+      "pathId": "job-interview-prep",
+      "question": "How should you answer \"Where do you see yourself in five years\"?",
+      "answer": "Connect growth goals to skills and responsibilities related to the role.",
+      "topic": "career goals",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-fc-060",
+      "pathId": "job-interview-prep",
+      "question": "What should your introduction avoid?",
+      "answer": "A long personal history unrelated to the job.",
+      "topic": "concise answer structure",
+      "difficulty": "easy"
+    },
+    {
+      "id": "job-fc-061",
+      "pathId": "job-interview-prep",
+      "question": "How can you prepare examples for interview day?",
+      "answer": "Write short STAR notes, not full memorized paragraphs.",
+      "topic": "STAR method",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-fc-062",
+      "pathId": "job-interview-prep",
+      "question": "What makes an answer sound professional?",
+      "answer": "Clear structure, respectful tone, and specific evidence.",
+      "topic": "professional communication choices",
+      "difficulty": "easy"
+    },
+    {
+      "id": "job-fc-063",
+      "pathId": "job-interview-prep",
+      "question": "What is the best mindset for an interview?",
+      "answer": "A two-way conversation about fit, value, and expectations.",
+      "topic": "confidence without arrogance",
+      "difficulty": "easy"
+    },
+    {
+      "id": "job-fc-064",
+      "pathId": "job-interview-prep",
+      "question": "How can you answer \"What are your salary expectations\" late in the process?",
+      "answer": "Use your researched range and connect it to responsibilities, skills, and the full package.",
+      "topic": "salary expectations",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-fc-065",
+      "pathId": "job-interview-prep",
+      "question": "How can you answer \"Why this company\"?",
+      "answer": "Mention specific products, values, team goals, or role responsibilities that genuinely interest you.",
+      "topic": "motivation and career goals",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-fc-066",
+      "pathId": "job-interview-prep",
+      "question": "What is a strong way to discuss a difficult manager?",
+      "answer": "Keep the answer respectful and focus on communication, expectations, and what you learned.",
+      "topic": "conflict",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-fc-067",
+      "pathId": "job-interview-prep",
+      "question": "How can you describe meeting a tight deadline?",
+      "answer": "Explain priorities, tradeoffs, communication, and the result.",
+      "topic": "behavioral questions",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-fc-068",
+      "pathId": "job-interview-prep",
+      "question": "What is a good way to describe adaptability?",
+      "answer": "Give an example where requirements changed and you adjusted your plan successfully.",
+      "topic": "behavioral questions",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-fc-069",
+      "pathId": "job-interview-prep",
+      "question": "How can you answer \"What do you know about us\"?",
+      "answer": "Show that you researched the role, company, customers, or recent work.",
+      "topic": "motivation and career goals",
+      "difficulty": "easy"
+    },
+    {
+      "id": "job-fc-070",
+      "pathId": "job-interview-prep",
+      "question": "How can you answer \"Do you have questions for us\"?",
+      "answer": "Ask about success measures, team process, priorities, or next steps.",
+      "topic": "questions to ask interviewer",
+      "difficulty": "easy"
+    },
+    {
+      "id": "job-fc-071",
+      "pathId": "job-interview-prep",
+      "question": "What should you avoid when asking interviewer questions?",
+      "answer": "Avoid questions that sound like you want minimum effort or did no research.",
+      "topic": "questions to ask interviewer",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-fc-072",
+      "pathId": "job-interview-prep",
+      "question": "How can you discuss a layoff?",
+      "answer": "Keep it factual, avoid blame, and redirect to readiness for the next role.",
+      "topic": "employment gaps",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-fc-073",
+      "pathId": "job-interview-prep",
+      "question": "How can you discuss a short job stay?",
+      "answer": "Explain the context briefly and focus on what you are seeking now.",
+      "topic": "difficult questions",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-fc-074",
+      "pathId": "job-interview-prep",
+      "question": "What makes a STAR story relevant?",
+      "answer": "It matches the skill or behavior the interviewer is asking about.",
+      "topic": "STAR method",
+      "difficulty": "easy"
+    },
+    {
+      "id": "job-fc-075",
+      "pathId": "job-interview-prep",
+      "question": "How can you keep a STAR answer from becoming too long?",
+      "answer": "Choose only the details needed to understand the action and result.",
+      "topic": "concise answer structure",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-fc-076",
+      "pathId": "job-interview-prep",
+      "question": "What should you do if an interviewer challenges your answer?",
+      "answer": "Stay calm, clarify your reasoning, and add evidence if needed.",
+      "topic": "professional communication choices",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-fc-077",
+      "pathId": "job-interview-prep",
+      "question": "How can you show enthusiasm professionally?",
+      "answer": "Explain what interests you about the work and how you can contribute.",
+      "topic": "motivation and career goals",
+      "difficulty": "easy"
+    },
+    {
+      "id": "job-fc-078",
+      "pathId": "job-interview-prep",
+      "question": "What is a strong way to answer \"What did you learn from your last role\"?",
+      "answer": "Name a concrete skill, habit, or insight you can apply in the new role.",
+      "topic": "failure and learning",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-fc-079",
+      "pathId": "job-interview-prep",
+      "question": "How can you describe handling feedback you disagreed with?",
+      "answer": "Show that you listened, asked questions, and looked for useful parts.",
+      "topic": "professional communication choices",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-fc-080",
+      "pathId": "job-interview-prep",
+      "question": "What should you do if you realize your answer was unclear?",
+      "answer": "Briefly clarify and restate the key point in simpler language.",
+      "topic": "professional communication choices",
+      "difficulty": "easy"
+    }
   ],
   "quizQuestions": [
-    {"id": "job-qz-001", "pathId": "job-interview-prep", "question": "What does the A in STAR mean?", "options": [{"id": "a", "text": "Answer"}, {"id": "b", "text": "Action"}, {"id": "c", "text": "Ability"}, {"id": "d", "text": "Award"}], "correctAnswerId": "b", "explanation": "Action describes what you personally did in the situation.", "topic": "STAR method", "difficulty": "easy"},
-    {"id": "job-qz-002", "pathId": "job-interview-prep", "question": "Which answer best handles a weakness question?", "options": [{"id": "a", "text": "I have no weaknesses."}, {"id": "b", "text": "I am bad at everything."}, {"id": "c", "text": "I am improving my prioritization by using planning tools."}, {"id": "d", "text": "My weakness is perfection."}], "correctAnswerId": "c", "explanation": "It is specific, honest, and improvement-focused.", "topic": "strengths and weaknesses", "difficulty": "medium"},
-    {"id": "job-qz-003", "pathId": "job-interview-prep", "question": "What should salary expectations be based on?", "options": [{"id": "a", "text": "Research and role level"}, {"id": "b", "text": "A random high number"}, {"id": "c", "text": "A friend's exact salary"}, {"id": "d", "text": "No preparation"}], "correctAnswerId": "a", "explanation": "A researched range helps keep the answer realistic and professional.", "topic": "salary expectations", "difficulty": "medium"},
-    {"id": "job-qz-004", "pathId": "job-interview-prep", "question": "Which detail belongs in the Result part of STAR?", "options": [{"id": "a", "text": "The impact of your action"}, {"id": "b", "text": "Only the company name"}, {"id": "c", "text": "A new unrelated story"}, {"id": "d", "text": "The interviewer's opinion"}], "correctAnswerId": "a", "explanation": "Result explains what changed because of your action.", "topic": "STAR method", "difficulty": "easy"},
-    {"id": "job-qz-005", "pathId": "job-interview-prep", "question": "What makes a behavioral answer stronger?", "options": [{"id": "a", "text": "A vague opinion"}, {"id": "b", "text": "A real example"}, {"id": "c", "text": "A very short yes"}, {"id": "d", "text": "A complaint"}], "correctAnswerId": "b", "explanation": "Behavioral questions ask for evidence from past behavior.", "topic": "behavioral questions", "difficulty": "easy"},
-    {"id": "job-qz-006", "pathId": "job-interview-prep", "question": "Why should you research the company?", "options": [{"id": "a", "text": "To avoid answering questions"}, {"id": "b", "text": "To connect your motivation to the role"}, {"id": "c", "text": "To memorize every employee name"}, {"id": "d", "text": "To ask no questions"}], "correctAnswerId": "b", "explanation": "Research helps you give relevant, informed answers.", "topic": "preparation", "difficulty": "easy"},
-    {"id": "job-qz-007", "pathId": "job-interview-prep", "question": "Which is the best way to describe a strength?", "options": [{"id": "a", "text": "Name it and give evidence"}, {"id": "b", "text": "Say only one word"}, {"id": "c", "text": "Avoid examples"}, {"id": "d", "text": "Say every strength possible"}], "correctAnswerId": "a", "explanation": "Evidence makes the strength credible.", "topic": "strengths and weaknesses", "difficulty": "easy"},
-    {"id": "job-qz-008", "pathId": "job-interview-prep", "question": "A good career goal should be:", "options": [{"id": "a", "text": "Relevant and realistic"}, {"id": "b", "text": "Unrelated to the role"}, {"id": "c", "text": "Only about vacation"}, {"id": "d", "text": "Copied from someone else"}], "correctAnswerId": "a", "explanation": "Relevant goals show fit and direction.", "topic": "motivation and career goals", "difficulty": "easy"},
-    {"id": "job-qz-009", "pathId": "job-interview-prep", "question": "Which opening is strongest for 'Tell me about yourself'?", "options": [{"id": "a", "text": "I was born in..."}, {"id": "b", "text": "I am currently building customer support skills and recently completed..."}, {"id": "c", "text": "There is nothing to say."}, {"id": "d", "text": "My full life story starts with..."}], "correctAnswerId": "b", "explanation": "It starts with relevant current experience and keeps the answer focused.", "topic": "answer structure", "difficulty": "medium"},
-    {"id": "job-qz-010", "pathId": "job-interview-prep", "question": "Which is the best way to discuss a conflict?", "options": [{"id": "a", "text": "Blame the other person."}, {"id": "b", "text": "Describe the issue calmly and explain your constructive actions."}, {"id": "c", "text": "Say you never have conflicts."}, {"id": "d", "text": "Refuse to answer."}], "correctAnswerId": "b", "explanation": "A strong answer shows communication, responsibility, and a constructive outcome.", "topic": "conflict and teamwork", "difficulty": "medium"},
-    {"id": "job-qz-011", "pathId": "job-interview-prep", "question": "What is a good question to ask the interviewer?", "options": [{"id": "a", "text": "How quickly can I be promoted?"}, {"id": "b", "text": "What would success look like in this role after three months?"}, {"id": "c", "text": "Can I leave early every day?"}, {"id": "d", "text": "Do you check work?"}], "correctAnswerId": "b", "explanation": "It shows interest in performance and expectations.", "topic": "questions to ask", "difficulty": "easy"},
-    {"id": "job-qz-012", "pathId": "job-interview-prep", "question": "Which answer handles a career gap best?", "options": [{"id": "a", "text": "I do not want to talk about it."}, {"id": "b", "text": "I had a gap, and during that time I refreshed my skills and prepared for this role."}, {"id": "c", "text": "It is not your business."}, {"id": "d", "text": "I forgot."}], "correctAnswerId": "b", "explanation": "It is brief, honest, and redirects to readiness.", "topic": "career changes and gaps", "difficulty": "medium"},
-    {"id": "job-qz-013", "pathId": "job-interview-prep", "question": "Which answer shows learning from failure?", "options": [{"id": "a", "text": "It was everyone else's fault."}, {"id": "b", "text": "I missed a deadline, then improved my planning and now check priorities earlier."}, {"id": "c", "text": "I never fail."}, {"id": "d", "text": "I do not remember anything."}], "correctAnswerId": "b", "explanation": "It owns the issue, explains the change, and shows growth.", "topic": "failure and learning", "difficulty": "medium"},
-    {"id": "job-qz-014", "pathId": "job-interview-prep", "question": "What should you avoid when discussing a previous employer?", "options": [{"id": "a", "text": "A respectful neutral tone"}, {"id": "b", "text": "Blaming and insulting people"}, {"id": "c", "text": "Focusing on what you learned"}, {"id": "d", "text": "Keeping details professional"}], "correctAnswerId": "b", "explanation": "Blaming and insults can look unprofessional even if the experience was difficult.", "topic": "professional communication", "difficulty": "easy"},
-    {"id": "job-qz-015", "pathId": "job-interview-prep", "question": "Which answer is strongest for lacking one requirement?", "options": [{"id": "a", "text": "I cannot do the job."}, {"id": "b", "text": "I have related experience with similar tools and I am already learning this one."}, {"id": "c", "text": "That requirement does not matter."}, {"id": "d", "text": "I will pretend I know it."}], "correctAnswerId": "b", "explanation": "It is honest while connecting related skills and a learning plan.", "topic": "career changes and gaps", "difficulty": "medium"},
-    {"id": "job-qz-016", "pathId": "job-interview-prep", "question": "What is the best length for many interview answers?", "options": [{"id": "a", "text": "About one to two focused minutes"}, {"id": "b", "text": "Always ten minutes"}, {"id": "c", "text": "One word only"}, {"id": "d", "text": "As long as possible"}], "correctAnswerId": "a", "explanation": "Focused answers usually give enough detail without losing clarity.", "topic": "answer structure", "difficulty": "easy"},
-    {"id": "job-qz-017", "pathId": "job-interview-prep", "question": "Which salary answer is most professional?", "options": [{"id": "a", "text": "Pay me anything."}, {"id": "b", "text": "Based on my research, I am looking in the range of..."}, {"id": "c", "text": "I demand double now."}, {"id": "d", "text": "I refuse to discuss it."}], "correctAnswerId": "b", "explanation": "It shows preparation and gives a professional basis for the range.", "topic": "salary expectations", "difficulty": "medium"},
-    {"id": "job-qz-018", "pathId": "job-interview-prep", "question": "Which is a weak answer to 'Why this company'?", "options": [{"id": "a", "text": "Your product interests me because..."}, {"id": "b", "text": "I saw the role matches my customer support goals."}, {"id": "c", "text": "I need any job and did not research you."}, {"id": "d", "text": "Your work in this area connects with my experience."}], "correctAnswerId": "c", "explanation": "It sounds unprepared and does not show genuine fit.", "topic": "motivation and career goals", "difficulty": "easy"},
-    {"id": "job-qz-019", "pathId": "job-interview-prep", "question": "What should a thank-you message after an interview include?", "options": [{"id": "a", "text": "A short thank you and continued interest"}, {"id": "b", "text": "A demand for an answer"}, {"id": "c", "text": "A complaint about the questions"}, {"id": "d", "text": "A long personal story"}], "correctAnswerId": "a", "explanation": "A concise thank-you note reinforces professionalism and interest.", "topic": "professional communication", "difficulty": "easy"},
-    {"id": "job-qz-020", "pathId": "job-interview-prep", "question": "Which answer best shows teamwork?", "options": [{"id": "a", "text": "I did everything and ignored the team."}, {"id": "b", "text": "I coordinated with two teammates, shared updates, and helped complete the task on time."}, {"id": "c", "text": "Teams slow me down."}, {"id": "d", "text": "I never talk to coworkers."}], "correctAnswerId": "b", "explanation": "It shows collaboration, communication, and a useful result.", "topic": "conflict and teamwork", "difficulty": "medium"}
+    {
+      "id": "job-qz-001",
+      "pathId": "job-interview-prep",
+      "question": "What does the A in STAR mean?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Answer"
+        },
+        {
+          "id": "b",
+          "text": "Action"
+        },
+        {
+          "id": "c",
+          "text": "Ability"
+        },
+        {
+          "id": "d",
+          "text": "Award"
+        }
+      ],
+      "correctAnswerId": "b",
+      "explanation": "Action describes what you personally did.",
+      "topic": "STAR method",
+      "difficulty": "easy"
+    },
+    {
+      "id": "job-qz-002",
+      "pathId": "job-interview-prep",
+      "question": "Which answer best handles a weakness question?",
+      "options": [
+        {
+          "id": "a",
+          "text": "I have no weaknesses."
+        },
+        {
+          "id": "b",
+          "text": "I am bad at everything."
+        },
+        {
+          "id": "c",
+          "text": "I am improving my prioritization by using planning tools."
+        },
+        {
+          "id": "d",
+          "text": "My weakness is perfection."
+        }
+      ],
+      "correctAnswerId": "c",
+      "explanation": "It is specific, honest, and improvement-focused.",
+      "topic": "strengths and weaknesses",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-qz-003",
+      "pathId": "job-interview-prep",
+      "question": "What should salary expectations be based on?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Research and role level"
+        },
+        {
+          "id": "b",
+          "text": "A random high number"
+        },
+        {
+          "id": "c",
+          "text": "A friend's exact salary"
+        },
+        {
+          "id": "d",
+          "text": "No preparation"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "A researched range helps keep the answer realistic.",
+      "topic": "salary expectations",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-qz-004",
+      "pathId": "job-interview-prep",
+      "question": "Which detail belongs in the Result part of STAR?",
+      "options": [
+        {
+          "id": "a",
+          "text": "The impact of your action"
+        },
+        {
+          "id": "b",
+          "text": "Only the company name"
+        },
+        {
+          "id": "c",
+          "text": "A new unrelated story"
+        },
+        {
+          "id": "d",
+          "text": "The interviewer's opinion"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "Result explains what changed because of your action.",
+      "topic": "STAR method",
+      "difficulty": "easy"
+    },
+    {
+      "id": "job-qz-005",
+      "pathId": "job-interview-prep",
+      "question": "What makes a behavioral answer stronger?",
+      "options": [
+        {
+          "id": "a",
+          "text": "A vague opinion"
+        },
+        {
+          "id": "b",
+          "text": "A real example"
+        },
+        {
+          "id": "c",
+          "text": "A very short yes"
+        },
+        {
+          "id": "d",
+          "text": "A complaint"
+        }
+      ],
+      "correctAnswerId": "b",
+      "explanation": "Behavioral questions ask for evidence from past behavior.",
+      "topic": "behavioral questions",
+      "difficulty": "easy"
+    },
+    {
+      "id": "job-qz-006",
+      "pathId": "job-interview-prep",
+      "question": "Why should you research the company?",
+      "options": [
+        {
+          "id": "a",
+          "text": "To avoid answering questions"
+        },
+        {
+          "id": "b",
+          "text": "To connect your motivation to the role"
+        },
+        {
+          "id": "c",
+          "text": "To memorize every employee name"
+        },
+        {
+          "id": "d",
+          "text": "To ask no questions"
+        }
+      ],
+      "correctAnswerId": "b",
+      "explanation": "Research helps you give relevant, informed answers.",
+      "topic": "motivation and career goals",
+      "difficulty": "easy"
+    },
+    {
+      "id": "job-qz-007",
+      "pathId": "job-interview-prep",
+      "question": "Which is the best way to describe a strength?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Name it and give evidence"
+        },
+        {
+          "id": "b",
+          "text": "Say only one word"
+        },
+        {
+          "id": "c",
+          "text": "Avoid examples"
+        },
+        {
+          "id": "d",
+          "text": "Say every strength possible"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "Evidence makes the strength credible.",
+      "topic": "strengths and weaknesses",
+      "difficulty": "easy"
+    },
+    {
+      "id": "job-qz-008",
+      "pathId": "job-interview-prep",
+      "question": "A good career goal should be:",
+      "options": [
+        {
+          "id": "a",
+          "text": "Relevant and realistic"
+        },
+        {
+          "id": "b",
+          "text": "Unrelated to the role"
+        },
+        {
+          "id": "c",
+          "text": "Only about vacation"
+        },
+        {
+          "id": "d",
+          "text": "Copied from someone else"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "Relevant goals show fit and direction.",
+      "topic": "motivation and career goals",
+      "difficulty": "easy"
+    },
+    {
+      "id": "job-qz-009",
+      "pathId": "job-interview-prep",
+      "question": "Which conflict answer is strongest?",
+      "options": [
+        {
+          "id": "a",
+          "text": "I listened, clarified the issue, and helped agree on next steps."
+        },
+        {
+          "id": "b",
+          "text": "My coworker was terrible."
+        },
+        {
+          "id": "c",
+          "text": "I ignored the person."
+        },
+        {
+          "id": "d",
+          "text": "I told everyone they were wrong."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "Strong conflict answers stay respectful and solution-focused.",
+      "topic": "conflict",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-qz-010",
+      "pathId": "job-interview-prep",
+      "question": "How should you explain failure?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Own your part and explain what changed afterward."
+        },
+        {
+          "id": "b",
+          "text": "Blame everyone else."
+        },
+        {
+          "id": "c",
+          "text": "Hide the failure completely."
+        },
+        {
+          "id": "d",
+          "text": "Say you never fail."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "A good answer shows accountability and learning.",
+      "topic": "failure and learning",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-qz-011",
+      "pathId": "job-interview-prep",
+      "question": "Which question is good to ask an interviewer?",
+      "options": [
+        {
+          "id": "a",
+          "text": "What would success look like in this role after six months?"
+        },
+        {
+          "id": "b",
+          "text": "How soon can I leave every day?"
+        },
+        {
+          "id": "c",
+          "text": "Do you check if people work?"
+        },
+        {
+          "id": "d",
+          "text": "Can I avoid teamwork?"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "This question shows interest in performance and expectations.",
+      "topic": "questions to ask interviewer",
+      "difficulty": "easy"
+    },
+    {
+      "id": "job-qz-012",
+      "pathId": "job-interview-prep",
+      "question": "What is a weak answer to \"Tell me about yourself\"?",
+      "options": [
+        {
+          "id": "a",
+          "text": "A long personal story unrelated to the job"
+        },
+        {
+          "id": "b",
+          "text": "A short role-focused summary"
+        },
+        {
+          "id": "c",
+          "text": "A relevant career overview"
+        },
+        {
+          "id": "d",
+          "text": "A concise connection to the role"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "The answer should focus on role-relevant experience and motivation.",
+      "topic": "concise answer structure",
+      "difficulty": "easy"
+    },
+    {
+      "id": "job-qz-013",
+      "pathId": "job-interview-prep",
+      "question": "Which answer best explains an employment gap?",
+      "options": [
+        {
+          "id": "a",
+          "text": "I used that period to handle personal responsibilities and refresh my skills."
+        },
+        {
+          "id": "b",
+          "text": "I refuse to discuss anything."
+        },
+        {
+          "id": "c",
+          "text": "Nothing happened and I forgot work."
+        },
+        {
+          "id": "d",
+          "text": "The gap means I cannot work."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "It is brief, honest, and redirects to readiness.",
+      "topic": "employment gaps",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-qz-014",
+      "pathId": "job-interview-prep",
+      "question": "Which answer best explains a career change?",
+      "options": [
+        {
+          "id": "a",
+          "text": "My communication and problem-solving skills transfer well, and I prepared through projects."
+        },
+        {
+          "id": "b",
+          "text": "I randomly changed because I was bored."
+        },
+        {
+          "id": "c",
+          "text": "My old career was useless."
+        },
+        {
+          "id": "d",
+          "text": "I have no reason."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "It connects transferable skills and preparation.",
+      "topic": "career change explanation",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-qz-015",
+      "pathId": "job-interview-prep",
+      "question": "What should you avoid in salary discussions?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Giving an unresearched demand with no flexibility"
+        },
+        {
+          "id": "b",
+          "text": "A researched range"
+        },
+        {
+          "id": "c",
+          "text": "Mentioning role level"
+        },
+        {
+          "id": "d",
+          "text": "Discussing the full package"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "Unprepared demands can sound unrealistic or rigid.",
+      "topic": "salary expectations",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-qz-016",
+      "pathId": "job-interview-prep",
+      "question": "What should a thank-you note include?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Appreciation, a role-specific detail, and continued interest"
+        },
+        {
+          "id": "b",
+          "text": "A complaint list"
+        },
+        {
+          "id": "c",
+          "text": "Salary demands only"
+        },
+        {
+          "id": "d",
+          "text": "A long unrelated story"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "A concise note reinforces professionalism and interest.",
+      "topic": "professional communication choices",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-qz-017",
+      "pathId": "job-interview-prep",
+      "question": "What is a good response if you do not understand a question?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Could you clarify what you mean by that?"
+        },
+        {
+          "id": "b",
+          "text": "I will answer something else."
+        },
+        {
+          "id": "c",
+          "text": "That question is bad."
+        },
+        {
+          "id": "d",
+          "text": "I do not understand anything."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "Asking for clarification is better than guessing.",
+      "topic": "professional communication choices",
+      "difficulty": "easy"
+    },
+    {
+      "id": "job-qz-018",
+      "pathId": "job-interview-prep",
+      "question": "Which answer best handles limited experience?",
+      "options": [
+        {
+          "id": "a",
+          "text": "I have related project experience and learn quickly through structured practice."
+        },
+        {
+          "id": "b",
+          "text": "I cannot do the job at all."
+        },
+        {
+          "id": "c",
+          "text": "Experience does not matter."
+        },
+        {
+          "id": "d",
+          "text": "I will not learn."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "It acknowledges the gap and shows a plan.",
+      "topic": "career change explanation",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-qz-019",
+      "pathId": "job-interview-prep",
+      "question": "What is a common interview mistake?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Giving vague answers without examples"
+        },
+        {
+          "id": "b",
+          "text": "Using a clear example"
+        },
+        {
+          "id": "c",
+          "text": "Asking a thoughtful question"
+        },
+        {
+          "id": "d",
+          "text": "Explaining your result"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "Specific examples make answers credible.",
+      "topic": "common interview mistakes",
+      "difficulty": "easy"
+    },
+    {
+      "id": "job-qz-020",
+      "pathId": "job-interview-prep",
+      "question": "Which answer best shows teamwork?",
+      "options": [
+        {
+          "id": "a",
+          "text": "I shared updates early and helped the team meet the deadline."
+        },
+        {
+          "id": "b",
+          "text": "I did not communicate."
+        },
+        {
+          "id": "c",
+          "text": "I waited for others to fail."
+        },
+        {
+          "id": "d",
+          "text": "I worked against the team."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "Teamwork answers should show communication and shared results.",
+      "topic": "teamwork",
+      "difficulty": "easy"
+    },
+    {
+      "id": "job-qz-021",
+      "pathId": "job-interview-prep",
+      "question": "How should you discuss a mistake?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Briefly explain it, then focus on correction and prevention."
+        },
+        {
+          "id": "b",
+          "text": "Describe every detail forever."
+        },
+        {
+          "id": "c",
+          "text": "Blame another person only."
+        },
+        {
+          "id": "d",
+          "text": "Say mistakes are impossible."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "The interviewer wants learning and judgment, not a long confession.",
+      "topic": "failure and learning",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-qz-022",
+      "pathId": "job-interview-prep",
+      "question": "Which answer best handles \"Why should we hire you\"?",
+      "options": [
+        {
+          "id": "a",
+          "text": "My experience matches the role, especially in customer support and process improvement."
+        },
+        {
+          "id": "b",
+          "text": "Because I need money."
+        },
+        {
+          "id": "c",
+          "text": "Because I am better than everyone."
+        },
+        {
+          "id": "d",
+          "text": "No reason, maybe."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "A strong answer connects your value to role needs.",
+      "topic": "motivation and career goals",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-qz-023",
+      "pathId": "job-interview-prep",
+      "question": "What should you do after an interview?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Send a brief thank-you message"
+        },
+        {
+          "id": "b",
+          "text": "Call every hour"
+        },
+        {
+          "id": "c",
+          "text": "Send unrelated documents"
+        },
+        {
+          "id": "d",
+          "text": "Do nothing always"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "A thank-you message is professional follow-up.",
+      "topic": "professional communication choices",
+      "difficulty": "easy"
+    },
+    {
+      "id": "job-qz-024",
+      "pathId": "job-interview-prep",
+      "question": "Which answer is best for prioritizing tasks?",
+      "options": [
+        {
+          "id": "a",
+          "text": "I compare deadlines, impact, and dependencies, then communicate tradeoffs."
+        },
+        {
+          "id": "b",
+          "text": "I pick randomly."
+        },
+        {
+          "id": "c",
+          "text": "I do only easy tasks."
+        },
+        {
+          "id": "d",
+          "text": "I ignore deadlines."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "A strong answer shows method and communication.",
+      "topic": "behavioral questions",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-qz-025",
+      "pathId": "job-interview-prep",
+      "question": "What is a good STAR result?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Reduced response time by 20% and improved customer feedback"
+        },
+        {
+          "id": "b",
+          "text": "I did something."
+        },
+        {
+          "id": "c",
+          "text": "The end."
+        },
+        {
+          "id": "d",
+          "text": "No result was noticed."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "Specific outcomes make the story stronger.",
+      "topic": "STAR method",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-qz-026",
+      "pathId": "job-interview-prep",
+      "question": "Which question helps you evaluate the role?",
+      "options": [
+        {
+          "id": "a",
+          "text": "How does the team usually measure success?"
+        },
+        {
+          "id": "b",
+          "text": "Do people take long lunches?"
+        },
+        {
+          "id": "c",
+          "text": "Can I skip meetings?"
+        },
+        {
+          "id": "d",
+          "text": "Is work always easy?"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "Success measures help you understand expectations.",
+      "topic": "questions to ask interviewer",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-qz-027",
+      "pathId": "job-interview-prep",
+      "question": "What is a good way to answer about pressure?",
+      "options": [
+        {
+          "id": "a",
+          "text": "I prioritized urgent tasks, communicated risks, and delivered the key item first."
+        },
+        {
+          "id": "b",
+          "text": "I panicked and stopped."
+        },
+        {
+          "id": "c",
+          "text": "I blamed the deadline."
+        },
+        {
+          "id": "d",
+          "text": "I ignored the request."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "This shows calm prioritization and communication.",
+      "topic": "behavioral questions",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-qz-028",
+      "pathId": "job-interview-prep",
+      "question": "Which weakness answer is risky?",
+      "options": [
+        {
+          "id": "a",
+          "text": "I am always late and do not plan to change."
+        },
+        {
+          "id": "b",
+          "text": "I am improving presentation skills with practice."
+        },
+        {
+          "id": "c",
+          "text": "I sometimes over-focus on detail, so I use checklists."
+        },
+        {
+          "id": "d",
+          "text": "I am learning to delegate earlier."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "A weakness with no improvement plan damages trust.",
+      "topic": "strengths and weaknesses",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-qz-029",
+      "pathId": "job-interview-prep",
+      "question": "Which answer is best for motivation?",
+      "options": [
+        {
+          "id": "a",
+          "text": "I enjoy solving customer problems and improving processes."
+        },
+        {
+          "id": "b",
+          "text": "I only want any job."
+        },
+        {
+          "id": "c",
+          "text": "I do not know."
+        },
+        {
+          "id": "d",
+          "text": "I dislike this work."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "A strong answer connects motivation to actual role tasks.",
+      "topic": "motivation and career goals",
+      "difficulty": "easy"
+    },
+    {
+      "id": "job-qz-030",
+      "pathId": "job-interview-prep",
+      "question": "What should you avoid when discussing conflict?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Insults and blame"
+        },
+        {
+          "id": "b",
+          "text": "Facts"
+        },
+        {
+          "id": "c",
+          "text": "Your action"
+        },
+        {
+          "id": "d",
+          "text": "The resolution"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "Blame makes the answer sound unprofessional.",
+      "topic": "conflict",
+      "difficulty": "easy"
+    },
+    {
+      "id": "job-qz-031",
+      "pathId": "job-interview-prep",
+      "question": "Which answer shows receiving feedback well?",
+      "options": [
+        {
+          "id": "a",
+          "text": "I listened, adjusted the report format, and my next version was clearer."
+        },
+        {
+          "id": "b",
+          "text": "I ignored it."
+        },
+        {
+          "id": "c",
+          "text": "I argued for an hour."
+        },
+        {
+          "id": "d",
+          "text": "I stopped doing the task."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "It shows learning and practical change.",
+      "topic": "failure and learning",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-qz-032",
+      "pathId": "job-interview-prep",
+      "question": "Which final question is useful?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Is there anything in my background you would like me to clarify?"
+        },
+        {
+          "id": "b",
+          "text": "Did I get the job now?"
+        },
+        {
+          "id": "c",
+          "text": "Why is this taking long?"
+        },
+        {
+          "id": "d",
+          "text": "Can we skip the process?"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "It gives the interviewer a chance to address concerns.",
+      "topic": "questions to ask interviewer",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-qz-033",
+      "pathId": "job-interview-prep",
+      "question": "What makes an answer concise?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Clear point, relevant example, result, then stop"
+        },
+        {
+          "id": "b",
+          "text": "Many unrelated stories"
+        },
+        {
+          "id": "c",
+          "text": "No structure"
+        },
+        {
+          "id": "d",
+          "text": "Repeating the same point"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "Concise structure respects time and improves clarity.",
+      "topic": "concise answer structure",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-qz-034",
+      "pathId": "job-interview-prep",
+      "question": "Which answer best explains leaving a job?",
+      "options": [
+        {
+          "id": "a",
+          "text": "I am looking for a role with more alignment to my growth and skills."
+        },
+        {
+          "id": "b",
+          "text": "My old manager was awful."
+        },
+        {
+          "id": "c",
+          "text": "I hated everything."
+        },
+        {
+          "id": "d",
+          "text": "No comment forever."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "A professional answer avoids blaming and focuses on fit.",
+      "topic": "difficult questions",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-qz-035",
+      "pathId": "job-interview-prep",
+      "question": "What should you say if you lack one tool listed in the job ad?",
+      "options": [
+        {
+          "id": "a",
+          "text": "I have used similar tools and can learn this one quickly."
+        },
+        {
+          "id": "b",
+          "text": "I cannot learn it."
+        },
+        {
+          "id": "c",
+          "text": "That tool is not important."
+        },
+        {
+          "id": "d",
+          "text": "I will avoid it."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "This shows honesty and learning ability.",
+      "topic": "difficult questions",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-qz-036",
+      "pathId": "job-interview-prep",
+      "question": "What is a strong answer about remote work?",
+      "options": [
+        {
+          "id": "a",
+          "text": "I use clear updates, reliable routines, and shared tools to stay aligned."
+        },
+        {
+          "id": "b",
+          "text": "I disappear all day."
+        },
+        {
+          "id": "c",
+          "text": "Remote work means no communication."
+        },
+        {
+          "id": "d",
+          "text": "I never ask questions."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "Remote work requires communication and self-management.",
+      "topic": "teamwork",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-qz-037",
+      "pathId": "job-interview-prep",
+      "question": "Which achievement wording is strongest?",
+      "options": [
+        {
+          "id": "a",
+          "text": "I improved the report process and reduced weekly preparation time by two hours."
+        },
+        {
+          "id": "b",
+          "text": "I did good things."
+        },
+        {
+          "id": "c",
+          "text": "People liked me maybe."
+        },
+        {
+          "id": "d",
+          "text": "I was nice."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "Specific impact is more convincing than vague praise.",
+      "topic": "confidence without arrogance",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-qz-038",
+      "pathId": "job-interview-prep",
+      "question": "How should you handle a personal or inappropriate question?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Redirect politely to your ability to perform the role."
+        },
+        {
+          "id": "b",
+          "text": "Answer every private detail."
+        },
+        {
+          "id": "c",
+          "text": "Become hostile immediately."
+        },
+        {
+          "id": "d",
+          "text": "End the interview without context."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "A calm redirect protects privacy and keeps the focus on the role.",
+      "topic": "difficult questions",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-qz-039",
+      "pathId": "job-interview-prep",
+      "question": "Which answer best shows leadership without a title?",
+      "options": [
+        {
+          "id": "a",
+          "text": "I coordinated tasks and helped the team remove blockers."
+        },
+        {
+          "id": "b",
+          "text": "I waited for a manager."
+        },
+        {
+          "id": "c",
+          "text": "I gave orders without helping."
+        },
+        {
+          "id": "d",
+          "text": "I avoided responsibility."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "Leadership can be shown through ownership and support.",
+      "topic": "behavioral questions",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-qz-040",
+      "pathId": "job-interview-prep",
+      "question": "What is a good answer to \"Are you a team player\"?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Yes; in my last project I shared updates and helped solve blockers."
+        },
+        {
+          "id": "b",
+          "text": "Yes."
+        },
+        {
+          "id": "c",
+          "text": "No examples needed."
+        },
+        {
+          "id": "d",
+          "text": "Teams are annoying."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "A short example makes the answer credible.",
+      "topic": "teamwork",
+      "difficulty": "easy"
+    },
+    {
+      "id": "job-qz-041",
+      "pathId": "job-interview-prep",
+      "question": "Which answer best describes work style?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Organized, communicative, and focused on priorities."
+        },
+        {
+          "id": "b",
+          "text": "Chaotic and silent."
+        },
+        {
+          "id": "c",
+          "text": "Only last-minute work."
+        },
+        {
+          "id": "d",
+          "text": "I never plan."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "Work style should connect to reliable behavior.",
+      "topic": "teamwork",
+      "difficulty": "easy"
+    },
+    {
+      "id": "job-qz-042",
+      "pathId": "job-interview-prep",
+      "question": "What should you learn from a job description?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Responsibilities, required skills, and success clues"
+        },
+        {
+          "id": "b",
+          "text": "Only the logo"
+        },
+        {
+          "id": "c",
+          "text": "Only the address"
+        },
+        {
+          "id": "d",
+          "text": "Nothing useful"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "The job description tells you what to prepare for.",
+      "topic": "motivation and career goals",
+      "difficulty": "easy"
+    },
+    {
+      "id": "job-qz-043",
+      "pathId": "job-interview-prep",
+      "question": "What makes a panel interview different?",
+      "options": [
+        {
+          "id": "a",
+          "text": "You may need to include several interviewers in your responses."
+        },
+        {
+          "id": "b",
+          "text": "You should ignore everyone except one person."
+        },
+        {
+          "id": "c",
+          "text": "You should not answer questions."
+        },
+        {
+          "id": "d",
+          "text": "You should speak only to the wall."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "Panel interviews require awareness of multiple listeners.",
+      "topic": "professional communication choices",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-qz-044",
+      "pathId": "job-interview-prep",
+      "question": "Which answer best handles overqualification?",
+      "options": [
+        {
+          "id": "a",
+          "text": "I am interested because this role matches the work I want to focus on now."
+        },
+        {
+          "id": "b",
+          "text": "I will leave immediately."
+        },
+        {
+          "id": "c",
+          "text": "This job is below me."
+        },
+        {
+          "id": "d",
+          "text": "I do not know why I applied."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "It addresses fit and commitment.",
+      "topic": "difficult questions",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-qz-045",
+      "pathId": "job-interview-prep",
+      "question": "What is the best mindset for an interview?",
+      "options": [
+        {
+          "id": "a",
+          "text": "A two-way conversation about fit and value"
+        },
+        {
+          "id": "b",
+          "text": "A test where you must be perfect"
+        },
+        {
+          "id": "c",
+          "text": "A chance to memorize scripts"
+        },
+        {
+          "id": "d",
+          "text": "A place to hide questions"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "The interview helps both sides evaluate fit.",
+      "topic": "confidence without arrogance",
+      "difficulty": "easy"
+    },
+    {
+      "id": "job-qz-046",
+      "pathId": "job-interview-prep",
+      "question": "Which answer is strongest for a customer complaint example?",
+      "options": [
+        {
+          "id": "a",
+          "text": "I listened, confirmed the issue, offered a solution, and followed up."
+        },
+        {
+          "id": "b",
+          "text": "I told them to calm down."
+        },
+        {
+          "id": "c",
+          "text": "I ignored the complaint."
+        },
+        {
+          "id": "d",
+          "text": "I blamed company policy only."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "It shows empathy, action, and follow-through.",
+      "topic": "behavioral questions",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-qz-047",
+      "pathId": "job-interview-prep",
+      "question": "Which question should you avoid asking too early?",
+      "options": [
+        {
+          "id": "a",
+          "text": "How little work can I do?"
+        },
+        {
+          "id": "b",
+          "text": "What are the team priorities?"
+        },
+        {
+          "id": "c",
+          "text": "How is success measured?"
+        },
+        {
+          "id": "d",
+          "text": "What are the next steps?"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "It sends the wrong signal about motivation.",
+      "topic": "questions to ask interviewer",
+      "difficulty": "easy"
+    },
+    {
+      "id": "job-qz-048",
+      "pathId": "job-interview-prep",
+      "question": "Which answer shows professional communication?",
+      "options": [
+        {
+          "id": "a",
+          "text": "I can follow up with the details after I check the data."
+        },
+        {
+          "id": "b",
+          "text": "I guess something."
+        },
+        {
+          "id": "c",
+          "text": "Whatever you think."
+        },
+        {
+          "id": "d",
+          "text": "I do not care."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "It is honest and offers a clear next step.",
+      "topic": "professional communication choices",
+      "difficulty": "easy"
+    },
+    {
+      "id": "job-qz-049",
+      "pathId": "job-interview-prep",
+      "question": "What is a good way to discuss career goals?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Connect learning goals to responsibilities in the role."
+        },
+        {
+          "id": "b",
+          "text": "Only talk about becoming famous."
+        },
+        {
+          "id": "c",
+          "text": "Say you have no goals."
+        },
+        {
+          "id": "d",
+          "text": "Describe an unrelated dream only."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "Relevant goals help the interviewer see fit.",
+      "topic": "career goals",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-qz-050",
+      "pathId": "job-interview-prep",
+      "question": "Which answer best handles nervousness?",
+      "options": [
+        {
+          "id": "a",
+          "text": "I pause, breathe, and focus on answering the question clearly."
+        },
+        {
+          "id": "b",
+          "text": "I talk faster."
+        },
+        {
+          "id": "c",
+          "text": "I avoid eye contact completely."
+        },
+        {
+          "id": "d",
+          "text": "I stop listening."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "Simple techniques can keep communication clear.",
+      "topic": "confidence without arrogance",
+      "difficulty": "easy"
+    },
+    {
+      "id": "job-qz-051",
+      "pathId": "job-interview-prep",
+      "question": "What should you avoid in \"Tell me about yourself\"?",
+      "options": [
+        {
+          "id": "a",
+          "text": "A full life story unrelated to the job"
+        },
+        {
+          "id": "b",
+          "text": "Current role summary"
+        },
+        {
+          "id": "c",
+          "text": "Relevant skills"
+        },
+        {
+          "id": "d",
+          "text": "Why this role fits"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "The answer should be concise and relevant.",
+      "topic": "concise answer structure",
+      "difficulty": "easy"
+    },
+    {
+      "id": "job-qz-052",
+      "pathId": "job-interview-prep",
+      "question": "Which answer best shows problem solving?",
+      "options": [
+        {
+          "id": "a",
+          "text": "I identified the cause, tested a solution, and measured the result."
+        },
+        {
+          "id": "b",
+          "text": "I hoped it disappeared."
+        },
+        {
+          "id": "c",
+          "text": "I blamed the tool."
+        },
+        {
+          "id": "d",
+          "text": "I waited without action."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "Problem-solving answers should show method and outcome.",
+      "topic": "behavioral questions",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-qz-053",
+      "pathId": "job-interview-prep",
+      "question": "What makes an interview answer trustworthy?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Specific evidence and realistic language"
+        },
+        {
+          "id": "b",
+          "text": "Exaggeration"
+        },
+        {
+          "id": "c",
+          "text": "Insults about others"
+        },
+        {
+          "id": "d",
+          "text": "Unclear claims"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "Trust grows from evidence and professional tone.",
+      "topic": "confidence without arrogance",
+      "difficulty": "easy"
+    },
+    {
+      "id": "job-qz-054",
+      "pathId": "job-interview-prep",
+      "question": "How should you prepare STAR examples?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Use short notes for situations, actions, and results"
+        },
+        {
+          "id": "b",
+          "text": "Memorize a five-page script"
+        },
+        {
+          "id": "c",
+          "text": "Prepare no examples"
+        },
+        {
+          "id": "d",
+          "text": "Use only imaginary stories"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "Short notes help you adapt naturally.",
+      "topic": "STAR method",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-qz-055",
+      "pathId": "job-interview-prep",
+      "question": "Which answer is best for salary flexibility?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Based on my research, I am looking for X-Y and open to the full package."
+        },
+        {
+          "id": "b",
+          "text": "Pay me anything or nothing."
+        },
+        {
+          "id": "c",
+          "text": "I refuse to discuss salary ever."
+        },
+        {
+          "id": "d",
+          "text": "Double the budget or no."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "A range and package context keeps the discussion professional.",
+      "topic": "salary expectations",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-qz-056",
+      "pathId": "job-interview-prep",
+      "question": "Which response is best when asked about a gap?",
+      "options": [
+        {
+          "id": "a",
+          "text": "I handled that period responsibly and am ready to return with updated skills."
+        },
+        {
+          "id": "b",
+          "text": "I did nothing and learned nothing."
+        },
+        {
+          "id": "c",
+          "text": "That gap is secret forever."
+        },
+        {
+          "id": "d",
+          "text": "I forgot how to work."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "It is brief and redirects to readiness.",
+      "topic": "employment gaps",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-qz-057",
+      "pathId": "job-interview-prep",
+      "question": "What is a strong way to end an answer?",
+      "options": [
+        {
+          "id": "a",
+          "text": "State the result or lesson learned clearly."
+        },
+        {
+          "id": "b",
+          "text": "Fade into unrelated details"
+        },
+        {
+          "id": "c",
+          "text": "Repeat the question many times"
+        },
+        {
+          "id": "d",
+          "text": "Ask if the answer was bad."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "A clear ending helps the interviewer remember the point.",
+      "topic": "concise answer structure",
+      "difficulty": "easy"
+    },
+    {
+      "id": "job-qz-058",
+      "pathId": "job-interview-prep",
+      "question": "Which answer best shows preparation?",
+      "options": [
+        {
+          "id": "a",
+          "text": "I reviewed the role requirements and prepared examples that match them."
+        },
+        {
+          "id": "b",
+          "text": "I came without reading the job description."
+        },
+        {
+          "id": "c",
+          "text": "I will answer randomly."
+        },
+        {
+          "id": "d",
+          "text": "I only know the company name."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "Preparation makes answers more relevant and confident.",
+      "topic": "motivation and career goals",
+      "difficulty": "easy"
+    },
+    {
+      "id": "job-qz-059",
+      "pathId": "job-interview-prep",
+      "question": "Which answer best explains a layoff?",
+      "options": [
+        {
+          "id": "a",
+          "text": "My role was affected by a company restructuring, and I am ready to bring my skills to a new team."
+        },
+        {
+          "id": "b",
+          "text": "I was fired because everyone was unfair."
+        },
+        {
+          "id": "c",
+          "text": "I refuse to discuss anything about it."
+        },
+        {
+          "id": "d",
+          "text": "The company was terrible and I am angry."
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "A strong layoff answer is factual, brief, and forward-looking.",
+      "topic": "employment gaps",
+      "difficulty": "medium"
+    },
+    {
+      "id": "job-qz-060",
+      "pathId": "job-interview-prep",
+      "question": "Which interviewer question is most useful?",
+      "options": [
+        {
+          "id": "a",
+          "text": "What are the biggest priorities for this role in the first three months?"
+        },
+        {
+          "id": "b",
+          "text": "How often can I be late?"
+        },
+        {
+          "id": "c",
+          "text": "Can I avoid difficult tasks?"
+        },
+        {
+          "id": "d",
+          "text": "Do I have to work with people?"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "This question helps you understand expectations and shows serious interest.",
+      "topic": "questions to ask interviewer",
+      "difficulty": "easy"
+    }
   ]
 }
