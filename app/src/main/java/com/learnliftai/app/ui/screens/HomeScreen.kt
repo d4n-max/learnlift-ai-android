@@ -37,6 +37,7 @@ fun HomeScreen(
     selectedStudyPath: StudyPath?,
     selectedStudyContent: StudyContent?,
     userProgress: UserProgress,
+    isPremiumActive: Boolean,
     onChooseStudyPath: () -> Unit,
     onOpenSettings: () -> Unit,
     onViewPremium: () -> Unit,
@@ -74,7 +75,10 @@ fun HomeScreen(
                 onChangeStudyPath = onChooseStudyPath
             )
             HomeRecommendation(userProgress = userProgress)
-            HomePremiumTeaser(onViewPremium = onViewPremium)
+            HomePremiumTeaser(
+                isPremiumActive = isPremiumActive,
+                onViewPremium = onViewPremium
+            )
             DashboardStats(
                 selectedStudyPath = selectedStudyPath,
                 selectedStudyContent = selectedStudyContent,
@@ -85,11 +89,18 @@ fun HomeScreen(
 }
 
 @Composable
-private fun HomePremiumTeaser(onViewPremium: () -> Unit) {
+private fun HomePremiumTeaser(
+    isPremiumActive: Boolean,
+    onViewPremium: () -> Unit
+) {
     PremiumTeaserCard(
-        title = "Premium coming soon",
-        description = "AI explanations, study plans, and unlimited practice are planned for Premium.",
-        actionText = "View benefits",
+        title = if (isPremiumActive) "Premium active" else "Premium",
+        description = if (isPremiumActive) {
+            "Thanks for supporting LearnLift AI. Premium benefits will expand as new features roll out."
+        } else {
+            "AI explanations, study plans, and unlimited practice are planned for Premium."
+        },
+        actionText = if (isPremiumActive) "View Premium" else "View benefits",
         onActionClick = onViewPremium
     )
 }

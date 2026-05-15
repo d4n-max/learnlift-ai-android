@@ -11,6 +11,10 @@ android {
         .gradleProperty("SUPABASE_AI_COACH_URL")
         .orElse("https://YOUR_PROJECT_REF.supabase.co/functions/v1/ai-coach")
         .get()
+    val revenueCatPublicApiKey = providers
+        .gradleProperty("REVENUECAT_PUBLIC_API_KEY")
+        .orElse("REVENUECAT_PUBLIC_API_KEY_HERE")
+        .get()
 
     defaultConfig {
         applicationId = "com.learnliftai.app"
@@ -19,6 +23,7 @@ android {
         versionCode = 2
         versionName = "0.1.1"
         buildConfigField("String", "SUPABASE_AI_COACH_URL", "\"$aiCoachUrl\"")
+        buildConfigField("String", "REVENUECAT_PUBLIC_API_KEY", "\"$revenueCatPublicApiKey\"")
     }
 
     buildFeatures {
@@ -43,6 +48,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview:1.6.6")
     implementation("androidx.compose.material3:material3:1.2.1")
     implementation("androidx.datastore:datastore-preferences:1.1.1")
+    implementation("com.revenuecat.purchases:purchases:9.23.1")
 
     debugImplementation("androidx.compose.ui:ui-tooling:1.6.6")
 }

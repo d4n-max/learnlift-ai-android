@@ -19,6 +19,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import com.learnliftai.app.data.billing.PremiumEntitlement
+import com.learnliftai.app.data.billing.PremiumUiState
 import com.learnliftai.app.domain.model.PremiumPlanStatus
 import com.learnliftai.app.domain.model.StudyPath
 import com.learnliftai.app.ui.components.EmptyState
@@ -33,9 +35,11 @@ import com.learnliftai.app.ui.theme.LearnLiftSpacing
 @Composable
 fun SettingsScreen(
     selectedStudyPath: StudyPath?,
+    premiumUiState: PremiumUiState,
     onChooseStudyPath: () -> Unit,
     onViewPremium: () -> Unit,
     onResetProgress: () -> Unit,
+    onRestorePurchases: () -> Unit,
     onBackToHome: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -53,7 +57,11 @@ fun SettingsScreen(
             selectedStudyPath = selectedStudyPath,
             onChooseStudyPath = onChooseStudyPath
         )
-        PremiumSettingsSection(onViewPremium = onViewPremium)
+        PremiumSettingsSection(
+            premiumUiState = premiumUiState,
+            onViewPremium = onViewPremium,
+            onRestorePurchases = onRestorePurchases
+        )
         AppInfoSection()
         FutureFeaturesSection()
         LearnLiftCard {
@@ -113,7 +121,11 @@ fun SettingsScreen(
 }
 
 @Composable
-private fun PremiumSettingsSection(onViewPremium: () -> Unit) {
+private fun PremiumSettingsSection(
+    premiumUiState: PremiumUiState,
+    onViewPremium: () -> Unit,
+    onRestorePurchases: () -> Unit
+) {
     SectionHeader(title = "Premium")
     LearnLiftCard {
         Text(
@@ -124,23 +136,49 @@ private fun PremiumSettingsSection(onViewPremium: () -> Unit) {
         )
         Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
         Text(
-            text = PremiumPlanStatus.Free.label,
+            text = if (premiumUiState.entitlement == PremiumEntitlement.Premium) {
+                "Premium"
+            } else {
+                PremiumPlanStatus.Free.label
+            },
             color = MaterialTheme.colorScheme.primary,
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold
         )
         Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
         Text(
-            text = PremiumPlanStatus.Free.helperText,
+            text = if (premiumUiState.entitlement == PremiumEntitlement.Premium) {
+                "Premium is active. AI explanations, study plans, and future advanced insights are ready when configured."
+            } else {
+                PremiumPlanStatus.Free.helperText
+            },
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.76f),
             style = MaterialTheme.typography.bodyMedium
         )
+        if (premiumUiState.message != null) {
+            Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+            Text(
+                text = premiumUiState.message,
+                color = MaterialTheme.colorScheme.secondary,
+                style = MaterialTheme.typography.bodySmall,
+                fontWeight = FontWeight.SemiBold
+            )
+        }
     }
     PremiumTeaserCard(
-        title = PremiumPlanStatus.PremiumComingSoon.label,
+        title = if (premiumUiState.entitlement == PremiumEntitlement.Premium) {
+            "Premium active"
+        } else {
+            PremiumPlanStatus.PremiumComingSoon.label
+        },
         description = "AI explanations, study plans, unlimited practice, full study packs, and advanced insights are planned for Premium.",
         actionText = "View Premium benefits",
         onActionClick = onViewPremium
+    )
+    SecondaryActionButton(
+        text = if (premiumUiState.isRestoring) "Restoring purchases..." else "Restore purchases",
+        onClick = onRestorePurchases,
+        enabled = !premiumUiState.isRestoring
     )
 }
 

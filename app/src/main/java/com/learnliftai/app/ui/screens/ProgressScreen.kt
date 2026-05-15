@@ -45,6 +45,7 @@ import kotlinx.coroutines.launch
 fun ProgressScreen(
     selectedStudyPath: StudyPath?,
     userProgress: UserProgress,
+    isPremiumActive: Boolean,
     onOpenSettings: () -> Unit,
     onViewPremium: () -> Unit,
     onResetProgress: () -> Unit,
@@ -97,7 +98,10 @@ fun ProgressScreen(
             selectedStudyPath = selectedStudyPath,
             aiCoachRepository = aiCoachRepository
         )
-        AdvancedInsightsTeaser(onViewPremium = onViewPremium)
+        AdvancedInsightsTeaser(
+            isPremiumActive = isPremiumActive,
+            onViewPremium = onViewPremium
+        )
 
         SecondaryActionButton(
             text = "Reset Progress Stats",
@@ -250,11 +254,18 @@ private fun StudyPlanAiSection(
 }
 
 @Composable
-private fun AdvancedInsightsTeaser(onViewPremium: () -> Unit) {
+private fun AdvancedInsightsTeaser(
+    isPremiumActive: Boolean,
+    onViewPremium: () -> Unit
+) {
     PremiumTeaserCard(
-        title = "Advanced Insights",
-        description = "Premium will unlock deeper topic trends and personalized guidance.",
-        actionText = "View Premium",
+        title = if (isPremiumActive) "Premium Insights" else "Advanced Insights",
+        description = if (isPremiumActive) {
+            "Premium is active. Deeper topic trends and personalized guidance are planned next."
+        } else {
+            "Premium will unlock deeper topic trends and personalized guidance."
+        },
+        actionText = if (isPremiumActive) "View Premium" else "View Premium",
         onActionClick = onViewPremium
     )
 }

@@ -2,7 +2,7 @@
 
 ## Overview
 
-Premium is a planned future monetization layer for LearnLift AI. The current build only includes Premium-ready UI and does not process payments.
+Premium is the planned monetization layer for LearnLift AI. The current build includes RevenueCat SDK integration, Premium entitlement checks, a billing-ready Premium screen, purchase flow handling, and restore purchases.
 
 No current MVP feature is locked behind Premium. Testers can continue using Home, study path selection, flashcards, quizzes, daily sessions, progress, settings, local persistence, local JSON content, and rule-based Smart Coach tips.
 
@@ -35,41 +35,62 @@ Premium features should avoid guaranteed exam, job, career, or certification suc
 
 ## Pricing Placeholders
 
-Current UI placeholders:
+Fallback UI placeholders:
 
 - Monthly: `€3.99`
 - Yearly: `€24.99`
 
-These prices are planning placeholders only and may change before billing is implemented.
+When RevenueCat offerings are configured, the app displays the prices returned by RevenueCat/Google Play instead.
+
+## RevenueCat Configuration
+
+Expected product IDs:
+
+- `learnlift_premium_monthly`
+- `learnlift_premium_yearly`
+
+Expected entitlement:
+
+- `premium`
+
+Expected offering:
+
+- `default`
 
 ## Current Build Status
+
+The current build includes:
+
+- RevenueCat Android SDK.
+- Public RevenueCat API key placeholder.
+- Premium entitlement check.
+- Monthly/yearly package display.
+- Purchase flow.
+- Restore purchases.
+- Friendly fallback if RevenueCat or Play products are not configured.
 
 The current build does not include:
 
 - Google Play Billing.
-- RevenueCat.
-- Real purchases.
-- Subscription state.
-- Entitlement checks.
-- Locked content.
-- Backend services.
-- AI API calls.
+- Google Play Billing direct integration.
+- RevenueCat private API keys.
+- Hard Premium gates for core MVP content.
 - Firebase.
 - Authentication.
 - Cloud sync.
 - Analytics.
 
-The Upgrade screen is labeled as coming soon and states that billing is not enabled in this build.
+RevenueCat uses Google Play Billing underneath the SDK. LearnLift AI does not call Google Play Billing directly.
 
 ## Future Billing Implementation
 
-Billing may be implemented later through RevenueCat or Google Play Billing after the product, pricing, policies, entitlement model, and tester expectations are finalized.
+Future billing work may add stricter Premium limits after closed testing validates purchase behavior.
 
-When billing is added later, it should include:
+Future work may include:
 
-- A real entitlement model.
-- Restore purchases.
 - Clear cancellation and renewal messaging.
 - Play Store compliant product text.
 - QA for free and paid states.
 - No direct AI provider secrets in the Android app.
+- Optional Premium gating for higher AI usage limits.
+- Optional advanced insights access for Premium users.
