@@ -19,6 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import com.learnliftai.app.BuildConfig
 import com.learnliftai.app.data.billing.PremiumEntitlement
 import com.learnliftai.app.data.billing.PremiumUiState
 import com.learnliftai.app.domain.model.PremiumPlanStatus
@@ -245,8 +246,8 @@ private fun AppInfoSection() {
     SectionHeader(title = "App info")
     StatCard(
         label = "Version",
-        value = "0.1.0 MVP",
-        helperText = "Early local learning build"
+        value = BuildConfig.VERSION_NAME,
+        helperText = "Closed testing candidate"
     )
     StatCard(
         label = "Current mode",
@@ -264,7 +265,7 @@ private fun AppInfoSection() {
 private fun FutureFeaturesSection() {
     SectionHeader(title = "Future features")
     LearnLiftCard {
-        FutureFeatureRow(title = "AI Coach", status = "Coming soon")
+        FutureFeatureRow(title = "AI Coach", status = "Available with fallback")
         Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
         FutureFeatureRow(title = "Cloud sync", status = "Coming later")
         Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))

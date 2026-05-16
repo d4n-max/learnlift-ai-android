@@ -52,8 +52,13 @@ fun PremiumScreen(
 ) {
     val context = LocalContext.current
     val activity = context.findActivity()
-    var selectedPackage by remember(premiumUiState.monthlyPackage.id, premiumUiState.yearlyPackage.id) {
-        mutableStateOf(premiumUiState.yearlyPackage)
+    var selectedPackageId by remember {
+        mutableStateOf(premiumUiState.yearlyPackage.id)
+    }
+    val selectedPackage = if (selectedPackageId == premiumUiState.monthlyPackage.id) {
+        premiumUiState.monthlyPackage
+    } else {
+        premiumUiState.yearlyPackage
     }
 
     LaunchedEffect(Unit) {
@@ -73,13 +78,14 @@ fun PremiumScreen(
         PricingOptions(
             premiumUiState = premiumUiState,
             selectedPackage = selectedPackage,
-            onPackageSelected = { selectedPackage = it }
+            onPackageSelected = { selectedPackageId = it.id }
         )
         BillingNotice(premiumUiState = premiumUiState)
         PrimaryActionButton(
             text = when {
                 premiumUiState.isPremiumActive -> "Premium active"
                 premiumUiState.isPurchasing -> "Starting purchase..."
+                selectedPackage.revenueCatPackage == null -> "Products unavailable"
                 else -> "Start Premium"
             },
             onClick = {

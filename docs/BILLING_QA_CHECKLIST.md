@@ -2,56 +2,88 @@
 
 ## Configuration
 
-- App launches without `REVENUECAT_PUBLIC_API_KEY` configured.
-- Premium screen shows friendly unavailable messaging with placeholder prices.
-- Free mode remains usable when RevenueCat is unavailable.
+- App launches with the public RevenueCat SDK key configured.
+- App still launches if a different public SDK key is supplied through `REVENUECAT_PUBLIC_API_KEY`.
 - No OpenAI keys, RevenueCat private keys, or Supabase service role keys are in Android code/resources.
+- Gradle dependency resolves `com.revenuecat.purchases:purchases:10.6.0`.
+- Merged manifest includes `com.android.vending.BILLING`.
+- App checks entitlement identifier `premium` only.
 
 ## Premium Screen
 
 - Premium screen opens from Home.
 - Premium screen opens from Settings.
 - Premium screen opens from Progress teaser.
-- Monthly package displays placeholder price when offerings are unavailable.
-- Yearly package displays placeholder price when offerings are unavailable.
-- Monthly package displays RevenueCat price when configured.
-- Yearly package displays RevenueCat price when configured.
-- User can select monthly.
-- User can select yearly.
-- Subscribe button is disabled if package is unavailable.
-- Subscribe button starts purchase flow when package is available.
-- Friendly message appears if products are not configured yet.
+- Monthly package displays label `Monthly`.
+- Yearly or annual package displays label `Yearly`.
+- Test Store prices are displayed as returned by RevenueCat.
+- Google Play prices are displayed as returned by RevenueCat/Play Console.
+- Placeholder prices display when offerings are unavailable: `Monthly €3.99`, `Yearly €24.99`.
+- Purchase CTA is disabled when package is unavailable.
+- Purchase CTA is disabled while purchase is in progress.
+- Purchase CTA is disabled when Premium is active and shows `Premium active`.
+- Restore purchases button shows loading text while restoring.
+- Friendly message appears if products or offerings are unavailable.
 
-## Purchase Flow
+## A. RevenueCat Test Store QA
 
-- Purchase cancellation shows a non-scary cancellation message.
-- Purchase error shows a friendly error message.
-- Purchase success updates current plan to Premium.
-- Premium active status appears after successful purchase.
-- Entitlement persists after app restart.
-- Purchase fails gracefully if app is not installed from Google Play.
-- Purchase fails gracefully if products are not active in Play Console.
+- Test Store purchase dialog opens.
+- Test Store products `monthly` and `yearly` are visible when configured.
+- Test Store prices such as `$9.99` and `$79.98` display as returned by RevenueCat.
+- `TEST VALID PURCHASE` activates Premium.
+- Current plan updates to Premium after valid purchase.
+- RevenueCat customer profile shows entitlement `premium` active.
+- `TEST FAILED PURCHASE` shows a friendly error and does not crash.
+- Cancelled purchase shows a non-scary cancellation message.
+- Restore purchases refreshes CustomerInfo and updates Premium state.
+- Restart app preserves Premium state.
+- Debug logcat under `LearnLiftPremium` shows active/all entitlement identifiers and purchased product identifiers.
 
-## Restore Purchases
+## B. Google Play Closed Testing QA
 
-- Restore purchases button appears on Premium screen.
-- Restore purchases button appears in Settings.
-- Restore success updates Premium active state.
-- Restore with no active purchase shows a friendly message.
-- Restore failure does not crash the app.
+- App is installed from Google Play internal or closed testing track.
+- Tester account is a license tester and/or closed tester.
+- Monthly package is visible.
+- Yearly package is visible.
+- Monthly price matches Play Console target price `€3.99`.
+- Yearly price matches Play Console target price `€24.99`.
+- Purchase flow opens Google Play purchase sheet.
+- Successful monthly test purchase activates Premium.
+- Successful yearly test purchase activates Premium.
+- Cancelled purchase does not crash and leaves user in Free or existing Premium state.
+- Failed purchase shows a friendly error.
+- Restore purchases works.
+- Entitlement `premium` remains active after app restart.
+- RevenueCat customer profile shows the matching Google Play product and active entitlement `premium`.
 
-## Existing App Flows
+## C. Fallback QA
 
-- Home still works in Free mode.
-- Study Path Selection still works.
-- Flashcards still work.
-- Quiz still works.
-- Daily Session still works.
-- Progress still works.
-- Settings still work.
-- Premium screen still works offline or with unavailable products.
-- Local DataStore progress still persists.
-- AI fallback still works if AI backend quota is unavailable.
+- RevenueCat key missing or invalid: app remains usable.
+- Products unavailable: Premium screen shows friendly unavailable message.
+- Offering unavailable: Premium screen shows fallback placeholder prices.
+- Network unavailable: Premium screen does not crash.
+- User remains Free when entitlement is inactive.
+- Home still works.
+- Study flows still work.
+- Restore failure shows a friendly message.
+- Purchase completed but entitlement inactive shows: `Purchase completed, but Premium entitlement is not active yet. Check RevenueCat product-entitlement setup.`
+
+## D. Regression QA
+
+- Home works.
+- Study Path Selection works.
+- Flashcards work.
+- Quiz works.
+- Daily Session works.
+- Progress works.
+- Settings works.
+- Premium screen works.
+- DataStore progress persists.
+- Local JSON study content loads.
+- Smart Coach works.
+- AI fallback works.
+- No feature is hard-blocked unexpectedly.
+- Closed testers can continue using the app if RevenueCat products are unavailable.
 
 ## Data Safety
 

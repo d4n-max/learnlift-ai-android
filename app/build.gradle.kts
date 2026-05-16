@@ -13,7 +13,7 @@ android {
         .get()
     val revenueCatPublicApiKey = providers
         .gradleProperty("REVENUECAT_PUBLIC_API_KEY")
-        .orElse("REVENUECAT_PUBLIC_API_KEY_HERE")
+        .orElse("test_uGjsdFBOtYwIdTQWqiwHkULbYor")
         .get()
 
     defaultConfig {
@@ -48,7 +48,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview:1.6.6")
     implementation("androidx.compose.material3:material3:1.2.1")
     implementation("androidx.datastore:datastore-preferences:1.1.1")
-    implementation("com.revenuecat.purchases:purchases:9.23.1")
+    implementation("com.revenuecat.purchases:purchases:10.6.0")
 
     debugImplementation("androidx.compose.ui:ui-tooling:1.6.6")
 }

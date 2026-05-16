@@ -23,24 +23,23 @@ The Free plan currently includes:
 Premium may eventually unlock:
 
 - AI-powered answer explanations.
-- AI weak-topic review.
+- AI Study Review.
 - Personalized 7-day study plans.
-- Unlimited quizzes.
-- Unlimited daily sessions.
-- Full study packs.
 - Advanced progress insights.
+- Unlimited practice.
+- Full study packs.
 - Personalized recommendations.
 
 Premium features should avoid guaranteed exam, job, career, or certification success claims.
 
-## Pricing Placeholders
+## Public Pricing
 
-Fallback UI placeholders:
+Planned public pricing:
 
 - Monthly: `€3.99`
 - Yearly: `€24.99`
 
-When RevenueCat offerings are configured, the app displays the prices returned by RevenueCat/Google Play instead.
+When RevenueCat offerings are configured, the app displays prices returned by RevenueCat. RevenueCat Test Store may return test prices such as `$9.99` and `$79.98`; Google Play closed testing and production prices should come from Play Console products.
 
 ## RevenueCat Configuration
 
@@ -53,16 +52,30 @@ Expected entitlement:
 
 - `premium`
 
+The app uses `customerInfo.entitlements["premium"]?.isActive == true` as the Premium check. It does not use the display name `LearnLift AI Premium`, package IDs `monthly` / `yearly`, or product IDs `learnlift_premium_monthly` / `learnlift_premium_yearly` as entitlement identifiers.
+
 Expected offering:
 
 - `default`
+
+Expected RevenueCat package/base plan names:
+
+- `monthly`
+- `yearly`
+- `annual`
+
+If RevenueCat Test Store displays `monthly` during a test purchase, that is the package/base plan selected for purchase. The `monthly` package still must be attached to the `premium` entitlement in RevenueCat before the app can switch to Premium after purchase.
+
+Public Android SDK key:
+
+- `test_uGjsdFBOtYwIdTQWqiwHkULbYor`
 
 ## Current Build Status
 
 The current build includes:
 
-- RevenueCat Android SDK.
-- Public RevenueCat API key placeholder.
+- RevenueCat Android SDK `10.6.0`.
+- Public RevenueCat Android SDK key.
 - Premium entitlement check.
 - Monthly/yearly package display.
 - Purchase flow.
@@ -94,3 +107,7 @@ Future work may include:
 - No direct AI provider secrets in the Android app.
 - Optional Premium gating for higher AI usage limits.
 - Optional advanced insights access for Premium users.
+
+## Closed Testing Policy
+
+During closed testing, current Free features remain usable even if billing products, RevenueCat offerings, or Google Play purchases are unavailable. Premium is optional and should not hard-block Home, study path selection, flashcards, quizzes, daily sessions, progress, settings, Smart Coach, local content, DataStore persistence, or AI fallback behavior.

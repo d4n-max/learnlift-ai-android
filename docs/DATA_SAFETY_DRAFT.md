@@ -10,14 +10,15 @@ LearnLift AI is primarily a local-first Android app. Study content and normal st
 - The app does not use cloud sync.
 - The app does not send study context to AI automatically.
 - Optional AI Coach actions may send limited study context to the Supabase backend proxy only when the user taps an AI action.
-- Premium subscription checks and purchases are handled through RevenueCat and Google Play when RevenueCat is configured.
+- Premium subscription checks and purchases are processed through Google Play and RevenueCat. RevenueCat is used to manage subscription entitlement status. The Android app includes a RevenueCat public SDK key, which is not a private secret.
+- The app does not directly handle private payment card data.
 - The app does not include ads.
 - The app does not include analytics or crash reporting based on the current code scan.
 - The app does not intentionally collect personal information.
 
 ## Data Collected
 
-Study progress is stored locally. External data transfer is limited to optional AI Coach requests and Premium billing/entitlement checks when those features are configured and used.
+Study progress is stored locally. External data transfer is limited to optional AI Coach requests and Premium billing/entitlement checks when those features are used.
 
 The app should not send personal profile data, email, account data, resumes, private notes, device identifiers, or sensitive personal data for AI Coach actions.
 
@@ -36,7 +37,7 @@ The app stores basic study progress locally on the user's device, including:
 The app may interact with these services:
 
 - Supabase Edge Function AI backend proxy: used only for optional, user-initiated AI Coach requests.
-- RevenueCat and Google Play: used for Premium product lookup, purchase flow, restore purchases, and entitlement status when RevenueCat is configured.
+- RevenueCat and Google Play: used for Premium product lookup, subscription purchase flow, restore purchases, and subscription entitlement status checks.
 
 The app does not use an ad network, analytics service, account backend, Firebase, or cloud sync in the current implementation.
 
@@ -60,6 +61,7 @@ No OpenAI API keys, Supabase service-role keys, RevenueCat private API keys, bac
 - Account creation: not required.
 - User deletion request process: in-app reset clears local progress; no server account exists.
 - Encryption in transit: required for Supabase AI proxy, RevenueCat, and Google Play interactions.
+- Payments: subscription checkout is handled by Google Play; the app checks subscription status through RevenueCat.
 
 ## Future Warning
 
@@ -73,6 +75,8 @@ Task 35 adds Android client integration for optional, user-initiated AI Coach ac
 
 Before enabling real AI in production or broader testing, update the Privacy Policy and Google Play Data Safety answers to describe this backend data transfer. Real AI responses also require the backend to have OpenAI API billing/quota active.
 
-Task 36 adds RevenueCat subscription entitlement support and a billing-ready Premium screen. Billing and subscription purchases are processed by Google Play and RevenueCat. The app checks Premium entitlement status through RevenueCat when configured, and it must continue to work in Free mode if RevenueCat products or Play testing are not ready.
+Task 36 adds RevenueCat subscription entitlement support and a billing-ready Premium screen. Billing and subscription purchases are processed by Google Play and RevenueCat. The app checks Premium entitlement status through RevenueCat, and it must continue to work in Free mode if RevenueCat products or Play testing are not ready.
+
+Task 37 documents Google Play subscription mapping for `learnlift_premium_monthly` and `learnlift_premium_yearly`, RevenueCat package mapping for `monthly` and `yearly`/`annual`, and entitlement identifier `premium`. No private payment card data is handled directly by the app. AI backend behavior remains separate and sends limited study context only after explicit user action.
 
 Before enabling paid subscriptions in production, update the Privacy Policy and Google Play Data Safety answers to describe RevenueCat and Google Play billing/subscription processing. Do not claim the app has no third-party services once RevenueCat is enabled.

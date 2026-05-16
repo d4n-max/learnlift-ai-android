@@ -44,5 +44,8 @@ data class PremiumUiState(
 
 const val PremiumEntitlementId = "premium"
 const val DefaultOfferingId = "default"
+const val MonthlyPackageId = "monthly"
+const val YearlyPackageId = "yearly"
+const val AnnualPackageId = "annual"
 const val MonthlyProductId = "learnlift_premium_monthly"
 const val YearlyProductId = "learnlift_premium_yearly"
