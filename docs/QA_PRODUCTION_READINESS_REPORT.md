@@ -1,137 +1,117 @@
 # LearnLift AI Production Readiness QA Report
 
-Date: 2026-05-16  
-Repository: `C:\Projects\learnlift-ai-android`  
-QA pass type: Static review, documentation review, content validation, Gradle manifest processing, debug build attempt
+## Metadata
 
-## Summary
+- Date: 2026-05-18
+- Repository path: `C:\Projects\learnlift-ai-android`
+- Build type: Debug
+- Device tested: Physical Android device expected over USB, but no connected ADB device was visible from this shell.
+- RevenueCat entitlement identifier checked in app code: `premium`
 
-| Area | Status | Notes |
+## Summary Verdict
+
+- Closed testing continuation: Ready, with physical-device install retest required.
+- Production release: Not ready yet.
+- v2 feature work: Ready after the physical-device install and core smoke test are completed.
+
+The current v1 candidate builds successfully, validates expanded local content, includes the required billing and internet permissions in the merged manifest, keeps AI calls user-initiated, and preserves local free study flows. Production is still blocked by physical-device install verification from a connected device and Google Play closed-testing subscription purchase verification.
+
+## Automated QA Results
+
+| Area | Result | Notes |
 | --- | --- | --- |
-| Repository path | Passed | Confirmed working path is `C:\Projects\learnlift-ai-android`. |
-| Manifest processing | Passed | `.\gradlew.bat :app:processDebugMainManifest` completed successfully. |
-| Debug build | Failed | `.\gradlew.bat assembleDebug` is blocked by local Android SDK 35 access/license issues before app compilation. |
-| Install | Deferred | Not run because `assembleDebug` did not complete in this shell. |
-| Content validation | Passed | English: 84 flashcards / 63 quiz questions. Job Interview: 80 / 60. IT / QA: 60 / 50. |
-| Billing integration | Needs retest | Static checks pass; RevenueCat Test Store has been confirmed externally. Google Play closed-testing purchases still need device QA. |
-| AI integration | Needs retest | Static checks pass. AI calls use the Supabase function endpoint and failure paths return friendly fallback states. |
-| Store readiness | Needs work | Release notes/checklist are prepared. Store listing copy and final screenshots/assets still need finalization. |
+| Repository path | Passed | Confirmed `C:\Projects\learnlift-ai-android`. |
+| Debug build | Passed | `.\gradlew.bat assembleDebug` completed successfully. |
+| Debug install | Failed / Needs retest | `.\gradlew.bat installDebug` failed with `No connected devices!`. |
+| ADB device detection | Failed / Environment-specific | `adb devices` returned no attached device. |
+| Generated files staged | Passed | `git status --short` showed no staged/generated build artifacts before Task 39 doc updates. |
+| Merged manifest: Internet | Passed | Merged debug manifest contains `android.permission.INTERNET`. |
+| Merged manifest: Billing | Passed | Merged debug manifest contains `com.android.vending.BILLING`. |
+| Forbidden key scan | Passed | No OpenAI API key, Supabase service-role key, RevenueCat private key, Firebase, analytics, or direct `BillingClient` reference found in Android app source. |
 
-## Build And Install
+## Content Status
 
-| Check | Status | Evidence |
+Content validation passed with the current expanded local JSON content.
+
+| Study path | Flashcards | Quiz questions | Required | Result |
+| --- | ---: | ---: | --- | --- |
+| English Vocabulary & Speaking Prep | 84 | 63 | 80+ flashcards, 60+ quiz questions | Passed |
+| Job Interview Prep | 80 | 60 | 80+ flashcards, 60+ quiz questions | Passed |
+| IT / QA Interview Prep | 60 | 50 | 60+ flashcards, 50+ quiz questions | Passed |
+
+## Feature-by-Feature Result
+
+| Area | Result | Notes |
 | --- | --- | --- |
-| Gradle manifest processing | Passed | `.\gradlew.bat :app:processDebugMainManifest` succeeded. |
-| `assembleDebug` | Failed | Blocked by `Access is denied` for SDK 35 `package.xml` and unaccepted SDK 35 licenses. |
-| `installDebug` | Deferred | Blocked by the debug build issue in this environment. |
-| Release build readiness | Needs retest | Signed AAB was not generated in this pass. |
-| Generated files committed | Passed | `git status --short` shows source/docs changes only; no build output files are listed. |
-| Billing permission | Passed | Merged debug manifest contains `com.android.vending.BILLING`. |
-| Internet permission | Passed | Merged debug manifest contains `android.permission.INTERNET`. |
-
-Merged manifest path:
-
-`C:\Projects\learnlift-ai-android\app\build\intermediates\merged_manifest\debug\processDebugMainManifest\AndroidManifest.xml`
-
-## Feature Status
-
-| Feature | Status | Notes |
-| --- | --- | --- |
-| App startup | Needs retest | Could not install/run from this shell because debug build is blocked by SDK setup. |
-| Dark/light theme | Needs retest | Requires device/emulator visual pass. |
-| Home | Needs retest | Static content counts are valid; UI crowding needs final visual pass on device sizes. |
-| Study Path Selection | Needs retest | Three paths are present in `StudyPathRepository`; persistence should be rechecked on device. |
-| Flashcards | Needs retest | Content minimums pass; navigation/readability/long wrapping need device pass. |
-| Quiz | Needs retest | Content minimums pass; answer selection, explanations, AI fallback, and summary need device pass. |
-| Daily Session | Needs retest | Code includes short 5-item session subset and tap guards against double counting; device pass still needed. |
-| Progress | Needs retest | DataStore-backed progress and reset behavior look correct from code review; persistence needs device restart check. |
-| Settings | Passed static review | Current plan, Premium benefits, restore purchases, reset progress, and app info are present. Stale app-info copy was fixed. |
-| Premium screen | Passed static review | Shows Free/Premium plan, RevenueCat packages/fallback prices, disabled active state, purchase/restore loading states, and entitlement-inactive fallback message. |
-| DataStore | Passed static review | Local preferences store selected path, progress totals, streak, and reset behavior. |
-| Local JSON content | Passed | Validator passed all minimum counts and structural checks. |
-| Smart Coach | Needs retest | Cards/recommendations are wired in Home/Daily/Progress/Quiz flows; visual density needs device QA. |
-| AI fallback | Passed static review | Client returns friendly fallback when endpoint is unavailable, quota fails, or provider errors occur. |
+| App startup | Needs retest | Build passes, but physical launch could not be verified because no ADB device was visible. |
+| Light / dark mode | Needs retest | Requires physical-device visual pass. |
+| Home | Needs retest | Static code/docs indicate Home remains available; physical smoke test still needed. |
+| Study Path Selection | Needs retest | Content counts passed; physical selection and persistence retest still needed. |
+| Flashcards | Needs retest | Requires physical test for reveal, Known, Needs Review, wrapping, and clipping. |
+| Quiz | Needs retest | Requires physical test for answers, explanations, AI button fallback, summary, and Smart Coach card. |
+| Daily Session | Needs retest | Requires physical test for short subset, completion, saved progress, and repeated tap guards. |
+| Progress | Needs retest | Requires physical test for stats, reset, persistence, Smart Coach, and Premium teaser. |
+| Settings | Needs retest | Requires physical test for plan state, Premium navigation, restore purchases fallback, reset, and local data note. |
+| Premium screen | Needs retest | Code and docs are present; purchase/restore behavior must be checked on device and Play track. |
 
 ## Billing Status
 
-| Check | Status | Notes |
+| Check | Result | Notes |
 | --- | --- | --- |
-| RevenueCat SDK | Passed static review | SDK dependency is present from prior integration work. |
-| Startup configuration | Passed static review | `LearnLiftApplication` configures RevenueCat at app startup. |
-| Entitlement identifier | Passed | App checks exactly `premium`. |
-| Wrong entitlement identifiers avoided | Passed | App does not use `LearnLift AI Premium`, `monthly`, `yearly`, `learnlift_premium_monthly`, or `learnlift_premium_yearly` as entitlement identifiers. |
-| Package labels | Passed static review | Monthly/yearly labels normalize `monthly`, `yearly`, `annual`, `learnlift_premium_monthly`, and `learnlift_premium_yearly`. |
-| Fallback pricing | Passed static review | Premium screen keeps placeholder Monthly EUR 3.99 and Yearly EUR 24.99 when offerings are unavailable. |
-| Purchase success state | Passed static review | Purchase uses returned/refreshed CustomerInfo and updates state from `customerInfo.entitlements["premium"]?.isActive == true`. |
-| Entitlement inactive after purchase | Passed static review | UI shows: "Purchase completed, but Premium entitlement is not active yet. Check RevenueCat product-entitlement setup." |
-| Restore purchases | Passed static review | Restore refreshes CustomerInfo and updates entitlement state. |
-| Test Store | Needs retest | User previously confirmed Test Store valid purchase activates Premium. Re-run after this QA patch. |
-| Google Play closed testing | Needs retest | Must be verified from the Play testing track with products `learnlift_premium_monthly` and `learnlift_premium_yearly`. |
+| RevenueCat SDK | Passed | Gradle dependency is `com.revenuecat.purchases:purchases:10.6.0`. |
+| Billing permission | Passed | Merged manifest contains `com.android.vending.BILLING`. |
+| Entitlement identifier | Passed | App uses `premium`. |
+| Public SDK key handling | Passed | App uses a RevenueCat public SDK key through BuildConfig. No private RevenueCat key found. |
+| Offerings unavailable fallback | Needs retest | Implemented in app behavior, but physical-device QA is still required. |
+| Test Store purchase | Needs retest | Must be verified on device. |
+| Google Play closed-testing purchase | Blocked | Requires Play-installed build, active products/base plans, tester account, and connected device. |
 
-## AI Status
+Google Play product mapping is still considered pending until monthly and yearly purchases are verified from a Play testing track build.
 
-| Check | Status | Notes |
+## AI Coach Status
+
+| Check | Result | Notes |
 | --- | --- | --- |
-| Android OpenAI key | Passed | Static scan found no real OpenAI API key in Android code/resources. Only placeholders/docs references appear. |
-| Supabase function endpoint | Passed static review | Android client posts to `BuildConfig.SUPABASE_AI_COACH_URL` ending in `/functions/v1/ai-coach`. |
-| User-initiated calls | Passed static review | AI actions are triggered from Quiz explanation/summary and Progress study plan controls. |
-| Backend failure fallback | Passed static review | Provider/quota/unavailable errors map to friendly fallback messages. |
-| OpenAI quota blocker documented | Passed | AI setup docs mention OpenAI API billing/quota as a backend blocker. |
+| No OpenAI key in Android | Passed | Source scan found no OpenAI API key in Android app source. |
+| Android calls backend proxy only | Passed | AI client documentation and app code use the Supabase `ai-coach` backend URL rather than direct OpenAI calls. |
+| User-initiated AI calls | Passed | AI entry points are button-driven: wrong answer, quiz summary, and progress study plan. |
+| Insufficient quota fallback | Needs retest | Implemented/documented fallback exists; physical-device/backend failure test still required. |
+| Static explanation fallback | Needs retest | Requires physical quiz test. |
 
-## Privacy And Data Safety
+## Privacy And Data Safety Status
 
-| Check | Status | Notes |
+| Check | Result | Notes |
 | --- | --- | --- |
-| RevenueCat entitlement | Passed | Data Safety draft covers RevenueCat subscription entitlement management. |
-| Google Play billing | Passed | Data Safety draft states purchases are processed by Google Play and RevenueCat. |
-| Payment card data | Passed | Draft states the app does not handle private card data directly. |
-| Supabase AI backend | Passed | Draft covers AI backend study-context processing. |
-| User-triggered study context | Passed | Draft states AI study context is sent only on user action. |
-| Ads | Passed | Draft states no ads. |
-| Account login/cloud sync | Passed | Draft states no account login and no cloud sync unless added later. |
-| Private secrets | Passed static review | No private keys were found in Android code/resources. Placeholder docs/env entries remain non-secret. |
+| RevenueCat documented | Passed | `docs/DATA_SAFETY_DRAFT.md` mentions RevenueCat. |
+| Google Play purchases documented | Passed | Data Safety draft notes Google Play subscription checkout. |
+| Supabase AI backend documented | Passed | Data Safety draft notes Supabase AI backend proxy. |
+| Study context only on user action | Passed | Data Safety draft and AI client setup both document user-initiated AI actions. |
+| No ads | Passed | Data Safety draft says no ads. |
+| No account login / cloud sync | Passed | Data Safety draft says no account login or cloud sync. |
 
-## Play Store Readiness
+## Play Console Readiness
 
-| Check | Status | Notes |
+| Area | Result | Notes |
 | --- | --- | --- |
-| Short description | Passed | Store listing draft includes a short description. |
-| Full description | Passed | Store listing draft includes a full description. |
-| Release notes | Passed | `docs/PLAY_CONSOLE_RELEASE_NOTES.md` has been created for the next closed-testing build. |
-| Screenshots | Open | Final screenshots are still needed. |
-| Feature graphic/icon | Open | Final feature graphic readiness is not confirmed. |
-| Closed testing instructions | Needs retest | Billing and install instructions need execution from Play testing track. |
-| Production access checklist | Needs work | Checklist exists, but signed AAB, screenshots, Play billing verification, and production access evidence remain pending. |
-| Store copy freshness | Open | Listing draft still needs copy refresh to remove earlier "no payments/no live AI" limitations. |
+| Closed testing release notes | Passed | `docs/PLAY_CONSOLE_RELEASE_NOTES.md` contains the current closed-testing update. |
+| Release checklist | Passed | `docs/RELEASE_CHECKLIST.md` covers manifest, RevenueCat, subscriptions, Data Safety, screenshots, and production access. |
+| Store listing | Open warning | `docs/PLAY_STORE_LISTING_DRAFT.md` may still contain older MVP wording. |
+| Screenshots / feature graphic | Open warning | Final current-v1 screenshots still need confirmation. |
+| Production access request | Deferred | Needs closed-testing evidence and final billing/product QA. |
 
 ## Blockers
 
-- Full debug build in this shell is blocked by Android SDK 35 license/access setup.
-- Install/run QA could not be completed from this environment.
-- Google Play closed-testing billing has not yet been verified from a Play-installed build.
-- Signed release AAB was not generated in this pass.
-- Final screenshots and feature graphic are still pending.
-- Store listing draft needs a final copy update for AI Coach, Premium, and expanded content.
-- Real AI responses require backend OpenAI billing/quota to be enabled.
+- Physical-device install and launch could not be completed from this shell because ADB reported no connected devices.
+- Google Play closed-testing monthly/yearly subscription purchases have not been verified.
+- RevenueCat entitlement activation from a Play purchase has not been verified in this QA pass.
 
-## Non-blocking Warnings
+## Non-Blocking Warnings
 
-- Progress remains local-only on device, with no account login or cloud sync.
-- Free MVP features remain available; Premium is intentionally not an aggressive paywall yet.
-- RevenueCat Test Store prices such as `$9.99` / `$79.98` are expected in Test Store and do not represent production Google Play pricing.
-- Production prices must come from Google Play products configured as EUR 3.99 monthly and EUR 24.99 yearly.
+- RevenueCat Test Store behavior and Google Play product behavior can differ; both need separate QA.
+- Real AI responses still require Supabase deployment plus active OpenAI API billing/quota.
+- Progress remains local to the device and is not cloud synced.
+- Store listing copy and screenshots should be refreshed before production submission.
 
-## Final Verdict
+## Next Recommended Task
 
-Ready for closed testing, with required device retesting.
-
-Not ready for production yet until the SDK/build environment is clean, a signed AAB is generated, Google Play subscription purchases are verified from the testing track, store assets are finalized, and the Play listing copy is refreshed.
-
-## Next Recommended Tasks
-
-1. Accept/install Android SDK 35 components and rerun `.\gradlew.bat assembleDebug`.
-2. Run `.\gradlew.bat installDebug` or install from Android Studio on a physical test device.
-3. Upload a closed-testing build to Google Play and verify both subscription products.
-4. Complete the billing checklist in `docs/BILLING_QA_CHECKLIST.md`.
-5. Capture final Play Store screenshots and feature graphic.
-6. Update `docs/PLAY_STORE_LISTING_DRAFT.md` to reflect AI Coach, Premium, and expanded content.
+Connect the physical Android device so it appears in `adb devices`, install the debug build, and complete a manual smoke test across Home, Study Path Selection, Flashcards, Quiz, Daily Session, Progress, Settings, Premium, AI fallback, and light/dark mode. After that, install from the Google Play closed-testing track and verify RevenueCat monthly/yearly purchases plus restore purchases.

@@ -1,6 +1,6 @@
 # LearnLift AI Bug Backlog
 
-Last updated: 2026-05-16
+Last updated: 2026-05-18
 
 ## Open
 
@@ -9,6 +9,7 @@ Last updated: 2026-05-16
 | BUG-011 | Medium | Store Listing | `docs/PLAY_STORE_LISTING_DRAFT.md` still contains older launch wording that says there are no payments, no live AI Coach, and starter content only. | Review the Play Store listing draft before release upload. | Store copy matches the current candidate: expanded content, AI Coach backend with fallback, Premium screen, and RevenueCat readiness. | Draft includes stale limitation notes from the earlier MVP. | Update the listing draft after final closed-testing QA and before production submission. | Open |
 | BUG-012 | High | Billing QA | Google Play closed-testing purchase flow has not been verified from a Play-installed build in this QA pass. | Install the app from the Play testing track and buy monthly/yearly test subscriptions. | Google Play purchase sheet opens, successful purchases activate entitlement `premium`, cancellations do not crash, and restore updates plan state. | RevenueCat Test Store has been confirmed, but Play track purchase behavior still needs device QA. | Complete the Google Play Closed Testing section in `docs/BILLING_QA_CHECKLIST.md`. | Open |
 | BUG-013 | Medium | Store Assets | Final Play Store screenshots and feature graphic are not confirmed ready. | Prepare Play Console store listing assets. | Screenshots and feature graphic reflect current Home, study paths, Flashcards, Quiz, Progress, Settings, Premium, and AI fallback behavior. | Asset readiness remains pending. | Capture final screenshots from a Play-ready build and prepare the feature graphic before production access request. | Open |
+| BUG-015 | High | Device QA | Physical Android device install and launch were not completed in the Task 39 shell QA pass because ADB reported no connected devices. | Connect a physical Android device with USB debugging enabled and run `adb devices`, then `.\gradlew.bat installDebug`. | Device appears as `device`, debug APK installs, and app launches for a full smoke test. | `adb devices` returned no attached device and `installDebug` failed with `No connected devices!`. | Reconnect device, approve the USB debugging prompt, verify platform-tools access, and rerun physical-device QA. | Open |
 
 ## Fixed
 

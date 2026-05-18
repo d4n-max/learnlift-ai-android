@@ -2,10 +2,20 @@
 
 Use this checklist for the next Google Play closed-testing and production-candidate build.
 
+## Latest QA Snapshot
+
+- Last QA update: 2026-05-18.
+- Debug build: passed with `.\gradlew.bat assembleDebug`.
+- Content validation: passed for English, Job Interview, and IT / QA expanded content counts.
+- Merged manifest: contains `android.permission.INTERNET` and `com.android.vending.BILLING`.
+- Physical device install: needs retest because ADB reported no connected devices during the Task 39 shell QA pass.
+- Production readiness: not ready for production until physical-device smoke testing and Google Play subscription purchase testing pass.
+
 ## Repository
 
 - [ ] Confirm repository path is `C:\Projects\learnlift-ai-android`.
 - [ ] Confirm `git status` contains only intentional source and documentation changes.
+- [ ] Confirm working tree is clean before generating the Play upload artifact.
 - [ ] Confirm no generated build artifacts are committed.
 - [ ] Confirm no private OpenAI keys, Supabase service role keys, RevenueCat private keys, keystores, or payment credentials are committed.
 

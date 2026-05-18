@@ -2,6 +2,8 @@
 
 ## Next Closed Testing Build
 
+Prepared: 2026-05-18
+
 Closed testing update for LearnLift AI.
 
 Includes:
@@ -20,6 +22,11 @@ Known limitations:
 - Progress is stored locally on the device
 - No account login
 - No cloud sync
+
+QA note:
+
+- Current debug build passes.
+- Physical-device install and Google Play subscription purchase flow still need final closed-testing verification.
 
 ## Tester Notes
 

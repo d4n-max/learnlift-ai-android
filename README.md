@@ -11,6 +11,9 @@ LearnLift AI is an Android skill-building and study coach MVP. It helps learners
 - Quiz mode
 - Daily study session
 - Local progress tracking
+- Rule-based Smart Coach recommendations
+- Optional AI Coach backend integration with local fallback
+- Premium screen and RevenueCat entitlement readiness
 - Settings
 
 ## Current Study Paths
@@ -71,9 +74,10 @@ app/build/outputs/apk/debug/app-debug.apk
 - Local-only data
 - No cloud sync
 - No authentication
-- No payments
-- No live AI Coach yet
-- Starter content only
+- Premium purchases require RevenueCat and Google Play product configuration
+- Real AI responses require the Supabase backend and active OpenAI API billing/quota
+- AI Coach actions are user-initiated and fall back to local explanations/recommendations if unavailable
+- Progress is stored on the device only
 
 ## Internal Testing Checklist
 
