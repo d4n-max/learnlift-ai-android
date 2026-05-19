@@ -211,7 +211,7 @@ Supported actions:
 - `quiz_summary`
 - `study_plan`
 
-Android is not integrated with this backend yet.
+Android is integrated with this backend through the optional, user-initiated AI Coach client. Local static explanations and rule-based Smart Coach recommendations remain the fallback path.
 
 ## Implementation Phases
 
@@ -221,7 +221,7 @@ Current rule-based Smart Coach only. No network calls.
 
 ### Phase 2
 
-Create backend proxy with validation, prompt templates, rate limits, environment variables, and mocked provider responses.
+Create backend proxy with validation, prompt templates, rate limits, environment variables, and safe provider responses.
 
 ### Phase 3
 
@@ -238,3 +238,13 @@ Add 7-day study plan generation.
 ### Phase 6
 
 Add Premium limits and billing integration in a separate task.
+
+## Task 41 Hardening Notes
+
+The Supabase `ai-coach` function now normalizes provider errors such as insufficient quota, invalid API key, missing model, rate limits, and response parsing failures into predictable JSON responses. Android treats these failures as fallback-safe and keeps local explanations or Smart Coach guidance visible.
+
+Recommended OpenAI model configuration:
+
+```text
+OPENAI_MODEL=gpt-4.1-mini
+```

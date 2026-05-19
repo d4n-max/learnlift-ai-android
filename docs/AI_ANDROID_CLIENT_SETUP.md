@@ -14,10 +14,10 @@ The backend URL is configured as a non-secret BuildConfig value:
 BuildConfig.SUPABASE_AI_COACH_URL
 ```
 
-Default placeholder:
+Default debug endpoint:
 
 ```text
-https://YOUR_PROJECT_REF.supabase.co/functions/v1/ai-coach
+https://hfeyfsqfggtajowlaeap.supabase.co/functions/v1/ai-coach
 ```
 
 For local builds, set this Gradle property without committing secrets:
@@ -27,6 +27,16 @@ SUPABASE_AI_COACH_URL=https://YOUR_PROJECT_REF.supabase.co/functions/v1/ai-coach
 ```
 
 This URL is not a secret. Do not put OpenAI keys, Supabase service role keys, or private tokens in Android config.
+
+If Android receives HTTP `401` or `403`, confirm the Supabase Edge Function has Verify JWT turned off for the current unauthenticated v1/v2 testing flow. Do not add a Supabase service role key to Android.
+
+Debug Logcat tag:
+
+```text
+LearnLiftAiCoach
+```
+
+Debug builds log the configured endpoint host/path, action, HTTP status code, sanitized response preview, backend error code, and parsing success/failure. Logs must not include OpenAI keys, Supabase service-role keys, or full secrets.
 
 ## Android Client Structure
 
@@ -54,6 +64,23 @@ Request shape:
   "payload": {}
 }
 ```
+
+Successful response wrapper:
+
+```json
+{
+  "action": "explain_answer",
+  "result": {
+    "title": "...",
+    "conciseExplanation": "...",
+    "whyCorrectAnswerWorks": "...",
+    "studyTip": "...",
+    "recommendedTopic": "..."
+  }
+}
+```
+
+Android parses the wrapper first, then parses the nested `result` object for the selected action.
 
 Supported actions:
 
@@ -110,7 +137,7 @@ Common user-facing fallback:
 AI Coach is temporarily unavailable. Here's the local explanation instead.
 ```
 
-## Current Known Blocker
+## Backend Enablement Status
 
 Real AI responses require:
 
@@ -119,7 +146,19 @@ Real AI responses require:
 - `OPENAI_MODEL` configured in Supabase secrets.
 - OpenAI API billing/quota active.
 
-If OpenAI billing or quota is not active, the backend may return `AI_PROVIDER_ERROR`, `insufficient_quota`, or a temporary unavailable message. Android handles this gracefully.
+OpenAI API billing/quota has been enabled manually for v2 testing. The previous known backend failure was `429 insufficient_quota`.
+
+If quota is exhausted again, the key is invalid, the model is unavailable, the backend returns invalid JSON, or the device has no network, Android handles the failure gracefully.
+
+Known backend error codes that Android treats as fallback-safe:
+
+- `AI_PROVIDER_ERROR`
+- `AI_RESPONSE_PARSE_ERROR`
+- `AI_PROXY_CONFIGURATION_ERROR`
+- `OPENAI_INSUFFICIENT_QUOTA`
+- `OPENAI_INVALID_API_KEY`
+- `OPENAI_MODEL_NOT_FOUND`
+- `OPENAI_RATE_LIMIT_EXCEEDED`
 
 ## Testing
 
@@ -141,9 +180,29 @@ Then test:
 - Quiz summary -> `Generate AI Study Review`
 - Progress -> `Generate 7-Day Study Plan`
 
+These calls must happen only after the user taps the corresponding AI button. There should be no AI request on screen load.
+
 ### Backend Failure
 
-Test with a deployed function but missing/invalid OpenAI quota. The Android app should show friendly fallback text and preserve local study behavior.
+Test with a deployed function but missing/invalid OpenAI quota, invalid model, bad backend URL, or no network. The Android app should show friendly fallback text and preserve local study behavior.
+
+## Physical Device Checklist
+
+- Build with the deployed Supabase function URL.
+- Install on a physical Android device.
+- Answer a quiz question incorrectly.
+- Tap `Explain with AI Coach`.
+- Confirm either real AI explanation or the local static explanation fallback.
+- Complete a quiz.
+- Tap `Generate AI Study Review`.
+- Confirm either AI review or local Smart Coach fallback.
+- Open Progress.
+- Tap `Generate 7-Day Study Plan`.
+- Confirm either AI plan or local Recommended Focus fallback.
+- Turn off network and repeat one AI action.
+- Confirm the app does not crash.
+- Confirm static explanations and rule-based Smart Coach remain available.
+- Confirm no OpenAI key exists in Android code/resources.
 
 ## Not Included
 

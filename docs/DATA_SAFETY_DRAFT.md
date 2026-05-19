@@ -75,6 +75,8 @@ Task 35 adds Android client integration for optional, user-initiated AI Coach ac
 
 Before enabling real AI in production or broader testing, update the Privacy Policy and Google Play Data Safety answers to describe this backend data transfer. Real AI responses also require the backend to have OpenAI API billing/quota active.
 
+Task 41 hardens the real AI backend/client path for v2 testing. OpenAI API billing/quota has been enabled manually, but the app must still treat AI as optional. If OpenAI, Supabase, the network, quota, model configuration, or response parsing fails, Android keeps local explanations and rule-based Smart Coach recommendations available.
+
 Task 36 adds RevenueCat subscription entitlement support and a billing-ready Premium screen. Billing and subscription purchases are processed by Google Play and RevenueCat. The app checks Premium entitlement status through RevenueCat, and it must continue to work in Free mode if RevenueCat products or Play testing are not ready.
 
 Task 37 documents Google Play subscription mapping for `learnlift_premium_monthly` and `learnlift_premium_yearly`, RevenueCat package mapping for `monthly` and `yearly`/`annual`, and entitlement identifier `premium`. No private payment card data is handled directly by the app. AI backend behavior remains separate and sends limited study context only after explicit user action.

@@ -19,7 +19,13 @@ const globalRules = [
   "Do not invent facts beyond the provided context.",
   "Do not promise guaranteed job, interview, exam, certification, or career success.",
   "Avoid medical, legal, financial, therapy, safety-critical, or other high-stakes advice.",
-  "Return JSON only. Do not include markdown.",
+  "Return one valid JSON object only.",
+  "Do not include markdown, code fences, prose, commentary, labels, or explanations outside the JSON object.",
+  "Do not wrap the JSON in ```json or any other fence.",
+  "Use double quotes for all JSON keys and string values.",
+  "Do not include trailing comments.",
+  "Keep every field concise.",
+  "Output must match the exact schema.",
 ].join("\n");
 
 export function buildPrompt(action: AiCoachAction, payload: unknown): PromptConfig {
@@ -56,9 +62,10 @@ function buildExplainAnswerPrompt(payload: ExplainAnswerPayload): PromptConfig {
       "Explain why the correct answer works and why the selected answer may be wrong if applicable.",
       "Include one practical study tip and one recommended topic.",
       "Required JSON keys: title, conciseExplanation, whyCorrectAnswerWorks, studyTip, recommendedTopic.",
+      "Return ONLY valid minified JSON matching those keys.",
     ].join("\n"),
     responseFormat: responseFormats.explain_answer,
-    maxOutputTokens: 500,
+    maxOutputTokens: 800,
   };
 }
 
@@ -76,9 +83,11 @@ function buildQuizSummaryPrompt(payload: QuizSummaryPayload): PromptConfig {
       "Suggest one realistic next study session.",
       "Be encouraging but realistic.",
       "Required JSON keys: summary, recommendedFocus, nextSessionSuggestion, encouragement.",
+      "recommendedFocus must be an array of one to three short strings.",
+      "Return ONLY valid minified JSON matching those keys.",
     ].join("\n"),
     responseFormat: responseFormats.quiz_summary,
-    maxOutputTokens: 450,
+    maxOutputTokens: 800,
   };
 }
 
@@ -95,8 +104,9 @@ function buildStudyPlanPrompt(payload: StudyPlanPayload): PromptConfig {
       "Each day must have one focus and two to three short, actionable tasks.",
       "Keep the plan realistic and grounded in the study path and goal.",
       "Required JSON keys: title, days. Each day requires day, focus, tasks.",
+      "Return ONLY valid minified JSON matching those keys.",
     ].join("\n"),
     responseFormat: responseFormats.study_plan,
-    maxOutputTokens: 900,
+    maxOutputTokens: 1400,
   };
 }

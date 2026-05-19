@@ -1,6 +1,7 @@
 package com.learnliftai.app.data.ai
 
 import com.learnliftai.app.BuildConfig
+import android.util.Log
 import java.io.BufferedReader
 import java.io.OutputStreamWriter
 import java.net.HttpURLConnection
@@ -78,8 +79,10 @@ class AiCoachService(
         payload: JSONObject,
         parser: (JSONObject) -> T
     ): AiCoachResult<T> = withContext(Dispatchers.IO) {
+        logEndpoint(action)
         if (!isConfiguredEndpoint()) {
-            return@withContext AiCoachResult.Error()
+            debugLog("AI Coach endpoint is not configured for action=$action")
+            return@withContext AiCoachResult.Error(AiCoachUnavailableWithFallbackMessage)
         }
 
         runCatching {
@@ -92,9 +95,10 @@ class AiCoachService(
                 connectTimeout = RequestTimeoutMillis
                 readTimeout = RequestTimeoutMillis
                 doOutput = true
-                setRequestProperty("Content-Type", "application/json")
+                setRequestProperty("Content-Type", "application/json; charset=utf-8")
                 setRequestProperty("Accept", "application/json")
             }
+            debugLog("Sending action=$action")
 
             OutputStreamWriter(connection.outputStream, Charsets.UTF_8).use { writer ->
                 writer.write(body)
@@ -107,16 +111,34 @@ class AiCoachService(
                 connection.errorStream?.bufferedReader()?.use(BufferedReader::readText).orEmpty()
             }
             connection.disconnect()
+            debugLog(
+                "HTTP status=$statusCode action=$action responsePreview=${responseBody.sanitizedPreview()}"
+            )
 
             if (statusCode !in 200..299) {
+                debugLog(
+                    "Backend error action=$action code=${backendErrorCode(responseBody) ?: "unknown"}"
+                )
                 return@withContext AiCoachResult.Error(friendlyMessageFromError(responseBody))
             }
 
             val responseJson = JSONObject(responseBody)
-            val resultJson = responseJson.getJSONObject("result")
-            AiCoachResult.Success(parser(resultJson))
-        }.getOrElse {
-            AiCoachResult.Error()
+            val wrapperAction = responseJson.optString("action")
+            val resultJson = responseJson.optJSONObject("result")
+            if (resultJson == null) {
+                debugLog("Parsing failure action=$action reason=missing_result")
+                return@withContext AiCoachResult.Error(AiCoachUnavailableWithFallbackMessage)
+            }
+            if (wrapperAction.isNotBlank() && wrapperAction != action) {
+                debugLog("Parsing warning action=$action wrapperAction=$wrapperAction")
+            }
+
+            val parsed = parser(resultJson)
+            debugLog("Parsing success action=$action")
+            AiCoachResult.Success(parsed)
+        }.getOrElse { error ->
+            debugLog("Parsing/request failure action=$action reason=${error.javaClass.simpleName}")
+            AiCoachResult.Error(AiCoachUnavailableWithFallbackMessage)
         }
     }
 
@@ -133,7 +155,16 @@ class AiCoachService(
             val message = errorJson.optString("message")
             if (
                 error == "AI_PROVIDER_ERROR" ||
+                error == "AI_RESPONSE_PARSE_ERROR" ||
+                error == "AI_PROXY_CONFIGURATION_ERROR" ||
+                error == "OPENAI_INSUFFICIENT_QUOTA" ||
+                error == "OPENAI_INVALID_API_KEY" ||
+                error == "OPENAI_MODEL_NOT_FOUND" ||
+                error == "OPENAI_RATE_LIMIT_EXCEEDED" ||
                 message.contains("insufficient_quota", ignoreCase = true) ||
+                message.contains("invalid_api_key", ignoreCase = true) ||
+                message.contains("model_not_found", ignoreCase = true) ||
+                message.contains("rate_limit_exceeded", ignoreCase = true) ||
                 message.contains("temporarily unavailable", ignoreCase = true)
             ) {
                 AiCoachUnavailableWithFallbackMessage
@@ -141,6 +172,35 @@ class AiCoachService(
                 AiCoachUnavailableMessage
             }
         }.getOrDefault(AiCoachUnavailableMessage)
+    }
+
+    private fun backendErrorCode(responseBody: String): String? {
+        return runCatching {
+            JSONObject(responseBody).optString("error").takeIf { it.isNotBlank() }
+        }.getOrNull()
+    }
+
+    private fun logEndpoint(action: String) {
+        if (!BuildConfig.DEBUG) return
+        runCatching {
+            val url = URL(endpointUrl)
+            debugLog("Configured endpoint action=$action host=${url.host} path=${url.path}")
+        }.getOrElse {
+            debugLog("Configured endpoint action=$action invalid_url")
+        }
+    }
+
+    private fun debugLog(message: String) {
+        if (BuildConfig.DEBUG) {
+            Log.d(LogTag, message)
+        }
+    }
+
+    private fun String.sanitizedPreview(maxChars: Int = 500): String {
+        return replace(Regex("sk-[A-Za-z0-9_-]+"), "sk-REDACTED")
+            .replace(Regex("\\s+"), " ")
+            .trim()
+            .take(maxChars)
     }
 
     private fun JSONArray.toStringList(): List<String> {
@@ -159,6 +219,7 @@ class AiCoachService(
     }
 
     private companion object {
+        const val LogTag = "LearnLiftAiCoach"
         const val RequestTimeoutMillis = 12_000
     }
 }

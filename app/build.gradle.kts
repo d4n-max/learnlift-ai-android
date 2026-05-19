@@ -9,7 +9,7 @@ android {
     compileSdk = 35
     val aiCoachUrl = providers
         .gradleProperty("SUPABASE_AI_COACH_URL")
-        .orElse("https://YOUR_PROJECT_REF.supabase.co/functions/v1/ai-coach")
+        .orElse("https://hfeyfsqfggtajowlaeap.supabase.co/functions/v1/ai-coach")
         .get()
     val revenueCatPublicApiKey = providers
         .gradleProperty("REVENUECAT_PUBLIC_API_KEY")

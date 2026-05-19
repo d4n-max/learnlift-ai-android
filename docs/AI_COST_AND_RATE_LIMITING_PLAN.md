@@ -2,9 +2,9 @@
 
 ## Purpose
 
-This plan describes how LearnLift AI can add real AI Coach features later without losing cost control, privacy discipline, or MVP reliability.
+This plan describes how LearnLift AI can run real AI Coach features without losing cost control, privacy discipline, or MVP reliability.
 
-The current app remains local-only. No AI calls, backend calls, billing, analytics, or network permissions are implemented in the current task.
+The current app includes optional, user-initiated Android AI Coach calls to the Supabase `ai-coach` backend proxy. Local study flows, static explanations, and rule-based Smart Coach recommendations must remain available when AI fails.
 
 ## Cost Control Principles
 
@@ -15,9 +15,11 @@ The current app remains local-only. No AI calls, backend calls, billing, analyti
 - Use structured JSON outputs.
 - Limit request body size.
 - Limit response token count.
+- Use a low-cost configurable model such as `gpt-4.1-mini`.
 - Cache repeated explanations where possible.
 - Rate limit daily usage.
 - Track endpoint usage later before expanding AI features.
+- Avoid retry loops that could burn quota.
 
 ## Suggested V1 Limits
 
@@ -73,7 +75,7 @@ Recommended limits:
 
 ## Backend Rate Limiting
 
-The backend proxy should implement rate limits before calling the AI provider.
+The backend proxy should implement rate limits before calling the AI provider. The current Supabase Edge Function includes an in-memory per-action limit as a basic safeguard. A future production version should replace or supplement this with a durable limiter if traffic grows.
 
 Potential identifiers:
 
@@ -180,11 +182,11 @@ Timeouts should be short enough to keep the app feeling responsive.
 
 ### Phase 1
 
-Current rule-based Smart Coach only.
+Rule-based Smart Coach only.
 
 ### Phase 2
 
-Backend proxy with validation, rate limiting, environment variables, minimal logging, and mocked AI responses.
+Backend proxy with validation, rate limiting, environment variables, minimal logging, and real provider calls through Supabase.
 
 ### Phase 3
 

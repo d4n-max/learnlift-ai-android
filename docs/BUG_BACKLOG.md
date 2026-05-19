@@ -1,6 +1,6 @@
 # LearnLift AI Bug Backlog
 
-Last updated: 2026-05-18
+Last updated: 2026-05-19
 
 ## Open
 
@@ -10,6 +10,8 @@ Last updated: 2026-05-18
 | BUG-012 | High | Billing QA | Google Play closed-testing purchase flow has not been verified from a Play-installed build in this QA pass. | Install the app from the Play testing track and buy monthly/yearly test subscriptions. | Google Play purchase sheet opens, successful purchases activate entitlement `premium`, cancellations do not crash, and restore updates plan state. | RevenueCat Test Store has been confirmed, but Play track purchase behavior still needs device QA. | Complete the Google Play Closed Testing section in `docs/BILLING_QA_CHECKLIST.md`. | Open |
 | BUG-013 | Medium | Store Assets | Final Play Store screenshots and feature graphic are not confirmed ready. | Prepare Play Console store listing assets. | Screenshots and feature graphic reflect current Home, study paths, Flashcards, Quiz, Progress, Settings, Premium, and AI fallback behavior. | Asset readiness remains pending. | Capture final screenshots from a Play-ready build and prepare the feature graphic before production access request. | Open |
 | BUG-015 | High | Device QA | Physical Android device install and launch were not completed in the Task 39 shell QA pass because ADB reported no connected devices. | Connect a physical Android device with USB debugging enabled and run `adb devices`, then `.\gradlew.bat installDebug`. | Device appears as `device`, debug APK installs, and app launches for a full smoke test. | `adb devices` returned no attached device and `installDebug` failed with `No connected devices!`. | Reconnect device, approve the USB debugging prompt, verify platform-tools access, and rerun physical-device QA. | Open |
+| BUG-016 | High | AI QA | Real AI success path needs retest after OpenAI billing/quota enablement and Task 41 backend hardening. | Deploy the latest Supabase `ai-coach` function, configure `SUPABASE_AI_COACH_URL`, and tap each AI action on a physical device. | Wrong-answer explanation, quiz summary review, and 7-day study plan return real AI responses when backend quota is active, and fallback safely when unavailable. | Build-time checks pass, but live backend success was not verified from this shell. | Run `docs/AI_BACKEND_TESTING.md` PowerShell examples and physical-device AI smoke tests. | Open |
+| BUG-017 | High | AI Backend | Supabase `ai-coach` intermittently returns `AI_RESPONSE_PARSE_ERROR` when OpenAI responds with JSON wrapped in markdown/code-fence text or incomplete optional fields. | Call `explain_answer` repeatedly from Supabase test panel or Android. | Backend extracts/normalizes valid AI JSON and returns HTTP 200 whenever a usable JSON object is present. | Some responses return HTTP 502 even though the raw output starts with a JSON object. | Harden parser for fenced/prose-wrapped JSON, add safe defaults, redeploy function, and retest repeated AI calls. | Open |
 
 ## Fixed
 

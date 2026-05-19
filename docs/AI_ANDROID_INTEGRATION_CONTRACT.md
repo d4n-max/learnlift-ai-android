@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This document defines the future Android contract for real AI Coach features. It is documentation only. The current Android app must remain local-only until a backend proxy is implemented and explicitly enabled.
+This document defines the Android contract for real AI Coach features. The current Android app uses the Supabase backend proxy only after explicit user action and keeps local fallbacks available.
 
 The Android app must never call an AI provider directly. It should call only the LearnLift AI backend proxy.
 
@@ -12,7 +12,7 @@ The Android app must never call an AI provider directly. It should call only the
 
 Network boundary responsible for calling backend proxy endpoints.
 
-Future responsibilities:
+Responsibilities:
 
 - Send HTTPS requests to backend proxy.
 - Decode structured JSON responses.
@@ -32,7 +32,7 @@ Task 35 implements a minimal `HttpURLConnection` client for the Supabase backend
 
 Feature-facing data layer for AI Coach requests.
 
-Future responsibilities:
+Responsibilities:
 
 - Map screen state into request models.
 - Call `AiCoachService`.
@@ -41,7 +41,7 @@ Future responsibilities:
 
 ### `AiCoachUiState`
 
-Future UI state model:
+UI state model:
 
 ```kotlin
 sealed interface AiCoachUiState {
@@ -167,7 +167,7 @@ Supported actions:
 
 The app should not call AI provider URLs.
 
-## Future UI Entry Points
+## UI Entry Points
 
 ### Wrong Quiz Answer
 
@@ -243,12 +243,12 @@ Billing, entitlements, RevenueCat, or Google Play Billing must be implemented in
 
 ## Not Implemented Yet
 
-This contract does not add:
+This contract still does not add:
 
 - Retrofit, Ktor, OkHttp, or any network library.
 - AI provider SDK.
 - API keys.
-- Billing.
+- Hard Premium gating.
 - Authentication.
 - Cloud sync.
 - Analytics.

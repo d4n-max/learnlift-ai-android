@@ -1,8 +1,8 @@
 # ai-coach Supabase Edge Function
 
-This Edge Function is the backend proxy scaffold for future LearnLift AI Coach features.
+This Edge Function is the backend proxy for LearnLift AI Coach features.
 
-Android must not call OpenAI directly and must not contain AI provider API keys. Android will eventually call this Supabase function, and this function calls OpenAI from the backend using environment variables.
+Android must not call OpenAI directly and must not contain AI provider API keys. Android calls this Supabase function, and this function calls OpenAI from the backend using environment variables.
 
 ## Endpoint
 
@@ -31,8 +31,6 @@ Required:
 
 - `OPENAI_API_KEY`
 
-Recommended:
-
 - `OPENAI_MODEL`
 
 Optional:
@@ -40,7 +38,13 @@ Optional:
 - `AI_PROXY_MAX_INPUT_CHARS`
 - `AI_PROXY_ENABLE_DEBUG_LOGS`
 
-If `OPENAI_MODEL` is missing, the function uses `gpt-4.1-mini` as a safe scaffold default. Configure the model explicitly before production deployment.
+Recommended model:
+
+```text
+gpt-4.1-mini
+```
+
+If `OPENAI_MODEL` is missing, the function uses `gpt-4.1-mini` as a safe default. Configure the model explicitly before production deployment.
 
 ## Security Notes
 
@@ -62,6 +66,14 @@ Provider failure:
   "message": "AI Coach is temporarily unavailable."
 }
 ```
+
+Known provider-related errors are normalized before returning to Android:
+
+- `OPENAI_INSUFFICIENT_QUOTA`
+- `OPENAI_INVALID_API_KEY`
+- `OPENAI_MODEL_NOT_FOUND`
+- `OPENAI_RATE_LIMIT_EXCEEDED`
+- `AI_PROVIDER_ERROR`
 
 Invalid provider JSON:
 
