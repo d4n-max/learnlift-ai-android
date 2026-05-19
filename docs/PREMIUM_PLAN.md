@@ -17,6 +17,7 @@ The Free plan currently includes:
 - Basic progress tracking.
 - Rule-based Smart Coach tips.
 - Local-only DataStore persistence.
+- Limited AI Coach previews.
 
 ## Planned Premium Plan
 
@@ -113,3 +114,5 @@ Future work may include:
 During closed testing, current Free features remain usable even if billing products, RevenueCat offerings, or Google Play purchases are unavailable. Premium is optional and should not hard-block Home, study path selection, flashcards, quizzes, daily sessions, progress, settings, Smart Coach, local content, DataStore persistence, or AI fallback behavior.
 
 AI Coach UI may use subtle Premium-ready positioning during closed testing, but current AI actions remain available for validation and keep local fallback behavior when the backend is unavailable.
+
+Task 43 adds local AI usage limits for cost control. Free users receive limited AI previews, while Premium users receive higher local safety limits. These limits apply only to AI-powered calls and do not block flashcards, quizzes, daily sessions, progress, local explanations, or rule-based Smart Coach recommendations.

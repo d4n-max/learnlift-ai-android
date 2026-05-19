@@ -21,6 +21,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import com.learnliftai.app.data.AssetStudyContentRepository
 import com.learnliftai.app.data.LocalProgressRepository
+import com.learnliftai.app.data.ai.AiUsageRepository
+import com.learnliftai.app.data.ai.AiUsageState
 import com.learnliftai.app.data.billing.PremiumRepository
 import com.learnliftai.app.data.StudyPathRepository
 import com.learnliftai.app.domain.model.UserProgress
@@ -39,8 +41,10 @@ fun LearnLiftApp() {
     val context = LocalContext.current
     val progressRepository = remember { LocalProgressRepository(context.applicationContext) }
     val premiumRepository = remember { PremiumRepository(context.applicationContext) }
+    val aiUsageRepository = remember { AiUsageRepository(context.applicationContext) }
     val userProgress by progressRepository.progress.collectAsState(initial = UserProgress())
     val premiumUiState by premiumRepository.uiState.collectAsState()
+    val aiUsageState by aiUsageRepository.usage.collectAsState(initial = AiUsageState())
     val coroutineScope = rememberCoroutineScope()
     var selectedDestinationName by rememberSaveable {
         mutableStateOf(LearnLiftDestination.Home.name)
@@ -226,6 +230,10 @@ fun LearnLiftApp() {
                 LearnLiftDestination.Quiz -> QuizScreen(
                     selectedStudyPath = selectedStudyPath,
                     selectedStudyContent = selectedStudyContent,
+                    isPremiumActive = premiumUiState.isPremiumActive,
+                    aiUsageState = aiUsageState,
+                    aiUsageRepository = aiUsageRepository,
+                    onViewPremium = { isPremiumOpen = true },
                     onQuizCompleted = { score, percentage ->
                         coroutineScope.launch {
                             progressRepository.recordQuizCompleted(
@@ -240,6 +248,8 @@ fun LearnLiftApp() {
                     selectedStudyPath = selectedStudyPath,
                     userProgress = userProgress,
                     isPremiumActive = premiumUiState.isPremiumActive,
+                    aiUsageState = aiUsageState,
+                    aiUsageRepository = aiUsageRepository,
                     onOpenSettings = { isSettingsOpen = true },
                     onViewPremium = { isPremiumOpen = true },
                     onResetProgress = {

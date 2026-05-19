@@ -21,26 +21,26 @@ The current app includes optional, user-initiated Android AI Coach calls to the 
 - Track endpoint usage later before expanding AI features.
 - Avoid retry loops that could burn quota.
 
-## Suggested V1 Limits
+## Current Client-Side Limits
+
+Task 43 adds local DataStore-based AI usage limits. These limits reduce accidental cost during early testing, but they are not a true security boundary.
 
 ### Free Users
 
-Possible future limits:
-
-- 2-3 AI previews per day.
-- Wrong-answer explanations only at first.
-- Rule-based Smart Coach remains available without AI.
+- `explain_answer`: 3 requests per local day.
+- `quiz_summary`: 1 request per local day.
+- `study_plan`: 0 requests per local day.
+- Rule-based Smart Coach and local explanations remain available without AI.
 
 ### Premium Users
 
-Possible future limits:
+Premium is detected with RevenueCat entitlement `premium`.
 
-- Higher daily explanation limits.
-- Quiz summary AI review.
-- 7-day study plan generation.
-- Higher but still capped usage to prevent runaway cost.
+- `explain_answer`: 50 requests per local day.
+- `quiz_summary`: 20 requests per local day.
+- `study_plan`: 10 requests per local day.
 
-Billing and entitlement enforcement must be implemented later in a separate task before Premium limits are active.
+The app increments local usage when an AI request is started, before the Supabase call completes. Failed sent requests count toward the limit so repeated failures cannot create uncontrolled retry cost. Requests blocked by the local limiter do not call Supabase.
 
 ## Endpoint-Level Limits
 
@@ -75,7 +75,9 @@ Recommended limits:
 
 ## Backend Rate Limiting
 
-The backend proxy should implement rate limits before calling the AI provider. The current Supabase Edge Function includes an in-memory per-action limit as a basic safeguard. A future production version should replace or supplement this with a durable limiter if traffic grows.
+The backend proxy should implement durable rate limits before calling the AI provider. Local Android limits are useful for cost discipline but can be bypassed by a modified client.
+
+The current no-login version does not add backend quota storage. A future production version should use Supabase Auth or another account/session identifier and enforce server-side quotas.
 
 Potential identifiers:
 
@@ -83,11 +85,11 @@ Potential identifiers:
 - IP address as a coarse fallback.
 - Account ID only if authentication is added later.
 
-Suggested starting limits:
+Server-side starting limits can mirror the Android limits:
 
 - `/ai/explain-answer`: 3 free requests/day.
 - `/ai/quiz-summary`: 1 free request/day.
-- `/ai/study-plan`: 1 free request/week.
+- `/ai/study-plan`: 0 free requests/day or 1 free request/week.
 
 These are planning numbers and should be revisited after tester feedback and actual model cost estimates.
 

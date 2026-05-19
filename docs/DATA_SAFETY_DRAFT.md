@@ -10,6 +10,7 @@ LearnLift AI is primarily a local-first Android app. Study content and normal st
 - The app does not use cloud sync.
 - The app does not send study context to AI automatically.
 - Optional AI Coach actions may send limited study context to the Supabase backend proxy only when the user taps an AI action.
+- Local AI usage counters are stored on the device to limit accidental AI cost. These counters are not synced to a backend in the current build.
 - Premium subscription checks and purchases are processed through Google Play and RevenueCat. RevenueCat is used to manage subscription entitlement status. The Android app includes a RevenueCat public SDK key, which is not a private secret.
 - The app does not directly handle private payment card data.
 - The app does not include ads.
@@ -31,6 +32,7 @@ The app stores basic study progress locally on the user's device, including:
 - Quiz completion stats
 - Last quiz score
 - Streak and last study date
+- Local AI usage date and per-action AI request counters
 
 ## Data Sharing
 
@@ -76,6 +78,8 @@ Task 35 adds Android client integration for optional, user-initiated AI Coach ac
 Before enabling real AI in production or broader testing, update the Privacy Policy and Google Play Data Safety answers to describe this backend data transfer. Real AI responses also require the backend to have OpenAI API billing/quota active.
 
 Task 41 hardens the real AI backend/client path for v2 testing. OpenAI API billing/quota has been enabled manually, but the app must still treat AI as optional. If OpenAI, Supabase, the network, quota, model configuration, or response parsing fails, Android keeps local explanations and rule-based Smart Coach recommendations available.
+
+Task 43 adds client-side AI usage counters with DataStore. These counters track only the local date and counts for AI explanation, quiz summary, and study plan requests. They are used for local cost control and are not a server-side abuse-protection system.
 
 Task 36 adds RevenueCat subscription entitlement support and a billing-ready Premium screen. Billing and subscription purchases are processed by Google Play and RevenueCat. The app checks Premium entitlement status through RevenueCat, and it must continue to work in Free mode if RevenueCat products or Play testing are not ready.
 

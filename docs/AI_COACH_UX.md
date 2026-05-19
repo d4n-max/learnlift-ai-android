@@ -80,6 +80,18 @@ If a request fails:
 - Retry is manual only.
 - There is no automatic retry loop.
 
+## Usage Limit UI
+
+AI entry points show subtle usage text:
+
+- Free users see remaining previews, such as `Free AI previews left today: 2`.
+- Free users see `AI previews reset tomorrow` after the local daily limit is used.
+- Premium users see `Premium AI access active`.
+
+When a Free user reaches a local AI limit, the app does not call Supabase. It shows a friendly message, keeps local explanations or Smart Coach recommendations available, and offers `View Premium`.
+
+Failed requests count if the app already started the AI request. This prevents repeated failed requests from creating uncontrolled backend/API cost.
+
 ## Debug Details
 
 Normal users do not see debug details.
@@ -98,11 +110,11 @@ Logs must not include OpenAI API keys, Supabase service role keys, full prompts,
 
 Planned future behavior:
 
-- Free users may receive limited AI previews.
-- Premium users may receive higher AI limits.
+- Free users receive limited AI previews.
+- Premium users receive higher local AI safety limits.
 - AI explanations, AI Study Review, and 7-day plans may become Premium features.
 
-The current UX polish task does not add hard paywalls, purchase requirements, or new entitlement checks.
+The current implementation limits only AI-powered calls. It does not hard-paywall core study features.
 
 ## Manual QA Checklist
 

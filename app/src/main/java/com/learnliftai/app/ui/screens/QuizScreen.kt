@@ -39,6 +39,10 @@ import androidx.compose.ui.unit.dp
 import com.learnliftai.app.data.ai.AiCoachRepository
 import com.learnliftai.app.data.ai.AiCoachResult
 import com.learnliftai.app.data.ai.AiCoachUiState
+import com.learnliftai.app.data.ai.AiUsageAction
+import com.learnliftai.app.data.ai.AiUsageDecision
+import com.learnliftai.app.data.ai.AiUsageRepository
+import com.learnliftai.app.data.ai.AiUsageState
 import com.learnliftai.app.data.ai.ExplainAnswerRequest
 import com.learnliftai.app.data.ai.ExplainAnswerResponse
 import com.learnliftai.app.data.ai.QuizSummaryRequest
@@ -63,6 +67,10 @@ import kotlinx.coroutines.launch
 fun QuizScreen(
     selectedStudyPath: StudyPath?,
     selectedStudyContent: StudyContent?,
+    isPremiumActive: Boolean,
+    aiUsageState: AiUsageState,
+    aiUsageRepository: AiUsageRepository,
+    onViewPremium: () -> Unit,
     onQuizCompleted: (score: Int, percentage: Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -118,6 +126,10 @@ fun QuizScreen(
                 score = score,
                 weakTopics = rememberWeakTopics(quizQuestions, selectedAnswers),
                 aiCoachRepository = aiCoachRepository,
+                isPremiumActive = isPremiumActive,
+                aiUsageState = aiUsageState,
+                aiUsageRepository = aiUsageRepository,
+                onViewPremium = onViewPremium,
                 onRestartQuiz = {
                     currentIndex = 0
                     isQuizComplete = false
@@ -137,6 +149,10 @@ fun QuizScreen(
                 question = currentQuestion,
                 selectedAnswerId = selectedAnswerId,
                 aiCoachRepository = aiCoachRepository,
+                isPremiumActive = isPremiumActive,
+                aiUsageState = aiUsageState,
+                aiUsageRepository = aiUsageRepository,
+                onViewPremium = onViewPremium,
                 onAnswerSelected = { optionId ->
                     if (selectedAnswers[currentQuestion.id] == null) {
                         selectedAnswers[currentQuestion.id] = optionId
@@ -210,11 +226,18 @@ private fun QuizQuestionCard(
     question: QuizQuestion,
     selectedAnswerId: String?,
     aiCoachRepository: AiCoachRepository,
+    isPremiumActive: Boolean,
+    aiUsageState: AiUsageState,
+    aiUsageRepository: AiUsageRepository,
+    onViewPremium: () -> Unit,
     onAnswerSelected: (String) -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
     var aiExplanationState by remember(question.id, selectedAnswerId) {
         mutableStateOf<AiCoachUiState<ExplainAnswerResponse>>(AiCoachUiState.Idle)
+    }
+    var aiExplanationLimitReached by remember(question.id, selectedAnswerId) {
+        mutableStateOf(false)
     }
 
     LearnLiftCard {
@@ -263,6 +286,22 @@ private fun QuizQuestionCard(
                 val requestAiExplanation = {
                     if (aiExplanationState !is AiCoachUiState.Loading) {
                         coroutineScope.launch {
+                            when (
+                                val usageDecision = aiUsageRepository.consumeIfAvailable(
+                                    action = AiUsageAction.ExplainAnswer,
+                                    isPremium = isPremiumActive
+                                )
+                            ) {
+                                is AiUsageDecision.Blocked -> {
+                                    aiExplanationLimitReached = !isPremiumActive
+                                    aiExplanationState = AiCoachUiState.Error(usageDecision.message)
+                                    return@launch
+                                }
+
+                                is AiUsageDecision.Allowed -> {
+                                    aiExplanationLimitReached = false
+                                }
+                            }
                             aiExplanationState = AiCoachUiState.Loading
                             aiExplanationState = when (
                                 val result = aiCoachRepository.explainAnswer(
@@ -284,6 +323,12 @@ private fun QuizQuestionCard(
                     }
                 }
                 Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
+                AiUsageStatusText(
+                    action = AiUsageAction.ExplainAnswer,
+                    usageState = aiUsageState,
+                    isPremiumActive = isPremiumActive
+                )
+                Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
                 SecondaryActionButton(
                     text = if (aiExplanationState is AiCoachUiState.Loading) {
                         "AI Coach is thinking..."
@@ -296,7 +341,9 @@ private fun QuizQuestionCard(
                 AiExplainAnswerResult(
                     state = aiExplanationState,
                     localExplanation = question.explanation,
-                    onRetry = requestAiExplanation
+                    showUpgradeAction = aiExplanationLimitReached && !isPremiumActive,
+                    onRetry = requestAiExplanation,
+                    onViewPremium = onViewPremium
                 )
                 LocalExplanationBlock(explanation = question.explanation)
             }
@@ -360,6 +407,10 @@ private fun QuizSummary(
     score: QuizScore,
     weakTopics: List<String>,
     aiCoachRepository: AiCoachRepository,
+    isPremiumActive: Boolean,
+    aiUsageState: AiUsageState,
+    aiUsageRepository: AiUsageRepository,
+    onViewPremium: () -> Unit,
     onRestartQuiz: () -> Unit
 ) {
     val recommendation = SmartCoachAdvisor.quizSummaryRecommendation(
@@ -369,6 +420,9 @@ private fun QuizSummary(
     val coroutineScope = rememberCoroutineScope()
     var aiSummaryState by remember(score, weakTopics) {
         mutableStateOf<AiCoachUiState<QuizSummaryResponse>>(AiCoachUiState.Idle)
+    }
+    var aiSummaryLimitReached by remember(score, weakTopics) {
+        mutableStateOf(false)
     }
 
     LearnLiftCard {
@@ -418,6 +472,22 @@ private fun QuizSummary(
     val requestAiSummary = {
         if (aiSummaryState !is AiCoachUiState.Loading) {
             coroutineScope.launch {
+                when (
+                    val usageDecision = aiUsageRepository.consumeIfAvailable(
+                        action = AiUsageAction.QuizSummary,
+                        isPremium = isPremiumActive
+                    )
+                ) {
+                    is AiUsageDecision.Blocked -> {
+                        aiSummaryLimitReached = !isPremiumActive
+                        aiSummaryState = AiCoachUiState.Error(usageDecision.message)
+                        return@launch
+                    }
+
+                    is AiUsageDecision.Allowed -> {
+                        aiSummaryLimitReached = false
+                    }
+                }
                 aiSummaryState = AiCoachUiState.Loading
                 aiSummaryState = when (
                     val result = aiCoachRepository.quizSummary(
@@ -438,7 +508,11 @@ private fun QuizSummary(
     }
     AiQuizSummarySection(
         state = aiSummaryState,
-        onGenerate = requestAiSummary
+        usageState = aiUsageState,
+        isPremiumActive = isPremiumActive,
+        showUpgradeAction = aiSummaryLimitReached && !isPremiumActive,
+        onGenerate = requestAiSummary,
+        onViewPremium = onViewPremium
     )
 }
 
@@ -446,7 +520,9 @@ private fun QuizSummary(
 private fun AiExplainAnswerResult(
     state: AiCoachUiState<ExplainAnswerResponse>,
     localExplanation: String,
-    onRetry: () -> Unit
+    showUpgradeAction: Boolean,
+    onRetry: () -> Unit,
+    onViewPremium: () -> Unit
 ) {
     when (state) {
         AiCoachUiState.Idle -> Unit
@@ -503,6 +579,13 @@ private fun AiExplainAnswerResult(
                     text = "Retry AI Coach",
                     onClick = onRetry
                 )
+                if (showUpgradeAction) {
+                    Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+                    PrimaryActionButton(
+                        text = "View Premium",
+                        onClick = onViewPremium
+                    )
+                }
             }
         }
     }
@@ -622,7 +705,11 @@ private fun LocalExplanationBlock(explanation: String) {
 @Composable
 private fun AiQuizSummarySection(
     state: AiCoachUiState<QuizSummaryResponse>,
-    onGenerate: () -> Unit
+    usageState: AiUsageState,
+    isPremiumActive: Boolean,
+    showUpgradeAction: Boolean,
+    onGenerate: () -> Unit,
+    onViewPremium: () -> Unit
 ) {
     LearnLiftCard {
         Text(
@@ -638,6 +725,12 @@ private fun AiQuizSummarySection(
             style = MaterialTheme.typography.bodyMedium
         )
         Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
+        AiUsageStatusText(
+            action = AiUsageAction.QuizSummary,
+            usageState = usageState,
+            isPremiumActive = isPremiumActive
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
         SecondaryActionButton(
             text = if (state is AiCoachUiState.Loading) {
                 "Generating your AI study review..."
@@ -692,10 +785,44 @@ private fun AiQuizSummarySection(
                         text = "Retry AI Study Review",
                         onClick = onGenerate
                     )
+                    if (showUpgradeAction) {
+                        Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+                        PrimaryActionButton(
+                            text = "View Premium",
+                            onClick = onViewPremium
+                        )
+                    }
                 }
             }
         }
     }
+}
+
+@Composable
+private fun AiUsageStatusText(
+    action: AiUsageAction,
+    usageState: AiUsageState,
+    isPremiumActive: Boolean
+) {
+    val text = if (isPremiumActive) {
+        "Premium AI access active"
+    } else {
+        val limit = usageState.limitFor(action, isPremium = false)
+        val remaining = usageState.remainingFor(action, isPremium = false)
+        if (limit == 0) {
+            "Premium required for this AI action"
+        } else if (remaining > 0) {
+            "Free AI previews left today: $remaining"
+        } else {
+            "AI previews reset tomorrow"
+        }
+    }
+    Text(
+        text = text,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+        style = MaterialTheme.typography.bodySmall,
+        fontWeight = FontWeight.SemiBold
+    )
 }
 
 @Composable

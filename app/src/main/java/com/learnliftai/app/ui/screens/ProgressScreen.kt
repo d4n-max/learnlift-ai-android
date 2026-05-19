@@ -33,6 +33,10 @@ import androidx.compose.ui.unit.dp
 import com.learnliftai.app.data.ai.AiCoachRepository
 import com.learnliftai.app.data.ai.AiCoachResult
 import com.learnliftai.app.data.ai.AiCoachUiState
+import com.learnliftai.app.data.ai.AiUsageAction
+import com.learnliftai.app.data.ai.AiUsageDecision
+import com.learnliftai.app.data.ai.AiUsageRepository
+import com.learnliftai.app.data.ai.AiUsageState
 import com.learnliftai.app.data.ai.StudyPlanRequest
 import com.learnliftai.app.data.ai.StudyPlanResponse
 import com.learnliftai.app.domain.SmartCoachAdvisor
@@ -55,6 +59,8 @@ fun ProgressScreen(
     selectedStudyPath: StudyPath?,
     userProgress: UserProgress,
     isPremiumActive: Boolean,
+    aiUsageState: AiUsageState,
+    aiUsageRepository: AiUsageRepository,
     onOpenSettings: () -> Unit,
     onViewPremium: () -> Unit,
     onResetProgress: () -> Unit,
@@ -105,7 +111,11 @@ fun ProgressScreen(
         QuizPerformanceCard(userProgress = userProgress)
         StudyPlanAiSection(
             selectedStudyPath = selectedStudyPath,
-            aiCoachRepository = aiCoachRepository
+            aiCoachRepository = aiCoachRepository,
+            isPremiumActive = isPremiumActive,
+            aiUsageState = aiUsageState,
+            aiUsageRepository = aiUsageRepository,
+            onViewPremium = onViewPremium
         )
         AdvancedInsightsTeaser(
             isPremiumActive = isPremiumActive,
@@ -165,11 +175,18 @@ fun ProgressScreen(
 @Composable
 private fun StudyPlanAiSection(
     selectedStudyPath: StudyPath?,
-    aiCoachRepository: AiCoachRepository
+    aiCoachRepository: AiCoachRepository,
+    isPremiumActive: Boolean,
+    aiUsageState: AiUsageState,
+    aiUsageRepository: AiUsageRepository,
+    onViewPremium: () -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
     var studyPlanState by remember(selectedStudyPath?.id) {
         mutableStateOf<AiCoachUiState<StudyPlanResponse>>(AiCoachUiState.Idle)
+    }
+    var studyPlanLimitReached by remember(selectedStudyPath?.id) {
+        mutableStateOf(false)
     }
 
     LearnLiftCard {
@@ -186,10 +203,32 @@ private fun StudyPlanAiSection(
             style = MaterialTheme.typography.bodyMedium
         )
         Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
+        ProgressAiUsageStatusText(
+            action = AiUsageAction.StudyPlan,
+            usageState = aiUsageState,
+            isPremiumActive = isPremiumActive
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
         val requestStudyPlan = {
             val path = selectedStudyPath
             if (path != null && studyPlanState !is AiCoachUiState.Loading) {
                 coroutineScope.launch {
+                    when (
+                        val usageDecision = aiUsageRepository.consumeIfAvailable(
+                            action = AiUsageAction.StudyPlan,
+                            isPremium = isPremiumActive
+                        )
+                    ) {
+                        is AiUsageDecision.Blocked -> {
+                            studyPlanLimitReached = !isPremiumActive
+                            studyPlanState = AiCoachUiState.Error(usageDecision.message)
+                            return@launch
+                        }
+
+                        is AiUsageDecision.Allowed -> {
+                            studyPlanLimitReached = false
+                        }
+                    }
                     studyPlanState = AiCoachUiState.Loading
                     studyPlanState = when (
                         val result = aiCoachRepository.studyPlan(
@@ -257,6 +296,13 @@ private fun StudyPlanAiSection(
                         text = "Retry 7-Day Plan",
                         onClick = requestStudyPlan
                     )
+                    if (studyPlanLimitReached && !isPremiumActive) {
+                        Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+                        PrimaryActionButton(
+                            text = "View Premium",
+                            onClick = onViewPremium
+                        )
+                    }
                 }
             }
         }
@@ -361,6 +407,33 @@ private fun ProgressAiDayBlock(
         style = MaterialTheme.typography.bodySmall
     )
     Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
+}
+
+@Composable
+private fun ProgressAiUsageStatusText(
+    action: AiUsageAction,
+    usageState: AiUsageState,
+    isPremiumActive: Boolean
+) {
+    val text = if (isPremiumActive) {
+        "Premium AI access active"
+    } else {
+        val limit = usageState.limitFor(action, isPremium = false)
+        val remaining = usageState.remainingFor(action, isPremium = false)
+        if (limit == 0) {
+            "Premium required for this AI action"
+        } else if (remaining > 0) {
+            "Free AI previews left today: $remaining"
+        } else {
+            "AI previews reset tomorrow"
+        }
+    }
+    Text(
+        text = text,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+        style = MaterialTheme.typography.bodySmall,
+        fontWeight = FontWeight.SemiBold
+    )
 }
 
 @Composable
