@@ -111,3 +111,5 @@ Future work may include:
 ## Closed Testing Policy
 
 During closed testing, current Free features remain usable even if billing products, RevenueCat offerings, or Google Play purchases are unavailable. Premium is optional and should not hard-block Home, study path selection, flashcards, quizzes, daily sessions, progress, settings, Smart Coach, local content, DataStore persistence, or AI fallback behavior.
+
+AI Coach UI may use subtle Premium-ready positioning during closed testing, but current AI actions remain available for validation and keep local fallback behavior when the backend is unavailable.

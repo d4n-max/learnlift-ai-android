@@ -3,19 +3,23 @@ package com.learnliftai.app.ui.screens
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -28,6 +32,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -247,21 +252,16 @@ private fun QuizQuestionCard(
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold
             )
-            Spacer(modifier = Modifier.height(6.dp))
-            Text(
-                text = question.explanation,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.78f),
-                style = MaterialTheme.typography.bodyMedium
-            )
-            if (!isCorrect && selectedOption != null && correctOption != null) {
-                Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
-                SecondaryActionButton(
-                    text = if (aiExplanationState is AiCoachUiState.Loading) {
-                        "Asking AI Coach..."
-                    } else {
-                        "Explain with AI Coach"
-                    },
-                    onClick = {
+            if (isCorrect) {
+                Spacer(modifier = Modifier.height(6.dp))
+                Text(
+                    text = question.explanation,
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.78f),
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            } else if (selectedOption != null && correctOption != null) {
+                val requestAiExplanation = {
+                    if (aiExplanationState !is AiCoachUiState.Loading) {
                         coroutineScope.launch {
                             aiExplanationState = AiCoachUiState.Loading
                             aiExplanationState = when (
@@ -281,10 +281,24 @@ private fun QuizQuestionCard(
                                 is AiCoachResult.Error -> AiCoachUiState.Error(result.message)
                             }
                         }
+                    }
+                }
+                Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
+                SecondaryActionButton(
+                    text = if (aiExplanationState is AiCoachUiState.Loading) {
+                        "AI Coach is thinking..."
+                    } else {
+                        "Explain with AI Coach"
                     },
+                    onClick = requestAiExplanation,
                     enabled = aiExplanationState !is AiCoachUiState.Loading
                 )
-                AiExplainAnswerResult(state = aiExplanationState)
+                AiExplainAnswerResult(
+                    state = aiExplanationState,
+                    localExplanation = question.explanation,
+                    onRetry = requestAiExplanation
+                )
+                LocalExplanationBlock(explanation = question.explanation)
             }
         }
     }
@@ -401,9 +415,8 @@ private fun QuizSummary(
         )
     }
     SmartCoachRecommendationCard(recommendation = recommendation)
-    AiQuizSummarySection(
-        state = aiSummaryState,
-        onGenerate = {
+    val requestAiSummary = {
+        if (aiSummaryState !is AiCoachUiState.Loading) {
             coroutineScope.launch {
                 aiSummaryState = AiCoachUiState.Loading
                 aiSummaryState = when (
@@ -422,61 +435,188 @@ private fun QuizSummary(
                 }
             }
         }
+    }
+    AiQuizSummarySection(
+        state = aiSummaryState,
+        onGenerate = requestAiSummary
     )
 }
 
 @Composable
-private fun AiExplainAnswerResult(state: AiCoachUiState<ExplainAnswerResponse>) {
+private fun AiExplainAnswerResult(
+    state: AiCoachUiState<ExplainAnswerResponse>,
+    localExplanation: String,
+    onRetry: () -> Unit
+) {
     when (state) {
         AiCoachUiState.Idle -> Unit
         AiCoachUiState.Loading -> {
             Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
-            Text(
-                text = "AI Coach is preparing a short explanation.",
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                style = MaterialTheme.typography.bodySmall
-            )
+            AiLoadingPanel(message = "AI Coach is thinking...")
         }
 
         is AiCoachUiState.Success -> {
             Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
-            Text(
-                text = state.data.title,
-                color = MaterialTheme.colorScheme.primary,
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold
-            )
-            Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
-            Text(
-                text = state.data.conciseExplanation,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.78f),
-                style = MaterialTheme.typography.bodyMedium
-            )
-            Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
-            Text(
-                text = state.data.whyCorrectAnswerWorks,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.78f),
-                style = MaterialTheme.typography.bodyMedium
-            )
-            Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
-            Text(
-                text = "Study tip: ${state.data.studyTip}",
-                color = MaterialTheme.colorScheme.secondary,
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.SemiBold
-            )
+            AiCoachPanel(
+                subtitle = "Personalized explanation"
+            ) {
+                AiSectionText(
+                    label = state.data.title,
+                    text = state.data.conciseExplanation
+                )
+                AiSectionText(
+                    label = "Why the correct answer works",
+                    text = state.data.whyCorrectAnswerWorks
+                )
+                AiSectionText(
+                    label = "Study tip",
+                    text = state.data.studyTip,
+                    accent = true
+                )
+                AiSectionText(
+                    label = "Recommended topic",
+                    text = state.data.recommendedTopic,
+                    accent = true
+                )
+            }
         }
 
         is AiCoachUiState.Error -> {
             Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+            AiCoachPanel(
+                subtitle = "Local explanation available"
+            ) {
+                Text(
+                    text = state.message,
+                    color = MaterialTheme.colorScheme.secondary,
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.SemiBold
+                )
+                Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+                Text(
+                    text = localExplanation,
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.78f),
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
+                SecondaryActionButton(
+                    text = "Retry AI Coach",
+                    onClick = onRetry
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun AiCoachPanel(
+    subtitle: String,
+    content: @Composable ColumnScope.() -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .border(
+                width = 1.dp,
+                color = MaterialTheme.colorScheme.secondary.copy(alpha = 0.26f),
+                shape = RoundedCornerShape(LearnLiftCorners.medium)
+            )
+            .background(
+                color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.42f),
+                shape = RoundedCornerShape(LearnLiftCorners.medium)
+            )
+            .padding(LearnLiftSpacing.largeGap)
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(LearnLiftSpacing.smallGap),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Spacer(
+                modifier = Modifier
+                    .size(width = 5.dp, height = 34.dp)
+                    .background(
+                        color = MaterialTheme.colorScheme.secondary,
+                        shape = RoundedCornerShape(LearnLiftCorners.highlight)
+                    )
+            )
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = "AI Coach",
+                    color = MaterialTheme.colorScheme.primary,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    text = subtitle,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    style = MaterialTheme.typography.bodySmall
+                )
+            }
+            QuizMetaPill(text = "Premium-ready")
+        }
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
+        content()
+    }
+}
+
+@Composable
+private fun AiLoadingPanel(message: String) {
+    AiCoachPanel(subtitle = "Request in progress") {
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(LearnLiftSpacing.mediumGap),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            CircularProgressIndicator(
+                modifier = Modifier.size(22.dp),
+                strokeWidth = 2.dp,
+                color = MaterialTheme.colorScheme.secondary
+            )
             Text(
-                text = state.message,
-                color = MaterialTheme.colorScheme.secondary,
-                style = MaterialTheme.typography.bodySmall,
-                fontWeight = FontWeight.SemiBold
+                text = message,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.82f),
+                style = MaterialTheme.typography.bodyMedium
             )
         }
     }
+}
+
+@Composable
+private fun AiSectionText(
+    label: String,
+    text: String,
+    accent: Boolean = false
+) {
+    Text(
+        text = label,
+        color = if (accent) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.primary,
+        style = MaterialTheme.typography.labelLarge,
+        fontWeight = FontWeight.Bold
+    )
+    Spacer(modifier = Modifier.height(4.dp))
+    Text(
+        text = text,
+        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.82f),
+        style = MaterialTheme.typography.bodyMedium
+    )
+    Spacer(modifier = Modifier.height(LearnLiftSpacing.mediumGap))
+}
+
+@Composable
+private fun LocalExplanationBlock(explanation: String) {
+    Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
+    Text(
+        text = "Local explanation",
+        color = MaterialTheme.colorScheme.primary,
+        style = MaterialTheme.typography.labelLarge,
+        fontWeight = FontWeight.Bold
+    )
+    Spacer(modifier = Modifier.height(4.dp))
+    Text(
+        text = explanation,
+        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.76f),
+        style = MaterialTheme.typography.bodyMedium
+    )
 }
 
 @Composable
@@ -500,7 +640,7 @@ private fun AiQuizSummarySection(
         Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
         SecondaryActionButton(
             text = if (state is AiCoachUiState.Loading) {
-                "Generating review..."
+                "Generating your AI study review..."
             } else {
                 "Generate AI Study Review"
             },
@@ -511,50 +651,48 @@ private fun AiQuizSummarySection(
             AiCoachUiState.Idle -> Unit
             AiCoachUiState.Loading -> {
                 Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
-                Text(
-                    text = "AI Coach is reviewing this quiz.",
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    style = MaterialTheme.typography.bodySmall
-                )
+                AiLoadingPanel(message = "Generating your AI study review...")
             }
 
             is AiCoachUiState.Success -> {
                 Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
-                Text(
-                    text = state.data.summary,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.82f),
-                    style = MaterialTheme.typography.bodyMedium
-                )
-                Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
-                Text(
-                    text = "Focus: ${state.data.recommendedFocus.joinToString(", ")}",
-                    color = MaterialTheme.colorScheme.secondary,
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.SemiBold
-                )
-                Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
-                Text(
-                    text = state.data.nextSessionSuggestion,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.78f),
-                    style = MaterialTheme.typography.bodyMedium
-                )
-                Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
-                Text(
-                    text = state.data.encouragement,
-                    color = MaterialTheme.colorScheme.primary,
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.SemiBold
-                )
+                AiCoachPanel(subtitle = "AI Study Review") {
+                    AiSectionText(
+                        label = "Summary",
+                        text = state.data.summary
+                    )
+                    AiSectionText(
+                        label = "Recommended focus",
+                        text = state.data.recommendedFocus.joinToString(", "),
+                        accent = true
+                    )
+                    AiSectionText(
+                        label = "Next session suggestion",
+                        text = state.data.nextSessionSuggestion
+                    )
+                    AiSectionText(
+                        label = "Encouragement",
+                        text = state.data.encouragement,
+                        accent = true
+                    )
+                }
             }
 
             is AiCoachUiState.Error -> {
                 Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
-                Text(
-                    text = "${state.message} The local Recommended Focus above is still available.",
-                    color = MaterialTheme.colorScheme.secondary,
-                    style = MaterialTheme.typography.bodySmall,
-                    fontWeight = FontWeight.SemiBold
-                )
+                AiCoachPanel(subtitle = "Local recommendation available") {
+                    Text(
+                        text = "${state.message} The local Recommended Focus above is still available.",
+                        color = MaterialTheme.colorScheme.secondary,
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                    Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
+                    SecondaryActionButton(
+                        text = "Retry AI Study Review",
+                        onClick = onGenerate
+                    )
+                }
             }
         }
     }

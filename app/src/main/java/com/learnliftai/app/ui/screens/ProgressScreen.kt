@@ -1,16 +1,22 @@
 package com.learnliftai.app.ui.screens
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -20,8 +26,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import com.learnliftai.app.data.ai.AiCoachRepository
 import com.learnliftai.app.data.ai.AiCoachResult
 import com.learnliftai.app.data.ai.AiCoachUiState
@@ -38,6 +46,7 @@ import com.learnliftai.app.ui.components.SecondaryActionButton
 import com.learnliftai.app.ui.components.SectionHeader
 import com.learnliftai.app.ui.components.SmartCoachRecommendationCard
 import com.learnliftai.app.ui.components.StatCard
+import com.learnliftai.app.ui.theme.LearnLiftCorners
 import com.learnliftai.app.ui.theme.LearnLiftSpacing
 import kotlinx.coroutines.launch
 
@@ -177,14 +186,9 @@ private fun StudyPlanAiSection(
             style = MaterialTheme.typography.bodyMedium
         )
         Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
-        PrimaryActionButton(
-            text = if (studyPlanState is AiCoachUiState.Loading) {
-                "Generating plan..."
-            } else {
-                "Generate 7-Day Study Plan"
-            },
-            onClick = {
-                val path = selectedStudyPath ?: return@PrimaryActionButton
+        val requestStudyPlan = {
+            val path = selectedStudyPath
+            if (path != null && studyPlanState !is AiCoachUiState.Loading) {
                 coroutineScope.launch {
                     studyPlanState = AiCoachUiState.Loading
                     studyPlanState = when (
@@ -201,56 +205,162 @@ private fun StudyPlanAiSection(
                         is AiCoachResult.Error -> AiCoachUiState.Error(result.message)
                     }
                 }
+            }
+        }
+        PrimaryActionButton(
+            text = if (studyPlanState is AiCoachUiState.Loading) {
+                "AI Coach is drafting..."
+            } else {
+                "Generate 7-Day Study Plan"
             },
+            onClick = requestStudyPlan,
             enabled = selectedStudyPath != null && studyPlanState !is AiCoachUiState.Loading
         )
         when (val state = studyPlanState) {
             AiCoachUiState.Idle -> Unit
             AiCoachUiState.Loading -> {
                 Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
-                Text(
-                    text = "AI Coach is drafting a short plan.",
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    style = MaterialTheme.typography.bodySmall
-                )
+                ProgressAiLoadingPanel(message = "AI Coach is drafting a short plan.")
             }
 
             is AiCoachUiState.Success -> {
                 Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
-                Text(
-                    text = state.data.title,
-                    color = MaterialTheme.colorScheme.secondary,
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold
-                )
-                Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
-                state.data.days.forEach { day ->
+                ProgressAiPanel(subtitle = "7-day plan") {
                     Text(
-                        text = "Day ${day.day}: ${day.focus}",
+                        text = state.data.title,
                         color = MaterialTheme.colorScheme.primary,
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontWeight = FontWeight.SemiBold
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold
                     )
-                    Text(
-                        text = day.tasks.joinToString(separator = " - "),
-                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.78f),
-                        style = MaterialTheme.typography.bodySmall
-                    )
-                    Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+                    Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
+                    state.data.days.forEach { day ->
+                        ProgressAiDayBlock(
+                            day = day.day,
+                            focus = day.focus,
+                            tasks = day.tasks
+                        )
+                    }
                 }
             }
 
             is AiCoachUiState.Error -> {
                 Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
-                Text(
-                    text = "${state.message} Keep using the local Recommended Focus above for now.",
-                    color = MaterialTheme.colorScheme.secondary,
-                    style = MaterialTheme.typography.bodySmall,
-                    fontWeight = FontWeight.SemiBold
-                )
+                ProgressAiPanel(subtitle = "Local recommendation available") {
+                    Text(
+                        text = "${state.message} Keep using the local Recommended Focus above for now.",
+                        color = MaterialTheme.colorScheme.secondary,
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                    Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
+                    SecondaryActionButton(
+                        text = "Retry 7-Day Plan",
+                        onClick = requestStudyPlan
+                    )
+                }
             }
         }
     }
+}
+
+@Composable
+private fun ProgressAiPanel(
+    subtitle: String,
+    content: @Composable ColumnScope.() -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .border(
+                width = 1.dp,
+                color = MaterialTheme.colorScheme.secondary.copy(alpha = 0.26f),
+                shape = RoundedCornerShape(LearnLiftCorners.medium)
+            )
+            .background(
+                color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.42f),
+                shape = RoundedCornerShape(LearnLiftCorners.medium)
+            )
+            .padding(LearnLiftSpacing.largeGap)
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(LearnLiftSpacing.smallGap),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Spacer(
+                modifier = Modifier
+                    .size(width = 5.dp, height = 34.dp)
+                    .background(
+                        color = MaterialTheme.colorScheme.secondary,
+                        shape = RoundedCornerShape(LearnLiftCorners.highlight)
+                    )
+            )
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = "AI Coach",
+                    color = MaterialTheme.colorScheme.primary,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    text = subtitle,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    style = MaterialTheme.typography.bodySmall
+                )
+            }
+        }
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
+        content()
+    }
+}
+
+@Composable
+private fun ProgressAiLoadingPanel(message: String) {
+    ProgressAiPanel(subtitle = "Request in progress") {
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(LearnLiftSpacing.mediumGap),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            CircularProgressIndicator(
+                modifier = Modifier.size(22.dp),
+                strokeWidth = 2.dp,
+                color = MaterialTheme.colorScheme.secondary
+            )
+            Text(
+                text = message,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.82f),
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
+    }
+}
+
+@Composable
+private fun ProgressAiDayBlock(
+    day: Int,
+    focus: String,
+    tasks: List<String>
+) {
+    Text(
+        text = "Day $day",
+        color = MaterialTheme.colorScheme.secondary,
+        style = MaterialTheme.typography.labelLarge,
+        fontWeight = FontWeight.Bold
+    )
+    Spacer(modifier = Modifier.height(3.dp))
+    Text(
+        text = focus,
+        color = MaterialTheme.colorScheme.primary,
+        style = MaterialTheme.typography.bodyMedium,
+        fontWeight = FontWeight.SemiBold
+    )
+    Spacer(modifier = Modifier.height(4.dp))
+    Text(
+        text = tasks.joinToString(separator = "\n") { "- $it" },
+        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.78f),
+        style = MaterialTheme.typography.bodySmall
+    )
+    Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
 }
 
 @Composable
