@@ -57,8 +57,10 @@ Use this checklist for the next Google Play closed-testing and production-candid
 - [ ] Test Progress.
 - [ ] Test Settings.
 - [ ] Test Premium screen.
+- [ ] Test Premium gating rules from `docs/PREMIUM_GATING_RULES.md`.
 - [ ] Test Smart Coach recommendations.
 - [ ] Test AI fallback behavior.
+- [ ] Test AI usage limits for Free and Premium states.
 - [ ] Test light and dark theme.
 
 ## RevenueCat
@@ -109,5 +111,8 @@ Use this checklist for the next Google Play closed-testing and production-candid
 - [ ] Restore purchases works.
 - [ ] Premium state persists after restart.
 - [ ] Free core flows remain usable.
+- [ ] Current three v1 study paths are not locked.
+- [ ] Free AI limit reached opens Premium screen through `View Premium`.
+- [ ] Premium active state uses higher AI limits.
 - [ ] AI backend quota/failure fallback does not crash.
 - [ ] No unexpected hard paywalls are present.

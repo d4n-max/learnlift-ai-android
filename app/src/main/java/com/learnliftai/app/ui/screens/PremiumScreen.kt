@@ -127,7 +127,7 @@ private fun PremiumHero(isPremiumActive: Boolean) {
         )
         Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
         Text(
-            text = "Get deeper guidance, more practice, and smarter study plans.",
+            text = "Get more AI-powered help, deeper progress insights, and personalized study support.",
             color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.86f),
             style = MaterialTheme.typography.bodyLarge
         )
@@ -167,14 +167,33 @@ private fun PremiumStatus(premiumUiState: PremiumUiState) {
 private fun PremiumBenefits() {
     SectionHeader(
         title = "Premium benefits",
-        subtitle = "Planned upgrades for deeper, more guided practice."
+        subtitle = "Clear access rules for the current test build."
     )
     LearnLiftCard {
-        PremiumBenefitRow("AI-powered answer explanations")
-        PremiumBenefitRow("AI 7-day study plans")
-        PremiumBenefitRow("Unlimited quizzes and daily sessions")
-        PremiumBenefitRow("Full study packs")
-        PremiumBenefitRow("Advanced progress insights")
+        Text(
+            text = "Available now",
+            color = MaterialTheme.colorScheme.secondary,
+            style = MaterialTheme.typography.labelLarge,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+        PremiumBenefitRow("More AI Coach explanations each day")
+        PremiumBenefitRow("AI Study Review with higher daily limits")
+        PremiumBenefitRow("7-day AI Study Plan")
+        PremiumBenefitRow("Premium AI access status")
+        PremiumBenefitRow("Restore purchases")
+        PremiumBenefitRow("Premium-ready learning experience")
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
+        Text(
+            text = "Coming soon",
+            color = MaterialTheme.colorScheme.secondary,
+            style = MaterialTheme.typography.labelLarge,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+        PremiumBenefitRow("Advanced weakness tracking")
+        PremiumBenefitRow("Premium study packs")
+        PremiumBenefitRow("Custom and adaptive practice")
     }
 }
 

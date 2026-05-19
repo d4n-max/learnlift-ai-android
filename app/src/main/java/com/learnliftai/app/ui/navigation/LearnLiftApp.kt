@@ -123,6 +123,7 @@ fun LearnLiftApp() {
             SettingsScreen(
                 selectedStudyPath = selectedStudyPath,
                 premiumUiState = premiumUiState,
+                aiUsageState = aiUsageState,
                 onChooseStudyPath = {
                     isSettingsOpen = false
                     isChoosingStudyPath = true

@@ -442,13 +442,17 @@ private fun AdvancedInsightsTeaser(
     onViewPremium: () -> Unit
 ) {
     PremiumTeaserCard(
-        title = if (isPremiumActive) "Premium Insights" else "Advanced Insights",
-        description = if (isPremiumActive) {
-            "Premium is active. Deeper topic trends and personalized guidance are planned next."
+        title = if (isPremiumActive) {
+            "Advanced Insights coming soon"
         } else {
-            "Premium will unlock deeper topic trends and personalized guidance."
+            "Advanced Insights are part of Premium"
         },
-        actionText = if (isPremiumActive) "View Premium" else "View Premium",
+        description = if (isPremiumActive) {
+            "Premium is active. Deeper topic trends, review patterns, and personalized focus areas are planned next."
+        } else {
+            "Track weak topics, review patterns, and personalized focus areas."
+        },
+        actionText = if (isPremiumActive) "View roadmap" else "View Premium",
         onActionClick = onViewPremium
     )
 }

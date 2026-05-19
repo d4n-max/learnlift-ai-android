@@ -20,6 +20,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import com.learnliftai.app.BuildConfig
+import com.learnliftai.app.data.ai.AiUsageAction
+import com.learnliftai.app.data.ai.AiUsageState
 import com.learnliftai.app.data.billing.PremiumEntitlement
 import com.learnliftai.app.data.billing.PremiumUiState
 import com.learnliftai.app.domain.model.PremiumPlanStatus
@@ -37,6 +39,7 @@ import com.learnliftai.app.ui.theme.LearnLiftSpacing
 fun SettingsScreen(
     selectedStudyPath: StudyPath?,
     premiumUiState: PremiumUiState,
+    aiUsageState: AiUsageState,
     onChooseStudyPath: () -> Unit,
     onViewPremium: () -> Unit,
     onResetProgress: () -> Unit,
@@ -60,6 +63,7 @@ fun SettingsScreen(
         )
         PremiumSettingsSection(
             premiumUiState = premiumUiState,
+            aiUsageState = aiUsageState,
             onViewPremium = onViewPremium,
             onRestorePurchases = onRestorePurchases
         )
@@ -124,6 +128,7 @@ fun SettingsScreen(
 @Composable
 private fun PremiumSettingsSection(
     premiumUiState: PremiumUiState,
+    aiUsageState: AiUsageState,
     onViewPremium: () -> Unit,
     onRestorePurchases: () -> Unit
 ) {
@@ -149,9 +154,25 @@ private fun PremiumSettingsSection(
         Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
         Text(
             text = if (premiumUiState.entitlement == PremiumEntitlement.Premium) {
-                "Premium is active. AI explanations, study plans, and future advanced insights are ready when configured."
+                "Premium is active. You have higher daily AI Coach limits and access to Premium-ready study tools."
             } else {
-                PremiumPlanStatus.Free.helperText
+                "Free plan includes flashcards, quizzes, daily sessions, progress, Smart Coach, and limited AI previews."
+            },
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.76f),
+            style = MaterialTheme.typography.bodyMedium
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+        Text(
+            text = "AI access",
+            color = MaterialTheme.colorScheme.secondary,
+            style = MaterialTheme.typography.labelLarge,
+            fontWeight = FontWeight.Bold
+        )
+        Text(
+            text = if (premiumUiState.isPremiumActive) {
+                "Premium AI access active"
+            } else {
+                "Free previews: ${aiUsageState.remainingFor(AiUsageAction.ExplainAnswer, isPremium = false)} explanations and ${aiUsageState.remainingFor(AiUsageAction.QuizSummary, isPremium = false)} study review left today"
             },
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.76f),
             style = MaterialTheme.typography.bodyMedium
@@ -172,7 +193,11 @@ private fun PremiumSettingsSection(
         } else {
             PremiumPlanStatus.PremiumComingSoon.label
         },
-        description = "AI explanations, study plans, unlimited practice, full study packs, and advanced insights are planned for Premium.",
+        description = if (premiumUiState.isPremiumActive) {
+            "More AI help is active now. Advanced insights and premium study packs are coming soon."
+        } else {
+            "Upgrade for more AI help each day. Advanced insights and premium study packs are coming soon."
+        },
         actionText = "View Premium benefits",
         onActionClick = onViewPremium
     )

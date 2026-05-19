@@ -16,6 +16,8 @@ LearnLift AI uses local AI usage limits to reduce accidental OpenAI API costs du
 
 The 7-day study plan is exposed in the UI, but Free users are directed to Premium for this AI action. A weekly Free study-plan preview can be added later if needed.
 
+Free users can continue using local explanations, rule-based Smart Coach, basic progress, flashcards, quizzes, and daily sessions when this limit is reached.
+
 ### Premium
 
 Premium is detected through the RevenueCat entitlement identifier:
@@ -31,6 +33,8 @@ Premium local safety limits:
 - `study_plan`: 10 requests per local day.
 
 These are generous testing limits, not unlimited production quotas.
+
+Premium users see `Premium AI access active` in AI entry points. If the Premium safety limit is reached, the app blocks the AI call locally and keeps local fallback guidance available.
 
 ## What Counts
 

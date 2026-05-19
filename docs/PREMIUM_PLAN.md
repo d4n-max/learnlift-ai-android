@@ -78,6 +78,7 @@ The current build includes:
 - RevenueCat Android SDK `10.6.0`.
 - Public RevenueCat Android SDK key.
 - Premium entitlement check.
+- Premium gating rules for higher AI usage limits.
 - Monthly/yearly package display.
 - Purchase flow.
 - Restore purchases.
@@ -89,6 +90,7 @@ The current build does not include:
 - Google Play Billing direct integration.
 - RevenueCat private API keys.
 - Hard Premium gates for core MVP content.
+- Locked current v1 study paths.
 - Firebase.
 - Authentication.
 - Cloud sync.
@@ -116,3 +118,5 @@ During closed testing, current Free features remain usable even if billing produ
 AI Coach UI may use subtle Premium-ready positioning during closed testing, but current AI actions remain available for validation and keep local fallback behavior when the backend is unavailable.
 
 Task 43 adds local AI usage limits for cost control. Free users receive limited AI previews, while Premium users receive higher local safety limits. These limits apply only to AI-powered calls and do not block flashcards, quizzes, daily sessions, progress, local explanations, or rule-based Smart Coach recommendations.
+
+Task 44 defines tester-safe gating rules. Premium currently expands AI daily limits and Premium status UI while keeping all current v1 study paths and core study modes usable for Free users. Advanced insights and future premium study packs should be shown as coming soon until they are implemented.
