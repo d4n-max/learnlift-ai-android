@@ -52,6 +52,7 @@ import com.learnliftai.app.domain.model.QuizOption
 import com.learnliftai.app.domain.model.QuizQuestion
 import com.learnliftai.app.domain.model.StudyContent
 import com.learnliftai.app.domain.model.StudyPath
+import com.learnliftai.app.domain.model.TopicPerformance
 import com.learnliftai.app.ui.components.EmptyState
 import com.learnliftai.app.ui.components.LearnLiftCard
 import com.learnliftai.app.ui.components.PrimaryActionButton
@@ -70,7 +71,9 @@ fun QuizScreen(
     isPremiumActive: Boolean,
     aiUsageState: AiUsageState,
     aiUsageRepository: AiUsageRepository,
+    topicPerformance: List<TopicPerformance>,
     onViewPremium: () -> Unit,
+    onQuizTopicAnswered: (question: QuizQuestion, isCorrect: Boolean) -> Unit,
     onQuizCompleted: (score: Int, percentage: Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -124,7 +127,7 @@ fun QuizScreen(
             QuizSummary(
                 studyPathId = selectedStudyPath.id,
                 score = score,
-                weakTopics = rememberWeakTopics(quizQuestions, selectedAnswers),
+                weakTopics = rememberWeakTopics(quizQuestions, selectedAnswers, topicPerformance),
                 aiCoachRepository = aiCoachRepository,
                 isPremiumActive = isPremiumActive,
                 aiUsageState = aiUsageState,
@@ -156,6 +159,10 @@ fun QuizScreen(
                 onAnswerSelected = { optionId ->
                     if (selectedAnswers[currentQuestion.id] == null) {
                         selectedAnswers[currentQuestion.id] = optionId
+                        onQuizTopicAnswered(
+                            currentQuestion,
+                            optionId == currentQuestion.correctAnswerId
+                        )
                     }
                 }
             )
@@ -873,10 +880,25 @@ private fun rememberQuizScore(
 
 private fun rememberWeakTopics(
     questions: List<QuizQuestion>,
-    selectedAnswers: Map<String, String>
+    selectedAnswers: Map<String, String>,
+    topicPerformance: List<TopicPerformance>
 ): List<String> {
-    return questions
+    val quizWeakTopics = questions
         .filter { question -> selectedAnswers[question.id] != question.correctAnswerId }
         .map { it.topic }
         .distinct()
+    val persistedWeakTopics = topicPerformance
+        .sortedWith(
+            compareByDescending<TopicPerformance> { it.isWeakTopic }
+                .thenByDescending { it.weaknessScore }
+                .thenByDescending { it.wrongAnswers }
+        )
+        .filter { it.needsReview || it.totalAttempts == 1 && it.wrongAnswers > 0 }
+        .map { it.topic }
+
+    return (quizWeakTopics + persistedWeakTopics)
+        .map { it.trim() }
+        .filter { it.isNotBlank() }
+        .distinct()
+        .take(3)
 }

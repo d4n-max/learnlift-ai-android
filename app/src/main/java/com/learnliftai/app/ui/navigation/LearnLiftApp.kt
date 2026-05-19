@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import com.learnliftai.app.data.AssetStudyContentRepository
 import com.learnliftai.app.data.LocalProgressRepository
+import com.learnliftai.app.data.LocalTopicPerformanceRepository
 import com.learnliftai.app.data.ai.AiUsageRepository
 import com.learnliftai.app.data.ai.AiUsageState
 import com.learnliftai.app.data.billing.PremiumRepository
@@ -40,9 +41,11 @@ import kotlinx.coroutines.launch
 fun LearnLiftApp() {
     val context = LocalContext.current
     val progressRepository = remember { LocalProgressRepository(context.applicationContext) }
+    val topicPerformanceRepository = remember { LocalTopicPerformanceRepository(context.applicationContext) }
     val premiumRepository = remember { PremiumRepository(context.applicationContext) }
     val aiUsageRepository = remember { AiUsageRepository(context.applicationContext) }
     val userProgress by progressRepository.progress.collectAsState(initial = UserProgress())
+    val topicPerformance by topicPerformanceRepository.topicPerformance.collectAsState(initial = emptyList())
     val premiumUiState by premiumRepository.uiState.collectAsState()
     val aiUsageState by aiUsageRepository.usage.collectAsState(initial = AiUsageState())
     val coroutineScope = rememberCoroutineScope()
@@ -135,6 +138,7 @@ fun LearnLiftApp() {
                 onResetProgress = {
                     coroutineScope.launch {
                         progressRepository.resetProgressStats()
+                        topicPerformanceRepository.resetTopicPerformance()
                     }
                 },
                 onRestorePurchases = {
@@ -155,6 +159,26 @@ fun LearnLiftApp() {
             DailyStudySessionScreen(
                 selectedStudyPath = selectedStudyPath,
                 selectedStudyContent = selectedStudyContent,
+                onFlashcardTopicReviewed = { flashcard, markedKnown ->
+                    coroutineScope.launch {
+                        topicPerformanceRepository.recordFlashcardReview(
+                            pathId = flashcard.pathId,
+                            topic = flashcard.topic,
+                            difficulty = flashcard.difficulty,
+                            markedKnown = markedKnown
+                        )
+                    }
+                },
+                onQuizTopicAnswered = { question, isCorrect ->
+                    coroutineScope.launch {
+                        topicPerformanceRepository.recordQuizAnswer(
+                            pathId = question.pathId,
+                            topic = question.topic,
+                            difficulty = question.difficulty,
+                            isCorrect = isCorrect
+                        )
+                    }
+                },
                 onFinishSession = { reviewedCards, knownCards, needsReviewCards, quizAnswered, quizCorrect, quizPercentage ->
                     coroutineScope.launch {
                         progressRepository.recordDailySessionCompleted(
@@ -199,6 +223,7 @@ fun LearnLiftApp() {
                     selectedStudyPath = selectedStudyPath,
                     selectedStudyContent = selectedStudyContent,
                     userProgress = userProgress,
+                    topicPerformance = topicPerformance.filter { it.pathId == selectedStudyPath?.id },
                     isPremiumActive = premiumUiState.isPremiumActive,
                     onChooseStudyPath = { isChoosingStudyPath = true },
                     onOpenSettings = { isSettingsOpen = true },
@@ -226,6 +251,16 @@ fun LearnLiftApp() {
                             )
                         }
                     },
+                    onFlashcardTopicReviewed = { flashcard, markedKnown ->
+                        coroutineScope.launch {
+                            topicPerformanceRepository.recordFlashcardReview(
+                                pathId = flashcard.pathId,
+                                topic = flashcard.topic,
+                                difficulty = flashcard.difficulty,
+                                markedKnown = markedKnown
+                            )
+                        }
+                    },
                     modifier = Modifier.padding(innerPadding)
                 )
                 LearnLiftDestination.Quiz -> QuizScreen(
@@ -234,7 +269,18 @@ fun LearnLiftApp() {
                     isPremiumActive = premiumUiState.isPremiumActive,
                     aiUsageState = aiUsageState,
                     aiUsageRepository = aiUsageRepository,
+                    topicPerformance = topicPerformance.filter { it.pathId == selectedStudyPath?.id },
                     onViewPremium = { isPremiumOpen = true },
+                    onQuizTopicAnswered = { question, isCorrect ->
+                        coroutineScope.launch {
+                            topicPerformanceRepository.recordQuizAnswer(
+                                pathId = question.pathId,
+                                topic = question.topic,
+                                difficulty = question.difficulty,
+                                isCorrect = isCorrect
+                            )
+                        }
+                    },
                     onQuizCompleted = { score, percentage ->
                         coroutineScope.launch {
                             progressRepository.recordQuizCompleted(
@@ -251,11 +297,13 @@ fun LearnLiftApp() {
                     isPremiumActive = premiumUiState.isPremiumActive,
                     aiUsageState = aiUsageState,
                     aiUsageRepository = aiUsageRepository,
+                    topicPerformance = topicPerformance.filter { selectedStudyPath == null || it.pathId == selectedStudyPath.id },
                     onOpenSettings = { isSettingsOpen = true },
                     onViewPremium = { isPremiumOpen = true },
                     onResetProgress = {
                         coroutineScope.launch {
                             progressRepository.resetProgressStats()
+                            topicPerformanceRepository.resetTopicPerformance()
                         }
                     },
                     modifier = Modifier.padding(innerPadding)

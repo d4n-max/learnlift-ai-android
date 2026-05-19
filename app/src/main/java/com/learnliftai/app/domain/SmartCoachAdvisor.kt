@@ -2,6 +2,7 @@ package com.learnliftai.app.domain
 
 import com.learnliftai.app.domain.model.SmartCoachRecommendation
 import com.learnliftai.app.domain.model.SmartCoachRecommendationType
+import com.learnliftai.app.domain.model.TopicPerformance
 import com.learnliftai.app.domain.model.UserProgress
 
 object SmartCoachAdvisor {
@@ -82,7 +83,32 @@ object SmartCoachAdvisor {
         }
     }
 
-    fun progressRecommendation(userProgress: UserProgress): SmartCoachRecommendation {
+    fun progressRecommendation(
+        userProgress: UserProgress,
+        topicPerformance: List<TopicPerformance> = emptyList()
+    ): SmartCoachRecommendation {
+        val weakTopics = topicPerformance.weakTopicNames()
+        if (weakTopics.isNotEmpty()) {
+            return SmartCoachRecommendation(
+                title = "Recommended Focus",
+                message = "Review these topics before your next quiz: ${weakTopics.joinToString(", ")}.",
+                focusTopics = weakTopics,
+                actionLabel = "Review weak topics",
+                type = SmartCoachRecommendationType.Review
+            )
+        }
+
+        val strongTopics = topicPerformance.strongTopicNames()
+        if (strongTopics.isNotEmpty() && userProgress.totalQuizzesCompleted > 0) {
+            return SmartCoachRecommendation(
+                title = "Recommended Focus",
+                message = "You're strong in ${strongTopics.first()}. Try a quiz to reinforce it.",
+                focusTopics = strongTopics,
+                actionLabel = "Reinforce strength",
+                type = SmartCoachRecommendationType.Encouragement
+            )
+        }
+
         if (!userProgress.hasAnyProgress()) {
             return SmartCoachRecommendation(
                 title = "Recommended Focus",
@@ -130,7 +156,10 @@ object SmartCoachAdvisor {
         )
     }
 
-    fun homeRecommendation(userProgress: UserProgress): SmartCoachRecommendation {
+    fun homeRecommendation(
+        userProgress: UserProgress,
+        topicPerformance: List<TopicPerformance> = emptyList()
+    ): SmartCoachRecommendation {
         if (!userProgress.hasAnyProgress()) {
             return SmartCoachRecommendation(
                 title = "Today's Focus",
@@ -140,7 +169,7 @@ object SmartCoachAdvisor {
             )
         }
 
-        return progressRecommendation(userProgress).copy(title = "Today's Focus")
+        return progressRecommendation(userProgress, topicPerformance).copy(title = "Today's Focus")
     }
 
     private fun flashcardProgressRecommendation(userProgress: UserProgress): SmartCoachRecommendation? {
@@ -190,6 +219,29 @@ object SmartCoachAdvisor {
             .filter { it.isNotBlank() }
             .distinct()
             .take(MaxFocusTopics)
+    }
+
+    private fun List<TopicPerformance>.weakTopicNames(): List<String> {
+        return sortedWith(
+            compareByDescending<TopicPerformance> { it.isWeakTopic }
+                .thenByDescending { it.weaknessScore }
+                .thenByDescending { it.wrongAnswers }
+                .thenBy { it.topic.lowercase() }
+        )
+            .filter { it.needsReview || it.totalAttempts == 1 && it.wrongAnswers > 0 }
+            .map { it.topic }
+            .cleanFocusTopics()
+    }
+
+    private fun List<TopicPerformance>.strongTopicNames(): List<String> {
+        return filter { it.totalAttempts >= 2 && it.accuracyPercent >= StrongScoreThreshold }
+            .sortedWith(
+                compareByDescending<TopicPerformance> { it.accuracyPercent }
+                    .thenByDescending { it.totalAttempts }
+                    .thenBy { it.topic.lowercase() }
+            )
+            .map { it.topic }
+            .cleanFocusTopics()
     }
 
     private const val StrongScoreThreshold = 80

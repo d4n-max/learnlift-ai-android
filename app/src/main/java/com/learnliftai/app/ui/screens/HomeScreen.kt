@@ -20,6 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import com.learnliftai.app.domain.SmartCoachAdvisor
 import com.learnliftai.app.domain.model.StudyContent
 import com.learnliftai.app.domain.model.StudyPath
+import com.learnliftai.app.domain.model.TopicPerformance
 import com.learnliftai.app.domain.model.UserProgress
 import com.learnliftai.app.ui.components.EmptyState
 import com.learnliftai.app.ui.components.LearnLiftCard
@@ -37,6 +38,7 @@ fun HomeScreen(
     selectedStudyPath: StudyPath?,
     selectedStudyContent: StudyContent?,
     userProgress: UserProgress,
+    topicPerformance: List<TopicPerformance>,
     isPremiumActive: Boolean,
     onChooseStudyPath: () -> Unit,
     onOpenSettings: () -> Unit,
@@ -74,7 +76,10 @@ fun HomeScreen(
                 onStartQuiz = onStartQuiz,
                 onChangeStudyPath = onChooseStudyPath
             )
-            HomeRecommendation(userProgress = userProgress)
+            HomeRecommendation(
+                userProgress = userProgress,
+                topicPerformance = topicPerformance
+            )
             HomePremiumTeaser(
                 isPremiumActive = isPremiumActive,
                 onViewPremium = onViewPremium
@@ -106,9 +111,12 @@ private fun HomePremiumTeaser(
 }
 
 @Composable
-private fun HomeRecommendation(userProgress: UserProgress) {
+private fun HomeRecommendation(
+    userProgress: UserProgress,
+    topicPerformance: List<TopicPerformance>
+) {
     SmartCoachRecommendationCard(
-        recommendation = SmartCoachAdvisor.homeRecommendation(userProgress),
+        recommendation = SmartCoachAdvisor.homeRecommendation(userProgress, topicPerformance),
         localGuidanceLabel = "Local guidance"
     )
 }

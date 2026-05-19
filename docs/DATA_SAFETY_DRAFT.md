@@ -33,6 +33,7 @@ The app stores basic study progress locally on the user's device, including:
 - Last quiz score
 - Streak and last study date
 - Local AI usage date and per-action AI request counters
+- Local topic performance by study path and topic
 
 ## Data Sharing
 
@@ -80,6 +81,8 @@ Before enabling real AI in production or broader testing, update the Privacy Pol
 Task 41 hardens the real AI backend/client path for v2 testing. OpenAI API billing/quota has been enabled manually, but the app must still treat AI as optional. If OpenAI, Supabase, the network, quota, model configuration, or response parsing fails, Android keeps local explanations and rule-based Smart Coach recommendations available.
 
 Task 43 adds client-side AI usage counters with DataStore. These counters track only the local date and counts for AI explanation, quiz summary, and study plan requests. They are used for local cost control and are not a server-side abuse-protection system.
+
+Task 45 adds local topic weakness tracking. Topic performance is stored on the device by study path and topic. It is not synced to a backend. If the user taps AI Study Review, the app may send only selected weak topic names to the Supabase AI backend; it does not send full local study history.
 
 Task 36 adds RevenueCat subscription entitlement support and a billing-ready Premium screen. Billing and subscription purchases are processed by Google Play and RevenueCat. The app checks Premium entitlement status through RevenueCat, and it must continue to work in Free mode if RevenueCat products or Play testing are not ready.
 

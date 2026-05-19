@@ -18,6 +18,7 @@ The local rules may use:
 - Daily session topics marked for review.
 - Persisted local progress totals from DataStore.
 - Last quiz score and current study streak from local progress.
+- Local per-topic performance stored on the device.
 
 No extra personal data is stored for this feature. No data leaves the device.
 
@@ -60,9 +61,19 @@ The `type` is one of:
 - If the last quiz score is low, recommend flashcards first.
 - If the last quiz score is high, encourage a quiz or harder practice.
 - If a streak exists, the recommendation may mention keeping it going.
+- If weak topic performance exists, recommend the top local weak topics before generic score-based guidance.
+- If strong topic performance exists and no weak topic is urgent, encourage reinforcing a strong topic with a quiz.
 
 ## Future AI Coach
 
 The future AI Coach may replace or enhance these deterministic rules after a backend proxy and privacy model are explicitly added. The Android app should not call an AI provider directly with secrets.
 
 Until then, Smart Coach remains local guidance only.
+
+## Topic Weakness Rules
+
+- Topics with wrong answers or Needs Review flashcard signals can appear as Recommended Focus topics.
+- Topics with at least 2 attempts and accuracy below 70% are treated as weak topics.
+- Topics with only 1 wrong signal may be shown as needing more practice data.
+- Smart Coach shows up to 3 focus topics.
+- If no topic data exists, Smart Coach falls back to the existing progress and quiz score rules.

@@ -41,6 +41,7 @@ import com.learnliftai.app.data.ai.StudyPlanRequest
 import com.learnliftai.app.data.ai.StudyPlanResponse
 import com.learnliftai.app.domain.SmartCoachAdvisor
 import com.learnliftai.app.domain.model.StudyPath
+import com.learnliftai.app.domain.model.TopicPerformance
 import com.learnliftai.app.domain.model.UserProgress
 import com.learnliftai.app.ui.components.EmptyState
 import com.learnliftai.app.ui.components.LearnLiftCard
@@ -61,6 +62,7 @@ fun ProgressScreen(
     isPremiumActive: Boolean,
     aiUsageState: AiUsageState,
     aiUsageRepository: AiUsageRepository,
+    topicPerformance: List<TopicPerformance>,
     onOpenSettings: () -> Unit,
     onViewPremium: () -> Unit,
     onResetProgress: () -> Unit,
@@ -83,7 +85,14 @@ fun ProgressScreen(
 
         StreakHighlightCard(userProgress = userProgress)
         StudyPathProgressCard(selectedStudyPath = selectedStudyPath)
-        ProgressRecommendationSection(userProgress = userProgress)
+        ProgressRecommendationSection(
+            userProgress = userProgress,
+            topicPerformance = topicPerformance
+        )
+        WeakTopicsSection(
+            topicPerformance = topicPerformance,
+            isPremiumActive = isPremiumActive
+        )
 
         SectionHeader(title = "Study stats")
         StatCard(
@@ -458,15 +467,108 @@ private fun AdvancedInsightsTeaser(
 }
 
 @Composable
-private fun ProgressRecommendationSection(userProgress: UserProgress) {
+private fun ProgressRecommendationSection(
+    userProgress: UserProgress,
+    topicPerformance: List<TopicPerformance>
+) {
     SectionHeader(
         title = "Recommended Focus",
         subtitle = "Local guidance based only on progress saved on this device."
     )
     SmartCoachRecommendationCard(
-        recommendation = SmartCoachAdvisor.progressRecommendation(userProgress),
+        recommendation = SmartCoachAdvisor.progressRecommendation(userProgress, topicPerformance),
         localGuidanceLabel = "Local rule-based guidance - no live AI or data sharing"
     )
+}
+
+@Composable
+private fun WeakTopicsSection(
+    topicPerformance: List<TopicPerformance>,
+    isPremiumActive: Boolean
+) {
+    SectionHeader(
+        title = "Topics to Review",
+        subtitle = if (topicPerformance.isEmpty()) {
+            "Complete a quiz to unlock topic insights."
+        } else {
+            "Local topic signals from quizzes and flashcards on this device."
+        }
+    )
+
+    if (topicPerformance.isEmpty()) {
+        LearnLiftCard {
+            Text(
+                text = "No topic data yet",
+                color = MaterialTheme.colorScheme.primary,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+            Text(
+                text = "Answer quiz questions or mark flashcards to build local topic insights.",
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.76f),
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
+        return
+    }
+
+    val rankedTopics = topicPerformance
+        .sortedWith(
+            compareByDescending<TopicPerformance> { it.needsReview }
+                .thenByDescending { it.weaknessScore }
+                .thenByDescending { it.wrongAnswers }
+                .thenBy { it.topic.lowercase() }
+        )
+        .take(5)
+
+    rankedTopics.forEach { topic ->
+        TopicPerformanceCard(
+            topicPerformance = topic,
+            isPremiumActive = isPremiumActive
+        )
+    }
+}
+
+@Composable
+private fun TopicPerformanceCard(
+    topicPerformance: TopicPerformance,
+    isPremiumActive: Boolean
+) {
+    LearnLiftCard {
+        Text(
+            text = topicPerformance.topic,
+            color = MaterialTheme.colorScheme.primary,
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+        Text(
+            text = topicPerformance.statusLabel,
+            color = MaterialTheme.colorScheme.secondary,
+            style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.SemiBold
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+        Text(
+            text = if (topicPerformance.totalAttempts < 2) {
+                "${topicPerformance.totalAttempts} local signal - needs more practice data"
+            } else {
+                "${topicPerformance.accuracyPercent}% accuracy - ${topicPerformance.wrongAnswers} review signal(s)"
+            },
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.76f),
+            style = MaterialTheme.typography.bodyMedium
+        )
+        if (isPremiumActive) {
+            Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+            Text(
+                text = "Premium insight: use this topic for your next focused AI review.",
+                color = MaterialTheme.colorScheme.primary,
+                style = MaterialTheme.typography.bodySmall,
+                fontWeight = FontWeight.SemiBold
+            )
+        }
+    }
 }
 
 @Composable

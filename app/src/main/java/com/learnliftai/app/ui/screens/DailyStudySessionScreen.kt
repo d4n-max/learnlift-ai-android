@@ -49,6 +49,8 @@ import com.learnliftai.app.ui.theme.LearnLiftSpacing
 fun DailyStudySessionScreen(
     selectedStudyPath: StudyPath?,
     selectedStudyContent: StudyContent?,
+    onFlashcardTopicReviewed: (flashcard: Flashcard, markedKnown: Boolean) -> Unit,
+    onQuizTopicAnswered: (question: QuizQuestion, isCorrect: Boolean) -> Unit,
     onFinishSession: (
         reviewedCards: Int,
         knownCards: Int,
@@ -159,6 +161,7 @@ fun DailyStudySessionScreen(
                     if (!isFlashcardActionLocked) {
                         isFlashcardActionLocked = true
                         knownCount += 1
+                        onFlashcardTopicReviewed(sessionFlashcards[flashcardIndex], true)
                         moveFromFlashcard(
                             flashcardIndex = flashcardIndex,
                             lastFlashcardIndex = sessionFlashcards.lastIndex,
@@ -179,6 +182,7 @@ fun DailyStudySessionScreen(
                     if (!isFlashcardActionLocked) {
                         isFlashcardActionLocked = true
                         needsReviewCount += 1
+                        onFlashcardTopicReviewed(sessionFlashcards[flashcardIndex], false)
                         needsReviewTopics.add(sessionFlashcards[flashcardIndex].topic)
                         moveFromFlashcard(
                             flashcardIndex = flashcardIndex,
@@ -208,7 +212,9 @@ fun DailyStudySessionScreen(
                         isQuizAnswerLocked = true
                         selectedQuizAnswerId = optionId
                         val question = sessionQuestions[quizIndex]
-                        if (optionId == question.correctAnswerId) {
+                        val isCorrect = optionId == question.correctAnswerId
+                        onQuizTopicAnswered(question, isCorrect)
+                        if (isCorrect) {
                             quizCorrectCount += 1
                         } else {
                             incorrectTopics.add(question.topic)

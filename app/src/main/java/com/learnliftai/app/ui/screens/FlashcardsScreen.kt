@@ -43,6 +43,7 @@ fun FlashcardsScreen(
     selectedStudyPath: StudyPath?,
     selectedStudyContent: StudyContent?,
     onFlashcardReviewed: (reviewedDelta: Int, knownDelta: Int, needsReviewDelta: Int) -> Unit,
+    onFlashcardTopicReviewed: (flashcard: Flashcard, markedKnown: Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val flashcards = selectedStudyContent?.flashcards.orEmpty()
@@ -117,6 +118,7 @@ fun FlashcardsScreen(
                         if (previousRating == FlashcardRatingNeedsReview) -1 else 0
                     )
                     persistedSessionRatings[currentFlashcard.id] = FlashcardRatingKnown
+                    onFlashcardTopicReviewed(currentFlashcard, true)
                 }
                 knownCardIds = knownCardIds + currentFlashcard.id
                 needsReviewCardIds = needsReviewCardIds - currentFlashcard.id
@@ -130,6 +132,7 @@ fun FlashcardsScreen(
                         1
                     )
                     persistedSessionRatings[currentFlashcard.id] = FlashcardRatingNeedsReview
+                    onFlashcardTopicReviewed(currentFlashcard, false)
                 }
                 needsReviewCardIds = needsReviewCardIds + currentFlashcard.id
                 knownCardIds = knownCardIds - currentFlashcard.id

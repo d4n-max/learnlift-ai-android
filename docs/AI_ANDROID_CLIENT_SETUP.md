@@ -110,6 +110,8 @@ Generate AI Study Review
 
 The app sends only score, total question count, study path ID, and weak/missed topics.
 
+When local topic weakness tracking is available, the weak topic payload may include top locally tracked weak topic names in addition to topics missed in the current quiz. The app does not send full study history or detailed per-topic performance records.
+
 ### Progress
 
 On Progress, the user can tap:
