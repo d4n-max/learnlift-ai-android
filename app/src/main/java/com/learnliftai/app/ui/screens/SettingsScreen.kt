@@ -44,6 +44,7 @@ fun SettingsScreen(
     onViewPremium: () -> Unit,
     onResetProgress: () -> Unit,
     onRestorePurchases: () -> Unit,
+    onResetOnboarding: () -> Unit,
     onBackToHome: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -69,6 +70,7 @@ fun SettingsScreen(
         )
         AppInfoSection()
         FutureFeaturesSection()
+        OnboardingSettingsSection(onResetOnboarding = onResetOnboarding)
         LearnLiftCard {
             Text(
                 text = "Progress data",
@@ -121,6 +123,32 @@ fun SettingsScreen(
                     Text(text = "Cancel")
                 }
             }
+        )
+    }
+}
+
+@Composable
+private fun OnboardingSettingsSection(
+    onResetOnboarding: () -> Unit
+) {
+    SectionHeader(title = "Onboarding")
+    LearnLiftCard {
+        Text(
+            text = "Learning setup",
+            color = MaterialTheme.colorScheme.primary,
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+        Text(
+            text = "Restart onboarding to choose your goal, recommended path, and daily study time again. This does not reset progress.",
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.76f),
+            style = MaterialTheme.typography.bodyMedium
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
+        SecondaryActionButton(
+            text = "Restart onboarding",
+            onClick = onResetOnboarding
         )
     }
 }

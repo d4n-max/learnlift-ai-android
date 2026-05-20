@@ -50,6 +50,7 @@ Use this checklist for the next Google Play closed-testing and production-candid
 - [ ] Confirm Job Interview has at least 80 flashcards and 60 quiz questions.
 - [ ] Confirm IT / QA has at least 60 flashcards and 50 quiz questions.
 - [ ] Test Home.
+- [ ] Test first-run onboarding and Settings restart onboarding.
 - [ ] Test Study Path Selection.
 - [ ] Test Flashcards.
 - [ ] Test Quiz.

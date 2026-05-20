@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import com.learnliftai.app.data.AssetStudyContentRepository
 import com.learnliftai.app.data.LocalFlashcardReviewRepository
+import com.learnliftai.app.data.LocalOnboardingRepository
 import com.learnliftai.app.data.LocalProgressRepository
 import com.learnliftai.app.data.LocalTopicPerformanceRepository
 import com.learnliftai.app.data.ai.AiUsageRepository
@@ -29,11 +30,14 @@ import com.learnliftai.app.data.billing.PremiumRepository
 import com.learnliftai.app.data.StudyPathRepository
 import com.learnliftai.app.domain.QuizMode
 import com.learnliftai.app.domain.model.FlashcardMode
+import com.learnliftai.app.domain.model.OnboardingGoal
+import com.learnliftai.app.domain.model.OnboardingPreferences
 import com.learnliftai.app.domain.model.UserProgress
 import com.learnliftai.app.domain.model.flashcardReviewSummaryFor
 import com.learnliftai.app.ui.screens.DailyStudySessionScreen
 import com.learnliftai.app.ui.screens.FlashcardsScreen
 import com.learnliftai.app.ui.screens.HomeScreen
+import com.learnliftai.app.ui.screens.OnboardingScreen
 import com.learnliftai.app.ui.screens.PremiumScreen
 import com.learnliftai.app.ui.screens.ProgressScreen
 import com.learnliftai.app.ui.screens.QuizScreen
@@ -45,11 +49,13 @@ import kotlinx.coroutines.launch
 fun LearnLiftApp() {
     val context = LocalContext.current
     val progressRepository = remember { LocalProgressRepository(context.applicationContext) }
+    val onboardingRepository = remember { LocalOnboardingRepository(context.applicationContext) }
     val topicPerformanceRepository = remember { LocalTopicPerformanceRepository(context.applicationContext) }
     val flashcardReviewRepository = remember { LocalFlashcardReviewRepository(context.applicationContext) }
     val premiumRepository = remember { PremiumRepository(context.applicationContext) }
     val aiUsageRepository = remember { AiUsageRepository(context.applicationContext) }
     val userProgress by progressRepository.progress.collectAsState(initial = UserProgress())
+    val onboardingPreferences by onboardingRepository.preferences.collectAsState(initial = OnboardingPreferences())
     val topicPerformance by topicPerformanceRepository.topicPerformance.collectAsState(initial = emptyList())
     val flashcardReviewStates by flashcardReviewRepository.reviewStates.collectAsState(initial = emptyList())
     val premiumUiState by premiumRepository.uiState.collectAsState()
@@ -90,6 +96,7 @@ fun LearnLiftApp() {
         flashcards = selectedPathFlashcards,
         reviewStates = flashcardReviewStates
     )
+    val shouldShowOnboarding = !onboardingPreferences.hasCompletedOnboarding
     val isSubFlowOpen = isSettingsOpen || isPremiumOpen || isDailySessionActive || isChoosingStudyPath
 
     LaunchedEffect(Unit) {
@@ -107,25 +114,63 @@ fun LearnLiftApp() {
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
         bottomBar = {
-            LearnLiftBottomNavigation(
-                selectedDestination = selectedDestination,
-                onDestinationSelected = {
-                    isChoosingStudyPath = false
-                    isDailySessionActive = false
-                    isSettingsOpen = false
-                    isPremiumOpen = false
-                    if (it == LearnLiftDestination.Quiz) {
-                        quizModeName = QuizMode.Normal.name
+            if (!shouldShowOnboarding) {
+                LearnLiftBottomNavigation(
+                    selectedDestination = selectedDestination,
+                    onDestinationSelected = {
+                        isChoosingStudyPath = false
+                        isDailySessionActive = false
+                        isSettingsOpen = false
+                        isPremiumOpen = false
+                        if (it == LearnLiftDestination.Quiz) {
+                            quizModeName = QuizMode.Normal.name
+                        }
+                        if (it == LearnLiftDestination.Flashcards) {
+                            flashcardModeName = FlashcardMode.All.name
+                        }
+                        selectedDestinationName = it.name
                     }
-                    if (it == LearnLiftDestination.Flashcards) {
-                        flashcardModeName = FlashcardMode.All.name
-                    }
-                    selectedDestinationName = it.name
-                }
-            )
+                )
+            }
         }
     ) { innerPadding ->
-        if (isPremiumOpen) {
+        if (shouldShowOnboarding) {
+            OnboardingScreen(
+                studyPaths = studyPaths,
+                existingSelectedPathId = userProgress.selectedStudyPathId,
+                onCompleteOnboarding = { goal, pathId, dailyMinutes ->
+                    coroutineScope.launch {
+                        onboardingRepository.completeOnboarding(
+                            onboardingGoal = goal.label,
+                            recommendedStudyPathId = pathId,
+                            dailyStudyMinutes = dailyMinutes
+                        )
+                        progressRepository.setSelectedStudyPathId(pathId)
+                    }
+                    isSettingsOpen = false
+                    isChoosingStudyPath = false
+                    isDailySessionActive = false
+                    isPremiumOpen = false
+                    selectedDestinationName = LearnLiftDestination.Home.name
+                },
+                onSkipOnboarding = {
+                    coroutineScope.launch {
+                        onboardingRepository.completeOnboarding(
+                            onboardingGoal = OnboardingGoal.PrepareForJobInterviews.label,
+                            recommendedStudyPathId = DefaultOnboardingPathId,
+                            dailyStudyMinutes = 10
+                        )
+                        progressRepository.setSelectedStudyPathId(DefaultOnboardingPathId)
+                    }
+                    isSettingsOpen = false
+                    isChoosingStudyPath = false
+                    isDailySessionActive = false
+                    isPremiumOpen = false
+                    selectedDestinationName = LearnLiftDestination.Home.name
+                },
+                modifier = Modifier.padding(innerPadding)
+            )
+        } else if (isPremiumOpen) {
             PremiumScreen(
                 premiumUiState = premiumUiState,
                 onRefreshPremium = {
@@ -172,6 +217,16 @@ fun LearnLiftApp() {
                     coroutineScope.launch {
                         premiumRepository.restorePurchases()
                     }
+                },
+                onResetOnboarding = {
+                    coroutineScope.launch {
+                        onboardingRepository.resetOnboarding()
+                    }
+                    isSettingsOpen = false
+                    isPremiumOpen = false
+                    isChoosingStudyPath = false
+                    isDailySessionActive = false
+                    selectedDestinationName = LearnLiftDestination.Home.name
                 },
                 onBackToHome = {
                     isSettingsOpen = false
@@ -254,6 +309,7 @@ fun LearnLiftApp() {
                     selectedStudyPath = selectedStudyPath,
                     selectedStudyContent = selectedStudyContent,
                     userProgress = userProgress,
+                    dailyStudyMinutes = onboardingPreferences.dailyStudyMinutes,
                     topicPerformance = topicPerformance.filter { it.pathId == selectedStudyPath?.id },
                     flashcardReviewSummary = selectedFlashcardReviewSummary,
                     isPremiumActive = premiumUiState.isPremiumActive,
@@ -376,6 +432,8 @@ fun LearnLiftApp() {
         }
     }
 }
+
+private const val DefaultOnboardingPathId = "job-interview-prep"
 
 @Composable
 private fun LearnLiftBottomNavigation(

@@ -39,6 +39,7 @@ fun HomeScreen(
     selectedStudyPath: StudyPath?,
     selectedStudyContent: StudyContent?,
     userProgress: UserProgress,
+    dailyStudyMinutes: Int?,
     topicPerformance: List<TopicPerformance>,
     flashcardReviewSummary: FlashcardReviewSummary,
     isPremiumActive: Boolean,
@@ -72,6 +73,7 @@ fun HomeScreen(
             SelectedPathOverview(
                 selectedStudyPath = selectedStudyPath,
                 selectedStudyContent = selectedStudyContent,
+                dailyStudyMinutes = dailyStudyMinutes,
                 onChangeStudyPath = onChooseStudyPath
             )
             QuickActions(
@@ -135,6 +137,7 @@ private fun HomeRecommendation(
 private fun SelectedPathOverview(
     selectedStudyPath: StudyPath,
     selectedStudyContent: StudyContent?,
+    dailyStudyMinutes: Int?,
     onChangeStudyPath: () -> Unit
 ) {
     SectionHeader(
@@ -173,6 +176,15 @@ private fun SelectedPathOverview(
             Text(
                 text = "${selectedStudyContent.flashcards.size} flashcards and ${selectedStudyContent.quizQuestions.size} quiz questions ready",
                 color = MaterialTheme.colorScheme.secondary,
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.SemiBold
+            )
+        }
+        if (dailyStudyMinutes != null) {
+            Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+            Text(
+                text = "Recommended daily goal: $dailyStudyMinutes minutes",
+                color = MaterialTheme.colorScheme.primary,
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.SemiBold
             )
