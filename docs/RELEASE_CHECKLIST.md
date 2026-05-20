@@ -4,12 +4,12 @@ Use this checklist for the next Google Play closed-testing and production-candid
 
 ## Latest QA Snapshot
 
-- Last QA update: 2026-05-18.
+- Last QA update: 2026-05-20.
 - Debug build: passed with `.\gradlew.bat assembleDebug`.
 - Content validation: passed for English, Job Interview, and IT / QA expanded content counts.
-- Merged manifest: contains `android.permission.INTERNET` and `com.android.vending.BILLING`.
-- Physical device install: needs retest because ADB reported no connected devices during the Task 39 shell QA pass.
-- Production readiness: not ready for production until physical-device smoke testing and Google Play subscription purchase testing pass.
+- Merged manifest: contains `android.permission.INTERNET`, `android.permission.POST_NOTIFICATIONS`, `android.permission.RECEIVE_BOOT_COMPLETED`, and `com.android.vending.BILLING` when RevenueCat billing dependencies are merged.
+- Physical device install: passed on `SM-A566B` for recent debug builds.
+- Production readiness: not ready for production until closed testing, Google Play subscription purchase testing, final screenshots, Privacy Policy, and Data Safety submission pass.
 
 ## Repository
 
@@ -99,8 +99,9 @@ Use this checklist for the next Google Play closed-testing and production-candid
 - [ ] Upload signed AAB to Closed Testing.
 - [ ] Add release notes from `docs/PLAY_CONSOLE_RELEASE_NOTES.md`.
 - [ ] Confirm tester accounts are license testers / closed testers.
-- [ ] Complete Data Safety using `docs/DATA_SAFETY_DRAFT.md`.
-- [ ] Refresh store listing draft before production.
+- [ ] Complete Data Safety using `docs/DATA_SAFETY_FINAL_V2.md`.
+- [ ] Publish or update Privacy Policy before production.
+- [ ] Use final listing from `docs/PLAY_STORE_LISTING_FINAL_V2.md`.
 - [ ] Add final screenshots.
 - [ ] Add feature graphic.
 - [ ] Confirm app icon readiness.
@@ -120,3 +121,36 @@ Use this checklist for the next Google Play closed-testing and production-candid
 - [ ] Premium active state uses higher AI limits.
 - [ ] AI backend quota/failure fallback does not crash.
 - [ ] No unexpected hard paywalls are present.
+
+## Final v2 Production Checklist
+
+- [ ] Confirm repository path is `C:\Projects\learnlift-ai-android`.
+- [ ] Confirm git working tree is clean before release artifact generation.
+- [ ] Confirm all source changes are intentional.
+- [ ] Run `git diff --check`.
+- [ ] Run a secret scan for OpenAI keys, Supabase service role keys, RevenueCat private keys, Google service account JSON, keystore files, `local.properties`, `app/build`, and `.gradle`.
+- [ ] Run `.\gradlew.bat assembleDebug`.
+- [ ] Run `.\gradlew.bat installDebug`.
+- [ ] Run `.\gradlew.bat :app:processDebugMainManifest`.
+- [ ] Confirm package name remains `com.learnliftai.app`.
+- [ ] Increase `versionCode` only when preparing the next Play upload.
+- [ ] Generate signed AAB with the correct upload key.
+- [ ] Confirm `android.permission.INTERNET` is present.
+- [ ] Confirm `android.permission.POST_NOTIFICATIONS` is present.
+- [ ] Confirm `android.permission.RECEIVE_BOOT_COMPLETED` is present.
+- [ ] Confirm billing permission is present through RevenueCat/Google Play Billing dependency.
+- [ ] Confirm Supabase `ai-coach` function is deployed.
+- [ ] Confirm Supabase Verify JWT setting is documented for current no-login testing.
+- [ ] Confirm OpenAI billing/quota is enabled.
+- [ ] Confirm Android has no OpenAI API key and no Supabase service role key.
+- [ ] Confirm RevenueCat products are mapped.
+- [ ] Confirm entitlement identifier is exactly `premium`.
+- [ ] Confirm Play subscriptions are active/configured.
+- [ ] Confirm Premium purchase, cancellation, and restore behavior in closed testing.
+- [ ] Complete Data Safety with `docs/DATA_SAFETY_FINAL_V2.md`.
+- [ ] Publish/update Privacy Policy.
+- [ ] Upload final screenshots from `docs/SCREENSHOT_PLAN_V2.md`.
+- [ ] Upload feature graphic.
+- [ ] Upload app icon.
+- [ ] Complete closed testing requirement and collect tester feedback.
+- [ ] Submit production access request using `docs/PRODUCTION_ACCESS_PREP.md`.
