@@ -47,6 +47,8 @@ import com.learnliftai.app.data.ai.ExplainAnswerRequest
 import com.learnliftai.app.data.ai.ExplainAnswerResponse
 import com.learnliftai.app.data.ai.QuizSummaryRequest
 import com.learnliftai.app.data.ai.QuizSummaryResponse
+import com.learnliftai.app.domain.AdaptiveQuizSelector
+import com.learnliftai.app.domain.QuizMode
 import com.learnliftai.app.domain.SmartCoachAdvisor
 import com.learnliftai.app.domain.model.QuizOption
 import com.learnliftai.app.domain.model.QuizQuestion
@@ -72,12 +74,24 @@ fun QuizScreen(
     aiUsageState: AiUsageState,
     aiUsageRepository: AiUsageRepository,
     topicPerformance: List<TopicPerformance>,
+    quizMode: QuizMode,
     onViewPremium: () -> Unit,
     onQuizTopicAnswered: (question: QuizQuestion, isCorrect: Boolean) -> Unit,
     onQuizCompleted: (score: Int, percentage: Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val quizQuestions = selectedStudyContent?.quizQuestions.orEmpty()
+    val allQuizQuestions = selectedStudyContent?.quizQuestions.orEmpty()
+    val adaptiveSelection = remember(selectedStudyPath?.id, allQuizQuestions, topicPerformance, quizMode) {
+        AdaptiveQuizSelector.selectQuestions(
+            questions = allQuizQuestions,
+            topicPerformance = topicPerformance
+        )
+    }
+    val quizQuestions = if (quizMode == QuizMode.Adaptive) {
+        adaptiveSelection.questions
+    } else {
+        allQuizQuestions
+    }
     val aiCoachRepository = remember { AiCoachRepository() }
 
     if (selectedStudyPath == null) {
@@ -89,7 +103,7 @@ fun QuizScreen(
         return
     }
 
-    if (quizQuestions.isEmpty()) {
+    if (allQuizQuestions.isEmpty()) {
         QuizEmptyState(
             title = "No quiz questions yet",
             description = "${selectedStudyPath.title} does not have quiz questions available yet.",
@@ -102,7 +116,7 @@ fun QuizScreen(
     var isQuizComplete by remember { mutableStateOf(false) }
     val selectedAnswers = remember { mutableStateMapOf<String, String>() }
 
-    LaunchedEffect(selectedStudyPath.id) {
+    LaunchedEffect(selectedStudyPath.id, quizMode, quizQuestions.map { it.id }) {
         currentIndex = 0
         isQuizComplete = false
         selectedAnswers.clear()
@@ -119,9 +133,16 @@ fun QuizScreen(
         verticalArrangement = Arrangement.spacedBy(LearnLiftSpacing.contentGap)
     ) {
         SectionHeader(
-            title = "Quiz",
+            title = if (quizMode == QuizMode.Adaptive) "Adaptive Quiz" else "Quiz",
             subtitle = selectedStudyPath.title
         )
+        if (quizMode == QuizMode.Adaptive) {
+            AdaptiveQuizIntro(
+                focusedTopics = adaptiveSelection.focusedTopics,
+                hasWeakTopicData = adaptiveSelection.hasWeakTopicData,
+                isPremiumActive = isPremiumActive
+            )
+        }
 
         if (isQuizComplete) {
             QuizSummary(
@@ -199,6 +220,46 @@ private fun QuizEmptyState(
         EmptyState(
             title = title,
             description = description
+        )
+    }
+}
+
+@Composable
+private fun AdaptiveQuizIntro(
+    focusedTopics: List<String>,
+    hasWeakTopicData: Boolean,
+    isPremiumActive: Boolean
+) {
+    LearnLiftCard(
+        borderColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.26f),
+        containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.42f)
+    ) {
+        Text(
+            text = "Practice your weakest topics",
+            color = MaterialTheme.colorScheme.primary,
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+        Text(
+            text = if (hasWeakTopicData && focusedTopics.isNotEmpty()) {
+                "Focused topics: ${focusedTopics.joinToString(", ")}"
+            } else {
+                "Complete a quiz to unlock more personalized adaptive practice."
+            },
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.78f),
+            style = MaterialTheme.typography.bodyMedium
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+        Text(
+            text = if (isPremiumActive) {
+                "Premium adaptive practice active"
+            } else {
+                "Premium will unlock deeper adaptive practice."
+            },
+            color = MaterialTheme.colorScheme.secondary,
+            style = MaterialTheme.typography.bodySmall,
+            fontWeight = FontWeight.SemiBold
         )
     }
 }

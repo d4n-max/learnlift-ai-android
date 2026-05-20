@@ -63,6 +63,7 @@ The `type` is one of:
 - If a streak exists, the recommendation may mention keeping it going.
 - If weak topic performance exists, recommend the top local weak topics before generic score-based guidance.
 - If strong topic performance exists and no weak topic is urgent, encourage reinforcing a strong topic with a quiz.
+- If weak topic performance exists, Smart Coach may recommend Adaptive Quiz as the next best step.
 
 ## Future AI Coach
 
@@ -76,4 +77,5 @@ Until then, Smart Coach remains local guidance only.
 - Topics with at least 2 attempts and accuracy below 70% are treated as weak topics.
 - Topics with only 1 wrong signal may be shown as needing more practice data.
 - Smart Coach shows up to 3 focus topics.
+- Smart Coach action text can become `Start Adaptive Quiz` when weak topics exist.
 - If no topic data exists, Smart Coach falls back to the existing progress and quiz score rules.

@@ -136,9 +136,10 @@ The selected study path remains selected.
 
 ## Future Adaptive Quiz Integration
 
-Future tasks can use topic performance to:
+Adaptive Quiz now uses topic performance to prioritize weak topics while keeping normal Quiz mode available.
 
-- Prioritize weak topics in quizzes.
+Future tasks can further use topic performance to:
+
 - Build spaced repetition.
 - Recommend flashcard review sets.
 - Power Premium advanced insights.

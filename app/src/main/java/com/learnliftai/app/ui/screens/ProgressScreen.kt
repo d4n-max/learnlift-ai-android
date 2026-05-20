@@ -63,6 +63,7 @@ fun ProgressScreen(
     aiUsageState: AiUsageState,
     aiUsageRepository: AiUsageRepository,
     topicPerformance: List<TopicPerformance>,
+    onStartAdaptiveQuiz: () -> Unit,
     onOpenSettings: () -> Unit,
     onViewPremium: () -> Unit,
     onResetProgress: () -> Unit,
@@ -91,7 +92,8 @@ fun ProgressScreen(
         )
         WeakTopicsSection(
             topicPerformance = topicPerformance,
-            isPremiumActive = isPremiumActive
+            isPremiumActive = isPremiumActive,
+            onStartAdaptiveQuiz = onStartAdaptiveQuiz
         )
 
         SectionHeader(title = "Study stats")
@@ -484,7 +486,8 @@ private fun ProgressRecommendationSection(
 @Composable
 private fun WeakTopicsSection(
     topicPerformance: List<TopicPerformance>,
-    isPremiumActive: Boolean
+    isPremiumActive: Boolean,
+    onStartAdaptiveQuiz: () -> Unit
 ) {
     SectionHeader(
         title = "Topics to Review",
@@ -509,6 +512,11 @@ private fun WeakTopicsSection(
                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.76f),
                 style = MaterialTheme.typography.bodyMedium
             )
+            Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
+            SecondaryActionButton(
+                text = "Start Adaptive Quiz",
+                onClick = onStartAdaptiveQuiz
+            )
         }
         return
     }
@@ -526,6 +534,25 @@ private fun WeakTopicsSection(
         TopicPerformanceCard(
             topicPerformance = topic,
             isPremiumActive = isPremiumActive
+        )
+    }
+    LearnLiftCard {
+        Text(
+            text = "Practice these topics",
+            color = MaterialTheme.colorScheme.primary,
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+        Text(
+            text = "Start an Adaptive Quiz that prioritizes your local review signals.",
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.76f),
+            style = MaterialTheme.typography.bodyMedium
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
+        PrimaryActionButton(
+            text = "Start Adaptive Quiz",
+            onClick = onStartAdaptiveQuiz
         )
     }
 }

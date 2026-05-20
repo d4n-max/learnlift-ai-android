@@ -24,6 +24,7 @@ Free users keep access to:
 - Local/static explanations.
 - Rule-based Smart Coach recommendations.
 - Limited AI Coach previews.
+- Adaptive Quiz basic access.
 - Settings and local reset.
 
 Current v1 study paths must not be locked behind Premium.
@@ -55,6 +56,7 @@ These should be shown as planned or coming soon, not as fully implemented:
 - Deeper progress insights.
 - Premium study packs.
 - Future custom/adaptive practice.
+- Deeper adaptive practice.
 - Future premium study packs:
   - SQL Interview Prep.
   - QA Advanced.

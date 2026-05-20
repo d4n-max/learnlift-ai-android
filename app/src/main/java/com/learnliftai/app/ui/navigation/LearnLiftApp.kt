@@ -26,6 +26,7 @@ import com.learnliftai.app.data.ai.AiUsageRepository
 import com.learnliftai.app.data.ai.AiUsageState
 import com.learnliftai.app.data.billing.PremiumRepository
 import com.learnliftai.app.data.StudyPathRepository
+import com.learnliftai.app.domain.QuizMode
 import com.learnliftai.app.domain.model.UserProgress
 import com.learnliftai.app.ui.screens.DailyStudySessionScreen
 import com.learnliftai.app.ui.screens.FlashcardsScreen
@@ -64,7 +65,11 @@ fun LearnLiftApp() {
     var isPremiumOpen by rememberSaveable {
         mutableStateOf(false)
     }
+    var quizModeName by rememberSaveable {
+        mutableStateOf(QuizMode.Normal.name)
+    }
     val selectedDestination = LearnLiftDestination.valueOf(selectedDestinationName)
+    val quizMode = QuizMode.valueOf(quizModeName)
     val studyPaths = StudyPathRepository.studyPaths
     val selectedStudyPath = StudyPathRepository.findById(userProgress.selectedStudyPathId)
     val selectedStudyContent = remember(userProgress.selectedStudyPathId) {
@@ -94,6 +99,9 @@ fun LearnLiftApp() {
                     isDailySessionActive = false
                     isSettingsOpen = false
                     isPremiumOpen = false
+                    if (it == LearnLiftDestination.Quiz) {
+                        quizModeName = QuizMode.Normal.name
+                    }
                     selectedDestinationName = it.name
                 }
             )
@@ -235,6 +243,12 @@ fun LearnLiftApp() {
                     },
                     onStartQuiz = {
                         isChoosingStudyPath = false
+                        quizModeName = QuizMode.Normal.name
+                        selectedDestinationName = LearnLiftDestination.Quiz.name
+                    },
+                    onStartAdaptiveQuiz = {
+                        isChoosingStudyPath = false
+                        quizModeName = QuizMode.Adaptive.name
                         selectedDestinationName = LearnLiftDestination.Quiz.name
                     },
                     modifier = Modifier.padding(innerPadding)
@@ -270,6 +284,7 @@ fun LearnLiftApp() {
                     aiUsageState = aiUsageState,
                     aiUsageRepository = aiUsageRepository,
                     topicPerformance = topicPerformance.filter { it.pathId == selectedStudyPath?.id },
+                    quizMode = quizMode,
                     onViewPremium = { isPremiumOpen = true },
                     onQuizTopicAnswered = { question, isCorrect ->
                         coroutineScope.launch {
@@ -298,6 +313,10 @@ fun LearnLiftApp() {
                     aiUsageState = aiUsageState,
                     aiUsageRepository = aiUsageRepository,
                     topicPerformance = topicPerformance.filter { selectedStudyPath == null || it.pathId == selectedStudyPath.id },
+                    onStartAdaptiveQuiz = {
+                        quizModeName = QuizMode.Adaptive.name
+                        selectedDestinationName = LearnLiftDestination.Quiz.name
+                    },
                     onOpenSettings = { isSettingsOpen = true },
                     onViewPremium = { isPremiumOpen = true },
                     onResetProgress = {

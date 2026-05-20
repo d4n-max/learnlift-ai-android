@@ -91,9 +91,9 @@ object SmartCoachAdvisor {
         if (weakTopics.isNotEmpty()) {
             return SmartCoachRecommendation(
                 title = "Recommended Focus",
-                message = "Review these topics before your next quiz: ${weakTopics.joinToString(", ")}.",
+                message = "Try an Adaptive Quiz focused on your weak topics: ${weakTopics.joinToString(", ")}.",
                 focusTopics = weakTopics,
-                actionLabel = "Review weak topics",
+                actionLabel = "Start Adaptive Quiz",
                 type = SmartCoachRecommendationType.Review
             )
         }

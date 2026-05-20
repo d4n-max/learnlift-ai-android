@@ -46,6 +46,7 @@ fun HomeScreen(
     onStartDailySession: () -> Unit,
     onStartFlashcards: () -> Unit,
     onStartQuiz: () -> Unit,
+    onStartAdaptiveQuiz: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -74,6 +75,7 @@ fun HomeScreen(
                 onStartDailySession = onStartDailySession,
                 onStartFlashcards = onStartFlashcards,
                 onStartQuiz = onStartQuiz,
+                onStartAdaptiveQuiz = onStartAdaptiveQuiz,
                 onChangeStudyPath = onChooseStudyPath
             )
             HomeRecommendation(
@@ -231,6 +233,7 @@ private fun QuickActions(
     onStartDailySession: () -> Unit,
     onStartFlashcards: () -> Unit,
     onStartQuiz: () -> Unit,
+    onStartAdaptiveQuiz: () -> Unit,
     onChangeStudyPath: () -> Unit
 ) {
     SectionHeader(
@@ -251,6 +254,11 @@ private fun QuickActions(
         PrimaryActionButton(
             text = "Start Quiz",
             onClick = onStartQuiz
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+        SecondaryActionButton(
+            text = "Adaptive Quiz",
+            onClick = onStartAdaptiveQuiz
         )
         Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
         SecondaryActionButton(
