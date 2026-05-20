@@ -1,5 +1,10 @@
 package com.learnliftai.app.ui.screens
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -18,13 +23,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.core.content.ContextCompat
 import com.learnliftai.app.BuildConfig
 import com.learnliftai.app.data.ai.AiUsageAction
 import com.learnliftai.app.data.ai.AiUsageState
 import com.learnliftai.app.data.billing.PremiumEntitlement
 import com.learnliftai.app.data.billing.PremiumUiState
 import com.learnliftai.app.domain.model.PremiumPlanStatus
+import com.learnliftai.app.domain.model.ReminderPreferences
 import com.learnliftai.app.domain.model.StudyPath
 import com.learnliftai.app.ui.components.EmptyState
 import com.learnliftai.app.ui.components.LearnLiftCard
@@ -40,8 +48,12 @@ fun SettingsScreen(
     selectedStudyPath: StudyPath?,
     premiumUiState: PremiumUiState,
     aiUsageState: AiUsageState,
+    reminderPreferences: ReminderPreferences,
+    dailyStudyMinutes: Int,
     onChooseStudyPath: () -> Unit,
     onViewPremium: () -> Unit,
+    onReminderEnabledChange: (Boolean) -> Unit,
+    onReminderTimeSelected: (hour: Int, minute: Int) -> Unit,
     onResetProgress: () -> Unit,
     onRestorePurchases: () -> Unit,
     onResetOnboarding: () -> Unit,
@@ -67,6 +79,12 @@ fun SettingsScreen(
             aiUsageState = aiUsageState,
             onViewPremium = onViewPremium,
             onRestorePurchases = onRestorePurchases
+        )
+        DailyReminderSettingsSection(
+            reminderPreferences = reminderPreferences,
+            dailyStudyMinutes = dailyStudyMinutes,
+            onReminderEnabledChange = onReminderEnabledChange,
+            onReminderTimeSelected = onReminderTimeSelected
         )
         AppInfoSection()
         FutureFeaturesSection()
@@ -125,6 +143,130 @@ fun SettingsScreen(
             }
         )
     }
+}
+
+@Composable
+private fun DailyReminderSettingsSection(
+    reminderPreferences: ReminderPreferences,
+    dailyStudyMinutes: Int,
+    onReminderEnabledChange: (Boolean) -> Unit,
+    onReminderTimeSelected: (hour: Int, minute: Int) -> Unit
+) {
+    val context = LocalContext.current
+    var permissionDenied by remember { mutableStateOf(false) }
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { granted ->
+        permissionDenied = !granted
+        onReminderEnabledChange(granted)
+    }
+
+    SectionHeader(title = "Daily reminder")
+    LearnLiftCard {
+        Text(
+            text = "Local study reminder",
+            color = MaterialTheme.colorScheme.primary,
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+        Text(
+            text = "We'll remind you locally on this device. No account or cloud sync required.",
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.76f),
+            style = MaterialTheme.typography.bodyMedium
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+        Text(
+            text = "Daily goal: $dailyStudyMinutes minutes",
+            color = MaterialTheme.colorScheme.secondary,
+            style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.SemiBold
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
+        PrimaryReminderToggle(
+            reminderPreferences = reminderPreferences,
+            permissionDenied = permissionDenied,
+            onEnable = {
+                permissionDenied = false
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+                    ContextCompat.checkSelfPermission(
+                        context,
+                        Manifest.permission.POST_NOTIFICATIONS
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                } else {
+                    onReminderEnabledChange(true)
+                }
+            },
+            onDisable = { onReminderEnabledChange(false) }
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
+        Text(
+            text = "Reminder time: ${reminderPreferences.reminderTimeLabel}",
+            color = MaterialTheme.colorScheme.primary,
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+        ReminderTimePresetButton("08:00", 8, 0, reminderPreferences, onReminderTimeSelected)
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+        ReminderTimePresetButton("12:00", 12, 0, reminderPreferences, onReminderTimeSelected)
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+        ReminderTimePresetButton("19:00", 19, 0, reminderPreferences, onReminderTimeSelected)
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+        ReminderTimePresetButton("21:00", 21, 0, reminderPreferences, onReminderTimeSelected)
+    }
+}
+
+@Composable
+private fun PrimaryReminderToggle(
+    reminderPreferences: ReminderPreferences,
+    permissionDenied: Boolean,
+    onEnable: () -> Unit,
+    onDisable: () -> Unit
+) {
+    val status = when {
+        permissionDenied -> "Notification permission is disabled."
+        reminderPreferences.remindersEnabled -> "Reminder enabled for ${reminderPreferences.reminderTimeLabel}."
+        else -> "Reminder is off."
+    }
+    Text(
+        text = status,
+        color = if (permissionDenied) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.76f),
+        style = MaterialTheme.typography.bodyMedium,
+        fontWeight = if (permissionDenied) FontWeight.SemiBold else FontWeight.Normal
+    )
+    Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
+    if (reminderPreferences.remindersEnabled) {
+        SecondaryActionButton(
+            text = "Disable daily study reminder",
+            onClick = onDisable
+        )
+    } else {
+        SecondaryActionButton(
+            text = "Enable daily study reminder",
+            onClick = onEnable
+        )
+    }
+}
+
+@Composable
+private fun ReminderTimePresetButton(
+    label: String,
+    hour: Int,
+    minute: Int,
+    reminderPreferences: ReminderPreferences,
+    onReminderTimeSelected: (hour: Int, minute: Int) -> Unit
+) {
+    SecondaryActionButton(
+        text = if (reminderPreferences.reminderHour == hour && reminderPreferences.reminderMinute == minute) {
+            "$label selected"
+        } else {
+            label
+        },
+        onClick = { onReminderTimeSelected(hour, minute) }
+    )
 }
 
 @Composable

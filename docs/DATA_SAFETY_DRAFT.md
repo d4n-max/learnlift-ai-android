@@ -34,6 +34,7 @@ The app stores basic study progress locally on the user's device, including:
 - Streak and last study date
 - Local AI usage date and per-action AI request counters
 - Local topic performance by study path and topic
+- Local reminder preferences for optional daily study notifications
 
 ## Data Sharing
 
@@ -43,6 +44,8 @@ The app may interact with these services:
 - RevenueCat and Google Play: used for Premium product lookup, subscription purchase flow, restore purchases, and subscription entitlement status checks.
 
 The app does not use an ad network, analytics service, account backend, Firebase, or cloud sync in the current implementation.
+
+Local daily study reminders are scheduled on the device. There is no push notification server, no Firebase Cloud Messaging, and no reminder data is sent to a backend.
 
 ## Data Deletion
 
@@ -83,6 +86,8 @@ Task 41 hardens the real AI backend/client path for v2 testing. OpenAI API billi
 Task 43 adds client-side AI usage counters with DataStore. These counters track only the local date and counts for AI explanation, quiz summary, and study plan requests. They are used for local cost control and are not a server-side abuse-protection system.
 
 Task 45 adds local topic weakness tracking. Topic performance is stored on the device by study path and topic. It is not synced to a backend. If the user taps AI Study Review, the app may send only selected weak topic names to the Supabase AI backend; it does not send full local study history.
+
+Task 49 adds optional local notification reminders. Reminder settings are stored locally, notification permission is requested only when the user enables reminders, and reminders are scheduled on-device with Android local scheduling. No notification data is sent to Supabase, RevenueCat, OpenAI, Google Play, Firebase, or any app backend.
 
 Task 36 adds RevenueCat subscription entitlement support and a billing-ready Premium screen. Billing and subscription purchases are processed by Google Play and RevenueCat. The app checks Premium entitlement status through RevenueCat, and it must continue to work in Free mode if RevenueCat products or Play testing are not ready.
 

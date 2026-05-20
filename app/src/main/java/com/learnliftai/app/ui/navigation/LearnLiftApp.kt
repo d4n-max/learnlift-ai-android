@@ -23,6 +23,7 @@ import com.learnliftai.app.data.AssetStudyContentRepository
 import com.learnliftai.app.data.LocalFlashcardReviewRepository
 import com.learnliftai.app.data.LocalOnboardingRepository
 import com.learnliftai.app.data.LocalProgressRepository
+import com.learnliftai.app.data.LocalReminderPreferencesRepository
 import com.learnliftai.app.data.LocalTopicPerformanceRepository
 import com.learnliftai.app.data.ai.AiUsageRepository
 import com.learnliftai.app.data.ai.AiUsageState
@@ -32,8 +33,10 @@ import com.learnliftai.app.domain.QuizMode
 import com.learnliftai.app.domain.model.FlashcardMode
 import com.learnliftai.app.domain.model.OnboardingGoal
 import com.learnliftai.app.domain.model.OnboardingPreferences
+import com.learnliftai.app.domain.model.ReminderPreferences
 import com.learnliftai.app.domain.model.UserProgress
 import com.learnliftai.app.domain.model.flashcardReviewSummaryFor
+import com.learnliftai.app.notifications.DailyReminderScheduler
 import com.learnliftai.app.ui.screens.DailyStudySessionScreen
 import com.learnliftai.app.ui.screens.FlashcardsScreen
 import com.learnliftai.app.ui.screens.HomeScreen
@@ -50,12 +53,15 @@ fun LearnLiftApp() {
     val context = LocalContext.current
     val progressRepository = remember { LocalProgressRepository(context.applicationContext) }
     val onboardingRepository = remember { LocalOnboardingRepository(context.applicationContext) }
+    val reminderPreferencesRepository = remember { LocalReminderPreferencesRepository(context.applicationContext) }
+    val reminderScheduler = remember { DailyReminderScheduler(context.applicationContext) }
     val topicPerformanceRepository = remember { LocalTopicPerformanceRepository(context.applicationContext) }
     val flashcardReviewRepository = remember { LocalFlashcardReviewRepository(context.applicationContext) }
     val premiumRepository = remember { PremiumRepository(context.applicationContext) }
     val aiUsageRepository = remember { AiUsageRepository(context.applicationContext) }
     val userProgress by progressRepository.progress.collectAsState(initial = UserProgress())
     val onboardingPreferences by onboardingRepository.preferences.collectAsState(initial = OnboardingPreferences())
+    val reminderPreferences by reminderPreferencesRepository.preferences.collectAsState(initial = ReminderPreferences())
     val topicPerformance by topicPerformanceRepository.topicPerformance.collectAsState(initial = emptyList())
     val flashcardReviewStates by flashcardReviewRepository.reviewStates.collectAsState(initial = emptyList())
     val premiumUiState by premiumRepository.uiState.collectAsState()
@@ -198,6 +204,8 @@ fun LearnLiftApp() {
                 selectedStudyPath = selectedStudyPath,
                 premiumUiState = premiumUiState,
                 aiUsageState = aiUsageState,
+                reminderPreferences = reminderPreferences,
+                dailyStudyMinutes = onboardingPreferences.dailyStudyMinutes,
                 onChooseStudyPath = {
                     isSettingsOpen = false
                     isChoosingStudyPath = true
@@ -205,6 +213,30 @@ fun LearnLiftApp() {
                 onViewPremium = {
                     isSettingsOpen = false
                     isPremiumOpen = true
+                },
+                onReminderEnabledChange = { enabled ->
+                    coroutineScope.launch {
+                        reminderPreferencesRepository.setRemindersEnabled(enabled)
+                        if (enabled) {
+                            reminderScheduler.scheduleDailyReminder(reminderPreferences.copy(remindersEnabled = true))
+                            reminderPreferencesRepository.markReminderScheduled()
+                        } else {
+                            reminderScheduler.cancelDailyReminder()
+                        }
+                    }
+                },
+                onReminderTimeSelected = { hour, minute ->
+                    coroutineScope.launch {
+                        reminderPreferencesRepository.setReminderTime(hour, minute)
+                        val updatedPreferences = reminderPreferences.copy(
+                            reminderHour = hour,
+                            reminderMinute = minute
+                        )
+                        if (updatedPreferences.remindersEnabled) {
+                            reminderScheduler.scheduleDailyReminder(updatedPreferences)
+                            reminderPreferencesRepository.markReminderScheduled()
+                        }
+                    }
                 },
                 onResetProgress = {
                     coroutineScope.launch {

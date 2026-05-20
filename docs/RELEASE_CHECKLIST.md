@@ -40,6 +40,8 @@ Use this checklist for the next Google Play closed-testing and production-candid
 
 - [ ] Confirm merged manifest contains `com.android.vending.BILLING`.
 - [ ] Confirm merged manifest contains `android.permission.INTERNET`.
+- [ ] Confirm merged manifest contains `android.permission.POST_NOTIFICATIONS`.
+- [ ] Confirm merged manifest contains `android.permission.RECEIVE_BOOT_COMPLETED`.
 - [ ] Confirm merged manifest path:
   `app\build\intermediates\merged_manifest\debug\processDebugMainManifest\AndroidManifest.xml`
 
@@ -51,6 +53,7 @@ Use this checklist for the next Google Play closed-testing and production-candid
 - [ ] Confirm IT / QA has at least 60 flashcards and 50 quiz questions.
 - [ ] Test Home.
 - [ ] Test first-run onboarding and Settings restart onboarding.
+- [ ] Test local daily reminder opt-in, permission denial/grant, time change, and disable behavior.
 - [ ] Test Study Path Selection.
 - [ ] Test Flashcards.
 - [ ] Test Quiz.
