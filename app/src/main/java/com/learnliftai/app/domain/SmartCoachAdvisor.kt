@@ -183,8 +183,8 @@ object SmartCoachAdvisor {
         return when {
             needsReviewRatio >= NeedsReviewRatioThreshold -> SmartCoachRecommendation(
                 title = "Recommended Focus",
-                message = "Several cards are marked Needs Review. Spend a short round on those before quizzing.",
-                actionLabel = "Review flashcards",
+                message = "Several cards are marked Needs Review. Start Smart Review so those cards come back before quizzing.",
+                actionLabel = "Start Smart Review",
                 type = SmartCoachRecommendationType.Review
             )
 

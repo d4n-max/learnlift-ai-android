@@ -27,8 +27,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.learnliftai.app.domain.model.Flashcard
+import com.learnliftai.app.domain.model.FlashcardMode
+import com.learnliftai.app.domain.model.FlashcardReviewState
 import com.learnliftai.app.domain.model.StudyContent
 import com.learnliftai.app.domain.model.StudyPath
+import com.learnliftai.app.domain.model.smartReviewFlashcards
 import com.learnliftai.app.ui.components.EmptyState
 import com.learnliftai.app.ui.components.LearnLiftCard
 import com.learnliftai.app.ui.components.PrimaryActionButton
@@ -42,11 +45,22 @@ import com.learnliftai.app.ui.theme.LearnLiftSpacing
 fun FlashcardsScreen(
     selectedStudyPath: StudyPath?,
     selectedStudyContent: StudyContent?,
+    reviewStates: List<FlashcardReviewState>,
+    flashcardMode: FlashcardMode,
     onFlashcardReviewed: (reviewedDelta: Int, knownDelta: Int, needsReviewDelta: Int) -> Unit,
     onFlashcardTopicReviewed: (flashcard: Flashcard, markedKnown: Boolean) -> Unit,
+    onContinueAllFlashcards: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val flashcards = selectedStudyContent?.flashcards.orEmpty()
+    val activeFlashcards = if (flashcardMode == FlashcardMode.SmartReview) {
+        smartReviewFlashcards(
+            flashcards = flashcards,
+            reviewStates = reviewStates.filter { selectedStudyPath == null || it.pathId == selectedStudyPath.id }
+        )
+    } else {
+        flashcards
+    }
 
     if (selectedStudyPath == null) {
         FlashcardsEmptyState(
@@ -66,13 +80,24 @@ fun FlashcardsScreen(
         return
     }
 
+    if (flashcardMode == FlashcardMode.SmartReview && activeFlashcards.isEmpty()) {
+        FlashcardsEmptyState(
+            title = "No cards due right now",
+            description = "You can continue regular flashcards or try a quiz while your spaced review schedule catches up.",
+            actionText = "Continue all flashcards",
+            onActionClick = onContinueAllFlashcards,
+            modifier = modifier
+        )
+        return
+    }
+
     var currentIndex by remember { mutableIntStateOf(0) }
     var isAnswerRevealed by remember { mutableStateOf(false) }
     var knownCardIds by remember { mutableStateOf(emptySet<String>()) }
     var needsReviewCardIds by remember { mutableStateOf(emptySet<String>()) }
     val persistedSessionRatings = remember { mutableStateMapOf<String, String>() }
 
-    LaunchedEffect(selectedStudyPath.id) {
+    LaunchedEffect(selectedStudyPath.id, flashcardMode, activeFlashcards.map { it.id }) {
         currentIndex = 0
         isAnswerRevealed = false
         knownCardIds = emptySet()
@@ -80,8 +105,8 @@ fun FlashcardsScreen(
         persistedSessionRatings.clear()
     }
 
-    val safeIndex = currentIndex.coerceIn(0, flashcards.lastIndex)
-    val currentFlashcard = flashcards[safeIndex]
+    val safeIndex = currentIndex.coerceIn(0, activeFlashcards.lastIndex)
+    val currentFlashcard = activeFlashcards[safeIndex]
     val reviewedCount = (knownCardIds + needsReviewCardIds).size
 
     Column(
@@ -92,13 +117,24 @@ fun FlashcardsScreen(
         verticalArrangement = Arrangement.spacedBy(LearnLiftSpacing.contentGap)
     ) {
         SectionHeader(
-            title = "Flashcards",
-            subtitle = selectedStudyPath.title
+            title = if (flashcardMode == FlashcardMode.SmartReview) "Smart Review" else "Flashcards",
+            subtitle = if (flashcardMode == FlashcardMode.SmartReview) {
+                "Due cards first for ${selectedStudyPath.title}"
+            } else {
+                selectedStudyPath.title
+            }
         )
+
+        if (flashcardMode == FlashcardMode.SmartReview) {
+            SmartReviewIntroCard(
+                dueCount = activeFlashcards.size,
+                onContinueAllFlashcards = onContinueAllFlashcards
+            )
+        }
 
         FlashcardProgress(
             currentIndex = safeIndex,
-            totalCards = flashcards.size
+            totalCards = activeFlashcards.size
         )
 
         FlashcardStudyCard(
@@ -141,13 +177,13 @@ fun FlashcardsScreen(
 
         FlashcardNavigationActions(
             canGoPrevious = safeIndex > 0,
-            canGoNext = safeIndex < flashcards.lastIndex,
+            canGoNext = safeIndex < activeFlashcards.lastIndex,
             onPrevious = {
                 currentIndex = (safeIndex - 1).coerceAtLeast(0)
                 isAnswerRevealed = false
             },
             onNext = {
-                currentIndex = (safeIndex + 1).coerceAtMost(flashcards.lastIndex)
+                currentIndex = (safeIndex + 1).coerceAtMost(activeFlashcards.lastIndex)
                 isAnswerRevealed = false
             }
         )
@@ -167,6 +203,8 @@ private const val FlashcardRatingNeedsReview = "needsReview"
 private fun FlashcardsEmptyState(
     title: String,
     description: String,
+    actionText: String? = null,
+    onActionClick: (() -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -177,7 +215,38 @@ private fun FlashcardsEmptyState(
     ) {
         EmptyState(
             title = title,
-            description = description
+            description = description,
+            actionText = actionText,
+            onActionClick = onActionClick
+        )
+    }
+}
+
+@Composable
+private fun SmartReviewIntroCard(
+    dueCount: Int,
+    onContinueAllFlashcards: () -> Unit
+) {
+    LearnLiftCard(
+        borderColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.28f),
+        containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.36f)
+    ) {
+        Text(
+            text = "$dueCount card${if (dueCount == 1) "" else "s"} due now",
+            color = MaterialTheme.colorScheme.primary,
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+        Text(
+            text = "Needs Review cards return quickly. Known cards move forward to tomorrow, 3 days, 7 days, then 14 days.",
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.76f),
+            style = MaterialTheme.typography.bodyMedium
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
+        SecondaryActionButton(
+            text = "Continue all flashcards",
+            onClick = onContinueAllFlashcards
         )
     }
 }

@@ -18,6 +18,7 @@ Free users keep access to:
   - Job Interview Prep.
   - IT / QA Interview Prep.
 - Flashcards.
+- Smart Review spaced repetition for current study paths.
 - Quizzes.
 - Daily study session.
 - Basic progress.
@@ -25,6 +26,7 @@ Free users keep access to:
 - Rule-based Smart Coach recommendations.
 - Limited AI Coach previews.
 - Adaptive Quiz basic access.
+- Basic due review counts.
 - Settings and local reset.
 
 Current v1 study paths must not be locked behind Premium.
@@ -57,6 +59,8 @@ These should be shown as planned or coming soon, not as fully implemented:
 - Premium study packs.
 - Future custom/adaptive practice.
 - Deeper adaptive practice.
+- Deeper spaced repetition insights.
+- Advanced review planning.
 - Future premium study packs:
   - SQL Interview Prep.
   - QA Advanced.

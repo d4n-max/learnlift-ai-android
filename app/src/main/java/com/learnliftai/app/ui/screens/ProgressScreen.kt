@@ -40,6 +40,7 @@ import com.learnliftai.app.data.ai.AiUsageState
 import com.learnliftai.app.data.ai.StudyPlanRequest
 import com.learnliftai.app.data.ai.StudyPlanResponse
 import com.learnliftai.app.domain.SmartCoachAdvisor
+import com.learnliftai.app.domain.model.FlashcardReviewSummary
 import com.learnliftai.app.domain.model.StudyPath
 import com.learnliftai.app.domain.model.TopicPerformance
 import com.learnliftai.app.domain.model.UserProgress
@@ -63,7 +64,9 @@ fun ProgressScreen(
     aiUsageState: AiUsageState,
     aiUsageRepository: AiUsageRepository,
     topicPerformance: List<TopicPerformance>,
+    flashcardReviewSummary: FlashcardReviewSummary,
     onStartAdaptiveQuiz: () -> Unit,
+    onStartSmartReview: () -> Unit,
     onOpenSettings: () -> Unit,
     onViewPremium: () -> Unit,
     onResetProgress: () -> Unit,
@@ -119,6 +122,10 @@ fun ProgressScreen(
         )
 
         KnownNeedsReviewBreakdown(userProgress = userProgress)
+        FlashcardReviewSection(
+            summary = flashcardReviewSummary,
+            onStartSmartReview = onStartSmartReview
+        )
         QuizPerformanceCard(userProgress = userProgress)
         StudyPlanAiSection(
             selectedStudyPath = selectedStudyPath,
@@ -179,6 +186,43 @@ fun ProgressScreen(
                     Text(text = "Cancel")
                 }
             }
+        )
+    }
+}
+
+@Composable
+private fun FlashcardReviewSection(
+    summary: FlashcardReviewSummary,
+    onStartSmartReview: () -> Unit
+) {
+    SectionHeader(
+        title = "Flashcard Review",
+        subtitle = "Simple local spaced repetition for cards saved on this device."
+    )
+    LearnLiftCard {
+        Text(
+            text = "${summary.dueToday} due today",
+            color = MaterialTheme.colorScheme.primary,
+            style = MaterialTheme.typography.headlineSmall,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+        Text(
+            text = "${summary.needsReview} need review - ${summary.known} known - ${summary.newCards} new",
+            color = MaterialTheme.colorScheme.secondary,
+            style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.SemiBold
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+        Text(
+            text = "Smart Review brings due and Needs Review cards back first. Regular Flashcards still shows every card.",
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.76f),
+            style = MaterialTheme.typography.bodyMedium
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
+        PrimaryActionButton(
+            text = "Start Smart Review",
+            onClick = onStartSmartReview
         )
     }
 }

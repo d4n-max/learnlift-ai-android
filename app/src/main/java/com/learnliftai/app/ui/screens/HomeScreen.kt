@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import com.learnliftai.app.domain.SmartCoachAdvisor
+import com.learnliftai.app.domain.model.FlashcardReviewSummary
 import com.learnliftai.app.domain.model.StudyContent
 import com.learnliftai.app.domain.model.StudyPath
 import com.learnliftai.app.domain.model.TopicPerformance
@@ -39,12 +40,14 @@ fun HomeScreen(
     selectedStudyContent: StudyContent?,
     userProgress: UserProgress,
     topicPerformance: List<TopicPerformance>,
+    flashcardReviewSummary: FlashcardReviewSummary,
     isPremiumActive: Boolean,
     onChooseStudyPath: () -> Unit,
     onOpenSettings: () -> Unit,
     onViewPremium: () -> Unit,
     onStartDailySession: () -> Unit,
     onStartFlashcards: () -> Unit,
+    onStartSmartReview: () -> Unit,
     onStartQuiz: () -> Unit,
     onStartAdaptiveQuiz: () -> Unit,
     modifier: Modifier = Modifier
@@ -74,9 +77,14 @@ fun HomeScreen(
             QuickActions(
                 onStartDailySession = onStartDailySession,
                 onStartFlashcards = onStartFlashcards,
+                onStartSmartReview = onStartSmartReview,
                 onStartQuiz = onStartQuiz,
                 onStartAdaptiveQuiz = onStartAdaptiveQuiz,
                 onChangeStudyPath = onChooseStudyPath
+            )
+            HomeSmartReviewCard(
+                summary = flashcardReviewSummary,
+                onStartSmartReview = onStartSmartReview
             )
             HomeRecommendation(
                 userProgress = userProgress,
@@ -232,6 +240,7 @@ private fun DashboardStats(
 private fun QuickActions(
     onStartDailySession: () -> Unit,
     onStartFlashcards: () -> Unit,
+    onStartSmartReview: () -> Unit,
     onStartQuiz: () -> Unit,
     onStartAdaptiveQuiz: () -> Unit,
     onChangeStudyPath: () -> Unit
@@ -251,6 +260,11 @@ private fun QuickActions(
             onClick = onStartFlashcards
         )
         Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+        SecondaryActionButton(
+            text = "Smart Review",
+            onClick = onStartSmartReview
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
         PrimaryActionButton(
             text = "Start Quiz",
             onClick = onStartQuiz
@@ -264,6 +278,36 @@ private fun QuickActions(
         SecondaryActionButton(
             text = "Change Study Path",
             onClick = onChangeStudyPath
+        )
+    }
+}
+
+@Composable
+private fun HomeSmartReviewCard(
+    summary: FlashcardReviewSummary,
+    onStartSmartReview: () -> Unit
+) {
+    LearnLiftCard {
+        Text(
+            text = "Smart Review",
+            color = MaterialTheme.colorScheme.primary,
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+        Text(
+            text = if (summary.dueToday > 0) {
+                "${summary.dueToday} card${if (summary.dueToday == 1) "" else "s"} due today. Review now while they are fresh."
+            } else {
+                "No cards due right now. You can keep practicing with regular flashcards."
+            },
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.76f),
+            style = MaterialTheme.typography.bodyMedium
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
+        SecondaryActionButton(
+            text = "Review now",
+            onClick = onStartSmartReview
         )
     }
 }

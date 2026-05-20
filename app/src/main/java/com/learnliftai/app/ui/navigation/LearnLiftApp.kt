@@ -20,6 +20,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import com.learnliftai.app.data.AssetStudyContentRepository
+import com.learnliftai.app.data.LocalFlashcardReviewRepository
 import com.learnliftai.app.data.LocalProgressRepository
 import com.learnliftai.app.data.LocalTopicPerformanceRepository
 import com.learnliftai.app.data.ai.AiUsageRepository
@@ -27,7 +28,9 @@ import com.learnliftai.app.data.ai.AiUsageState
 import com.learnliftai.app.data.billing.PremiumRepository
 import com.learnliftai.app.data.StudyPathRepository
 import com.learnliftai.app.domain.QuizMode
+import com.learnliftai.app.domain.model.FlashcardMode
 import com.learnliftai.app.domain.model.UserProgress
+import com.learnliftai.app.domain.model.flashcardReviewSummaryFor
 import com.learnliftai.app.ui.screens.DailyStudySessionScreen
 import com.learnliftai.app.ui.screens.FlashcardsScreen
 import com.learnliftai.app.ui.screens.HomeScreen
@@ -43,10 +46,12 @@ fun LearnLiftApp() {
     val context = LocalContext.current
     val progressRepository = remember { LocalProgressRepository(context.applicationContext) }
     val topicPerformanceRepository = remember { LocalTopicPerformanceRepository(context.applicationContext) }
+    val flashcardReviewRepository = remember { LocalFlashcardReviewRepository(context.applicationContext) }
     val premiumRepository = remember { PremiumRepository(context.applicationContext) }
     val aiUsageRepository = remember { AiUsageRepository(context.applicationContext) }
     val userProgress by progressRepository.progress.collectAsState(initial = UserProgress())
     val topicPerformance by topicPerformanceRepository.topicPerformance.collectAsState(initial = emptyList())
+    val flashcardReviewStates by flashcardReviewRepository.reviewStates.collectAsState(initial = emptyList())
     val premiumUiState by premiumRepository.uiState.collectAsState()
     val aiUsageState by aiUsageRepository.usage.collectAsState(initial = AiUsageState())
     val coroutineScope = rememberCoroutineScope()
@@ -68,13 +73,23 @@ fun LearnLiftApp() {
     var quizModeName by rememberSaveable {
         mutableStateOf(QuizMode.Normal.name)
     }
+    var flashcardModeName by rememberSaveable {
+        mutableStateOf(FlashcardMode.All.name)
+    }
     val selectedDestination = LearnLiftDestination.valueOf(selectedDestinationName)
     val quizMode = QuizMode.valueOf(quizModeName)
+    val flashcardMode = FlashcardMode.valueOf(flashcardModeName)
     val studyPaths = StudyPathRepository.studyPaths
     val selectedStudyPath = StudyPathRepository.findById(userProgress.selectedStudyPathId)
     val selectedStudyContent = remember(userProgress.selectedStudyPathId) {
         userProgress.selectedStudyPathId?.let { AssetStudyContentRepository.loadStudyContent(context, it) }
     }
+    val selectedPathFlashcards = selectedStudyContent?.flashcards.orEmpty()
+    val selectedFlashcardReviewSummary = flashcardReviewSummaryFor(
+        pathId = selectedStudyPath?.id,
+        flashcards = selectedPathFlashcards,
+        reviewStates = flashcardReviewStates
+    )
     val isSubFlowOpen = isSettingsOpen || isPremiumOpen || isDailySessionActive || isChoosingStudyPath
 
     LaunchedEffect(Unit) {
@@ -101,6 +116,9 @@ fun LearnLiftApp() {
                     isPremiumOpen = false
                     if (it == LearnLiftDestination.Quiz) {
                         quizModeName = QuizMode.Normal.name
+                    }
+                    if (it == LearnLiftDestination.Flashcards) {
+                        flashcardModeName = FlashcardMode.All.name
                     }
                     selectedDestinationName = it.name
                 }
@@ -147,6 +165,7 @@ fun LearnLiftApp() {
                     coroutineScope.launch {
                         progressRepository.resetProgressStats()
                         topicPerformanceRepository.resetTopicPerformance()
+                        flashcardReviewRepository.resetReviewState()
                     }
                 },
                 onRestorePurchases = {
@@ -173,6 +192,10 @@ fun LearnLiftApp() {
                             pathId = flashcard.pathId,
                             topic = flashcard.topic,
                             difficulty = flashcard.difficulty,
+                            markedKnown = markedKnown
+                        )
+                        flashcardReviewRepository.recordReview(
+                            flashcard = flashcard,
                             markedKnown = markedKnown
                         )
                     }
@@ -232,6 +255,7 @@ fun LearnLiftApp() {
                     selectedStudyContent = selectedStudyContent,
                     userProgress = userProgress,
                     topicPerformance = topicPerformance.filter { it.pathId == selectedStudyPath?.id },
+                    flashcardReviewSummary = selectedFlashcardReviewSummary,
                     isPremiumActive = premiumUiState.isPremiumActive,
                     onChooseStudyPath = { isChoosingStudyPath = true },
                     onOpenSettings = { isSettingsOpen = true },
@@ -239,6 +263,12 @@ fun LearnLiftApp() {
                     onStartDailySession = { isDailySessionActive = true },
                     onStartFlashcards = {
                         isChoosingStudyPath = false
+                        flashcardModeName = FlashcardMode.All.name
+                        selectedDestinationName = LearnLiftDestination.Flashcards.name
+                    },
+                    onStartSmartReview = {
+                        isChoosingStudyPath = false
+                        flashcardModeName = FlashcardMode.SmartReview.name
                         selectedDestinationName = LearnLiftDestination.Flashcards.name
                     },
                     onStartQuiz = {
@@ -256,6 +286,8 @@ fun LearnLiftApp() {
                 LearnLiftDestination.Flashcards -> FlashcardsScreen(
                     selectedStudyPath = selectedStudyPath,
                     selectedStudyContent = selectedStudyContent,
+                    reviewStates = flashcardReviewStates.filter { selectedStudyPath == null || it.pathId == selectedStudyPath.id },
+                    flashcardMode = flashcardMode,
                     onFlashcardReviewed = { reviewedDelta, knownDelta, needsReviewDelta ->
                         coroutineScope.launch {
                             progressRepository.recordFlashcardReview(
@@ -273,7 +305,14 @@ fun LearnLiftApp() {
                                 difficulty = flashcard.difficulty,
                                 markedKnown = markedKnown
                             )
+                            flashcardReviewRepository.recordReview(
+                                flashcard = flashcard,
+                                markedKnown = markedKnown
+                            )
                         }
+                    },
+                    onContinueAllFlashcards = {
+                        flashcardModeName = FlashcardMode.All.name
                     },
                     modifier = Modifier.padding(innerPadding)
                 )
@@ -313,9 +352,14 @@ fun LearnLiftApp() {
                     aiUsageState = aiUsageState,
                     aiUsageRepository = aiUsageRepository,
                     topicPerformance = topicPerformance.filter { selectedStudyPath == null || it.pathId == selectedStudyPath.id },
+                    flashcardReviewSummary = selectedFlashcardReviewSummary,
                     onStartAdaptiveQuiz = {
                         quizModeName = QuizMode.Adaptive.name
                         selectedDestinationName = LearnLiftDestination.Quiz.name
+                    },
+                    onStartSmartReview = {
+                        flashcardModeName = FlashcardMode.SmartReview.name
+                        selectedDestinationName = LearnLiftDestination.Flashcards.name
                     },
                     onOpenSettings = { isSettingsOpen = true },
                     onViewPremium = { isPremiumOpen = true },
@@ -323,6 +367,7 @@ fun LearnLiftApp() {
                         coroutineScope.launch {
                             progressRepository.resetProgressStats()
                             topicPerformanceRepository.resetTopicPerformance()
+                            flashcardReviewRepository.resetReviewState()
                         }
                     },
                     modifier = Modifier.padding(innerPadding)

@@ -8,6 +8,8 @@ Topic weakness tracking gives LearnLift AI a local signal for topics that need r
 
 This feature is local-only. It does not add a backend database, login, cloud sync, analytics, or remote tracking.
 
+Flashcard spaced repetition stores card-level review state separately. Needs Review and Known flashcard actions can still contribute topic signals, while due dates and card-level counts remain in the flashcard review store.
+
 ## What Is Tracked
 
 For each study path and topic, the app stores:
@@ -66,6 +68,7 @@ Flashcards:
 - Marking `Known` increments the positive signal for that topic.
 - Marking `Needs review` increments the review signal for that topic.
 - Existing flashcard session rating guards avoid repeatedly counting the same unchanged card rating.
+- Smart Review uses card-level due dates while this topic tracker continues to summarize topic-level signals.
 
 Daily session:
 
@@ -122,6 +125,7 @@ Reset Progress clears:
 - Local progress stats.
 - Streak data.
 - Topic performance stats.
+- Flashcard spaced repetition state, including due dates and Known/Needs Review counts.
 
 The selected study path remains selected.
 
@@ -140,7 +144,6 @@ Adaptive Quiz now uses topic performance to prioritize weak topics while keeping
 
 Future tasks can further use topic performance to:
 
-- Build spaced repetition.
 - Recommend flashcard review sets.
 - Power Premium advanced insights.
 - Generate safer, smaller AI prompts from topic summaries instead of full history.

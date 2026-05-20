@@ -19,6 +19,7 @@ The local rules may use:
 - Persisted local progress totals from DataStore.
 - Last quiz score and current study streak from local progress.
 - Local per-topic performance stored on the device.
+- Local flashcard review state, including Needs Review and due review signals.
 
 No extra personal data is stored for this feature. No data leaves the device.
 
@@ -56,7 +57,7 @@ The `type` is one of:
 ## Progress Rules
 
 - If no local progress exists, recommend starting with a daily session.
-- If many reviewed flashcards are marked Needs Review, recommend reviewing flashcards before quizzing.
+- If many reviewed flashcards are marked Needs Review, recommend Smart Review before quizzing.
 - If most reviewed flashcards are Known, encourage a quiz or daily session.
 - If the last quiz score is low, recommend flashcards first.
 - If the last quiz score is high, encourage a quiz or harder practice.
@@ -79,3 +80,10 @@ Until then, Smart Coach remains local guidance only.
 - Smart Coach shows up to 3 focus topics.
 - Smart Coach action text can become `Start Adaptive Quiz` when weak topics exist.
 - If no topic data exists, Smart Coach falls back to the existing progress and quiz score rules.
+
+## Smart Review Rules
+
+- Cards marked Needs Review are scheduled as due immediately.
+- Cards marked Known move to longer review intervals.
+- If flashcard progress shows many Needs Review cards, Smart Coach can recommend `Start Smart Review`.
+- Smart Review uses local scheduling only and does not call AI or send review history anywhere.
