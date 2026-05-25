@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -126,8 +127,8 @@ private fun OnboardingWelcomeStep(
         subtitle = "Elevate Your Skills, Effortlessly."
     )
     LearnLiftCard(
-        borderColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.24f),
-        containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.34f)
+        borderColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.32f),
+        containerColor = MaterialTheme.colorScheme.primaryContainer
     ) {
         Text(
             text = "Build better answers, stronger study habits, and smarter practice sessions.",
@@ -138,7 +139,7 @@ private fun OnboardingWelcomeStep(
         Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
         Text(
             text = "Set up your goal in under a minute. Everything stays local on this device.",
-            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.76f),
+            color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.82f),
             style = MaterialTheme.typography.bodyMedium
         )
         Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
@@ -284,6 +285,22 @@ private fun SelectableOnboardingCard(
     isSelected: Boolean,
     onClick: () -> Unit
 ) {
+    val cardContainerColor = if (isSelected) {
+        MaterialTheme.colorScheme.primaryContainer
+    } else {
+        MaterialTheme.colorScheme.surfaceVariant
+    }
+    val titleColor = if (isSelected) {
+        MaterialTheme.colorScheme.primary
+    } else {
+        MaterialTheme.colorScheme.onSurface
+    }
+    val subtitleColor = if (isSelected) {
+        MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.82f)
+    } else {
+        MaterialTheme.colorScheme.onSurfaceVariant
+    }
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -294,11 +311,8 @@ private fun SelectableOnboardingCard(
             color = if (isSelected) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.outlineVariant
         ),
         colors = CardDefaults.cardColors(
-            containerColor = if (isSelected) {
-                MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.46f)
-            } else {
-                MaterialTheme.colorScheme.surface
-            }
+            containerColor = cardContainerColor,
+            contentColor = MaterialTheme.colorScheme.onSurface
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = if (isSelected) 3.dp else 1.dp)
     ) {
@@ -311,8 +325,8 @@ private fun SelectableOnboardingCard(
         ) {
             Spacer(
                 modifier = Modifier
+                    .width(7.dp)
                     .height(38.dp)
-                    .weight(0.05f)
                     .background(
                         color = if (isSelected) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.primary.copy(alpha = 0.18f),
                         shape = RoundedCornerShape(LearnLiftCorners.highlight)
@@ -321,14 +335,14 @@ private fun SelectableOnboardingCard(
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = title,
-                    color = MaterialTheme.colorScheme.primary,
+                    color = titleColor,
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = subtitle,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.74f),
+                    color = subtitleColor,
                     style = MaterialTheme.typography.bodyMedium
                 )
             }

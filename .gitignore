@@ -35,6 +35,8 @@ signing.properties
 
 # Google Services (e.g. APIs or Firebase)
 google-services.json
+*service-account*.json
+*service_account*.json
 
 # Android Profiling
 *.hprof

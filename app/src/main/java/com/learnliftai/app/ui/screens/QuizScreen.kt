@@ -231,8 +231,8 @@ private fun AdaptiveQuizIntro(
     isPremiumActive: Boolean
 ) {
     LearnLiftCard(
-        borderColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.26f),
-        containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.42f)
+        borderColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.32f),
+        containerColor = MaterialTheme.colorScheme.primaryContainer
     ) {
         Text(
             text = "Practice your weakest topics",
@@ -247,7 +247,7 @@ private fun AdaptiveQuizIntro(
             } else {
                 "Complete a quiz to unlock more personalized adaptive practice."
             },
-            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.78f),
+            color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.82f),
             style = MaterialTheme.typography.bodyMedium
         )
         Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))

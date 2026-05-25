@@ -4,6 +4,17 @@ Last updated: 2026-05-20
 
 Do not generate or upload screenshots until the final QA build is installed on a clean physical device or emulator.
 
+## Play Store Asset Checklist
+
+- App icon: 512 x 512 PNG.
+- Feature graphic: 1024 x 500 PNG or JPEG.
+- Phone screenshots: 2 to 8 screenshots.
+- Optional 7-inch tablet screenshots.
+- Optional 10-inch tablet screenshots.
+- Capture screenshots only after the v2 production-candidate build is installed.
+- Screenshot set should show: real AI response, Adaptive Quiz, Smart Review, Progress weak topics, Premium screen, and Onboarding.
+- Do not show private data, debug overlays, test credentials, broken AI states, unavailable billing states, or guaranteed job/interview/exam success claims.
+
 ## Google Play Phone Screenshot Requirements
 
 - Format: PNG or JPEG.

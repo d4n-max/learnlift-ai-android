@@ -4,8 +4,9 @@ Use this checklist for the next Google Play closed-testing and production-candid
 
 ## Latest QA Snapshot
 
-- Last QA update: 2026-05-20.
-- Debug build: passed with `.\gradlew.bat assembleDebug`.
+- Last QA update: 2026-05-22.
+- Version target: `versionCode = 4`, `versionName = "0.2.0"` for the v2 production candidate. This bumps the previous `3 / 0.1.2` candidate for the next Play upload.
+- Debug build: blocked in this shell by Android SDK 35 license/access setup. `.\gradlew.bat clean` and `.\gradlew.bat :app:processDebugMainManifest` pass.
 - Content validation: passed for English, Job Interview, and IT / QA expanded content counts.
 - Merged manifest: contains `android.permission.INTERNET`, `android.permission.POST_NOTIFICATIONS`, `android.permission.RECEIVE_BOOT_COMPLETED`, and `com.android.vending.BILLING` when RevenueCat billing dependencies are merged.
 - Physical device install: passed on `SM-A566B` for recent debug builds.
@@ -22,19 +23,39 @@ Use this checklist for the next Google Play closed-testing and production-candid
 ## Versioning
 
 - [ ] Confirm package name remains `com.learnliftai.app`.
-- [ ] Increase `versionCode` only when preparing the next uploaded Play build.
-- [ ] Update `versionName` only when preparing a named release.
+- [x] Set v2 production candidate `versionCode` to `4`.
+- [x] Set v2 production candidate `versionName` to `0.2.0`.
+- [ ] If `versionCode = 4` has already been uploaded to Google Play, bump the next candidate to `versionCode = 5` and `versionName = "0.2.1"` before upload.
 - [ ] Confirm Settings displays the intended app version.
 
 ## Build
 
 - [ ] Accept/install Android SDK 35 components and licenses.
-- [ ] Run `.\gradlew.bat :app:processDebugMainManifest`.
-- [ ] Run `.\gradlew.bat assembleDebug`.
+- [x] Run `.\gradlew.bat clean`.
+- [x] Run `.\gradlew.bat :app:processDebugMainManifest`.
+- [ ] Run `.\gradlew.bat assembleDebug` after SDK 35 license/access setup is fixed.
 - [ ] Run `.\gradlew.bat installDebug` on a test device or emulator.
 - [ ] Run a release build command when ready for upload.
 - [ ] Generate a signed AAB for Play Console upload.
 - [ ] Store signing materials outside the repository.
+
+## Manual Signed AAB Steps
+
+Do not store keystore passwords, private key material, or generated AAB files in this repository.
+
+1. Open Android Studio.
+2. Open `C:\Projects\learnlift-ai-android`.
+3. Sync Gradle.
+4. Select Build -> Generate Signed Bundle / APK.
+5. Select Android App Bundle.
+6. Use the existing LearnLift upload key v2.
+7. Select build variant: `release`.
+8. Generate `app-release.aab`.
+9. Confirm expected output:
+   `app/build/outputs/bundle/release/app-release.aab`
+10. Upload the AAB to Google Play Closed Testing first.
+11. Use release notes from `docs/PLAY_CONSOLE_RELEASE_NOTES.md`.
+12. Do not commit the AAB.
 
 ## Manifest And Permissions
 
@@ -107,6 +128,17 @@ Use this checklist for the next Google Play closed-testing and production-candid
 - [ ] Confirm app icon readiness.
 - [ ] Complete production access request materials after closed testing evidence is available.
 
+## Play Store Assets
+
+- [ ] App icon: 512 x 512.
+- [ ] Feature graphic: 1024 x 500.
+- [ ] Phone screenshots: 2 to 8 screenshots.
+- [ ] Optional 7-inch tablet screenshots.
+- [ ] Optional 10-inch tablet screenshots.
+- [ ] Capture screenshots after the v2 production-candidate build is installed.
+- [ ] Screenshots show real AI response, Adaptive Quiz, Smart Review, Progress weak topics, Premium screen, and Onboarding.
+- [ ] Screenshots avoid debug overlays, private data, test credentials, broken AI states, unavailable billing states, and guaranteed success claims.
+
 ## Final Release Gate
 
 - [ ] Closed testing install works.
@@ -154,3 +186,14 @@ Use this checklist for the next Google Play closed-testing and production-candid
 - [ ] Upload app icon.
 - [ ] Complete closed testing requirement and collect tester feedback.
 - [ ] Submit production access request using `docs/PRODUCTION_ACCESS_PREP.md`.
+
+## Task 51 Final Status
+
+Blocked by local SDK environment for full debug build in this shell.
+
+Ready for signed AAB generation after:
+
+- Android SDK 35 package access and licenses are fixed.
+- `.\gradlew.bat assembleDebug` passes.
+- Final Play upload version is confirmed unused in Google Play.
+- Closed-testing billing and AI smoke tests are completed.

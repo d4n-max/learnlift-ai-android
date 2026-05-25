@@ -1,6 +1,6 @@
 # LearnLift AI Bug Backlog
 
-Last updated: 2026-05-19
+Last updated: 2026-05-25
 
 ## Open
 
@@ -25,6 +25,9 @@ Last updated: 2026-05-19
 | BUG-014 | Low | Settings | Settings app info showed the older `0.1.0 MVP` label and AI Coach as `Coming soon`. | Open Settings in the current candidate. | App info and feature status should match the current build. | Copy was stale after AI and Premium integration work. | Settings now uses `BuildConfig.VERSION_NAME` and labels AI Coach as available with fallback. | Fixed |
 | BUG-015 | High | Device QA | Physical Android device install and launch were not completed in the Task 39 shell QA pass because ADB reported no connected devices. | Connect a physical Android device with USB debugging enabled and run `adb devices`, then `.\gradlew.bat installDebug`. | Device appears as `device`, debug APK installs, and app launches. | ADB previously returned no attached device and `installDebug` failed with `No connected devices!`. | Task 42 device check found `RZCY70L2VVP`, installed the debug APK, and launched `com.learnliftai.app`. | Fixed |
 | BUG-017 | High | AI Backend | Supabase `ai-coach` intermittently returned `AI_RESPONSE_PARSE_ERROR` when OpenAI responded with JSON wrapped in markdown/code-fence text or incomplete optional fields. | Call `explain_answer` repeatedly from Supabase test panel or Android. | Backend extracts/normalizes valid AI JSON and returns HTTP 200 whenever a usable JSON object is present. | Some responses returned HTTP 502 even though the raw output started with a JSON object. | Parser now strips fences, extracts balanced JSON objects, normalizes safe defaults, and can be deployed as a single-file Dashboard function. | Fixed |
+| BUG-018 | Medium | UI Polish | Adaptive Quiz intro card showed an unwanted white rectangle behind "Practice your weakest topics" content in physical screenshots. | Open Adaptive Quiz on a physical Android device. | Top card is a clean lavender/purple themed panel with no white inner rectangle. | Screenshot showed a white block/overlay inside the card. | Replaced translucent card fill with opaque themed primary container and matching content color; rechecked that no hardcoded white block remains in that card. | Fixed |
+| BUG-019 | Medium | UI Polish | Onboarding welcome and selected goal option cards showed unwanted white rectangle artifacts in physical screenshots. | Fresh install or restart onboarding, then view Welcome and Choose your goal. | Welcome and selected goal cards are clean, premium, and consistent with the lavender/purple theme. | Screenshot showed a white block/overlay inside the selected `Improve English for work` option. | Replaced translucent/near-white selected option card fills with opaque lavender surfaces and a fixed-width pink accent pill. | Fixed |
+| BUG-020 | Medium | Icon / Splash | Launcher and splash icons showed the wrong generated icon instead of the original LearnLift AI app icon. | Install app and inspect launcher/app drawer icon and launch splash. | Icon and splash use the original LearnLift AI purple rounded-square branding restored from project Git history. | Recent generated assets showed the wrong mark and did not match the original app branding. | Restored `learnlift_ai_app_icon.png`, launcher PNGs, and adaptive icon references from commit `9f57456`; splash now uses the restored original icon asset. | Fixed |
 
 ## Deferred
 

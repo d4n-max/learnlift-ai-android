@@ -2,7 +2,9 @@
     <style name="Theme.LearnLiftAI" parent="android:style/Theme.Material.Light.NoActionBar">
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:statusBarColor">@color/primary_purple</item>
-        <item name="android:windowBackground">@color/primary_purple</item>
         <item name="android:navigationBarColor">@color/white</item>
+        <item name="android:windowSplashScreenBackground">@color/primary_purple</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/learnlift_ai_app_icon</item>
+        <item name="android:windowSplashScreenIconBackgroundColor">@color/primary_purple</item>
     </style>
 </resources>

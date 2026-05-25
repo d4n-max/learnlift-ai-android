@@ -1,8 +1,26 @@
 # Production Access Prep
 
-Last updated: 2026-05-20
+Last updated: 2026-05-22
 
 This document prepares LearnLift AI v2 for Google Play production access review after closed testing. Do not claim production readiness until remaining blockers are resolved.
+
+## Current Candidate
+
+The current build is the LearnLift AI v2 production candidate for continued Google Play Closed Testing. Closed testing should continue with this build before any production access request is submitted.
+
+Testers should cover:
+
+- Onboarding.
+- Flashcards.
+- Smart Review.
+- Quizzes.
+- Adaptive Quiz.
+- AI Coach.
+- Progress.
+- Premium screen.
+- Local reminders.
+
+Collect tester feedback, device details, and bug screenshots. Confirm at least 12 testers and the required Play Console testing duration if that policy applies to this developer account. Do not submit the production access request until the testing period is complete, critical blockers are fixed, and billing/AI behavior is verified.
 
 ## Closed Testing Requirements Checklist
 

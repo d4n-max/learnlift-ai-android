@@ -1,6 +1,6 @@
 # Data Safety Final Draft v2
 
-Last updated: 2026-05-20
+Last updated: 2026-05-22
 
 This is a Play Console preparation checklist, not legal advice. Verify all answers against the final build, Privacy Policy, SDK behavior, RevenueCat configuration, Google Play Billing behavior, and Supabase backend behavior before submission.
 
@@ -145,6 +145,19 @@ Draft statement:
 Verify before submission:
 
 - Exact Play Console distinction between collected and shared data for RevenueCat and AI backend.
+
+## Task 51 Verification Notes
+
+- RevenueCat and Google Play Billing are used for Premium purchases and entitlement checks.
+- Supabase and OpenAI are used only for optional AI Coach requests.
+- AI requests are user-initiated.
+- No account login is included.
+- No cloud sync is included.
+- Study progress is stored locally on device.
+- Local daily reminders are device-local and optional.
+- No ads are included.
+- No sale of user data is planned or documented.
+- Before submission, verify RevenueCat SDK, Google Play Billing, Supabase, and OpenAI disclosures directly in Play Console and the Privacy Policy.
 
 ## User Controls
 
