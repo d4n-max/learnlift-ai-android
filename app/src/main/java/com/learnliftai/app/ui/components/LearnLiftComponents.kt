@@ -76,7 +76,10 @@ fun LearnLiftCard(
         elevation = CardDefaults.cardElevation(defaultElevation = LearnLiftElevation.card)
     ) {
         Column(
-            modifier = Modifier.padding(LearnLiftSpacing.cardPadding),
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(containerColor)
+                .padding(LearnLiftSpacing.cardPadding),
             content = content
         )
     }

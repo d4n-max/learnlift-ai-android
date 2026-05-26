@@ -50,6 +50,18 @@ Channel:
 
 The channel is created on app startup and before showing reminders.
 
+## Notification Icon
+
+Local reminders use a dedicated small notification icon:
+
+```text
+R.drawable.ic_notification_learnlift
+```
+
+This is separate from the launcher and splash icon resources. Android small notification icons should be simple white/monochrome artwork on a transparent background, so the reminder notification does not use the colorful launcher icon or the old pink `LA` foreground asset.
+
+No large notification icon is currently set.
+
 ## Scheduling Approach
 
 The app uses Android `AlarmManager.setInexactRepeating` with `RTC_WAKEUP`.
@@ -120,6 +132,8 @@ Reminder preferences stay on the device. No notification data is sent to a serve
 - Changing reminder time reschedules.
 - Disabling reminder cancels.
 - App opens from notification tap.
+- Notification does not show the old pink `LA` icon.
+- Notification small icon appears as a clean LearnLift-style monochrome mark.
 - Settings shows correct reminder status.
 - Restart app preserves reminder setting.
 - Reboot reschedules only if reminders are enabled.

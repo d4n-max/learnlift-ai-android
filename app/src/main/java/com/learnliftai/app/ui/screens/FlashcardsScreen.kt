@@ -228,8 +228,8 @@ private fun SmartReviewIntroCard(
     onContinueAllFlashcards: () -> Unit
 ) {
     LearnLiftCard(
-        borderColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.28f),
-        containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.36f)
+        borderColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.32f),
+        containerColor = MaterialTheme.colorScheme.primaryContainer
     ) {
         Text(
             text = "$dueCount card${if (dueCount == 1) "" else "s"} due now",
@@ -240,7 +240,7 @@ private fun SmartReviewIntroCard(
         Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
         Text(
             text = "Needs Review cards return quickly. Known cards move forward to tomorrow, 3 days, 7 days, then 14 days.",
-            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.76f),
+            color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.82f),
             style = MaterialTheme.typography.bodyMedium
         )
         Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))

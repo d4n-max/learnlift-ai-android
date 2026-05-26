@@ -82,7 +82,7 @@ class DailyReminderScheduler(
                 else -> "Review a few flashcards today."
             }
             val notification = NotificationCompat.Builder(context, ChannelId)
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setSmallIcon(R.drawable.ic_notification_learnlift)
                 .setContentTitle("LearnLift AI")
                 .setContentText(body)
                 .setStyle(NotificationCompat.BigTextStyle().bigText(body))

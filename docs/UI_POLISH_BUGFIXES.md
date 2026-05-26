@@ -1,12 +1,74 @@
 # UI Polish Bugfixes
 
-Last updated: 2026-05-25
+Last updated: 2026-05-26
 
 ## Summary
 
 This pass fixes visible screenshot blockers found on a physical Android device before Play Store screenshot capture.
 
 ## Issues Fixed
+
+### Local Reminder Notification Icon
+
+Status: fixed.
+
+Local reminder notifications still showed the old pink `LA` icon after launcher and splash icons were restored.
+
+Root cause:
+
+- The notification builder used `R.drawable.ic_launcher_foreground` as the small notification icon.
+- That resource can resolve to launcher foreground artwork, which is not appropriate for Android notification small icons and could show stale `LA` branding.
+
+Fix:
+
+- Added a dedicated monochrome transparent notification vector: `R.drawable.ic_notification_learnlift`.
+- Updated local reminder notifications to use `setSmallIcon(R.drawable.ic_notification_learnlift)`.
+- No large notification icon is currently set.
+- Launcher and splash icons remain separate resources.
+
+Files:
+
+- `app/src/main/res/drawable/ic_notification_learnlift.xml`
+- `app/src/main/java/com/learnliftai/app/notifications/DailyReminderScheduler.kt`
+
+### Shared Card Inner Background Artifact
+
+Status: fixed.
+
+Root cause:
+
+- The repeated white rectangle artifact was tied to highlighted/tinted card patterns where the outer Card surface and the padded inner content area could render as different surfaces on physical device screenshots.
+- Smart Review still used a translucent `primaryContainer.copy(alpha = 0.36f)` fill, which made the mismatch visible on the top info card.
+
+Shared fix:
+
+- Updated `LearnLiftCard` so its inner padded content column fills the card width and paints the same `containerColor` as the outer Card.
+- This keeps themed cards visually cohesive and prevents a white/default inner rectangle from showing behind text or buttons.
+
+Files:
+
+- `app/src/main/java/com/learnliftai/app/ui/components/LearnLiftComponents.kt`
+
+### Smart Review White Rectangle
+
+Status: fixed.
+
+The Smart Review top info card showed an unwanted white rectangle behind:
+
+- `1 card due now`
+- `Needs Review cards return quickly...`
+- `Continue all flashcards`
+
+Fix:
+
+- Replaced the translucent Smart Review fill with opaque `MaterialTheme.colorScheme.primaryContainer`.
+- Kept the subtle pink border accent.
+- Updated body copy to use `onPrimaryContainer` for readable theme-aware contrast.
+- Kept the button and layout unchanged.
+
+Files:
+
+- `app/src/main/java/com/learnliftai/app/ui/screens/FlashcardsScreen.kt`
 
 ### Adaptive Quiz White Rectangle
 
@@ -104,6 +166,8 @@ Files:
 - [ ] Splash/loading icon looks clean.
 - [ ] Splash/loading icon matches the restored LearnLift AI launcher icon.
 - [ ] Splash/loading icon is centered and not cropped.
+- [ ] Local reminder notification does not show the old pink `LA` icon.
+- [ ] Local reminder notification uses the clean monochrome LearnLift notification icon.
 - [ ] Onboarding welcome screen has no white rectangle artifact.
 - [ ] Onboarding Choose your goal selected option has no white rectangle artifact.
 - [ ] All onboarding goal cards use lavender/purple surfaces.
@@ -111,6 +175,9 @@ Files:
 - [ ] Onboarding flow still completes.
 - [ ] Adaptive Quiz top card has no white rectangle artifact.
 - [ ] Adaptive Quiz content remains readable.
+- [ ] Smart Review top info card has no white rectangle artifact.
+- [ ] Smart Review `Continue all flashcards` button looks clean.
+- [ ] Normal Flashcards still work.
 - [ ] Home still works.
 - [ ] Quiz still works.
 - [ ] AI Coach still works.

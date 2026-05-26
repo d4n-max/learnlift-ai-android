@@ -1,6 +1,6 @@
 # LearnLift AI Bug Backlog
 
-Last updated: 2026-05-25
+Last updated: 2026-05-26
 
 ## Open
 
@@ -28,6 +28,8 @@ Last updated: 2026-05-25
 | BUG-018 | Medium | UI Polish | Adaptive Quiz intro card showed an unwanted white rectangle behind "Practice your weakest topics" content in physical screenshots. | Open Adaptive Quiz on a physical Android device. | Top card is a clean lavender/purple themed panel with no white inner rectangle. | Screenshot showed a white block/overlay inside the card. | Replaced translucent card fill with opaque themed primary container and matching content color; rechecked that no hardcoded white block remains in that card. | Fixed |
 | BUG-019 | Medium | UI Polish | Onboarding welcome and selected goal option cards showed unwanted white rectangle artifacts in physical screenshots. | Fresh install or restart onboarding, then view Welcome and Choose your goal. | Welcome and selected goal cards are clean, premium, and consistent with the lavender/purple theme. | Screenshot showed a white block/overlay inside the selected `Improve English for work` option. | Replaced translucent/near-white selected option card fills with opaque lavender surfaces and a fixed-width pink accent pill. | Fixed |
 | BUG-020 | Medium | Icon / Splash | Launcher and splash icons showed the wrong generated icon instead of the original LearnLift AI app icon. | Install app and inspect launcher/app drawer icon and launch splash. | Icon and splash use the original LearnLift AI purple rounded-square branding restored from project Git history. | Recent generated assets showed the wrong mark and did not match the original app branding. | Restored `learnlift_ai_app_icon.png`, launcher PNGs, and adaptive icon references from commit `9f57456`; splash now uses the restored original icon asset. | Fixed |
+| BUG-021 | Medium | UI Polish | Smart Review top info card showed an unwanted white rectangle behind the due-card text and `Continue all flashcards` button. | Open Smart Review on a physical Android device with at least one due card. | Top card is one cohesive lavender/purple card with no white inner rectangle. | Screenshot showed a white rectangular block inside the card. | Hardened shared `LearnLiftCard` inner background rendering and changed Smart Review intro card to an opaque themed `primaryContainer` fill. | Fixed |
+| BUG-022 | Medium | Notifications | Local daily reminder notifications showed the old pink `LA` icon. | Enable daily reminder and wait for a local notification. | Notification uses current LearnLift-style branding and a clean Android-compatible small icon. | Notification showed stale `LA` launcher foreground artwork. | Added `ic_notification_learnlift` monochrome vector and updated reminder notification builder to use it as `setSmallIcon`. | Fixed |
 
 ## Deferred
 
