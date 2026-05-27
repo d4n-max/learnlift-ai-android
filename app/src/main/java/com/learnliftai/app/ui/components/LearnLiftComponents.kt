@@ -252,7 +252,7 @@ fun PremiumTeaserCard(
     title: String,
     description: String,
     modifier: Modifier = Modifier,
-    label: String = "Coming soon",
+    label: String = "Premium",
     actionText: String? = null,
     onActionClick: (() -> Unit)? = null
 ) {

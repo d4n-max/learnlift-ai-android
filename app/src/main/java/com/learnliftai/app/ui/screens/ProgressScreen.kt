@@ -347,15 +347,15 @@ private fun StudyPlanAiSection(
                         fontWeight = FontWeight.SemiBold
                     )
                     Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
-                    SecondaryActionButton(
-                        text = "Retry 7-Day Plan",
-                        onClick = requestStudyPlan
-                    )
                     if (studyPlanLimitReached && !isPremiumActive) {
-                        Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
                         PrimaryActionButton(
                             text = "View Premium",
                             onClick = onViewPremium
+                        )
+                    } else {
+                        SecondaryActionButton(
+                            text = "Retry 7-Day Plan",
+                            onClick = requestStudyPlan
                         )
                     }
                 }
@@ -505,8 +505,9 @@ private fun AdvancedInsightsTeaser(
         description = if (isPremiumActive) {
             "Premium is active. Deeper topic trends, review patterns, and personalized focus areas are planned next."
         } else {
-            "Track weak topics, review patterns, and personalized focus areas."
+            "Track deeper patterns and get more personalized focus areas."
         },
+        label = if (isPremiumActive) "Active" else "Premium",
         actionText = if (isPremiumActive) "View roadmap" else "View Premium",
         onActionClick = onViewPremium
     )

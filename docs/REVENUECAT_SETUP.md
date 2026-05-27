@@ -12,10 +12,12 @@ Android SDK dependency:
 implementation("com.revenuecat.purchases:purchases:10.6.0")
 ```
 
-Public Android SDK key used by the app:
+The app uses separate public SDK key configuration for Google Play and RevenueCat Test Store. Do not commit real keys to this repository.
 
 ```text
-test_uGjsdFBOtYwIdTQWqiwHkULbYor
+REVENUECAT_ANDROID_PUBLIC_API_KEY=...
+REVENUECAT_TEST_STORE_API_KEY=...
+USE_REVENUECAT_TEST_STORE=false
 ```
 
 ## Required Identifiers
@@ -53,23 +55,41 @@ learnlift_premium_monthly
 learnlift_premium_yearly
 ```
 
+Google Play base plan IDs:
+
+```text
+monthly
+yearly
+```
+
 Production target pricing:
 
-- Monthly: `€3.99`
-- Yearly: `€24.99`
+- Monthly: `€3.99 / month`
+- Yearly: `€24.99 / year`
 
 The app checks only `customerInfo.entitlements["premium"]?.isActive == true` for Premium. Do not use `LearnLift AI Premium`, `monthly`, `yearly`, `annual`, `learnlift_premium_monthly`, or `learnlift_premium_yearly` as entitlement identifiers.
 
 ## Test Store Versus Google Play
 
-RevenueCat Test Store products can appear as package/product names such as `monthly` and `yearly`, and Test Store prices may appear as values like `$9.99` and `$79.98`. Those values are expected in RevenueCat Test Store mode and are not the production Play Store prices.
+RevenueCat Test Store products can appear as package/product names such as `monthly` and `yearly`, and Test Store prices may appear as values like `$9.99` and `$79.98`. Those values are expected only when `USE_REVENUECAT_TEST_STORE=true` in a debug build.
 
 For Google Play closed testing and production, real subscription prices come from Google Play Console products:
 
 - `learnlift_premium_monthly` with base plan `monthly`
 - `learnlift_premium_yearly` with base plan `yearly`
 
-The app displays whichever packages and prices RevenueCat returns. If RevenueCat returns Test Store packages, the app displays Test Store prices. If RevenueCat returns Google Play products, the app displays Play Console prices. If offerings are unavailable, the app falls back to placeholder prices `Monthly €3.99` and `Yearly €24.99`.
+The app displays localized package prices returned by RevenueCat. If RevenueCat returns Google Play products, the app displays Play Console prices. If RevenueCat returns Test Store packages in debug/local testing, the app displays Test Store prices. If both real Play products and looser test-style packages are present, the app prefers exact real product IDs:
+
+- `learnlift_premium_monthly`
+- `learnlift_premium_yearly`
+
+If offerings or packages are unavailable, the app falls back to placeholder prices `Monthly €3.99 / month` and `Yearly €24.99 / year` and disables purchase CTA until a RevenueCat package is available.
+
+The paywall marks Yearly as `Best value` while keeping Monthly visible and selectable. RevenueCat localized prices always take priority over placeholders when packages are available.
+
+Debug builds use the Android Store public SDK key by default. To use RevenueCat Test Store locally, explicitly set `USE_REVENUECAT_TEST_STORE=true`.
+
+Release builds always use `REVENUECAT_ANDROID_PUBLIC_API_KEY`. They never use the Test Store key, and Gradle fails the release build if the Android Store key starts with `test_`.
 
 ## Google Play Console Setup
 
@@ -141,25 +161,71 @@ default
 10. Set offering `default` as the current offering.
 11. Confirm a test purchase returns CustomerInfo where entitlement `premium` is active.
 
+## Android Package Resolution
+
+The app loads RevenueCat offerings by preferring:
+
+1. RevenueCat current offering.
+2. Offering identifier `default` as fallback.
+
+Monthly package recognition:
+
+- package identifier is `monthly`
+- package identifier contains `monthly`
+- package type is monthly
+- product identifier contains `monthly`
+- product identifier is exactly `learnlift_premium_monthly`
+
+Yearly package recognition:
+
+- package identifier is `yearly`
+- package identifier is `annual`
+- package identifier contains `yearly`
+- package identifier contains `annual`
+- package type is annual
+- product identifier contains `yearly`
+- product identifier contains `annual`
+- product identifier is exactly `learnlift_premium_yearly`
+
+Exact real Google Play product IDs are selected before looser Test Store/package matches.
+
 ## Android Configuration
 
-The Android app reads a non-secret BuildConfig value:
+The Android app reads these non-secret BuildConfig values:
 
 ```kotlin
+BuildConfig.REVENUECAT_ANDROID_PUBLIC_API_KEY
+BuildConfig.REVENUECAT_TEST_STORE_API_KEY
+BuildConfig.USE_REVENUECAT_TEST_STORE
 BuildConfig.REVENUECAT_PUBLIC_API_KEY
 ```
 
-Default public SDK key:
+`BuildConfig.REVENUECAT_PUBLIC_API_KEY` is the selected runtime key:
+
+- Debug default: Android Store key.
+- Debug with `USE_REVENUECAT_TEST_STORE=true`: Test Store key.
+- Release: Android Store key only.
+
+Default placeholders are intentionally not real API keys:
 
 ```text
-test_uGjsdFBOtYwIdTQWqiwHkULbYor
+REVENUECAT_ANDROID_PUBLIC_API_KEY_HERE
+REVENUECAT_TEST_STORE_API_KEY_HERE
 ```
 
-For local/testing builds, the default public key is already included. To override it for a different RevenueCat project, pass another public SDK key as a Gradle property:
+For local/testing builds, pass keys as Gradle properties:
 
 ```powershell
-.\gradlew.bat assembleDebug -PREVENUECAT_PUBLIC_API_KEY=public_android_sdk_key_here
+.\gradlew.bat assembleDebug -PREVENUECAT_ANDROID_PUBLIC_API_KEY=public_android_store_sdk_key_here
 ```
+
+To opt into Test Store explicitly for debug-only local testing:
+
+```powershell
+.\gradlew.bat assembleDebug -PREVENUECAT_ANDROID_PUBLIC_API_KEY=public_android_store_sdk_key_here -PREVENUECAT_TEST_STORE_API_KEY=test_store_public_sdk_key_here -PUSE_REVENUECAT_TEST_STORE=true
+```
+
+Do not set `USE_REVENUECAT_TEST_STORE=true` for Play closed-testing or release builds.
 
 RevenueCat is configured once in `LearnLiftApplication.onCreate()`. Premium state refreshes use RevenueCat customer info and offerings through `PremiumRepository`.
 
@@ -167,6 +233,8 @@ RevenueCat is configured once in `LearnLiftApplication.onCreate()`. Premium stat
 
 - Test Store purchase dialog may show products named `monthly` and `yearly`.
 - Test Store prices may show `$9.99` and `$79.98`.
+- Test Store requires a debug build with `USE_REVENUECAT_TEST_STORE=true`.
+- Debug builds use the Android Store key by default, so seeing `Test Store Purchase` means the Test Store flag/key is active.
 - Test Store packages still must be attached to entitlement `premium`.
 - `TEST VALID PURCHASE` should update Current plan to Premium.
 - `TEST FAILED PURCHASE` should show a friendly purchase error.

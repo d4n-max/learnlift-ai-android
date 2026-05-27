@@ -1,8 +1,15 @@
+import org.gradle.api.provider.ProviderFactory
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.compose")
 }
+
+fun ProviderFactory.gradlePropertyOrEnv(name: String, fallback: String) =
+    gradleProperty(name)
+        .orElse(environmentVariable(name))
+        .orElse(fallback)
 
 android {
     namespace = "com.learnliftai.app"
@@ -11,9 +18,24 @@ android {
         .gradleProperty("SUPABASE_AI_COACH_URL")
         .orElse("https://hfeyfsqfggtajowlaeap.supabase.co/functions/v1/ai-coach")
         .get()
-    val revenueCatPublicApiKey = providers
-        .gradleProperty("REVENUECAT_PUBLIC_API_KEY")
-        .orElse("test_uGjsdFBOtYwIdTQWqiwHkULbYor")
+    val revenueCatAndroidPublicApiKey = providers
+        .gradlePropertyOrEnv(
+            name = "REVENUECAT_ANDROID_PUBLIC_API_KEY",
+            fallback = "REVENUECAT_ANDROID_PUBLIC_API_KEY_HERE"
+        )
+        .get()
+    val revenueCatTestStoreApiKey = providers
+        .gradlePropertyOrEnv(
+            name = "REVENUECAT_TEST_STORE_API_KEY",
+            fallback = "REVENUECAT_TEST_STORE_API_KEY_HERE"
+        )
+        .get()
+    val useRevenueCatTestStore = providers
+        .gradlePropertyOrEnv(
+            name = "USE_REVENUECAT_TEST_STORE",
+            fallback = "false"
+        )
+        .map { it.equals("true", ignoreCase = true) }
         .get()
 
     defaultConfig {
@@ -23,7 +45,32 @@ android {
         versionCode = 4
         versionName = "0.2.0"
         buildConfigField("String", "SUPABASE_AI_COACH_URL", "\"$aiCoachUrl\"")
-        buildConfigField("String", "REVENUECAT_PUBLIC_API_KEY", "\"$revenueCatPublicApiKey\"")
+        buildConfigField("String", "REVENUECAT_ANDROID_PUBLIC_API_KEY", "\"$revenueCatAndroidPublicApiKey\"")
+        buildConfigField("String", "REVENUECAT_TEST_STORE_API_KEY", "\"$revenueCatTestStoreApiKey\"")
+    }
+
+    buildTypes {
+        debug {
+            val selectedRevenueCatKey = if (useRevenueCatTestStore) {
+                revenueCatTestStoreApiKey
+            } else {
+                revenueCatAndroidPublicApiKey
+            }
+
+            buildConfigField("Boolean", "USE_REVENUECAT_TEST_STORE", useRevenueCatTestStore.toString())
+            buildConfigField("String", "REVENUECAT_PUBLIC_API_KEY", "\"$selectedRevenueCatKey\"")
+        }
+
+        release {
+            if (revenueCatAndroidPublicApiKey.startsWith("test_")) {
+                throw GradleException(
+                    "Release builds must use REVENUECAT_ANDROID_PUBLIC_API_KEY, not a RevenueCat Test Store key."
+                )
+            }
+
+            buildConfigField("Boolean", "USE_REVENUECAT_TEST_STORE", "false")
+            buildConfigField("String", "REVENUECAT_PUBLIC_API_KEY", "\"$revenueCatAndroidPublicApiKey\"")
+        }
     }
 
     buildFeatures {

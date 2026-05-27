@@ -643,15 +643,15 @@ private fun AiExplainAnswerResult(
                     style = MaterialTheme.typography.bodyMedium
                 )
                 Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
-                SecondaryActionButton(
-                    text = "Retry AI Coach",
-                    onClick = onRetry
-                )
                 if (showUpgradeAction) {
-                    Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
                     PrimaryActionButton(
                         text = "View Premium",
                         onClick = onViewPremium
+                    )
+                } else {
+                    SecondaryActionButton(
+                        text = "Retry AI Coach",
+                        onClick = onRetry
                     )
                 }
             }
@@ -849,15 +849,15 @@ private fun AiQuizSummarySection(
                         fontWeight = FontWeight.SemiBold
                     )
                     Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
-                    SecondaryActionButton(
-                        text = "Retry AI Study Review",
-                        onClick = onGenerate
-                    )
                     if (showUpgradeAction) {
-                        Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
                         PrimaryActionButton(
                             text = "View Premium",
                             onClick = onViewPremium
+                        )
+                    } else {
+                        SecondaryActionButton(
+                            text = "Retry AI Study Review",
+                            onClick = onGenerate
                         )
                     }
                 }

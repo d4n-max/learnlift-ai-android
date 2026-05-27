@@ -21,15 +21,22 @@ The Free plan currently includes:
 
 ## Planned Premium Plan
 
-Premium may eventually unlock:
+Premium is positioned as more AI help and deeper study support, not as a requirement to use the app.
 
-- AI-powered answer explanations.
-- AI Study Review.
-- Personalized 7-day study plans.
+Premium available now:
+
+- More AI Coach explanations.
+- Higher local AI daily limits.
+- Premium AI access.
+- Smarter learning support.
+
+Premium coming soon or expanding:
+
 - Advanced progress insights.
-- Unlimited practice.
+- More study paths.
 - Full study packs.
-- Personalized recommendations.
+- AI study plans.
+- More personalized recommendations.
 
 Premium features should avoid guaranteed exam, job, career, or certification success claims.
 
@@ -37,10 +44,14 @@ Premium features should avoid guaranteed exam, job, career, or certification suc
 
 Planned public pricing:
 
-- Monthly: `€3.99`
-- Yearly: `€24.99`
+- Monthly: `€3.99 / month`
+- Yearly: `€24.99 / year`
 
 When RevenueCat offerings are configured, the app displays prices returned by RevenueCat. RevenueCat Test Store may return test prices such as `$9.99` and `$79.98`; Google Play closed testing and production prices should come from Play Console products.
+
+Placeholder prices are used only when RevenueCat offerings or packages are unavailable.
+
+The Yearly plan should be visually recommended with a `Best value` badge while keeping the Monthly plan visible and selectable.
 
 ## RevenueCat Configuration
 
@@ -67,19 +78,32 @@ Expected RevenueCat package/base plan names:
 
 If RevenueCat Test Store displays `monthly` during a test purchase, that is the package/base plan selected for purchase. The `monthly` package still must be attached to the `premium` entitlement in RevenueCat before the app can switch to Premium after purchase.
 
-Public Android SDK key:
+Google Play base plan IDs:
 
-- `test_uGjsdFBOtYwIdTQWqiwHkULbYor`
+- `monthly`
+- `yearly`
+
+The Android paywall prefers RevenueCat current offering, then falls back to offering `default`. It recognizes monthly/yearly packages by package identifier, package type, and product identifier, and prefers exact real Google Play product IDs over looser Test Store matches when both are available.
+
+RevenueCat public SDK key configuration:
+
+- `REVENUECAT_ANDROID_PUBLIC_API_KEY` for Google Play / Closed Testing.
+- `REVENUECAT_TEST_STORE_API_KEY` for explicit debug-only Test Store testing.
+- `USE_REVENUECAT_TEST_STORE=false` by default.
+
+Debug builds use the Android Store key by default. Test Store is used only when `USE_REVENUECAT_TEST_STORE=true`. Release builds always use the Android Store key and fail clearly if it starts with `test_`.
 
 ## Current Build Status
 
 The current build includes:
 
 - RevenueCat Android SDK `10.6.0`.
-- Public RevenueCat Android SDK key.
+- Separate RevenueCat Android Store and Test Store public SDK key configuration.
 - Premium entitlement check.
 - Premium gating rules for higher AI usage limits.
 - Monthly/yearly package display.
+- Current/default offering loading.
+- Real Google Play product ID recognition for `learnlift_premium_monthly` and `learnlift_premium_yearly`.
 - Purchase flow.
 - Restore purchases.
 - Friendly fallback if RevenueCat or Play products are not configured.
@@ -120,3 +144,15 @@ AI Coach UI may use subtle Premium-ready positioning during closed testing, but 
 Task 43 adds local AI usage limits for cost control. Free users receive limited AI previews, while Premium users receive higher local safety limits. These limits apply only to AI-powered calls and do not block flashcards, quizzes, daily sessions, progress, local explanations, or rule-based Smart Coach recommendations.
 
 Task 44 defines tester-safe gating rules. Premium currently expands AI daily limits and Premium status UI while keeping all current v1 study paths and core study modes usable for Free users. Advanced insights and future premium study packs should be shown as coming soon until they are implemented.
+
+## Conversion UX
+
+Premium prompts should appear after users experience value, especially when a Free user reaches the daily AI Coach preview limit after trying AI explanations.
+
+Primary conversion message:
+
+```text
+You've used today's free AI Coach previews. Upgrade to Premium for more AI help, or continue with local explanations.
+```
+
+The app should keep local explanations visible, offer `View Premium`, and avoid repeated retry prompts when the request is blocked locally by usage limits.

@@ -26,6 +26,10 @@ class RevenueCatBillingService(
         if (!hasConfiguredKey()) {
             return false
         }
+        if (!BuildConfig.DEBUG && publicApiKey.startsWith(TestStoreKeyPrefix)) {
+            Log.e(LogTag, "Release build cannot use a RevenueCat Test Store public SDK key.")
+            return false
+        }
 
         if (!isConfigured) {
             Purchases.logLevel = if (BuildConfig.DEBUG) LogLevel.DEBUG else LogLevel.INFO
@@ -132,7 +136,7 @@ class RevenueCatBillingService(
 
     private suspend fun fetchPremiumState(customerInfo: CustomerInfo): PremiumUiState {
         val offerings = Purchases.sharedInstance.awaitOfferings()
-        val offering = offerings.getOffering(DefaultOfferingId) ?: offerings.current
+        val offering = offerings.current ?: offerings.getOffering(DefaultOfferingId)
         logCustomerInfo("state_update", customerInfo)
         return buildPremiumState(customerInfo, offering)
     }
@@ -141,18 +145,8 @@ class RevenueCatBillingService(
         customerInfo: CustomerInfo,
         offering: Offering?
     ): PremiumUiState {
-        val monthly = offering?.monthly
-            ?: offering?.availablePackages?.firstOrNull {
-                it.identifier == MonthlyPackageId ||
-                    it.packageType == PackageType.MONTHLY ||
-                    MonthlyProductId in it.product.id
-            }
-        val yearly = offering?.annual
-            ?: offering?.availablePackages?.firstOrNull {
-                it.identifier == YearlyPackageId ||
-                    it.packageType == PackageType.ANNUAL ||
-                    YearlyProductId in it.product.id
-            }
+        val monthly = offering?.availablePackages?.selectMonthlyPackage() ?: offering?.monthly
+        val yearly = offering?.availablePackages?.selectYearlyPackage() ?: offering?.annual
         val productsUnavailable = monthly == null && yearly == null
 
         return PremiumUiState(
@@ -163,7 +157,7 @@ class RevenueCatBillingService(
                 fallback = PremiumPackage(
                     id = MonthlyProductId,
                     title = "Monthly",
-                    price = "€3.99",
+                    price = "€3.99 / month",
                     helperText = "Flexible access"
                 )
             ),
@@ -171,8 +165,8 @@ class RevenueCatBillingService(
                 fallback = PremiumPackage(
                     id = YearlyProductId,
                     title = "Yearly",
-                    price = "€24.99",
-                    helperText = "Best planned value"
+                    price = "€24.99 / year",
+                    helperText = "Best value"
                 )
             ),
             message = if (productsUnavailable) "Premium products are not available yet." else null,
@@ -203,18 +197,48 @@ class RevenueCatBillingService(
         } ?: fallback
     }
 
+    private fun List<RevenueCatPackage>.selectMonthlyPackage(): RevenueCatPackage? {
+        return firstOrNull { it.product.id.equals(MonthlyProductId, ignoreCase = true) }
+            ?: firstOrNull { revenueCatPackage ->
+                val packageId = revenueCatPackage.identifier.lowercase()
+                val productId = revenueCatPackage.product.id.lowercase()
+                packageId == MonthlyPackageId ||
+                    MonthlyPackageId in packageId ||
+                    revenueCatPackage.packageType == PackageType.MONTHLY ||
+                    MonthlyPackageId in productId
+            }
+    }
+
+    private fun List<RevenueCatPackage>.selectYearlyPackage(): RevenueCatPackage? {
+        return firstOrNull { it.product.id.equals(YearlyProductId, ignoreCase = true) }
+            ?: firstOrNull { revenueCatPackage ->
+                val packageId = revenueCatPackage.identifier.lowercase()
+                val productId = revenueCatPackage.product.id.lowercase()
+                packageId == YearlyPackageId ||
+                    packageId == AnnualPackageId ||
+                    YearlyPackageId in packageId ||
+                    AnnualPackageId in packageId ||
+                    revenueCatPackage.packageType == PackageType.ANNUAL ||
+                    YearlyPackageId in productId ||
+                    AnnualPackageId in productId
+            }
+    }
+
     private fun RevenueCatPackage.displayTitle(fallbackTitle: String): String {
         val packageId = identifier.lowercase()
         val productId = product.id.lowercase()
         return when {
             packageId == MonthlyPackageId ||
+                MonthlyPackageId in packageId ||
                 productId == MonthlyProductId ||
-                productId.endsWith("monthly") -> "Monthly"
+                MonthlyPackageId in productId -> "Monthly"
             packageId == YearlyPackageId ||
                 packageId == AnnualPackageId ||
+                YearlyPackageId in packageId ||
+                AnnualPackageId in packageId ||
                 productId == YearlyProductId ||
-                productId.endsWith("yearly") ||
-                productId.endsWith("annual") -> "Yearly"
+                YearlyPackageId in productId ||
+                AnnualPackageId in productId -> "Yearly"
             else -> fallbackTitle
         }
     }
@@ -248,12 +272,17 @@ class RevenueCatBillingService(
     }
 
     private fun hasConfiguredKey(): Boolean {
-        return publicApiKey.isNotBlank() && publicApiKey != PlaceholderRevenueCatKey
+        return publicApiKey.isNotBlank() && publicApiKey !in PlaceholderRevenueCatKeys
     }
 
     private companion object {
         const val LogTag = "LearnLiftPremium"
         var isConfigured = false
-        const val PlaceholderRevenueCatKey = "REVENUECAT_PUBLIC_API_KEY_HERE"
+        const val TestStoreKeyPrefix = "test_"
+        val PlaceholderRevenueCatKeys = setOf(
+            "REVENUECAT_PUBLIC_API_KEY_HERE",
+            "REVENUECAT_ANDROID_PUBLIC_API_KEY_HERE",
+            "REVENUECAT_TEST_STORE_API_KEY_HERE"
+        )
     }
 }

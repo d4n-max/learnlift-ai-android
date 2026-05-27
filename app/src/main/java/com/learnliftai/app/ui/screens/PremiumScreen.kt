@@ -127,7 +127,7 @@ private fun PremiumHero(isPremiumActive: Boolean) {
         )
         Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
         Text(
-            text = "Get more AI-powered help, deeper progress insights, and personalized study support.",
+            text = "Get more AI help, smarter review, and deeper progress support.",
             color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.86f),
             style = MaterialTheme.typography.bodyLarge
         )
@@ -167,7 +167,7 @@ private fun PremiumStatus(premiumUiState: PremiumUiState) {
 private fun PremiumBenefits() {
     SectionHeader(
         title = "Premium benefits",
-        subtitle = "Clear access rules for the current test build."
+        subtitle = "More AI support now, with deeper study tools expanding over time."
     )
     LearnLiftCard {
         Text(
@@ -177,12 +177,10 @@ private fun PremiumBenefits() {
             fontWeight = FontWeight.Bold
         )
         Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
-        PremiumBenefitRow("More AI Coach explanations each day")
-        PremiumBenefitRow("AI Study Review with higher daily limits")
-        PremiumBenefitRow("7-day AI Study Plan")
-        PremiumBenefitRow("Premium AI access status")
-        PremiumBenefitRow("Restore purchases")
-        PremiumBenefitRow("Premium-ready learning experience")
+        PremiumBenefitRow("More AI Coach explanations")
+        PremiumBenefitRow("Higher AI daily limits")
+        PremiumBenefitRow("Premium AI access")
+        PremiumBenefitRow("Smart learning support")
         Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
         Text(
             text = "Coming soon",
@@ -191,9 +189,10 @@ private fun PremiumBenefits() {
             fontWeight = FontWeight.Bold
         )
         Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
-        PremiumBenefitRow("Advanced weakness tracking")
+        PremiumBenefitRow("Advanced progress insights")
+        PremiumBenefitRow("More study paths")
         PremiumBenefitRow("Premium study packs")
-        PremiumBenefitRow("Custom and adaptive practice")
+        PremiumBenefitRow("AI study plans")
     }
 }
 
@@ -222,6 +221,7 @@ private fun PricingOptions(
         PricingCard(
             premiumPackage = premiumUiState.yearlyPackage,
             isSelected = selectedPackage.id == premiumUiState.yearlyPackage.id,
+            badgeText = "Best value",
             onClick = { onPackageSelected(premiumUiState.yearlyPackage) }
         )
     }
@@ -231,6 +231,7 @@ private fun PricingOptions(
 private fun PricingCard(
     premiumPackage: PremiumPackage,
     isSelected: Boolean,
+    badgeText: String? = null,
     onClick: () -> Unit
 ) {
     val accentColor = if (isSelected) {
@@ -249,6 +250,14 @@ private fun PricingCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
     ) {
         Column(modifier = Modifier.padding(LearnLiftSpacing.cardPadding)) {
+            if (badgeText != null) {
+                TopicChip(
+                    text = badgeText,
+                    containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onSecondaryContainer
+                )
+                Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+            }
             Text(
                 text = premiumPackage.title,
                 color = MaterialTheme.colorScheme.primary,
@@ -291,7 +300,7 @@ private fun BillingNotice(premiumUiState: PremiumUiState) {
         Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
         Text(
             text = if (premiumUiState.isRevenueCatConfigured) {
-                "If products are not configured in RevenueCat and Google Play yet, purchases may fail gracefully during testing."
+                "Real Google Play prices appear when products are mapped in RevenueCat. If packages are unavailable, placeholder prices are shown and purchases stay disabled."
             } else {
                 "Add a RevenueCat public API key for local or Play testing. The app remains usable in Free mode."
             },

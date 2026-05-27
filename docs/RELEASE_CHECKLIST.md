@@ -83,6 +83,7 @@ Do not store keystore passwords, private key material, or generated AAB files in
 - [ ] Test Settings.
 - [ ] Test Premium screen.
 - [ ] Test Premium gating rules from `docs/PREMIUM_GATING_RULES.md`.
+- [ ] Test monetization conversion UX from `docs/MONETIZATION_CONVERSION_PLAN.md`.
 - [ ] Test Smart Coach recommendations.
 - [ ] Test AI fallback behavior.
 - [ ] Test AI usage limits for Free and Premium states.
@@ -96,6 +97,8 @@ Do not store keystore passwords, private key material, or generated AAB files in
 - [ ] Confirm current offering is set to `default`.
 - [ ] Confirm package `monthly` maps to `learnlift_premium_monthly`.
 - [ ] Confirm package `yearly` or `annual` maps to `learnlift_premium_yearly`.
+- [ ] Confirm Google Play base plan `monthly` maps to product `learnlift_premium_monthly`.
+- [ ] Confirm Google Play base plan `yearly` maps to product `learnlift_premium_yearly`.
 - [ ] Confirm products are attached to entitlement `premium`.
 - [ ] Confirm Test Store valid purchase activates Premium.
 - [ ] Confirm failed purchase shows a friendly error.
@@ -150,6 +153,8 @@ Do not store keystore passwords, private key material, or generated AAB files in
 - [ ] Free core flows remain usable.
 - [ ] Current three v1 study paths are not locked.
 - [ ] Free AI limit reached opens Premium screen through `View Premium`.
+- [ ] Free AI limit reached keeps local explanation/recommendation visible and does not call Supabase.
+- [ ] Premium screen shows Yearly as `Best value` without hiding Monthly.
 - [ ] Premium active state uses higher AI limits.
 - [ ] AI backend quota/failure fallback does not crash.
 - [ ] No unexpected hard paywalls are present.

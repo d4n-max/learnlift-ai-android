@@ -111,12 +111,13 @@ private fun HomePremiumTeaser(
     onViewPremium: () -> Unit
 ) {
     PremiumTeaserCard(
-        title = if (isPremiumActive) "Premium active" else "Premium",
+        title = if (isPremiumActive) "Premium active" else "Want more AI help?",
         description = if (isPremiumActive) {
             "Thanks for supporting LearnLift AI. Premium benefits will expand as new features roll out."
         } else {
-            "AI explanations, study plans, and unlimited practice are planned for Premium."
+            "Premium unlocks higher AI Coach limits and more personalized study support."
         },
+        label = if (isPremiumActive) "Active" else "Premium",
         actionText = if (isPremiumActive) "View Premium" else "View benefits",
         onActionClick = onViewPremium
     )

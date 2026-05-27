@@ -82,6 +82,8 @@ Small usage labels:
 
 When a Free user reaches an AI limit, the app shows `View Premium`. This opens the existing Premium screen. It does not force a purchase and does not block local study features.
 
+Limit-reached AI UI should avoid showing a repeated retry CTA for locally blocked requests. The local explanation or Smart Coach recommendation remains visible, and the upgrade path is optional.
+
 ## Local-Only Limitation
 
 Client-side limits are not a true security boundary. They reduce accidental cost and repeated tapping in early testing, but they can be bypassed by a modified client.

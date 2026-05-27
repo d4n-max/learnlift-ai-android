@@ -9,7 +9,7 @@ enum class PremiumPlanStatus(
         helperText = "Starter study paths, flashcards, quizzes, daily sessions, progress, and Smart Coach tips."
     ),
     PremiumComingSoon(
-        label = "Premium coming soon",
-        helperText = "Billing is not enabled in this build."
+        label = "Premium",
+        helperText = "More AI help, higher daily AI limits, and Premium-ready study support."
     )
 }

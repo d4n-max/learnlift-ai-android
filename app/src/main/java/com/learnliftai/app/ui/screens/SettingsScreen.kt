@@ -368,6 +368,7 @@ private fun PremiumSettingsSection(
         } else {
             "Upgrade for more AI help each day. Advanced insights and premium study packs are coming soon."
         },
+        label = if (premiumUiState.isPremiumActive) "Active" else "Premium",
         actionText = "View Premium benefits",
         onActionClick = onViewPremium
     )

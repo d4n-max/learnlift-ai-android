@@ -25,14 +25,14 @@ data class PremiumUiState(
     val monthlyPackage: PremiumPackage = PremiumPackage(
         id = MonthlyProductId,
         title = "Monthly",
-        price = "€3.99",
+        price = "€3.99 / month",
         helperText = "Flexible access"
     ),
     val yearlyPackage: PremiumPackage = PremiumPackage(
         id = YearlyProductId,
         title = "Yearly",
-        price = "€24.99",
-        helperText = "Best planned value"
+        price = "€24.99 / year",
+        helperText = "Best value"
     ),
     val message: String? = null,
     val managementUrl: String? = null

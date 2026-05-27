@@ -3,11 +3,17 @@
 ## Configuration
 
 - App launches with the public RevenueCat SDK key configured.
-- App still launches if a different public SDK key is supplied through `REVENUECAT_PUBLIC_API_KEY`.
+- App launches with `REVENUECAT_ANDROID_PUBLIC_API_KEY` configured for Google Play / Closed Testing.
+- Debug builds use the Android Store key by default.
+- Debug builds use RevenueCat Test Store only when `USE_REVENUECAT_TEST_STORE=true`.
+- Release builds always use the Android Store key and never the Test Store key.
+- Release build fails clearly if `REVENUECAT_ANDROID_PUBLIC_API_KEY` starts with `test_`.
 - No OpenAI keys, RevenueCat private keys, or Supabase service role keys are in Android code/resources.
 - Gradle dependency resolves `com.revenuecat.purchases:purchases:10.6.0`.
 - Merged manifest includes `com.android.vending.BILLING`.
 - App checks entitlement identifier `premium` only.
+- App loads RevenueCat current offering first, with offering `default` as fallback.
+- App prefers exact Google Play product IDs over looser Test Store/package matches when both are available.
 
 ## Premium Screen
 
@@ -16,9 +22,11 @@
 - Premium screen opens from Progress teaser.
 - Monthly package displays label `Monthly`.
 - Yearly or annual package displays label `Yearly`.
-- Test Store prices are displayed as returned by RevenueCat.
+- Yearly package shows `Best value`.
+- Test Store prices are displayed only when explicitly enabled for debug Test Store testing.
 - Google Play prices are displayed as returned by RevenueCat/Play Console.
-- Placeholder prices display when offerings are unavailable: `Monthly €3.99`, `Yearly €24.99`.
+- Test Store prices should not appear if real Google Play packages are available in the current/default offering.
+- Placeholder prices display when offerings are unavailable: `Monthly €3.99 / month`, `Yearly €24.99 / year`.
 - Purchase CTA is disabled when package is unavailable.
 - Purchase CTA is disabled while purchase is in progress.
 - Purchase CTA is disabled when Premium is active and shows `Premium active`.
@@ -27,6 +35,7 @@
 
 ## A. RevenueCat Test Store QA
 
+- Build debug with `USE_REVENUECAT_TEST_STORE=true`.
 - Test Store purchase dialog opens.
 - Test Store products `monthly` and `yearly` are visible when configured.
 - Test Store prices such as `$9.99` and `$79.98` display as returned by RevenueCat.
@@ -42,9 +51,13 @@
 ## B. Google Play Closed Testing QA
 
 - App is installed from Google Play internal or closed testing track.
+- App uses `REVENUECAT_ANDROID_PUBLIC_API_KEY`, not `REVENUECAT_TEST_STORE_API_KEY`.
+- Purchase dialog does not say `Test Store Purchase`.
 - Tester account is a license tester and/or closed tester.
 - Monthly package is visible.
 - Yearly package is visible.
+- Monthly package maps to product `learnlift_premium_monthly` and base plan `monthly`.
+- Yearly package maps to product `learnlift_premium_yearly` and base plan `yearly`.
 - Monthly price matches Play Console target price `€3.99`.
 - Yearly price matches Play Console target price `€24.99`.
 - Purchase flow opens Google Play purchase sheet.
@@ -84,6 +97,7 @@
 - AI fallback works.
 - No feature is hard-blocked unexpectedly.
 - Closed testers can continue using the app if RevenueCat products are unavailable.
+- Free AI limit reached shows `View Premium`, keeps local explanation/recommendation visible, and does not offer repeated retry for a locally blocked request.
 
 ## Data Safety
 
@@ -92,3 +106,14 @@
 - App still has no login.
 - App still has no cloud sync.
 - AI backend context transfer remains user-initiated only.
+
+## Closed Testing Conversion Feedback
+
+Ask testers:
+
+- Would you pay `€3.99/month` for more AI Coach explanations?
+- Which Premium feature feels most valuable?
+- Did the paywall feel clear?
+- Did anything feel locked too early?
+- Would yearly at `€24.99/year` feel fair?
+- What would make Premium worth it?

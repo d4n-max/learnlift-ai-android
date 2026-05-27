@@ -47,6 +47,7 @@ Premium currently unlocks or expands:
 - 7-day AI Study Plan access.
 - Premium active/status UI.
 - Purchase and restore flow through RevenueCat.
+- Value-based paywall copy with Monthly and Yearly plans.
 
 Premium does not remove local fallback behavior. If AI fails, the app still shows local explanations or Smart Coach recommendations.
 
@@ -89,6 +90,8 @@ Free limit reached message:
 You've used today's free AI Coach previews. Upgrade to Premium for more AI help, or continue with local explanations.
 ```
 
+When this message appears, the app blocks the AI call locally, keeps local explanations or Smart Coach guidance visible, and shows `View Premium`. It should not keep prompting users to retry the same locally blocked AI request.
+
 Premium safety limit reached message:
 
 ```text
@@ -108,6 +111,19 @@ If RevenueCat is unavailable or products are not configured:
 - Restore purchases can be retried.
 - No crash should occur.
 
+## RevenueCat / Google Play Product Rules
+
+- Premium entitlement identifier must remain exactly `premium`.
+- RevenueCat offering identifier should be `default`, and it should be set as the current offering.
+- Google Play product IDs must be:
+  - `learnlift_premium_monthly`
+  - `learnlift_premium_yearly`
+- Google Play base plan IDs must be:
+  - `monthly`
+  - `yearly`
+- The Android app checks only `customerInfo.entitlements["premium"]?.isActive == true`.
+- The Android app must not treat `monthly`, `yearly`, `annual`, `learnlift_premium_monthly`, `learnlift_premium_yearly`, or `LearnLift AI Premium` as entitlement identifiers.
+
 ## Advanced Insights
 
 Free users see:
@@ -123,6 +139,17 @@ Advanced Insights coming soon
 ```
 
 Basic progress remains available for everyone.
+
+## Conversion Placement Policy
+
+Premium prompts are allowed in:
+
+- AI limit reached states.
+- Progress Advanced Insights teaser.
+- Settings Premium section.
+- A subtle Home card for higher AI Coach limits.
+
+Premium prompts should not interrupt onboarding, hide core study modes, or prevent Free users from using flashcards, quizzes, daily sessions, progress, Smart Coach, Smart Review, local explanations, or basic Adaptive Quiz.
 
 ## Future Stronger Gating Plan
 

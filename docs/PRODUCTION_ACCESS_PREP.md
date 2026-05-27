@@ -45,6 +45,9 @@ Ask testers:
 - Did Progress update after study activity?
 - Did local reminders request permission correctly?
 - Did Premium screen and restore purchases behave clearly?
+- Did the AI preview limit and `View Premium` prompt feel clear and fair?
+- Would you pay `€3.99/month` or `€24.99/year` for more AI Coach help?
+- Which Premium feature would make you most likely to upgrade?
 - Did anything crash, freeze, clip, or feel misleading?
 - Overall feedback:
 
