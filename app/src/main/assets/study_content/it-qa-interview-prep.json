@@ -71,7 +71,7 @@
       "question": "What is severity in a bug report?",
       "answer": "How much impact the bug has on the system or user.",
       "topic": "bug reports",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "qa-fc-010",
@@ -103,7 +103,7 @@
       "question": "What does \"priority\" mean?",
       "answer": "How urgently a bug should be fixed.",
       "topic": "test cases",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "qa-fc-014",
@@ -255,7 +255,7 @@
       "question": "What is a QA role in Scrum?",
       "answer": "To help the team understand quality, test risks, and verify work continuously.",
       "topic": "Agile/Scrum basics",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "qa-fc-033",
@@ -319,7 +319,7 @@
       "question": "Can a bug be high severity but low priority?",
       "answer": "Yes, if impact is serious but the affected area is rare or not urgent.",
       "topic": "severity vs priority",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "qa-fc-041",
@@ -356,8 +356,8 @@
     {
       "id": "qa-fc-045",
       "pathId": "it-qa-interview-prep",
-      "question": "What does SELECT do in SQL?",
-      "answer": "It retrieves data from a database table.",
+      "question": "What should a QA beginner know about SELECT in SQL?",
+      "answer": "SELECT retrieves columns or expressions from a database query, which helps QA read simple data checks.",
       "topic": "beginner SQL/API awareness",
       "difficulty": "easy"
     },
@@ -375,7 +375,7 @@
       "question": "What is test evidence?",
       "answer": "Screenshots, logs, recordings, or notes proving what was tested and observed.",
       "topic": "manual testing",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "qa-fc-048",
@@ -383,7 +383,7 @@
       "question": "What is risk-based testing?",
       "answer": "Prioritizing tests based on likelihood and impact of failure.",
       "topic": "manual testing",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "qa-fc-049",
@@ -455,7 +455,7 @@
       "question": "What is a false positive in testing?",
       "answer": "A test reports a problem even though the product behavior is actually correct.",
       "topic": "manual testing",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "qa-fc-058",
@@ -471,7 +471,7 @@
       "question": "What is API response body validation?",
       "answer": "Checking that returned data fields, values, and structure match expectations.",
       "topic": "API basics",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "qa-fc-060",
@@ -479,7 +479,7 @@
       "question": "What is a QA handoff note?",
       "answer": "A concise note explaining what was tested, what remains risky, and any open issues.",
       "topic": "Agile/Scrum basics",
-      "difficulty": "medium"
+      "difficulty": "hard"
     }
   ],
   "quizQuestions": [
@@ -670,7 +670,7 @@
       "correctAnswerId": "a",
       "explanation": "Severity is about impact on users or the system.",
       "topic": "bug reports",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "qa-qz-008",
@@ -778,7 +778,7 @@
       "correctAnswerId": "a",
       "explanation": "Priority is about fix urgency and business need.",
       "topic": "severity vs priority",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "qa-qz-012",
@@ -913,7 +913,7 @@
       "correctAnswerId": "a",
       "explanation": "401 means authentication is missing or invalid.",
       "topic": "API basics",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "qa-qz-017",
@@ -1399,7 +1399,7 @@
       "correctAnswerId": "a",
       "explanation": "Wrong payment amount has serious user and business impact.",
       "topic": "severity vs priority",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "qa-qz-035",
@@ -1426,7 +1426,7 @@
       "correctAnswerId": "a",
       "explanation": "A visible typo may be urgent for launch even if technical impact is low.",
       "topic": "severity vs priority",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "qa-qz-036",
@@ -1480,7 +1480,7 @@
       "correctAnswerId": "a",
       "explanation": "Agile QA is continuous and collaborative.",
       "topic": "Agile/Scrum basics",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "qa-qz-038",
@@ -1561,7 +1561,7 @@
       "correctAnswerId": "a",
       "explanation": "500 indicates the server failed while handling the request.",
       "topic": "API basics",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "qa-qz-041",
@@ -1588,7 +1588,7 @@
       "correctAnswerId": "a",
       "explanation": "400 usually means the client sent invalid input or format.",
       "topic": "API basics",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "qa-qz-042",

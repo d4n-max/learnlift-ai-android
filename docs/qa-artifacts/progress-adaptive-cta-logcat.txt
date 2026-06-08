@@ -1,0 +1,320 @@
+--------- beginning of main
+06-08 16:29:13.130   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:13.130   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:13.130   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:13.130   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:13.130   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:13.130   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:13.130   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:13.130  1750  1760 I AiAiEcho: Settings changed for uri: content://settings/secure/accessibility_enabled
+06-08 16:29:13.131   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+--------- beginning of system
+06-08 16:29:13.131   695  1697 V AccessibilityManagerService: onUserStateChangedLocked for userId: 0, forceUpdate: false
+06-08 16:29:13.131   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:13.131   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:13.131   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:13.131   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:13.131   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:13.132   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:13.132   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:13.132   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:13.132   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:13.132   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:13.132  1750  1895 I AiAiEcho: Predicting[0]:  [CONTEXT sampling_count=5 ]
+06-08 16:29:13.132   695   695 D BatterySaverPolicy: accessibility changed to true, updating policy.
+06-08 16:29:13.132  1750  1895 I AiAiEcho: EchoTargets:
+06-08 16:29:13.132  1750  1895 I AiAiEcho: Filtered by AiAi flag check:
+06-08 16:29:13.132  1750  1895 I AiAiEcho: [CONTEXT ratelimit_period="10 SECONDS" ]
+06-08 16:29:13.133   695  1697 V AccessibilityUserState: updateShortcutTargets: type:accessibility_shortcut_target_service, current:{}, new:{}
+06-08 16:29:13.133   695  1697 V AccessibilityUserState: updateShortcutTargets: type:accessibility_button_targets, current:{}, new:{}
+06-08 16:29:13.133   695  1697 V AccessibilityUserState: updateShortcutTargets: type:accessibility_gesture_targets, current:{}, new:{}
+06-08 16:29:13.133   695  1697 V AccessibilityUserState: updateShortcutTargets: type:accessibility_qs_targets, current:{}, new:{}
+06-08 16:29:13.133   695  1697 V AccessibilityUserState: updateShortcutTargets: type:accessibility_key_gesture_targets, current:{}, new:{}
+06-08 16:29:13.133   695  1697 V AccessibilityUserState: updateShortcutTargets: type:accessibility_top_row_key_targets, current:{}, new:{}
+06-08 16:29:13.133   695  1697 V AccessibilityUserState: updateShortcutTargets: type:accessibility_quick_access_targets, current:{}, new:{}
+06-08 16:29:13.133  1750  1895 I AiAiEcho: #remoteViewsTwiddler: feature disabled.
+06-08 16:29:13.133   695  1697 W MagnificationConnectionManager: requestConnection duplicated request: connect=false, mConnectionState=DISCONNECTED
+06-08 16:29:13.134  1750  1895 I AiAiEcho: Predicting[0]:  [CONTEXT sampling_count=5 ]
+06-08 16:29:13.134  1750  1895 I AiAiEcho: EchoTargets:
+06-08 16:29:13.134  1750  1895 I AiAiEcho: Filtered by AiAi flag check:
+06-08 16:29:13.134  1750  1895 I AiAiEcho: [CONTEXT ratelimit_period="10 SECONDS" ]
+06-08 16:29:13.134  1750  1895 I AiAiEcho: #remoteViewsTwiddler: feature disabled.
+06-08 16:29:13.134  1750  1895 I AiAiEcho: Predicting[0]:  [CONTEXT sampling_count=5 ]
+06-08 16:29:13.134  1750  1760 I AiAiEcho: Settings changed for uri: content://settings/secure/accessibility_enabled
+06-08 16:29:13.135   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:13.135   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:13.135   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:13.135   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:13.135  1750  1895 I AiAiEcho: EchoTargets:
+06-08 16:29:13.135  1750  1895 I AiAiEcho: Filtered by AiAi flag check:
+06-08 16:29:13.135  1750  1895 I AiAiEcho: [CONTEXT ratelimit_period="10 SECONDS" ]
+06-08 16:29:13.135   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:13.135   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:13.135  1750  1895 I AiAiEcho: #remoteViewsTwiddler: feature disabled.
+06-08 16:29:13.135   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:13.135   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:13.136   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:13.136   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:13.136  1750  1895 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface ambientcue with targets# 0 (types=[])
+06-08 16:29:13.136   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:13.137   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:13.137   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:13.137   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:13.137   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:13.137   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:13.137   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:13.137   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:13.137   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:13.137  1750  1895 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface home with targets# 0 (types=[])
+06-08 16:29:13.138  1750  1895 I AiAiEcho: Predicting[0]:  [CONTEXT sampling_count=5 ]
+06-08 16:29:13.138  1750  1895 I AiAiEcho: EchoTargets:
+06-08 16:29:13.138  1750  1895 I AiAiEcho: Filtered by AiAi flag check:
+06-08 16:29:13.138  1750  1895 I AiAiEcho: [CONTEXT ratelimit_period="10 SECONDS" ]
+06-08 16:29:13.138   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:13.138  9819  9860 I AmbientCueRepository: Receiving SmartSpace targets # 0
+06-08 16:29:13.138  1750  1895 I AiAiEcho: #remoteViewsTwiddler: feature disabled.
+06-08 16:29:13.138  1750  1895 I AiAiEcho: Predicting[0]:  [CONTEXT sampling_count=5 ]
+06-08 16:29:13.139  1750  1895 I AiAiEcho: EchoTargets:
+06-08 16:29:13.139  1750  1895 I AiAiEcho: Filtered by AiAi flag check:
+06-08 16:29:13.139  1750  1895 I AiAiEcho: [CONTEXT ratelimit_period="10 SECONDS" ]
+06-08 16:29:13.140  1750  1895 I AiAiEcho: #remoteViewsTwiddler: feature disabled.
+06-08 16:29:13.140   695  2111 D AccessibilityManagerService: .getAccessibilityShortcutTargets {shortcutType=32, userId=0}
+06-08 16:29:13.140  1750  1895 I AiAiEcho: Predicting[0]:  [CONTEXT sampling_count=5 ]
+06-08 16:29:13.140  1750  1895 I AiAiEcho: EchoTargets:
+06-08 16:29:13.140  1750  1895 I AiAiEcho: Filtered by AiAi flag check:
+06-08 16:29:13.140  1750  1895 I AiAiEcho: [CONTEXT ratelimit_period="10 SECONDS" ]
+06-08 16:29:13.140  1750  1895 I AiAiEcho: #remoteViewsTwiddler: feature disabled.
+06-08 16:29:13.141  1750  1895 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface lockscreen with targets# 0 (types=[])
+06-08 16:29:13.141  1750  1895 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface ambientcue with targets# 0 (types=[])
+06-08 16:29:13.141  9819  9860 I AmbientCueRepository: Receiving SmartSpace targets # 0
+06-08 16:29:13.141  1750  1895 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface home with targets# 0 (types=[])
+06-08 16:29:13.142  1750  1895 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface lockscreen with targets# 0 (types=[])
+06-08 16:29:13.149   526   544 W skia    : AGTM parsing failed flags.readFromStream(s) at 159
+06-08 16:29:13.249   526   544 W skia    : AGTM parsing failed flags.readFromStream(s) at 159
+06-08 16:29:14.039   695   888 I HalDevMgr: bestIfaceCreationProposal is null, requestIface=STA, existingIface=[name=wlan0 type=STA]
+06-08 16:29:14.159 20787 20787 W AccessibilityNodeInfoDumper: Fetch time: 15ms
+06-08 16:29:14.161   695  2111 V AccessibilityManagerService: onUserStateChangedLocked for userId: 0, forceUpdate: false
+06-08 16:29:14.161   695  2111 V AccessibilityUserState: updateShortcutTargets: type:accessibility_shortcut_target_service, current:{}, new:{}
+06-08 16:29:14.161   695  2111 V AccessibilityUserState: updateShortcutTargets: type:accessibility_button_targets, current:{}, new:{}
+06-08 16:29:14.161   695  2111 V AccessibilityUserState: updateShortcutTargets: type:accessibility_gesture_targets, current:{}, new:{}
+06-08 16:29:14.161   695  2111 V AccessibilityUserState: updateShortcutTargets: type:accessibility_qs_targets, current:{}, new:{}
+06-08 16:29:14.161   695  2111 V AccessibilityUserState: updateShortcutTargets: type:accessibility_key_gesture_targets, current:{}, new:{}
+06-08 16:29:14.161   695  2111 V AccessibilityUserState: updateShortcutTargets: type:accessibility_top_row_key_targets, current:{}, new:{}
+06-08 16:29:14.161   695  2111 V AccessibilityUserState: updateShortcutTargets: type:accessibility_quick_access_targets, current:{}, new:{}
+06-08 16:29:14.161  1750  1760 I AiAiEcho: Settings changed for uri: content://settings/secure/accessibility_enabled
+06-08 16:29:14.161   695  2111 W MagnificationConnectionManager: requestConnection duplicated request: connect=false, mConnectionState=DISCONNECTED
+06-08 16:29:14.161   695  2111 D AccessibilityManagerService: restoreCurrentUserForTestAutomationIfNeededLocked(): ignoring because device doesn't support visible background users
+06-08 16:29:14.162   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:14.162   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:14.162   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:14.162   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:14.162  1750  1895 I AiAiEcho: Predicting[0]:  [CONTEXT sampling_count=5 ]
+06-08 16:29:14.162  1750  1895 I AiAiEcho: EchoTargets:
+06-08 16:29:14.162  1750  1895 I AiAiEcho: Filtered by AiAi flag check:
+06-08 16:29:14.162  1750  1895 I AiAiEcho: [CONTEXT ratelimit_period="10 SECONDS" ]
+06-08 16:29:14.162   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:14.162   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:14.162   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:14.162   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:14.162   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:14.162   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:14.162 20787 20802 W libbinder.IPCThreadState: call to talkWithDriver in joinThreadPool returned error: -9 (Bad file descriptor), FD: -1
+06-08 16:29:14.162 20787 20805 W libbinder.IPCThreadState: call to talkWithDriver in joinThreadPool returned error: -9 (Bad file descriptor), FD: -1
+06-08 16:29:14.162   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:14.163 20787 20799 W libbinder.IPCThreadState: call to talkWithDriver in joinThreadPool returned error: -9 (Bad file descriptor), FD: -1
+06-08 16:29:14.163   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:14.163   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:14.163 20787 20787 D AndroidRuntime: Shutting down VM
+06-08 16:29:14.163   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:14.163   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:14.164  1750  1895 I AiAiEcho: #remoteViewsTwiddler: feature disabled.
+06-08 16:29:14.164   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:14.164   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:14.164   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:14.164  1750  1895 I AiAiEcho: Predicting[0]:  [CONTEXT sampling_count=5 ]
+06-08 16:29:14.164   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:14.165   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:14.165  1750  1895 I AiAiEcho: EchoTargets:
+06-08 16:29:14.165  1750  1895 I AiAiEcho: Filtered by AiAi flag check:
+06-08 16:29:14.165  1750  1895 I AiAiEcho: [CONTEXT ratelimit_period="10 SECONDS" ]
+06-08 16:29:14.165   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:14.166  1750  1895 I AiAiEcho: #remoteViewsTwiddler: feature disabled.
+06-08 16:29:14.166   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:14.166   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:14.166   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:14.166   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:14.167   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:14.167  1750  1895 I AiAiEcho: Predicting[0]:  [CONTEXT sampling_count=5 ]
+06-08 16:29:14.167   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:14.167   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:14.167   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:14.167   695   695 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:14.167  1750  1895 I AiAiEcho: EchoTargets:
+06-08 16:29:14.167  1750  1895 I AiAiEcho: Filtered by AiAi flag check:
+06-08 16:29:14.167  1750  1895 I AiAiEcho: [CONTEXT ratelimit_period="10 SECONDS" ]
+06-08 16:29:14.167  1750  1895 I AiAiEcho: #remoteViewsTwiddler: feature disabled.
+06-08 16:29:14.167   695   695 D BatterySaverPolicy: accessibility changed to false, updating policy.
+06-08 16:29:14.168  1750  1895 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface ambientcue with targets# 0 (types=[])
+06-08 16:29:14.169  9819  9860 I AmbientCueRepository: Receiving SmartSpace targets # 0
+06-08 16:29:14.169  1750  1895 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface home with targets# 0 (types=[])
+06-08 16:29:14.170  1750  1895 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface lockscreen with targets# 0 (types=[])
+06-08 16:29:14.174  1750  1753 W ogle.android.as: Missing inline cache for void lmj.a(java.lang.String, java.util.List)
+06-08 16:29:14.174  1750  1753 W ogle.android.as: Missing inline cache for void lmj.a(java.lang.String, java.util.List)
+06-08 16:29:14.174  1750  1753 W ogle.android.as: Missing inline cache for void lmj.a(java.lang.String, java.util.List)
+06-08 16:29:14.174  1750  1753 W ogle.android.as: Missing inline cache for void lmj.a(java.lang.String, java.util.List)
+06-08 16:29:14.174  1750  1753 W ogle.android.as: Missing inline cache for void lmj.a(java.lang.String, java.util.List)
+06-08 16:29:14.174  1750  1753 W ogle.android.as: Missing inline cache for void lmj.a(java.lang.String, java.util.List)
+06-08 16:29:14.174  1750  1753 W ogle.android.as: Missing inline cache for void lmj.a(java.lang.String, java.util.List)
+06-08 16:29:14.181   526   544 W skia    : AGTM parsing failed flags.readFromStream(s) at 159
+06-08 16:29:14.283   526   544 W skia    : AGTM parsing failed flags.readFromStream(s) at 159
+06-08 16:29:15.053   539   539 I adbd    : adbd service requested 'sync:'
+06-08 16:29:15.120   539   539 I adbd    : adbd service requested 'shell,v2,raw:dumpsys window windows'
+06-08 16:29:16.742   539   539 I adbd    : adbd service requested 'shell,v2,raw:dumpsys package com.google.android.gms'
+06-08 16:29:16.921  2825  6335 I artd    : GetBestInfo: odex next to the dex file (/data/app/~~TkTxzeJeHB1cgoQhXF7ScQ==/com.google.android.gms-L-D82wq0qX6IREIwgHFUXA==/oat/x86_64/base.odex) is kOatUpToDate with filter 'speed-profile' executable 'false'
+06-08 16:29:16.923  2825  6335 I artd    : GetBestInfo: dm (/data/app/~~TkTxzeJeHB1cgoQhXF7ScQ==/com.google.android.gms-L-D82wq0qX6IREIwgHFUXA==/split_AdsDynamite_installtime.dm) is kOatUpToDate with filter 'verify' executable 'false'
+06-08 16:29:16.925  2825  6335 I artd    : GetBestInfo: odex next to the dex file (/data/app/~~TkTxzeJeHB1cgoQhXF7ScQ==/com.google.android.gms-L-D82wq0qX6IREIwgHFUXA==/oat/x86_64/split_CronetDynamite_installtime.odex) is kOatUpToDate with filter 'speed-profile' executable 'false'
+06-08 16:29:16.927  2825  6335 I artd    : GetBestInfo: dm (/data/app/~~TkTxzeJeHB1cgoQhXF7ScQ==/com.google.android.gms-L-D82wq0qX6IREIwgHFUXA==/split_DynamiteLoader_installtime.dm) is kOatUpToDate with filter 'verify' executable 'false'
+06-08 16:29:16.928  2825  6335 I artd    : GetBestInfo: dm (/data/app/~~TkTxzeJeHB1cgoQhXF7ScQ==/com.google.android.gms-L-D82wq0qX6IREIwgHFUXA==/split_DynamiteModulesA_installtime.dm) is kOatUpToDate with filter 'verify' executable 'false'
+06-08 16:29:16.930  2825  6335 I artd    : GetBestInfo: dm (/data/app/~~TkTxzeJeHB1cgoQhXF7ScQ==/com.google.android.gms-L-D82wq0qX6IREIwgHFUXA==/split_DynamiteModulesC_installtime.dm) is kOatUpToDate with filter 'verify' executable 'false'
+06-08 16:29:16.931  2825  6335 I artd    : GetBestInfo: dm (/data/app/~~TkTxzeJeHB1cgoQhXF7ScQ==/com.google.android.gms-L-D82wq0qX6IREIwgHFUXA==/split_GoogleCertificates_installtime.dm) is kOatUpToDate with filter 'verify' executable 'false'
+06-08 16:29:16.933  2825  6335 I artd    : GetBestInfo: dm (/data/app/~~TkTxzeJeHB1cgoQhXF7ScQ==/com.google.android.gms-L-D82wq0qX6IREIwgHFUXA==/split_MapsDynamite_installtime.dm) is kOatUpToDate with filter 'verify' executable 'false'
+06-08 16:29:16.934  2825  6335 I artd    : GetBestInfo: dm (/data/app/~~TkTxzeJeHB1cgoQhXF7ScQ==/com.google.android.gms-L-D82wq0qX6IREIwgHFUXA==/split_MeasurementDynamite_installtime.dm) is kOatUpToDate with filter 'verify' executable 'false'
+06-08 16:29:16.936  2825  6335 I artd    : GetBestInfo: dm (/data/app/~~TkTxzeJeHB1cgoQhXF7ScQ==/com.google.android.gms-L-D82wq0qX6IREIwgHFUXA==/split_all_locale_splits.dm) is kOatUpToDate with filter 'verify' executable 'false'
+06-08 16:29:16.937  2825  6335 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/00000012/dl-IdentityCredentialsPlatform.optional_261833100800.apk has no usable artifacts
+06-08 16:29:16.938  2825  6335 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/00000001/CronetDynamite.apk has no usable artifacts
+06-08 16:29:16.940  2825  6335 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/00000013/dl-TfliteDynamiteDynamite.integ_252130102100800.apk has no usable artifacts
+06-08 16:29:16.941  2825  6335 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/00000017/dl-MlkitBarcodeUi.optional_261833100800.apk has no usable artifacts
+06-08 16:29:16.943  2825  6335 I artd    : GetBestInfo: vdex next to the dex file (/data/user/0/com.google.android.gms/app_dg_cache/3C458487C11623D174A33292B914D98AB3A4651D/oat/x86_64/the.vdex) is kOatUpToDate with filter 'verify' executable 'false'
+06-08 16:29:16.944  2825  6335 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/00000002/DynamiteLoader.apk has no usable artifacts
+06-08 16:29:16.946  2825  6335 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/0000000f/dl-MlkitOcrCommon.optional_261136100800.apk has no usable artifacts
+06-08 16:29:16.948  2825  6335 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/0000000c/dl-IdentityCredentialsPlatform.optional_261136100800.apk has no usable artifacts
+06-08 16:29:16.949  2825  6335 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/00000005/GoogleCertificates.apk has no usable artifacts
+06-08 16:29:16.950  2825  6335 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/0000000e/dl-VisionOcr.optional_261136100000.apk has no usable artifacts
+06-08 16:29:16.952  2825  6335 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/00000009/dl-MlkitBarcodeUi.optional_261136100800.apk has no usable artifacts
+06-08 16:29:16.954  2825  6335 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/00000014/dl-VisionOcr.optional_261833100000.apk has no usable artifacts
+06-08 16:29:16.955  2825  6335 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/00000015/dl-Appsearch.optional_261833100800.apk has no usable artifacts
+06-08 16:29:16.957  2825  6335 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/00000011/dl-PlayCloudSearch.optional_261833100000.apk has no usable artifacts
+06-08 16:29:16.959  2825  6335 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/00000010/dl-PlayCloudSearch.optional_261136100000.apk has no usable artifacts
+06-08 16:29:16.967  2825  6335 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/0000000b/dl-Appsearch.optional_261136100800.apk has no usable artifacts
+06-08 16:29:16.970  2825  6335 I artd    : GetBestInfo: vdex next to the dex file (/data/user/0/com.google.android.gms/app_dg_cache/22DA9D7AD8ED7504E0CAC64C41ECDBD7068924E0/oat/x86_64/the.vdex) is kOatUpToDate with filter 'verify' executable 'false'
+06-08 16:29:16.971  2825  6335 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/00000018/dl-MlkitOcrCommon.optional_261833100800.apk has no usable artifacts
+06-08 16:29:16.973  2825  6335 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/00000023/dl-MlkitDocscanUi.optional_261833100800.apk has no usable artifacts
+06-08 16:29:16.975  2825  6335 I artd    : GetBestInfo: vdex next to the dex file (/data/user/0/com.google.android.gms/app_dg_cache/92659AEB0EFADECE4CBB22D1DF07B00702EAAC36/oat/x86_64/the.vdex) is kOatUpToDate with filter 'verify' executable 'false'
+06-08 16:29:16.975  2825  6335 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/00000007/MeasurementDynamite.apk has no usable artifacts
+06-08 16:29:17.047   695   888 I HalDevMgr: bestIfaceCreationProposal is null, requestIface=STA, existingIface=[name=wlan0 type=STA]
+06-08 16:29:19.446   986   986 I wpa_supplicant: wlan0: CTRL-EVENT-BEACON-LOSS
+06-08 16:29:20.054   695   888 I HalDevMgr: bestIfaceCreationProposal is null, requestIface=STA, existingIface=[name=wlan0 type=STA]
+06-08 16:29:22.271  1155  1288 D SatelliteController: isInCarrierRoamingNbIotNtn: satellite is disabled
+06-08 16:29:22.272  1155  1288 D SatelliteController: getCarrierRoamingNtnConnectType: Checking connect type from PLMN config for subId: 1
+06-08 16:29:22.272  1155  1288 D TelephonyConfigUpdateInstallReceiver: getConfigParser: domain=satellite
+06-08 16:29:22.272  1155  1288 V SatelliteController: satelliteConfigParser is not ready
+06-08 16:29:22.272  1155  1288 D SatelliteController: isSatelliteAttachSupportedViaConfigupdater: return null (satelliteConfig is null)
+06-08 16:29:22.272  1155  1288 D SatelliteController: getSatellitePerPlmnConfiguration: invalid subId or not supported via carrier.
+06-08 16:29:22.272  1155  1288 D SatelliteController: getCarrierRoamingNtnConnectType: config: null
+06-08 16:29:22.272  1155  1288 D TelephonyConfigUpdateInstallReceiver: getConfigParser: domain=satellite
+06-08 16:29:22.272  1155  1288 V SatelliteController: satelliteConfigParser is not ready
+06-08 16:29:22.272  1155  1288 D SatelliteController: getCarrierRoamingNtnConnectTypeViaConfigUpdater: return null (satelliteConfig is null)
+06-08 16:29:22.273  1155  1288 D SatelliteController: getCarrierRoamingNtnConnectType: Falling back to global carrier config connect type: 0
+06-08 16:29:22.273  1155  1288 D TelephonyConfigUpdateInstallReceiver: getConfigParser: domain=satellite
+06-08 16:29:22.273  1155  1288 V SatelliteController: satelliteConfigParser is not ready
+06-08 16:29:22.273  1155  1288 D SatelliteController: isSatelliteAttachSupportedViaConfigupdater: return null (satelliteConfig is null)
+06-08 16:29:22.273  1155  1288 D SatelliteController: getCarrierRoamingNtnConnectType: Checking connect type from PLMN config for subId: 1
+06-08 16:29:22.273  1155  1288 D TelephonyConfigUpdateInstallReceiver: getConfigParser: domain=satellite
+06-08 16:29:22.273  1155  1288 V SatelliteController: satelliteConfigParser is not ready
+06-08 16:29:22.273  1155  1288 D SatelliteController: isSatelliteAttachSupportedViaConfigupdater: return null (satelliteConfig is null)
+06-08 16:29:22.274  1155  1288 D SatelliteController: getSatellitePerPlmnConfiguration: invalid subId or not supported via carrier.
+06-08 16:29:22.274  1155  1288 D SatelliteController: getCarrierRoamingNtnConnectType: config: null
+06-08 16:29:22.274  1155  1288 D TelephonyConfigUpdateInstallReceiver: getConfigParser: domain=satellite
+06-08 16:29:22.274  1155  1288 V SatelliteController: satelliteConfigParser is not ready
+06-08 16:29:22.274  1155  1288 D SatelliteController: getCarrierRoamingNtnConnectTypeViaConfigUpdater: return null (satelliteConfig is null)
+06-08 16:29:22.274  1155  1288 D SatelliteController: getCarrierRoamingNtnConnectType: Falling back to global carrier config connect type: 0
+06-08 16:29:22.274  1155  1288 D TelephonyConfigUpdateInstallReceiver: getConfigParser: domain=satellite
+06-08 16:29:22.274  1155  1288 V SatelliteController: satelliteConfigParser is not ready
+06-08 16:29:22.274  1155  1288 D SatelliteController: isSatelliteAttachSupportedViaConfigupdater: return null (satelliteConfig is null)
+06-08 16:29:23.062   695   888 I HalDevMgr: bestIfaceCreationProposal is null, requestIface=STA, existingIface=[name=wlan0 type=STA]
+06-08 16:29:23.177   695   737 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:23.177   695   737 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:24.167   695   737 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:26.071   695   888 I HalDevMgr: bestIfaceCreationProposal is null, requestIface=STA, existingIface=[name=wlan0 type=STA]
+06-08 16:29:26.418   539   539 I adbd    : adbd service requested 'exec:screencap '-p''
+06-08 16:29:26.518 20821 20821 W libbinder.BackendUnifiedServiceManager: Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: SurfaceFlingerAIDL
+06-08 16:29:26.518 20821 20821 W libbinder.BpBinder: Linking to death on android.gui.ISurfaceComposer but there are no threads (yet?) listening to incoming transactions. See ProcessState::startThreadPool and ProcessState::setThreadPoolMaxThreadCount. Generally you should setup the binder threadpool before other initialization steps.
+06-08 16:29:26.519 20821 20821 W libbinder.ProcessState: Extra binder thread started, but 0 threads requested. Do not use *startThreadPool when zero threads are requested.
+06-08 16:29:26.550   526   544 W skia    : AGTM parsing failed flags.readFromStream(s) at 159
+06-08 16:29:26.550   526   544 W skia    : AGTM parsing failed flags.readFromStream(s) at 159
+06-08 16:29:26.550   526   544 W skia    : AGTM parsing failed flags.readFromStream(s) at 159
+06-08 16:29:26.594 20821 20822 W libc    : Access denied finding property "vendor.mesa.virtgpu.kumquat"
+06-08 16:29:26.759   539   539 I adbd    : adbd service requested 'shell,v2,raw:dumpsys package com.google.android.gms'
+06-08 16:29:26.943  2825  6335 I artd    : GetBestInfo: odex next to the dex file (/data/app/~~TkTxzeJeHB1cgoQhXF7ScQ==/com.google.android.gms-L-D82wq0qX6IREIwgHFUXA==/oat/x86_64/base.odex) is kOatUpToDate with filter 'speed-profile' executable 'false'
+06-08 16:29:26.945  2825  6335 I artd    : GetBestInfo: dm (/data/app/~~TkTxzeJeHB1cgoQhXF7ScQ==/com.google.android.gms-L-D82wq0qX6IREIwgHFUXA==/split_AdsDynamite_installtime.dm) is kOatUpToDate with filter 'verify' executable 'false'
+06-08 16:29:26.947  2825  6335 I artd    : GetBestInfo: odex next to the dex file (/data/app/~~TkTxzeJeHB1cgoQhXF7ScQ==/com.google.android.gms-L-D82wq0qX6IREIwgHFUXA==/oat/x86_64/split_CronetDynamite_installtime.odex) is kOatUpToDate with filter 'speed-profile' executable 'false'
+06-08 16:29:26.949  2825  6335 I artd    : GetBestInfo: dm (/data/app/~~TkTxzeJeHB1cgoQhXF7ScQ==/com.google.android.gms-L-D82wq0qX6IREIwgHFUXA==/split_DynamiteLoader_installtime.dm) is kOatUpToDate with filter 'verify' executable 'false'
+06-08 16:29:26.951  2825  6335 I artd    : GetBestInfo: dm (/data/app/~~TkTxzeJeHB1cgoQhXF7ScQ==/com.google.android.gms-L-D82wq0qX6IREIwgHFUXA==/split_DynamiteModulesA_installtime.dm) is kOatUpToDate with filter 'verify' executable 'false'
+06-08 16:29:26.953  2825  6335 I artd    : GetBestInfo: dm (/data/app/~~TkTxzeJeHB1cgoQhXF7ScQ==/com.google.android.gms-L-D82wq0qX6IREIwgHFUXA==/split_DynamiteModulesC_installtime.dm) is kOatUpToDate with filter 'verify' executable 'false'
+06-08 16:29:26.955  2825  6335 I artd    : GetBestInfo: dm (/data/app/~~TkTxzeJeHB1cgoQhXF7ScQ==/com.google.android.gms-L-D82wq0qX6IREIwgHFUXA==/split_GoogleCertificates_installtime.dm) is kOatUpToDate with filter 'verify' executable 'false'
+06-08 16:29:26.957  2825  6335 I artd    : GetBestInfo: dm (/data/app/~~TkTxzeJeHB1cgoQhXF7ScQ==/com.google.android.gms-L-D82wq0qX6IREIwgHFUXA==/split_MapsDynamite_installtime.dm) is kOatUpToDate with filter 'verify' executable 'false'
+06-08 16:29:26.959  2825  6335 I artd    : GetBestInfo: dm (/data/app/~~TkTxzeJeHB1cgoQhXF7ScQ==/com.google.android.gms-L-D82wq0qX6IREIwgHFUXA==/split_MeasurementDynamite_installtime.dm) is kOatUpToDate with filter 'verify' executable 'false'
+06-08 16:29:26.961  2825  6335 I artd    : GetBestInfo: dm (/data/app/~~TkTxzeJeHB1cgoQhXF7ScQ==/com.google.android.gms-L-D82wq0qX6IREIwgHFUXA==/split_all_locale_splits.dm) is kOatUpToDate with filter 'verify' executable 'false'
+06-08 16:29:26.962  2825  6335 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/00000012/dl-IdentityCredentialsPlatform.optional_261833100800.apk has no usable artifacts
+06-08 16:29:26.963  2825  6335 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/00000001/CronetDynamite.apk has no usable artifacts
+06-08 16:29:26.965  2825  6335 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/00000013/dl-TfliteDynamiteDynamite.integ_252130102100800.apk has no usable artifacts
+06-08 16:29:26.967  2825  6335 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/00000017/dl-MlkitBarcodeUi.optional_261833100800.apk has no usable artifacts
+06-08 16:29:26.969  2825  6335 I artd    : GetBestInfo: vdex next to the dex file (/data/user/0/com.google.android.gms/app_dg_cache/3C458487C11623D174A33292B914D98AB3A4651D/oat/x86_64/the.vdex) is kOatUpToDate with filter 'verify' executable 'false'
+06-08 16:29:26.969  2825  6335 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/00000002/DynamiteLoader.apk has no usable artifacts
+06-08 16:29:26.971  2825  6335 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/0000000f/dl-MlkitOcrCommon.optional_261136100800.apk has no usable artifacts
+06-08 16:29:26.973  2825  6335 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/0000000c/dl-IdentityCredentialsPlatform.optional_261136100800.apk has no usable artifacts
+06-08 16:29:26.974  2825  6335 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/00000005/GoogleCertificates.apk has no usable artifacts
+06-08 16:29:26.976  2825  6335 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/0000000e/dl-VisionOcr.optional_261136100000.apk has no usable artifacts
+06-08 16:29:26.978  2825  6335 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/00000009/dl-MlkitBarcodeUi.optional_261136100800.apk has no usable artifacts
+06-08 16:29:26.979  2825  6335 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/00000014/dl-VisionOcr.optional_261833100000.apk has no usable artifacts
+06-08 16:29:26.981  2825  6335 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/00000015/dl-Appsearch.optional_261833100800.apk has no usable artifacts
+06-08 16:29:26.983  2825  6335 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/00000011/dl-PlayCloudSearch.optional_261833100000.apk has no usable artifacts
+06-08 16:29:26.985  2825  6335 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/00000010/dl-PlayCloudSearch.optional_261136100000.apk has no usable artifacts
+06-08 16:29:26.987  2825  6335 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/0000000b/dl-Appsearch.optional_261136100800.apk has no usable artifacts
+06-08 16:29:26.989  2825  6335 I artd    : GetBestInfo: vdex next to the dex file (/data/user/0/com.google.android.gms/app_dg_cache/22DA9D7AD8ED7504E0CAC64C41ECDBD7068924E0/oat/x86_64/the.vdex) is kOatUpToDate with filter 'verify' executable 'false'
+06-08 16:29:26.990  2825  6335 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/00000018/dl-MlkitOcrCommon.optional_261833100800.apk has no usable artifacts
+06-08 16:29:26.993  2825  6335 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/00000023/dl-MlkitDocscanUi.optional_261833100800.apk has no usable artifacts
+06-08 16:29:26.994  2825  6335 I artd    : GetBestInfo: vdex next to the dex file (/data/user/0/com.google.android.gms/app_dg_cache/92659AEB0EFADECE4CBB22D1DF07B00702EAAC36/oat/x86_64/the.vdex) is kOatUpToDate with filter 'verify' executable 'false'
+06-08 16:29:26.995  2825  6335 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/00000007/MeasurementDynamite.apk has no usable artifacts
+06-08 16:29:27.381   986   986 I wpa_supplicant: wlan0: CTRL-EVENT-BEACON-LOSS
+06-08 16:29:29.077   695   919 I AdbWifiNetworkMonitor: Wi-Fi network available
+06-08 16:29:29.077   695   919 I AdbWifiNetworkMonitor: Received the same Wi-Fi SSID. Ignoring.
+06-08 16:29:29.080   695   894 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:29.080   695   894 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:29.080   695   894 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:29.081   695   894 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+06-08 16:29:29.081   695   888 I HalDevMgr: bestIfaceCreationProposal is null, requestIface=STA, existingIface=[name=wlan0 type=STA]
+06-08 16:29:29.085  1356  1369 I NullBinder: NullBinder for android.net.action.RECOMMEND_NETWORKS triggering remote TransactionTooLargeException due to Service without Chimera impl, calling uid: 1000, calling pid: 0
+06-08 16:29:29.085  1356  1369 W libbinder.Binder: Large reply transaction of 1056768 bytes, interface descriptor , function: UNKNOWN_FUNCTION_NAME, code: 1, flags: 17
+06-08 16:29:32.090   695   888 I HalDevMgr: bestIfaceCreationProposal is null, requestIface=STA, existingIface=[name=wlan0 type=STA]
+06-08 16:29:32.271  1155  1288 D SatelliteController: isInCarrierRoamingNbIotNtn: satellite is disabled
+06-08 16:29:32.271  1155  1288 D SatelliteController: getCarrierRoamingNtnConnectType: Checking connect type from PLMN config for subId: 1
+06-08 16:29:32.271  1155  1288 D TelephonyConfigUpdateInstallReceiver: getConfigParser: domain=satellite
+06-08 16:29:32.271  1155  1288 V SatelliteController: satelliteConfigParser is not ready
+06-08 16:29:32.271  1155  1288 D SatelliteController: isSatelliteAttachSupportedViaConfigupdater: return null (satelliteConfig is null)
+06-08 16:29:32.272  1155  1288 D SatelliteController: getSatellitePerPlmnConfiguration: invalid subId or not supported via carrier.
+06-08 16:29:32.272  1155  1288 D SatelliteController: getCarrierRoamingNtnConnectType: config: null
+06-08 16:29:32.272  1155  1288 D TelephonyConfigUpdateInstallReceiver: getConfigParser: domain=satellite
+06-08 16:29:32.272  1155  1288 V SatelliteController: satelliteConfigParser is not ready
+06-08 16:29:32.272  1155  1288 D SatelliteController: getCarrierRoamingNtnConnectTypeViaConfigUpdater: return null (satelliteConfig is null)
+06-08 16:29:32.272  1155  1288 D SatelliteController: getCarrierRoamingNtnConnectType: Falling back to global carrier config connect type: 0
+06-08 16:29:32.272  1155  1288 D TelephonyConfigUpdateInstallReceiver: getConfigParser: domain=satellite
+06-08 16:29:32.272  1155  1288 V SatelliteController: satelliteConfigParser is not ready
+06-08 16:29:32.272  1155  1288 D SatelliteController: isSatelliteAttachSupportedViaConfigupdater: return null (satelliteConfig is null)
+06-08 16:29:32.272  1155  1288 D SatelliteController: getCarrierRoamingNtnConnectType: Checking connect type from PLMN config for subId: 1
+06-08 16:29:32.272  1155  1288 D TelephonyConfigUpdateInstallReceiver: getConfigParser: domain=satellite
+06-08 16:29:32.272  1155  1288 V SatelliteController: satelliteConfigParser is not ready
+06-08 16:29:32.272  1155  1288 D SatelliteController: isSatelliteAttachSupportedViaConfigupdater: return null (satelliteConfig is null)
+06-08 16:29:32.272  1155  1288 D SatelliteController: getSatellitePerPlmnConfiguration: invalid subId or not supported via carrier.
+06-08 16:29:32.272  1155  1288 D SatelliteController: getCarrierRoamingNtnConnectType: config: null
+06-08 16:29:32.272  1155  1288 D TelephonyConfigUpdateInstallReceiver: getConfigParser: domain=satellite
+06-08 16:29:32.272  1155  1288 V SatelliteController: satelliteConfigParser is not ready
+06-08 16:29:32.272  1155  1288 D SatelliteController: getCarrierRoamingNtnConnectTypeViaConfigUpdater: return null (satelliteConfig is null)
+06-08 16:29:32.272  1155  1288 D SatelliteController: getCarrierRoamingNtnConnectType: Falling back to global carrier config connect type: 0
+06-08 16:29:32.272  1155  1288 D TelephonyConfigUpdateInstallReceiver: getConfigParser: domain=satellite
+06-08 16:29:32.272  1155  1288 V SatelliteController: satelliteConfigParser is not ready
+06-08 16:29:32.272  1155  1288 D SatelliteController: isSatelliteAttachSupportedViaConfigupdater: return null (satelliteConfig is null)
+06-08 16:29:32.298   526   544 W skia    : AGTM parsing failed flags.readFromStream(s) at 159
+06-08 16:29:35.098   695   888 I HalDevMgr: bestIfaceCreationProposal is null, requestIface=STA, existingIface=[name=wlan0 type=STA]
+06-08 16:29:35.316   986   986 I wpa_supplicant: wlan0: CTRL-EVENT-BEACON-LOSS
+06-08 16:29:35.378   539   539 I adbd    : adbd service requested 'shell,v2:export ANDROID_LOG_TAGS=''; exec logcat '-d' '-t' '300''

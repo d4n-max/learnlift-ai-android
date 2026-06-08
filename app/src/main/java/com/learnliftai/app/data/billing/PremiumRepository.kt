@@ -21,7 +21,7 @@ class PremiumRepository(
             PremiumUiState(
                 isRevenueCatConfigured = false,
                 productsUnavailable = true,
-                message = "Premium products are not available yet."
+                message = "Premium status could not be refreshed right now."
             )
         }
     }

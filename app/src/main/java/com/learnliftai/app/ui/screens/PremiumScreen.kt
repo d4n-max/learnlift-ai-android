@@ -80,12 +80,13 @@ fun PremiumScreen(
             selectedPackage = selectedPackage,
             onPackageSelected = { selectedPackageId = it.id }
         )
+        PremiumTrustSupport(premiumUiState = premiumUiState)
         BillingNotice(premiumUiState = premiumUiState)
         PrimaryActionButton(
             text = when {
                 premiumUiState.isPremiumActive -> "Premium active"
                 premiumUiState.isPurchasing -> "Starting purchase..."
-                selectedPackage.revenueCatPackage == null -> "Products unavailable"
+                selectedPackage.revenueCatPackage == null -> "Plans unavailable"
                 else -> "Start Premium"
             },
             onClick = {
@@ -127,7 +128,7 @@ private fun PremiumHero(isPremiumActive: Boolean) {
         )
         Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
         Text(
-            text = "Get AI Quiz Review, a 7-day AI Study Plan, Premium Study Packs, and higher AI limits.",
+            text = "Get more AI help, Premium Study Packs, and smarter practice support.",
             color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.86f),
             style = MaterialTheme.typography.bodyLarge
         )
@@ -179,13 +180,13 @@ private fun PremiumBenefits() {
         Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
         PremiumBenefitRow("More AI Coach explanations")
         PremiumBenefitRow("AI Quiz Review")
-        PremiumBenefitRow("7-day AI Study Plan")
+        PremiumBenefitRow("7-day AI Study Plans")
         PremiumBenefitRow("Higher AI daily limits")
         PremiumBenefitRow("Premium Study Packs")
         PremiumBenefitRow("Smart learning support")
         Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
         Text(
-            text = "Premium Study Packs",
+            text = "Premium Study Packs include",
             color = MaterialTheme.colorScheme.secondary,
             style = MaterialTheme.typography.labelLarge,
             fontWeight = FontWeight.Bold
@@ -194,6 +195,10 @@ private fun PremiumBenefits() {
         PremiumBenefitRow("SQL Interview Prep")
         PremiumBenefitRow("QA Advanced")
         PremiumBenefitRow("Automation Testing Basics")
+        PremiumBenefitRow("Python Basics (coming soon)")
+        PremiumBenefitRow("JavaScript Basics (coming soon)")
+        PremiumBenefitRow("Business English (coming soon)")
+        PremiumBenefitRow("Technical Interview Prep (coming soon)")
         Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
         Text(
             text = "Coming soon",
@@ -202,10 +207,9 @@ private fun PremiumBenefits() {
             fontWeight = FontWeight.Bold
         )
         Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
-        PremiumBenefitRow("Python Basics")
-        PremiumBenefitRow("JavaScript Basics")
-        PremiumBenefitRow("Business English")
-        PremiumBenefitRow("Technical Interview Prep")
+        PremiumBenefitRow("Advanced progress insights")
+        PremiumBenefitRow("More premium study paths")
+        PremiumBenefitRow("Deeper weak-topic coaching")
     }
 }
 
@@ -218,9 +222,9 @@ private fun PricingOptions(
     SectionHeader(
         title = "Choose a plan",
         subtitle = if (premiumUiState.productsUnavailable) {
-            "RevenueCat products are not available yet. Placeholder prices are shown."
+            "Premium plans are temporarily unavailable. Please try again later."
         } else {
-            "Prices are loaded from RevenueCat."
+            "Localized prices are loaded from RevenueCat when available."
         }
     )
     Column(
@@ -236,6 +240,35 @@ private fun PricingOptions(
             isSelected = selectedPackage.id == premiumUiState.yearlyPackage.id,
             badgeText = "Best value",
             onClick = { onPackageSelected(premiumUiState.yearlyPackage) }
+        )
+    }
+}
+
+@Composable
+private fun PremiumTrustSupport(premiumUiState: PremiumUiState) {
+    LearnLiftCard {
+        Text(
+            text = "Trust and support",
+            color = MaterialTheme.colorScheme.primary,
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+        Text(
+            text = "Cancel anytime through Google Play. Restore purchases if you already subscribed.",
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.76f),
+            style = MaterialTheme.typography.bodyMedium
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+        Text(
+            text = if (premiumUiState.isPremiumActive) {
+                "Premium benefits are active on this device."
+            } else {
+                "Your free learning tools stay available."
+            },
+            color = MaterialTheme.colorScheme.secondary,
+            style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.SemiBold
         )
     }
 }
@@ -304,7 +337,7 @@ private fun BillingNotice(premiumUiState: PremiumUiState) {
             text = if (premiumUiState.isRevenueCatConfigured) {
                 "Purchases are handled by Google Play through RevenueCat"
             } else {
-                "Premium products are not available yet"
+                "Premium plans are temporarily unavailable"
             },
             color = MaterialTheme.colorScheme.onPrimaryContainer,
             style = MaterialTheme.typography.titleMedium,
@@ -313,9 +346,9 @@ private fun BillingNotice(premiumUiState: PremiumUiState) {
         Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
         Text(
             text = if (premiumUiState.isRevenueCatConfigured) {
-                "Real Google Play prices appear when products are mapped in RevenueCat. If packages are unavailable, placeholder prices are shown and purchases stay disabled."
+                "Real Google Play prices appear when products are mapped in RevenueCat. If packages are unavailable, purchases stay disabled."
             } else {
-                "Add a RevenueCat public API key for local or Play testing. The app remains usable in Free mode."
+                "Premium status could not be refreshed right now. The app remains usable in Free mode."
             },
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             style = MaterialTheme.typography.bodyMedium

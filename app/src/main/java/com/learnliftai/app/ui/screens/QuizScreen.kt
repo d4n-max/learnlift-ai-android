@@ -443,7 +443,10 @@ private fun QuizQuestionCard(
                     localExplanation = question.explanation,
                     showUpgradeAction = aiExplanationLimitReached && !isPremiumActive,
                     onRetry = requestAiExplanation,
-                    onViewPremium = onViewPremium
+                    onViewPremium = onViewPremium,
+                    onContinueLocal = {
+                        aiExplanationState = AiCoachUiState.Idle
+                    }
                 )
                 LocalExplanationBlock(explanation = question.explanation)
             }
@@ -679,7 +682,8 @@ private fun AiExplainAnswerResult(
     localExplanation: String,
     showUpgradeAction: Boolean,
     onRetry: () -> Unit,
-    onViewPremium: () -> Unit
+    onViewPremium: () -> Unit,
+    onContinueLocal: () -> Unit
 ) {
     when (state) {
         AiCoachUiState.Idle -> Unit
@@ -736,6 +740,11 @@ private fun AiExplainAnswerResult(
                     PrimaryActionButton(
                         text = "View Premium",
                         onClick = onViewPremium
+                    )
+                    Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+                    SecondaryActionButton(
+                        text = "Continue with local explanation",
+                        onClick = onContinueLocal
                     )
                 } else {
                     SecondaryActionButton(
@@ -877,7 +886,11 @@ private fun AiQuizSummarySection(
         )
         Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
         Text(
-            text = "Optional AI help. Uses only this quiz score and missed topics.",
+            text = if (isPremiumActive) {
+                "Generate deeper feedback, recommended focus areas, and next-session suggestions."
+            } else {
+                "AI Study Review is part of Premium. Get deeper feedback, recommended focus areas, and next-session suggestions."
+            },
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.76f),
             style = MaterialTheme.typography.bodyMedium
         )
@@ -889,12 +902,18 @@ private fun AiQuizSummarySection(
         )
         Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
         SecondaryActionButton(
-            text = if (state is AiCoachUiState.Loading) {
-                "Generating your AI study review..."
-            } else {
-                "Generate AI Study Review"
+            text = when {
+                state is AiCoachUiState.Loading -> "Generating your AI study review..."
+                !isPremiumActive && usageState.remainingFor(AiUsageAction.QuizSummary, isPremium = false) <= 0 -> "View Premium"
+                else -> "Generate AI Study Review"
             },
-            onClick = onGenerate,
+            onClick = {
+                if (!isPremiumActive && usageState.remainingFor(AiUsageAction.QuizSummary, isPremium = false) <= 0) {
+                    onViewPremium()
+                } else {
+                    onGenerate()
+                }
+            },
             enabled = state !is AiCoachUiState.Loading
         )
         when (state) {

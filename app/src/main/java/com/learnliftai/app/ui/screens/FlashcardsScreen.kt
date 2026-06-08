@@ -50,6 +50,8 @@ fun FlashcardsScreen(
     onFlashcardReviewed: (reviewedDelta: Int, knownDelta: Int, needsReviewDelta: Int) -> Unit,
     onFlashcardTopicReviewed: (flashcard: Flashcard, markedKnown: Boolean) -> Unit,
     onContinueAllFlashcards: () -> Unit,
+    onViewPremium: () -> Unit,
+    onBackToStudyPaths: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val flashcards = selectedStudyContent?.flashcards.orEmpty()
@@ -108,6 +110,8 @@ fun FlashcardsScreen(
     val safeIndex = currentIndex.coerceIn(0, activeFlashcards.lastIndex)
     val currentFlashcard = activeFlashcards[safeIndex]
     val reviewedCount = (knownCardIds + needsReviewCardIds).size
+    val isPreviewMode = selectedStudyPath.isPremium && selectedStudyPath.freePreviewCount > 0 &&
+        flashcards.size <= selectedStudyPath.freePreviewCount
 
     Column(
         modifier = modifier
@@ -120,18 +124,14 @@ fun FlashcardsScreen(
             title = if (flashcardMode == FlashcardMode.SmartReview) "Smart Review" else "Flashcards",
             subtitle = if (flashcardMode == FlashcardMode.SmartReview) {
                 "Due cards first for ${selectedStudyPath.title}"
-            } else if (selectedStudyPath.isPremium && selectedStudyPath.freePreviewCount > 0 &&
-                flashcards.size <= selectedStudyPath.freePreviewCount
-            ) {
+            } else if (isPreviewMode) {
                 "${selectedStudyPath.title} preview mode"
             } else {
                 selectedStudyPath.title
             }
         )
 
-        if (selectedStudyPath.isPremium && selectedStudyPath.freePreviewCount > 0 &&
-            flashcards.size <= selectedStudyPath.freePreviewCount
-        ) {
+        if (isPreviewMode) {
             LearnLiftCard(
                 borderColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.28f),
                 containerColor = MaterialTheme.colorScheme.primaryContainer
@@ -214,10 +214,51 @@ fun FlashcardsScreen(
             }
         )
 
+        if (isPreviewMode && safeIndex == activeFlashcards.lastIndex) {
+            PreviewLimitCard(
+                onViewPremium = onViewPremium,
+                onBackToStudyPaths = onBackToStudyPaths
+            )
+        }
+
         FlashcardSessionStats(
             reviewedCount = reviewedCount,
             knownCount = knownCardIds.size,
             needsReviewCount = needsReviewCardIds.size
+        )
+    }
+}
+
+@Composable
+private fun PreviewLimitCard(
+    onViewPremium: () -> Unit,
+    onBackToStudyPaths: () -> Unit
+) {
+    LearnLiftCard(
+        borderColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.28f),
+        containerColor = MaterialTheme.colorScheme.primaryContainer
+    ) {
+        Text(
+            text = "Preview limit reached",
+            color = MaterialTheme.colorScheme.primary,
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+        Text(
+            text = "You've reached the free preview limit for this pack. Unlock Premium to continue.",
+            color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.82f),
+            style = MaterialTheme.typography.bodyMedium
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
+        PrimaryActionButton(
+            text = "View Premium",
+            onClick = onViewPremium
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+        SecondaryActionButton(
+            text = "Back to Study Paths",
+            onClick = onBackToStudyPaths
         )
     }
 }

@@ -324,7 +324,7 @@ private fun PremiumSettingsSection(
         Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
         Text(
             text = if (premiumUiState.entitlement == PremiumEntitlement.Premium) {
-                "Premium is active. You have higher daily AI Coach limits and access to Premium-ready study tools."
+                "Premium is active. You have higher AI Coach limits, AI Study Review, 7-day plans, and Premium Study Packs."
             } else {
                 "Free plan includes flashcards, quizzes, daily sessions, progress, Smart Coach, and limited AI previews."
             },
@@ -350,7 +350,11 @@ private fun PremiumSettingsSection(
         if (premiumUiState.message != null) {
             Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
             Text(
-                text = premiumUiState.message,
+                text = if (premiumUiState.productsUnavailable) {
+                    "Premium status could not be refreshed right now."
+                } else {
+                    premiumUiState.message
+                },
                 color = MaterialTheme.colorScheme.secondary,
                 style = MaterialTheme.typography.bodySmall,
                 fontWeight = FontWeight.SemiBold
@@ -364,12 +368,12 @@ private fun PremiumSettingsSection(
             PremiumPlanStatus.PremiumComingSoon.label
         },
         description = if (premiumUiState.isPremiumActive) {
-            "More AI help is active now. Advanced insights and premium study packs are coming soon."
+            "More AI help, AI Study Review, 7-day plans, and Premium Study Packs are active."
         } else {
-            "Upgrade for more AI help each day. Advanced insights and premium study packs are coming soon."
+            "Upgrade for higher AI Coach limits, AI Study Review, 7-day plans, and Premium Study Packs."
         },
         label = if (premiumUiState.isPremiumActive) "Active" else "Premium",
-        actionText = "View Premium benefits",
+        actionText = "View Premium",
         onActionClick = onViewPremium
     )
     SecondaryActionButton(

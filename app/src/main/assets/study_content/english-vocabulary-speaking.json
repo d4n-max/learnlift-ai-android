@@ -252,8 +252,8 @@
     {
       "id": "eng-fc-032",
       "pathId": "english-vocabulary-speaking",
-      "question": "What does \"deadline\" mean?",
-      "answer": "The latest time or date something must be finished.",
+      "question": "What does \"milestone\" mean?",
+      "answer": "A milestone is an important checkpoint or achievement in a project, such as finishing the first version of a feature.",
       "topic": "workplace English",
       "difficulty": "easy"
     },
@@ -287,7 +287,7 @@
       "question": "What is a professional way to ask for clarification?",
       "answer": "Could you clarify what you mean by that?",
       "topic": "polite professional phrases",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "eng-fc-037",
@@ -303,7 +303,7 @@
       "question": "What is a professional way to ask about priorities?",
       "answer": "Which task should I prioritize first?",
       "topic": "polite professional phrases",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "eng-fc-039",
@@ -327,7 +327,7 @@
       "question": "What is a professional way to politely disagree?",
       "answer": "I see your point, but I have a different perspective.",
       "topic": "polite professional phrases",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "eng-fc-042",
@@ -367,7 +367,7 @@
       "question": "What is a professional way to describe experience?",
       "answer": "I have experience with customer support, scheduling, and clear communication.",
       "topic": "interview phrases",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "eng-fc-047",
@@ -399,7 +399,7 @@
       "question": "What is a professional way to describe problem solving?",
       "answer": "I try to understand the root cause before choosing a solution.",
       "topic": "interview phrases",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "eng-fc-051",
@@ -407,7 +407,7 @@
       "question": "What is a professional way to describe career goals?",
       "answer": "I want to grow in a role where I can keep learning and contribute consistently.",
       "topic": "interview phrases",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "eng-fc-052",
@@ -439,7 +439,7 @@
       "question": "What is a professional way to say you missed a detail?",
       "answer": "I missed that detail; I will check it now.",
       "topic": "short professional responses",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "eng-fc-056",
@@ -447,7 +447,7 @@
       "question": "What is a professional way to say no professionally?",
       "answer": "I cannot take that on right now, but I can suggest another option.",
       "topic": "short professional responses",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "eng-fc-057",
@@ -607,7 +607,7 @@
       "question": "What is correct: \"discuss about the plan\" or \"discuss the plan\"?",
       "answer": "Use \"discuss the plan.\"",
       "topic": "common grammar mistakes",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "eng-fc-077",
@@ -615,7 +615,7 @@
       "question": "What is correct: \"explain me\" or \"explain it to me\"?",
       "answer": "Use \"explain it to me.\"",
       "topic": "common grammar mistakes",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "eng-fc-078",
@@ -631,7 +631,7 @@
       "question": "What is more natural than \"How is called this?\"",
       "answer": "What is this called?",
       "topic": "natural vs unnatural English",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "eng-fc-080",
@@ -639,7 +639,7 @@
       "question": "What is more natural than \"Can you give me an advice?\"",
       "answer": "Can you give me some advice?",
       "topic": "natural vs unnatural English",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "eng-fc-081",
@@ -862,7 +862,7 @@
       "correctAnswerId": "a",
       "explanation": "It is honest while showing responsibility.",
       "topic": "workplace English",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "eng-qz-008",
@@ -1078,7 +1078,7 @@
       "correctAnswerId": "a",
       "explanation": "A polite clarification request asks directly without blaming the other person.",
       "topic": "polite professional phrases",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "eng-qz-016",
@@ -1186,7 +1186,7 @@
       "correctAnswerId": "a",
       "explanation": "The natural question order is \"What is this called?\"",
       "topic": "natural vs unnatural English",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "eng-qz-020",
@@ -1402,7 +1402,7 @@
       "correctAnswerId": "a",
       "explanation": "It is honest and shows ownership.",
       "topic": "short professional responses",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "eng-qz-028",
@@ -1537,7 +1537,7 @@
       "correctAnswerId": "a",
       "explanation": "It acknowledges the other person before adding another view.",
       "topic": "polite professional phrases",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "eng-qz-033",
@@ -1618,7 +1618,7 @@
       "correctAnswerId": "a",
       "explanation": "It is honest and gives a responsible next action.",
       "topic": "short professional responses",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "eng-qz-036",
@@ -1834,7 +1834,7 @@
       "correctAnswerId": "a",
       "explanation": "Employers value people who learn and adapt.",
       "topic": "interview phrases",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "eng-qz-044",
@@ -2023,7 +2023,7 @@
       "correctAnswerId": "a",
       "explanation": "It sets a professional expectation.",
       "topic": "polite professional phrases",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "eng-qz-051",
@@ -2077,7 +2077,7 @@
       "correctAnswerId": "a",
       "explanation": "A clean ending uses an outcome or lesson.",
       "topic": "speaking confidence",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "eng-qz-053",

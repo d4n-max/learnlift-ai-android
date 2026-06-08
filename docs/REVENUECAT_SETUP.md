@@ -83,7 +83,7 @@ The app displays localized package prices returned by RevenueCat. If RevenueCat 
 - `learnlift_premium_monthly`
 - `learnlift_premium_yearly`
 
-If offerings or packages are unavailable, the app falls back to placeholder prices `Monthly €3.99 / month` and `Yearly €24.99 / year` and disables purchase CTA until a RevenueCat package is available.
+If offerings or packages are unavailable, the app falls back to placeholder prices `Monthly €3.99 / month` and `Yearly €24.99 / year`, shows `Premium plans are temporarily unavailable. Please try again later.`, and disables purchase CTA until a RevenueCat package is available.
 
 The paywall marks Yearly as `Best value` while keeping Monthly visible and selectable. RevenueCat localized prices always take priority over placeholders when packages are available.
 

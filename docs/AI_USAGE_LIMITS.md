@@ -63,7 +63,7 @@ No account login, backend database, analytics, or cloud sync is used for this fe
 Free limit reached:
 
 ```text
-You've used today's free AI previews. Upgrade to Premium for more AI help, or continue with local study tools.
+You've used today's free AI Coach previews. Upgrade to Premium for more AI help, or continue with local explanations.
 ```
 
 Premium limit reached:

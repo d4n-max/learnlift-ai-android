@@ -1,62 +1,922 @@
 {
   "pathId": "sql-interview-prep",
   "flashcards": [
-    {"id":"sql-fc-001","pathId":"sql-interview-prep","question":"What does SELECT do in SQL?","answer":"SELECT chooses the columns or expressions you want to return from a table or query result.","topic":"SELECT basics","difficulty":"easy"},
-    {"id":"sql-fc-002","pathId":"sql-interview-prep","question":"What does FROM do in a query?","answer":"FROM identifies the table or joined tables where SQL should read the data.","topic":"SELECT basics","difficulty":"easy"},
-    {"id":"sql-fc-003","pathId":"sql-interview-prep","question":"What is the purpose of WHERE?","answer":"WHERE filters rows before grouping or final output, keeping only rows that match a condition.","topic":"WHERE filtering","difficulty":"easy"},
-    {"id":"sql-fc-004","pathId":"sql-interview-prep","question":"How do you filter rows where status equals active?","answer":"Use a WHERE condition such as WHERE status = 'active'. Text values are usually wrapped in quotes.","topic":"WHERE filtering","difficulty":"easy"},
-    {"id":"sql-fc-005","pathId":"sql-interview-prep","question":"What does ORDER BY do?","answer":"ORDER BY sorts the result rows by one or more columns or expressions.","topic":"ORDER BY","difficulty":"easy"},
-    {"id":"sql-fc-006","pathId":"sql-interview-prep","question":"What is the default sort direction for ORDER BY in many SQL databases?","answer":"Ascending order is usually the default, but writing ASC or DESC makes the intent clearer.","topic":"ORDER BY","difficulty":"easy"},
-    {"id":"sql-fc-007","pathId":"sql-interview-prep","question":"What does GROUP BY do?","answer":"GROUP BY combines rows into groups so aggregate functions can calculate one result per group.","topic":"GROUP BY","difficulty":"medium"},
-    {"id":"sql-fc-008","pathId":"sql-interview-prep","question":"When do you use HAVING instead of WHERE?","answer":"Use HAVING to filter grouped results, especially conditions based on aggregate values such as COUNT or SUM.","topic":"HAVING","difficulty":"medium"},
-    {"id":"sql-fc-009","pathId":"sql-interview-prep","question":"What does COUNT(*) return?","answer":"COUNT(*) returns the number of rows in a group or result set, including rows with NULL values.","topic":"aggregate functions","difficulty":"easy"},
-    {"id":"sql-fc-010","pathId":"sql-interview-prep","question":"What does AVG calculate?","answer":"AVG calculates the average of numeric values, generally ignoring NULL values.","topic":"aggregate functions","difficulty":"easy"},
-    {"id":"sql-fc-011","pathId":"sql-interview-prep","question":"What is an INNER JOIN?","answer":"An INNER JOIN returns rows only when matching values exist in both joined tables.","topic":"JOIN basics","difficulty":"medium"},
-    {"id":"sql-fc-012","pathId":"sql-interview-prep","question":"What is a LEFT JOIN?","answer":"A LEFT JOIN returns all rows from the left table and matching rows from the right table when available.","topic":"INNER JOIN vs LEFT JOIN","difficulty":"medium"},
-    {"id":"sql-fc-013","pathId":"sql-interview-prep","question":"How is LEFT JOIN different from INNER JOIN?","answer":"INNER JOIN keeps only matches from both tables. LEFT JOIN keeps every left-table row even when the right side has no match.","topic":"INNER JOIN vs LEFT JOIN","difficulty":"medium"},
-    {"id":"sql-fc-014","pathId":"sql-interview-prep","question":"What happens to right-table columns when a LEFT JOIN has no match?","answer":"The right-table columns appear as NULL for that row.","topic":"NULL handling","difficulty":"medium"},
-    {"id":"sql-fc-015","pathId":"sql-interview-prep","question":"Why should you not compare NULL with = NULL?","answer":"NULL means unknown or missing, so comparisons use IS NULL or IS NOT NULL instead of = NULL.","topic":"NULL handling","difficulty":"medium"},
-    {"id":"sql-fc-016","pathId":"sql-interview-prep","question":"What is a primary key?","answer":"A primary key uniquely identifies each row in a table and should not be duplicated within that table.","topic":"primary key / foreign key","difficulty":"easy"},
-    {"id":"sql-fc-017","pathId":"sql-interview-prep","question":"What is a foreign key?","answer":"A foreign key is a column or set of columns that references a key in another table to represent a relationship.","topic":"primary key / foreign key","difficulty":"easy"},
-    {"id":"sql-fc-018","pathId":"sql-interview-prep","question":"What is the basic idea of an index?","answer":"An index is a data structure that can help the database find rows faster, often with extra storage and write cost.","topic":"indexes basic idea","difficulty":"medium"},
-    {"id":"sql-fc-019","pathId":"sql-interview-prep","question":"Why can indexes make writes slower?","answer":"When rows are inserted, updated, or deleted, the database may also need to update related indexes.","topic":"indexes basic idea","difficulty":"medium"},
-    {"id":"sql-fc-020","pathId":"sql-interview-prep","question":"What is a common query-thinking step in interviews?","answer":"Identify the source tables, join keys, filters, grouping, and final columns before writing the full query.","topic":"interview-style query thinking","difficulty":"medium"},
-    {"id":"sql-fc-021","pathId":"sql-interview-prep","question":"What does DISTINCT do?","answer":"DISTINCT removes duplicate rows from the selected result columns.","topic":"SELECT basics","difficulty":"easy"},
-    {"id":"sql-fc-022","pathId":"sql-interview-prep","question":"What is the difference between WHERE and ORDER BY?","answer":"WHERE filters which rows are included. ORDER BY controls the display order of rows after the result is formed.","topic":"WHERE filtering","difficulty":"easy"},
-    {"id":"sql-fc-023","pathId":"sql-interview-prep","question":"Can GROUP BY use more than one column?","answer":"Yes. Grouping by multiple columns creates groups for each unique combination of those column values.","topic":"GROUP BY","difficulty":"medium"},
-    {"id":"sql-fc-024","pathId":"sql-interview-prep","question":"What does SUM do?","answer":"SUM adds numeric values within a result set or group, generally ignoring NULL values.","topic":"aggregate functions","difficulty":"easy"},
-    {"id":"sql-fc-025","pathId":"sql-interview-prep","question":"Why are aliases useful in SQL?","answer":"Aliases make output columns or tables easier to read and can shorten join conditions in larger queries.","topic":"SELECT basics","difficulty":"easy"},
-    {"id":"sql-fc-026","pathId":"sql-interview-prep","question":"What does ON define in a JOIN?","answer":"ON defines the condition used to match rows between joined tables, commonly matching a foreign key to a primary key.","topic":"JOIN basics","difficulty":"medium"},
-    {"id":"sql-fc-027","pathId":"sql-interview-prep","question":"How can you find customers with no orders?","answer":"Use customers LEFT JOIN orders, then filter where an order-side identifier IS NULL.","topic":"INNER JOIN vs LEFT JOIN","difficulty":"medium"},
-    {"id":"sql-fc-028","pathId":"sql-interview-prep","question":"Why can COUNT(column) differ from COUNT(*)?","answer":"COUNT(column) counts non-NULL values in that column, while COUNT(*) counts rows.","topic":"NULL handling","difficulty":"medium"},
-    {"id":"sql-fc-029","pathId":"sql-interview-prep","question":"What should you clarify before writing an interview SQL query?","answer":"Clarify table relationships, duplicate handling, date ranges, missing data, and expected output columns.","topic":"interview-style query thinking","difficulty":"medium"},
-    {"id":"sql-fc-030","pathId":"sql-interview-prep","question":"What is a safe way to read a SQL interview prompt?","answer":"Break it into entities, relationships, filters, metrics, grouping, and sorting before choosing syntax.","topic":"interview-style query thinking","difficulty":"medium"}
+    {
+      "id": "sql-fc-001",
+      "pathId": "sql-interview-prep",
+      "question": "What does SELECT do in SQL?",
+      "answer": "SELECT chooses the columns or expressions you want to return from a table or query result.",
+      "topic": "SELECT basics",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sql-fc-002",
+      "pathId": "sql-interview-prep",
+      "question": "What does FROM do in a query?",
+      "answer": "FROM identifies the table or joined tables where SQL should read the data.",
+      "topic": "SELECT basics",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sql-fc-003",
+      "pathId": "sql-interview-prep",
+      "question": "What is the purpose of WHERE?",
+      "answer": "WHERE filters rows before grouping or final output, keeping only rows that match a condition.",
+      "topic": "WHERE filtering",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sql-fc-004",
+      "pathId": "sql-interview-prep",
+      "question": "How do you filter rows where status equals active?",
+      "answer": "Use a WHERE condition such as WHERE status = 'active'. Text values are usually wrapped in quotes.",
+      "topic": "WHERE filtering",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sql-fc-005",
+      "pathId": "sql-interview-prep",
+      "question": "What is a subquery?",
+      "answer": "A subquery is a query nested inside another query, often used to filter, calculate, or compare values from another result.",
+      "topic": "subqueries",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sql-fc-006",
+      "pathId": "sql-interview-prep",
+      "question": "What is a CTE?",
+      "answer": "A common table expression, or CTE, names a temporary query result with WITH so a larger query can be easier to read.",
+      "topic": "CTEs",
+      "difficulty": "hard"
+    },
+    {
+      "id": "sql-fc-007",
+      "pathId": "sql-interview-prep",
+      "question": "What does GROUP BY do?",
+      "answer": "GROUP BY combines rows into groups so aggregate functions can calculate one result per group.",
+      "topic": "GROUP BY",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sql-fc-008",
+      "pathId": "sql-interview-prep",
+      "question": "When do you use HAVING instead of WHERE?",
+      "answer": "Use HAVING to filter grouped results, especially conditions based on aggregate values such as COUNT or SUM.",
+      "topic": "HAVING",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sql-fc-009",
+      "pathId": "sql-interview-prep",
+      "question": "What does COUNT(*) return?",
+      "answer": "COUNT(*) returns the number of rows in a group or result set, including rows with NULL values.",
+      "topic": "aggregate functions",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sql-fc-010",
+      "pathId": "sql-interview-prep",
+      "question": "What does AVG calculate?",
+      "answer": "AVG calculates the average of numeric values, generally ignoring NULL values.",
+      "topic": "aggregate functions",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sql-fc-011",
+      "pathId": "sql-interview-prep",
+      "question": "What is an INNER JOIN?",
+      "answer": "An INNER JOIN returns rows only when matching values exist in both joined tables.",
+      "topic": "JOIN basics",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sql-fc-012",
+      "pathId": "sql-interview-prep",
+      "question": "What is a LEFT JOIN?",
+      "answer": "A LEFT JOIN returns all rows from the left table and matching rows from the right table when available.",
+      "topic": "INNER JOIN vs LEFT JOIN",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sql-fc-013",
+      "pathId": "sql-interview-prep",
+      "question": "How is LEFT JOIN different from INNER JOIN?",
+      "answer": "INNER JOIN keeps only matches from both tables. LEFT JOIN keeps every left-table row even when the right side has no match.",
+      "topic": "INNER JOIN vs LEFT JOIN",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sql-fc-014",
+      "pathId": "sql-interview-prep",
+      "question": "What happens to right-table columns when a LEFT JOIN has no match?",
+      "answer": "The right-table columns appear as NULL for that row.",
+      "topic": "NULL handling",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sql-fc-015",
+      "pathId": "sql-interview-prep",
+      "question": "Why should you not compare NULL with = NULL?",
+      "answer": "NULL means unknown or missing, so comparisons use IS NULL or IS NOT NULL instead of = NULL.",
+      "topic": "NULL handling",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sql-fc-016",
+      "pathId": "sql-interview-prep",
+      "question": "What is a primary key?",
+      "answer": "A primary key uniquely identifies each row in a table and should not be duplicated within that table.",
+      "topic": "primary key / foreign key",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sql-fc-017",
+      "pathId": "sql-interview-prep",
+      "question": "What is a foreign key?",
+      "answer": "A foreign key is a column or set of columns that references a key in another table to represent a relationship.",
+      "topic": "primary key / foreign key",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sql-fc-018",
+      "pathId": "sql-interview-prep",
+      "question": "What is the basic idea of an index?",
+      "answer": "An index is a data structure that can help the database find rows faster, often with extra storage and write cost.",
+      "topic": "indexes basic idea",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sql-fc-019",
+      "pathId": "sql-interview-prep",
+      "question": "Why can indexes make writes slower?",
+      "answer": "When rows are inserted, updated, or deleted, the database may also need to update related indexes.",
+      "topic": "indexes basic idea",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sql-fc-020",
+      "pathId": "sql-interview-prep",
+      "question": "What is a common query-thinking step in interviews?",
+      "answer": "Identify the source tables, join keys, filters, grouping, and final columns before writing the full query.",
+      "topic": "interview-style query thinking",
+      "difficulty": "hard"
+    },
+    {
+      "id": "sql-fc-021",
+      "pathId": "sql-interview-prep",
+      "question": "What does DISTINCT do?",
+      "answer": "DISTINCT removes duplicate rows from the selected result columns.",
+      "topic": "SELECT basics",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sql-fc-022",
+      "pathId": "sql-interview-prep",
+      "question": "What is the difference between WHERE and ORDER BY?",
+      "answer": "WHERE filters which rows are included. ORDER BY controls the display order of rows after the result is formed.",
+      "topic": "WHERE filtering",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sql-fc-023",
+      "pathId": "sql-interview-prep",
+      "question": "Can GROUP BY use more than one column?",
+      "answer": "Yes. Grouping by multiple columns creates groups for each unique combination of those column values.",
+      "topic": "GROUP BY",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sql-fc-024",
+      "pathId": "sql-interview-prep",
+      "question": "What does SUM do?",
+      "answer": "SUM adds numeric values within a result set or group, generally ignoring NULL values.",
+      "topic": "aggregate functions",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sql-fc-025",
+      "pathId": "sql-interview-prep",
+      "question": "What is a UNIQUE constraint?",
+      "answer": "A UNIQUE constraint prevents duplicate values in one column or a combination of columns, while still allowing database-specific NULL behavior.",
+      "topic": "constraints",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sql-fc-026",
+      "pathId": "sql-interview-prep",
+      "question": "What does ON define in a JOIN?",
+      "answer": "ON defines the condition used to match rows between joined tables, commonly matching a foreign key to a primary key.",
+      "topic": "JOIN basics",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sql-fc-027",
+      "pathId": "sql-interview-prep",
+      "question": "How can you find customers with no orders?",
+      "answer": "Use customers LEFT JOIN orders, then filter where an order-side identifier IS NULL.",
+      "topic": "INNER JOIN vs LEFT JOIN",
+      "difficulty": "hard"
+    },
+    {
+      "id": "sql-fc-028",
+      "pathId": "sql-interview-prep",
+      "question": "Why can COUNT(column) differ from COUNT(*)?",
+      "answer": "COUNT(column) counts non-NULL values in that column, while COUNT(*) counts rows.",
+      "topic": "NULL handling",
+      "difficulty": "hard"
+    },
+    {
+      "id": "sql-fc-029",
+      "pathId": "sql-interview-prep",
+      "question": "What should you clarify before writing an interview SQL query?",
+      "answer": "Clarify table relationships, duplicate handling, date ranges, missing data, and expected output columns.",
+      "topic": "interview-style query thinking",
+      "difficulty": "hard"
+    },
+    {
+      "id": "sql-fc-030",
+      "pathId": "sql-interview-prep",
+      "question": "What is a safe way to read a SQL interview prompt?",
+      "answer": "Break it into entities, relationships, filters, metrics, grouping, and sorting before choosing syntax.",
+      "topic": "interview-style query thinking",
+      "difficulty": "hard"
+    }
   ],
   "quizQuestions": [
-    {"id":"sql-qz-001","pathId":"sql-interview-prep","question":"Which clause chooses the columns returned by a query?","options":[{"id":"a","text":"SELECT"},{"id":"b","text":"WHERE"},{"id":"c","text":"ORDER BY"},{"id":"d","text":"HAVING"}],"correctAnswerId":"a","explanation":"SELECT lists the columns or expressions returned by the query.","topic":"SELECT basics","difficulty":"easy"},
-    {"id":"sql-qz-002","pathId":"sql-interview-prep","question":"Which clause filters rows before grouping?","options":[{"id":"a","text":"ORDER BY"},{"id":"b","text":"WHERE"},{"id":"c","text":"LIMIT"},{"id":"d","text":"SELECT"}],"correctAnswerId":"b","explanation":"WHERE filters source rows before grouped results are calculated.","topic":"WHERE filtering","difficulty":"easy"},
-    {"id":"sql-qz-003","pathId":"sql-interview-prep","question":"Which keyword sorts highest values first?","options":[{"id":"a","text":"ASC"},{"id":"b","text":"DESC"},{"id":"c","text":"DISTINCT"},{"id":"d","text":"GROUP"}],"correctAnswerId":"b","explanation":"DESC sorts in descending order, such as highest to lowest for numbers.","topic":"ORDER BY","difficulty":"easy"},
-    {"id":"sql-qz-004","pathId":"sql-interview-prep","question":"What is GROUP BY mainly used for?","options":[{"id":"a","text":"Renaming tables"},{"id":"b","text":"Combining rows into groups for aggregates"},{"id":"c","text":"Deleting duplicates permanently"},{"id":"d","text":"Creating indexes"}],"correctAnswerId":"b","explanation":"GROUP BY creates groups so functions like COUNT, SUM, and AVG can return values per group.","topic":"GROUP BY","difficulty":"medium"},
-    {"id":"sql-qz-005","pathId":"sql-interview-prep","question":"When should HAVING be used?","options":[{"id":"a","text":"To filter aggregate results after grouping"},{"id":"b","text":"To sort rows alphabetically"},{"id":"c","text":"To select a database"},{"id":"d","text":"To define a primary key"}],"correctAnswerId":"a","explanation":"HAVING is used for conditions on grouped results, including aggregate conditions.","topic":"HAVING","difficulty":"medium"},
-    {"id":"sql-qz-006","pathId":"sql-interview-prep","question":"Which join keeps only rows with matches in both tables?","options":[{"id":"a","text":"LEFT JOIN"},{"id":"b","text":"INNER JOIN"},{"id":"c","text":"FULL JOIN"},{"id":"d","text":"CROSS JOIN"}],"correctAnswerId":"b","explanation":"INNER JOIN returns rows where the join condition matches on both sides.","topic":"JOIN basics","difficulty":"medium"},
-    {"id":"sql-qz-007","pathId":"sql-interview-prep","question":"Which join keeps all rows from the left table?","options":[{"id":"a","text":"LEFT JOIN"},{"id":"b","text":"INNER JOIN"},{"id":"c","text":"WHERE JOIN"},{"id":"d","text":"ONLY JOIN"}],"correctAnswerId":"a","explanation":"LEFT JOIN preserves all left-table rows and adds matching right-table data when it exists.","topic":"INNER JOIN vs LEFT JOIN","difficulty":"medium"},
-    {"id":"sql-qz-008","pathId":"sql-interview-prep","question":"How should you test whether a column is NULL?","options":[{"id":"a","text":"column = NULL"},{"id":"b","text":"column IS NULL"},{"id":"c","text":"column LIKE NULL"},{"id":"d","text":"column HAS NULL"}],"correctAnswerId":"b","explanation":"SQL uses IS NULL and IS NOT NULL for null checks.","topic":"NULL handling","difficulty":"medium"},
-    {"id":"sql-qz-009","pathId":"sql-interview-prep","question":"What does COUNT(*) count?","options":[{"id":"a","text":"Only non-NULL values in one column"},{"id":"b","text":"Rows"},{"id":"c","text":"Tables"},{"id":"d","text":"Indexes"}],"correctAnswerId":"b","explanation":"COUNT(*) counts rows in the result or group.","topic":"aggregate functions","difficulty":"easy"},
-    {"id":"sql-qz-010","pathId":"sql-interview-prep","question":"What does a primary key do?","options":[{"id":"a","text":"Uniquely identifies rows in a table"},{"id":"b","text":"Sorts query results by default"},{"id":"c","text":"Stores only text values"},{"id":"d","text":"Filters duplicate queries"}],"correctAnswerId":"a","explanation":"A primary key identifies each row uniquely within a table.","topic":"primary key / foreign key","difficulty":"easy"},
-    {"id":"sql-qz-011","pathId":"sql-interview-prep","question":"What is a foreign key commonly used for?","options":[{"id":"a","text":"Connecting related tables"},{"id":"b","text":"Changing column names"},{"id":"c","text":"Sorting faster always"},{"id":"d","text":"Removing NULL values"}],"correctAnswerId":"a","explanation":"A foreign key references another table and represents a relationship.","topic":"primary key / foreign key","difficulty":"easy"},
-    {"id":"sql-qz-012","pathId":"sql-interview-prep","question":"What is a basic tradeoff of indexes?","options":[{"id":"a","text":"They can help reads but add storage and write maintenance"},{"id":"b","text":"They remove the need for WHERE"},{"id":"c","text":"They make every query correct"},{"id":"d","text":"They only work on text columns"}],"correctAnswerId":"a","explanation":"Indexes can speed lookup patterns but cost storage and must be maintained during writes.","topic":"indexes basic idea","difficulty":"medium"},
-    {"id":"sql-qz-013","pathId":"sql-interview-prep","question":"Which aggregate returns the average value?","options":[{"id":"a","text":"SUM"},{"id":"b","text":"AVG"},{"id":"c","text":"MAX"},{"id":"d","text":"COUNT"}],"correctAnswerId":"b","explanation":"AVG returns the mean of numeric values, usually ignoring NULLs.","topic":"aggregate functions","difficulty":"easy"},
-    {"id":"sql-qz-014","pathId":"sql-interview-prep","question":"What does DISTINCT remove from the result?","options":[{"id":"a","text":"Duplicate selected rows"},{"id":"b","text":"All NULL values"},{"id":"c","text":"Primary keys"},{"id":"d","text":"Join conditions"}],"correctAnswerId":"a","explanation":"DISTINCT returns unique rows for the selected columns.","topic":"SELECT basics","difficulty":"easy"},
-    {"id":"sql-qz-015","pathId":"sql-interview-prep","question":"In a LEFT JOIN with no matching right row, what appears for right-side columns?","options":[{"id":"a","text":"0"},{"id":"b","text":"Empty string"},{"id":"c","text":"NULL"},{"id":"d","text":"The left table value"}],"correctAnswerId":"c","explanation":"Missing right-side matches are represented as NULL values.","topic":"NULL handling","difficulty":"medium"},
-    {"id":"sql-qz-016","pathId":"sql-interview-prep","question":"Which clause usually defines how two tables match in a join?","options":[{"id":"a","text":"ON"},{"id":"b","text":"ORDER BY"},{"id":"c","text":"HAVING"},{"id":"d","text":"DISTINCT"}],"correctAnswerId":"a","explanation":"The ON clause defines the join condition.","topic":"JOIN basics","difficulty":"medium"},
-    {"id":"sql-qz-017","pathId":"sql-interview-prep","question":"To find customers without orders, which pattern is common?","options":[{"id":"a","text":"INNER JOIN then count all rows"},{"id":"b","text":"LEFT JOIN orders then filter order id IS NULL"},{"id":"c","text":"ORDER BY customer name only"},{"id":"d","text":"GROUP BY all columns always"}],"correctAnswerId":"b","explanation":"LEFT JOIN preserves customers and NULL order-side values reveal missing orders.","topic":"INNER JOIN vs LEFT JOIN","difficulty":"medium"},
-    {"id":"sql-qz-018","pathId":"sql-interview-prep","question":"Why can COUNT(email) be lower than COUNT(*)?","options":[{"id":"a","text":"COUNT(email) ignores NULL email values"},{"id":"b","text":"COUNT(*) ignores duplicate rows"},{"id":"c","text":"COUNT(email) only works with indexes"},{"id":"d","text":"COUNT(*) counts columns"}],"correctAnswerId":"a","explanation":"COUNT(column) counts non-NULL values in that column.","topic":"NULL handling","difficulty":"medium"},
-    {"id":"sql-qz-019","pathId":"sql-interview-prep","question":"Which query step is best before writing syntax in an interview?","options":[{"id":"a","text":"Guess the answer quickly"},{"id":"b","text":"Identify tables, joins, filters, grouping, and output"},{"id":"c","text":"Always start with HAVING"},{"id":"d","text":"Avoid asking clarifying questions"}],"correctAnswerId":"b","explanation":"Breaking the problem into parts helps avoid missing relationships or filters.","topic":"interview-style query thinking","difficulty":"medium"},
-    {"id":"sql-qz-020","pathId":"sql-interview-prep","question":"Which clause filters groups with COUNT(*) > 5?","options":[{"id":"a","text":"WHERE COUNT(*) > 5"},{"id":"b","text":"HAVING COUNT(*) > 5"},{"id":"c","text":"ORDER COUNT(*) > 5"},{"id":"d","text":"SELECT COUNT(*) > 5"}],"correctAnswerId":"b","explanation":"Aggregate conditions on grouped results belong in HAVING.","topic":"HAVING","difficulty":"medium"},
-    {"id":"sql-qz-021","pathId":"sql-interview-prep","question":"What does SUM(amount) calculate?","options":[{"id":"a","text":"The total of amount values"},{"id":"b","text":"The number of rows"},{"id":"c","text":"The smallest amount"},{"id":"d","text":"The newest amount"}],"correctAnswerId":"a","explanation":"SUM adds numeric values for a result or group.","topic":"aggregate functions","difficulty":"easy"},
-    {"id":"sql-qz-022","pathId":"sql-interview-prep","question":"What does an alias help with?","options":[{"id":"a","text":"Readability and shorter references"},{"id":"b","text":"Automatic security"},{"id":"c","text":"Deleting unused tables"},{"id":"d","text":"Replacing indexes"}],"correctAnswerId":"a","explanation":"Aliases can make column names clearer and table references shorter.","topic":"SELECT basics","difficulty":"easy"},
-    {"id":"sql-qz-023","pathId":"sql-interview-prep","question":"Can GROUP BY include multiple columns?","options":[{"id":"a","text":"Yes, it groups by each unique column combination"},{"id":"b","text":"No, only one column is allowed"},{"id":"c","text":"Only when there is no SELECT"},{"id":"d","text":"Only for text columns"}],"correctAnswerId":"a","explanation":"Multiple GROUP BY columns create groups for each unique combination.","topic":"GROUP BY","difficulty":"medium"},
-    {"id":"sql-qz-024","pathId":"sql-interview-prep","question":"What should you clarify about date filters in an interview query?","options":[{"id":"a","text":"The exact date range and inclusive or exclusive boundaries"},{"id":"b","text":"Only the table font"},{"id":"c","text":"Whether ORDER BY is forbidden"},{"id":"d","text":"The database logo"}],"correctAnswerId":"a","explanation":"Date ranges often cause mistakes, so boundaries should be clear.","topic":"interview-style query thinking","difficulty":"medium"},
-    {"id":"sql-qz-025","pathId":"sql-interview-prep","question":"Which statement about indexes is most accurate?","options":[{"id":"a","text":"They can help some access patterns but are not magic for every query"},{"id":"b","text":"They guarantee no bugs in SQL"},{"id":"c","text":"They replace primary keys"},{"id":"d","text":"They make NULL impossible"}],"correctAnswerId":"a","explanation":"Indexes are useful for specific lookup and ordering patterns, but query design still matters.","topic":"indexes basic idea","difficulty":"medium"}
+    {
+      "id": "sql-qz-001",
+      "pathId": "sql-interview-prep",
+      "question": "Which clause chooses the columns returned by a query?",
+      "options": [
+        {
+          "id": "a",
+          "text": "SELECT"
+        },
+        {
+          "id": "b",
+          "text": "WHERE"
+        },
+        {
+          "id": "c",
+          "text": "ORDER BY"
+        },
+        {
+          "id": "d",
+          "text": "HAVING"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "SELECT lists the columns or expressions returned by the query.",
+      "topic": "SELECT basics",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sql-qz-002",
+      "pathId": "sql-interview-prep",
+      "question": "Which clause filters rows before grouping?",
+      "options": [
+        {
+          "id": "a",
+          "text": "ORDER BY"
+        },
+        {
+          "id": "b",
+          "text": "WHERE"
+        },
+        {
+          "id": "c",
+          "text": "LIMIT"
+        },
+        {
+          "id": "d",
+          "text": "SELECT"
+        }
+      ],
+      "correctAnswerId": "b",
+      "explanation": "WHERE filters source rows before grouped results are calculated.",
+      "topic": "WHERE filtering",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sql-qz-003",
+      "pathId": "sql-interview-prep",
+      "question": "Which keyword sorts highest values first?",
+      "options": [
+        {
+          "id": "a",
+          "text": "ASC"
+        },
+        {
+          "id": "b",
+          "text": "DESC"
+        },
+        {
+          "id": "c",
+          "text": "DISTINCT"
+        },
+        {
+          "id": "d",
+          "text": "GROUP"
+        }
+      ],
+      "correctAnswerId": "b",
+      "explanation": "DESC sorts in descending order, such as highest to lowest for numbers.",
+      "topic": "ORDER BY",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sql-qz-004",
+      "pathId": "sql-interview-prep",
+      "question": "What is GROUP BY mainly used for?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Renaming tables"
+        },
+        {
+          "id": "b",
+          "text": "Combining rows into groups for aggregates"
+        },
+        {
+          "id": "c",
+          "text": "Deleting duplicates permanently"
+        },
+        {
+          "id": "d",
+          "text": "Creating indexes"
+        }
+      ],
+      "correctAnswerId": "b",
+      "explanation": "GROUP BY creates groups so functions like COUNT, SUM, and AVG can return values per group.",
+      "topic": "GROUP BY",
+      "difficulty": "hard"
+    },
+    {
+      "id": "sql-qz-005",
+      "pathId": "sql-interview-prep",
+      "question": "When should HAVING be used?",
+      "options": [
+        {
+          "id": "a",
+          "text": "To filter aggregate results after grouping"
+        },
+        {
+          "id": "b",
+          "text": "To sort rows alphabetically"
+        },
+        {
+          "id": "c",
+          "text": "To select a database"
+        },
+        {
+          "id": "d",
+          "text": "To define a primary key"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "HAVING is used for conditions on grouped results, including aggregate conditions.",
+      "topic": "HAVING",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sql-qz-006",
+      "pathId": "sql-interview-prep",
+      "question": "Which join keeps only rows with matches in both tables?",
+      "options": [
+        {
+          "id": "a",
+          "text": "LEFT JOIN"
+        },
+        {
+          "id": "b",
+          "text": "INNER JOIN"
+        },
+        {
+          "id": "c",
+          "text": "FULL JOIN"
+        },
+        {
+          "id": "d",
+          "text": "CROSS JOIN"
+        }
+      ],
+      "correctAnswerId": "b",
+      "explanation": "INNER JOIN returns rows where the join condition matches on both sides.",
+      "topic": "JOIN basics",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sql-qz-007",
+      "pathId": "sql-interview-prep",
+      "question": "Which join keeps all rows from the left table?",
+      "options": [
+        {
+          "id": "a",
+          "text": "LEFT JOIN"
+        },
+        {
+          "id": "b",
+          "text": "INNER JOIN"
+        },
+        {
+          "id": "c",
+          "text": "WHERE JOIN"
+        },
+        {
+          "id": "d",
+          "text": "ONLY JOIN"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "LEFT JOIN preserves all left-table rows and adds matching right-table data when it exists.",
+      "topic": "INNER JOIN vs LEFT JOIN",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sql-qz-008",
+      "pathId": "sql-interview-prep",
+      "question": "How should you test whether a column is NULL?",
+      "options": [
+        {
+          "id": "a",
+          "text": "column = NULL"
+        },
+        {
+          "id": "b",
+          "text": "column IS NULL"
+        },
+        {
+          "id": "c",
+          "text": "column LIKE NULL"
+        },
+        {
+          "id": "d",
+          "text": "column HAS NULL"
+        }
+      ],
+      "correctAnswerId": "b",
+      "explanation": "SQL uses IS NULL and IS NOT NULL for null checks.",
+      "topic": "NULL handling",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sql-qz-009",
+      "pathId": "sql-interview-prep",
+      "question": "What does COUNT(*) count?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Only non-NULL values in one column"
+        },
+        {
+          "id": "b",
+          "text": "Rows"
+        },
+        {
+          "id": "c",
+          "text": "Tables"
+        },
+        {
+          "id": "d",
+          "text": "Indexes"
+        }
+      ],
+      "correctAnswerId": "b",
+      "explanation": "COUNT(*) counts rows in the result or group.",
+      "topic": "aggregate functions",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sql-qz-010",
+      "pathId": "sql-interview-prep",
+      "question": "What does a primary key do?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Uniquely identifies rows in a table"
+        },
+        {
+          "id": "b",
+          "text": "Sorts query results by default"
+        },
+        {
+          "id": "c",
+          "text": "Stores only text values"
+        },
+        {
+          "id": "d",
+          "text": "Filters duplicate queries"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "A primary key identifies each row uniquely within a table.",
+      "topic": "primary key / foreign key",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sql-qz-011",
+      "pathId": "sql-interview-prep",
+      "question": "What is a foreign key commonly used for?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Connecting related tables"
+        },
+        {
+          "id": "b",
+          "text": "Changing column names"
+        },
+        {
+          "id": "c",
+          "text": "Sorting faster always"
+        },
+        {
+          "id": "d",
+          "text": "Removing NULL values"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "A foreign key references another table and represents a relationship.",
+      "topic": "primary key / foreign key",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sql-qz-012",
+      "pathId": "sql-interview-prep",
+      "question": "What is a basic tradeoff of indexes?",
+      "options": [
+        {
+          "id": "a",
+          "text": "They can help reads but add storage and write maintenance"
+        },
+        {
+          "id": "b",
+          "text": "They remove the need for WHERE"
+        },
+        {
+          "id": "c",
+          "text": "They make every query correct"
+        },
+        {
+          "id": "d",
+          "text": "They only work on text columns"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "Indexes can speed lookup patterns but cost storage and must be maintained during writes.",
+      "topic": "indexes basic idea",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sql-qz-013",
+      "pathId": "sql-interview-prep",
+      "question": "Which aggregate returns the average value?",
+      "options": [
+        {
+          "id": "a",
+          "text": "SUM"
+        },
+        {
+          "id": "b",
+          "text": "AVG"
+        },
+        {
+          "id": "c",
+          "text": "MAX"
+        },
+        {
+          "id": "d",
+          "text": "COUNT"
+        }
+      ],
+      "correctAnswerId": "b",
+      "explanation": "AVG returns the mean of numeric values, usually ignoring NULLs.",
+      "topic": "aggregate functions",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sql-qz-014",
+      "pathId": "sql-interview-prep",
+      "question": "What does DISTINCT remove from the result?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Duplicate selected rows"
+        },
+        {
+          "id": "b",
+          "text": "All NULL values"
+        },
+        {
+          "id": "c",
+          "text": "Primary keys"
+        },
+        {
+          "id": "d",
+          "text": "Join conditions"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "DISTINCT returns unique rows for the selected columns.",
+      "topic": "SELECT basics",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sql-qz-015",
+      "pathId": "sql-interview-prep",
+      "question": "In a LEFT JOIN with no matching right row, what appears for right-side columns?",
+      "options": [
+        {
+          "id": "a",
+          "text": "0"
+        },
+        {
+          "id": "b",
+          "text": "Empty string"
+        },
+        {
+          "id": "c",
+          "text": "NULL"
+        },
+        {
+          "id": "d",
+          "text": "The left table value"
+        }
+      ],
+      "correctAnswerId": "c",
+      "explanation": "Missing right-side matches are represented as NULL values.",
+      "topic": "NULL handling",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sql-qz-016",
+      "pathId": "sql-interview-prep",
+      "question": "Which clause usually defines how two tables match in a join?",
+      "options": [
+        {
+          "id": "a",
+          "text": "ON"
+        },
+        {
+          "id": "b",
+          "text": "ORDER BY"
+        },
+        {
+          "id": "c",
+          "text": "HAVING"
+        },
+        {
+          "id": "d",
+          "text": "DISTINCT"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "The ON clause defines the join condition.",
+      "topic": "JOIN basics",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sql-qz-017",
+      "pathId": "sql-interview-prep",
+      "question": "To find customers without orders, which pattern is common?",
+      "options": [
+        {
+          "id": "a",
+          "text": "INNER JOIN then count all rows"
+        },
+        {
+          "id": "b",
+          "text": "LEFT JOIN orders then filter order id IS NULL"
+        },
+        {
+          "id": "c",
+          "text": "ORDER BY customer name only"
+        },
+        {
+          "id": "d",
+          "text": "GROUP BY all columns always"
+        }
+      ],
+      "correctAnswerId": "b",
+      "explanation": "LEFT JOIN preserves customers and NULL order-side values reveal missing orders.",
+      "topic": "INNER JOIN vs LEFT JOIN",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sql-qz-018",
+      "pathId": "sql-interview-prep",
+      "question": "Why can COUNT(email) be lower than COUNT(*)?",
+      "options": [
+        {
+          "id": "a",
+          "text": "COUNT(email) ignores NULL email values"
+        },
+        {
+          "id": "b",
+          "text": "COUNT(*) ignores duplicate rows"
+        },
+        {
+          "id": "c",
+          "text": "COUNT(email) only works with indexes"
+        },
+        {
+          "id": "d",
+          "text": "COUNT(*) counts columns"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "COUNT(column) counts non-NULL values in that column.",
+      "topic": "NULL handling",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sql-qz-019",
+      "pathId": "sql-interview-prep",
+      "question": "Which query step is best before writing syntax in an interview?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Guess the answer quickly"
+        },
+        {
+          "id": "b",
+          "text": "Identify tables, joins, filters, grouping, and output"
+        },
+        {
+          "id": "c",
+          "text": "Always start with HAVING"
+        },
+        {
+          "id": "d",
+          "text": "Avoid asking clarifying questions"
+        }
+      ],
+      "correctAnswerId": "b",
+      "explanation": "Breaking the problem into parts helps avoid missing relationships or filters.",
+      "topic": "interview-style query thinking",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sql-qz-020",
+      "pathId": "sql-interview-prep",
+      "question": "Which clause filters groups with COUNT(*) > 5?",
+      "options": [
+        {
+          "id": "a",
+          "text": "WHERE COUNT(*) > 5"
+        },
+        {
+          "id": "b",
+          "text": "HAVING COUNT(*) > 5"
+        },
+        {
+          "id": "c",
+          "text": "ORDER COUNT(*) > 5"
+        },
+        {
+          "id": "d",
+          "text": "SELECT COUNT(*) > 5"
+        }
+      ],
+      "correctAnswerId": "b",
+      "explanation": "Aggregate conditions on grouped results belong in HAVING.",
+      "topic": "HAVING",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sql-qz-021",
+      "pathId": "sql-interview-prep",
+      "question": "What does SUM(amount) calculate?",
+      "options": [
+        {
+          "id": "a",
+          "text": "The total of amount values"
+        },
+        {
+          "id": "b",
+          "text": "The number of rows"
+        },
+        {
+          "id": "c",
+          "text": "The smallest amount"
+        },
+        {
+          "id": "d",
+          "text": "The newest amount"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "SUM adds numeric values for a result or group.",
+      "topic": "aggregate functions",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sql-qz-022",
+      "pathId": "sql-interview-prep",
+      "question": "Which constraint prevents duplicate values in a column or column combination?",
+      "options": [
+        {
+          "id": "a",
+          "text": "UNIQUE"
+        },
+        {
+          "id": "b",
+          "text": "ORDER BY"
+        },
+        {
+          "id": "c",
+          "text": "SELECT"
+        },
+        {
+          "id": "d",
+          "text": "HAVING"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "A UNIQUE constraint enforces uniqueness for the chosen column or columns. Exact NULL behavior can vary by database.",
+      "topic": "constraints",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sql-qz-023",
+      "pathId": "sql-interview-prep",
+      "question": "Can GROUP BY include multiple columns?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Yes, it groups by each unique column combination"
+        },
+        {
+          "id": "b",
+          "text": "No, only one column is allowed"
+        },
+        {
+          "id": "c",
+          "text": "Only when there is no SELECT"
+        },
+        {
+          "id": "d",
+          "text": "Only for text columns"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "Multiple GROUP BY columns create groups for each unique combination.",
+      "topic": "GROUP BY",
+      "difficulty": "hard"
+    },
+    {
+      "id": "sql-qz-024",
+      "pathId": "sql-interview-prep",
+      "question": "What should you clarify about date filters in an interview query?",
+      "options": [
+        {
+          "id": "a",
+          "text": "The exact date range and inclusive or exclusive boundaries"
+        },
+        {
+          "id": "b",
+          "text": "Only the table font"
+        },
+        {
+          "id": "c",
+          "text": "Whether ORDER BY is forbidden"
+        },
+        {
+          "id": "d",
+          "text": "The database logo"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "Date ranges often cause mistakes, so boundaries should be clear.",
+      "topic": "interview-style query thinking",
+      "difficulty": "hard"
+    },
+    {
+      "id": "sql-qz-025",
+      "pathId": "sql-interview-prep",
+      "question": "Which statement about indexes is most accurate?",
+      "options": [
+        {
+          "id": "a",
+          "text": "They can help some access patterns but are not magic for every query"
+        },
+        {
+          "id": "b",
+          "text": "They guarantee no bugs in SQL"
+        },
+        {
+          "id": "c",
+          "text": "They replace primary keys"
+        },
+        {
+          "id": "d",
+          "text": "They make NULL impossible"
+        }
+      ],
+      "correctAnswerId": "a",
+      "explanation": "Indexes are useful for specific lookup and ordering patterns, but query design still matters.",
+      "topic": "indexes basic idea",
+      "difficulty": "hard"
+    }
   ]
 }
