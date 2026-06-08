@@ -27,7 +27,7 @@ Premium available now:
 
 - More AI Coach explanations.
 - AI Quiz Review.
-- 7-day AI Study Plan.
+- 7-day AI Study Plans.
 - Higher local AI daily limits.
 - Premium Study Packs.
 - Smarter learning support.
@@ -115,6 +115,7 @@ The current build includes:
 - Premium entitlement check.
 - Premium gating rules for higher AI usage limits.
 - Premium Study Packs foundation with Free preview access.
+- Premium Study Pack v3.5 UX polish with richer pack cards, pack summary preview dialogs, coming-soon dialogs, and preview-limit CTAs.
 - Local starter content for SQL Interview Prep, QA Advanced, and Automation Testing Basics.
 - Premium-ready AI Quiz Review on quiz summary.
 - Premium-gated 7-day AI Study Plan on Progress.
@@ -169,7 +170,9 @@ Premium prompts should appear after users experience value, especially when a Fr
 Primary conversion message:
 
 ```text
-You've used today's free AI previews. Upgrade to Premium for more AI help, or continue with local study tools.
+You've used today's free AI Coach previews. Upgrade to Premium for more AI help, or continue with local explanations.
 ```
 
 The app should keep local explanations visible, offer `View Premium`, and avoid repeated retry prompts when the request is blocked locally by usage limits.
+
+Premium Study Pack conversion should happen in context. Free users can preview available packs first, then see `View Premium` after the preview limit. Coming-soon packs should remain visible but must not open empty content or imply unavailable packs are complete.

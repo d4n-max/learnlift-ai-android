@@ -1,38 +1,35 @@
 # Play Console Release Notes
 
-Last updated: 2026-05-22
+Last updated: 2026-06-08
 
-## LearnLift AI v2 Production Candidate
-
-LearnLift AI v2 update.
+## LearnLift AI v3.5 Update
 
 Includes:
 
-- Real AI Coach explanations
-- Adaptive Quiz Mode
-- Topic weakness tracking
-- Smart Review flashcards
-- Daily onboarding
-- Local daily study reminders
-- Premium AI access and subscription readiness
-- Improved progress and study recommendations
+- Premium Study Packs polish
+- Free preview flow for premium packs
+- Improved Premium screen
+- Better Premium active state
+- AI Study Review and Study Plan readiness
+- Content QA improvements
+- UI polish and stability improvements
 
 Known limitations:
 
 - No account login
 - No cloud sync
 - Progress is stored locally on device
-- AI responses require internet
+- AI features require internet
 - Premium purchases depend on Google Play and RevenueCat configuration
 
 ## Short Version
 
-LearnLift AI v2 adds Real AI Coach explanations, Adaptive Quiz Mode, topic weakness tracking, Smart Review flashcards, onboarding, local reminders, Premium AI access, and improved progress recommendations.
+LearnLift AI v3.5 polishes Premium Study Packs, adds a clearer free preview flow, improves the Premium screen and active state, and includes content QA plus UI stability improvements.
 
-Known limitations: no account login, no cloud sync, local-only progress, internet required for AI, and Premium depends on Google Play/RevenueCat configuration.
+Known limitations: no login, no cloud sync, local-only progress, internet required for AI, and Premium depends on Google Play/RevenueCat configuration.
 
 Tester notes:
 
-- Please test onboarding, Home, Flashcards, Smart Review, Quiz, Adaptive Quiz, Daily Session, Progress, Settings, AI Coach, reminders, Premium, and restore purchases.
-- Please confirm Free study flows remain usable without purchase.
-- Please report crashes, blank screens, clipped text, confusing billing states, unexpected paywalls, or AI fallback issues.
+- Please test Free paths, Premium Study Pack previews, Premium active full-pack access, Flashcards, Quiz, Smart Review, Adaptive Quiz, Progress, Settings, AI Study Review, AI Study Plan, purchase, cancellation, and restore purchases.
+- Please confirm Free study flows remain useful without purchase.
+- Please report crashes, blank screens, clipped text, confusing billing states, unexpected paywalls, old icons, white rectangles, or AI fallback issues.

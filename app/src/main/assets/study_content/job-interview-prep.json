@@ -71,7 +71,7 @@
       "question": "How can you answer a question about conflict?",
       "answer": "Describe the situation calmly, focus on your actions, and show a constructive result.",
       "topic": "behavioral questions",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "job-fc-010",
@@ -103,7 +103,7 @@
       "question": "What is a professional way to answer a conflict question?",
       "answer": "Stay respectful, explain the facts, and show how you helped resolve it.",
       "topic": "professional communication choices",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "job-fc-014",
@@ -111,7 +111,7 @@
       "question": "What is a professional way to talk about failure?",
       "answer": "Own your part, explain what you learned, and show what changed.",
       "topic": "professional communication choices",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "job-fc-015",
@@ -119,7 +119,7 @@
       "question": "What is a professional way to explain an employment gap?",
       "answer": "Be honest, brief, and redirect to readiness and relevant skills.",
       "topic": "professional communication choices",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "job-fc-016",
@@ -127,7 +127,7 @@
       "question": "What is a professional way to explain a career change?",
       "answer": "Connect transferable skills, motivation, and preparation for the new field.",
       "topic": "professional communication choices",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "job-fc-017",
@@ -271,7 +271,7 @@
       "question": "What makes a failure answer strong?",
       "answer": "A clear lesson and evidence of improvement.",
       "topic": "failure and learning",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "job-fc-035",
@@ -487,7 +487,7 @@
       "question": "How can you prepare examples for interview day?",
       "answer": "Write short STAR notes, not full memorized paragraphs.",
       "topic": "STAR method",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "job-fc-062",
@@ -511,7 +511,7 @@
       "question": "How can you answer \"What are your salary expectations\" late in the process?",
       "answer": "Use your researched range and connect it to responsibilities, skills, and the full package.",
       "topic": "salary expectations",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "job-fc-065",
@@ -527,7 +527,7 @@
       "question": "What is a strong way to discuss a difficult manager?",
       "answer": "Keep the answer respectful and focus on communication, expectations, and what you learned.",
       "topic": "conflict",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "job-fc-067",
@@ -599,7 +599,7 @@
       "question": "How can you keep a STAR answer from becoming too long?",
       "answer": "Choose only the details needed to understand the action and result.",
       "topic": "concise answer structure",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "job-fc-076",
@@ -607,7 +607,7 @@
       "question": "What should you do if an interviewer challenges your answer?",
       "answer": "Stay calm, clarify your reasoning, and add evidence if needed.",
       "topic": "professional communication choices",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "job-fc-077",
@@ -631,7 +631,7 @@
       "question": "How can you describe handling feedback you disagreed with?",
       "answer": "Show that you listened, asked questions, and looked for useful parts.",
       "topic": "professional communication choices",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "job-fc-080",
@@ -884,7 +884,7 @@
       "correctAnswerId": "a",
       "explanation": "Strong conflict answers stay respectful and solution-focused.",
       "topic": "conflict",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "job-qz-010",
@@ -911,7 +911,7 @@
       "correctAnswerId": "a",
       "explanation": "A good answer shows accountability and learning.",
       "topic": "failure and learning",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "job-qz-011",
@@ -1046,7 +1046,7 @@
       "correctAnswerId": "a",
       "explanation": "Unprepared demands can sound unrealistic or rigid.",
       "topic": "salary expectations",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "job-qz-016",
@@ -1208,7 +1208,7 @@
       "correctAnswerId": "a",
       "explanation": "The interviewer wants learning and judgment, not a long confession.",
       "topic": "failure and learning",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "job-qz-022",
@@ -1316,7 +1316,7 @@
       "correctAnswerId": "a",
       "explanation": "Specific outcomes make the story stronger.",
       "topic": "STAR method",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "job-qz-026",
@@ -1397,7 +1397,7 @@
       "correctAnswerId": "a",
       "explanation": "A weakness with no improvement plan damages trust.",
       "topic": "strengths and weaknesses",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "job-qz-029",
@@ -1478,7 +1478,7 @@
       "correctAnswerId": "a",
       "explanation": "It shows learning and practical change.",
       "topic": "failure and learning",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "job-qz-032",
@@ -1802,7 +1802,7 @@
       "correctAnswerId": "a",
       "explanation": "Panel interviews require awareness of multiple listeners.",
       "topic": "professional communication choices",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "job-qz-044",
@@ -2099,7 +2099,7 @@
       "correctAnswerId": "a",
       "explanation": "Short notes help you adapt naturally.",
       "topic": "STAR method",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "job-qz-055",
@@ -2126,7 +2126,7 @@
       "correctAnswerId": "a",
       "explanation": "A range and package context keeps the discussion professional.",
       "topic": "salary expectations",
-      "difficulty": "medium"
+      "difficulty": "hard"
     },
     {
       "id": "job-qz-056",

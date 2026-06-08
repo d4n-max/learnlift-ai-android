@@ -22,6 +22,8 @@ Premium adds or expands:
 
 - More AI Coach explanations each day
 - Higher AI daily limits
+- AI Study Review
+- 7-day AI Study Plans
 - Premium Study Packs
 - Smart learning support
 

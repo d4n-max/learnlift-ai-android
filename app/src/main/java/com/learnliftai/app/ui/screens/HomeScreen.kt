@@ -95,7 +95,7 @@ fun HomeScreen(
             )
             HomePremiumTeaser(
                 isPremiumActive = isPremiumActive,
-                onViewPremium = onViewPremium
+                onExplorePremiumPacks = onChooseStudyPath
             )
             DashboardStats(
                 selectedStudyPath = selectedStudyPath,
@@ -109,18 +109,14 @@ fun HomeScreen(
 @Composable
 private fun HomePremiumTeaser(
     isPremiumActive: Boolean,
-    onViewPremium: () -> Unit
+    onExplorePremiumPacks: () -> Unit
 ) {
     PremiumTeaserCard(
-        title = if (isPremiumActive) "Premium Study Packs" else "Premium Study Packs",
-        description = if (isPremiumActive) {
-            "SQL, QA Advanced, and Automation Testing packs are ready, with Python, JavaScript, Business English, and Technical Interview Prep planned next."
-        } else {
-            "Unlock deeper practice with SQL, QA Advanced, Automation Testing, Python, JavaScript, Business English, and Technical Interview Prep."
-        },
+        title = "Premium Study Packs",
+        description = "Go deeper with SQL, QA Advanced, Automation Testing, Python, JavaScript, Business English, and Technical Interview Prep.",
         label = if (isPremiumActive) "Active" else "Premium",
         actionText = "Explore Premium Packs",
-        onActionClick = onViewPremium
+        onActionClick = onExplorePremiumPacks
     )
 }
 

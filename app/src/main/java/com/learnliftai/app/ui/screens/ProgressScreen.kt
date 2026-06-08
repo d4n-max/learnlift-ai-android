@@ -91,10 +91,14 @@ fun ProgressScreen(
         )
 
         StreakHighlightCard(userProgress = userProgress)
-        StudyPathProgressCard(selectedStudyPath = selectedStudyPath)
+        StudyPathProgressCard(
+            selectedStudyPath = selectedStudyPath,
+            isPremiumActive = isPremiumActive
+        )
         ProgressRecommendationSection(
             userProgress = userProgress,
-            topicPerformance = topicPerformance
+            topicPerformance = topicPerformance,
+            onStartAdaptiveQuiz = onStartAdaptiveQuiz
         )
         WeakTopicsSection(
             topicPerformance = topicPerformance,
@@ -568,17 +572,17 @@ private fun AdvancedInsightsTeaser(
 ) {
     PremiumTeaserCard(
         title = if (isPremiumActive) {
-            "Advanced Insights coming soon"
+            "Premium study guidance active"
         } else {
-            "Advanced Insights are part of Premium"
+            "Want deeper study guidance?"
         },
         description = if (isPremiumActive) {
-            "Premium is active. Deeper topic trends, review patterns, and personalized focus areas are planned next."
+            "Use AI Study Plans and Premium review support alongside your local progress tools."
         } else {
-            "Track deeper patterns and get more personalized focus areas."
+            "Premium adds AI Study Plans and richer review support. Basic progress and weak topics stay available."
         },
         label = if (isPremiumActive) "Active" else "Premium",
-        actionText = if (isPremiumActive) "View roadmap" else "View Premium",
+        actionText = "View Premium",
         onActionClick = onViewPremium
     )
 }
@@ -586,15 +590,22 @@ private fun AdvancedInsightsTeaser(
 @Composable
 private fun ProgressRecommendationSection(
     userProgress: UserProgress,
-    topicPerformance: List<TopicPerformance>
+    topicPerformance: List<TopicPerformance>,
+    onStartAdaptiveQuiz: () -> Unit
 ) {
+    val recommendation = SmartCoachAdvisor.progressRecommendation(userProgress, topicPerformance)
     SectionHeader(
         title = "Recommended Focus",
         subtitle = "Local guidance based only on progress saved on this device."
     )
     SmartCoachRecommendationCard(
-        recommendation = SmartCoachAdvisor.progressRecommendation(userProgress, topicPerformance),
-        localGuidanceLabel = "Local rule-based guidance - no live AI or data sharing"
+        recommendation = recommendation,
+        localGuidanceLabel = "Local rule-based guidance - no live AI or data sharing",
+        onActionClick = if (recommendation.actionLabel == "Start Adaptive Quiz") {
+            onStartAdaptiveQuiz
+        } else {
+            null
+        }
     )
 }
 
@@ -741,7 +752,10 @@ private fun StreakHighlightCard(userProgress: UserProgress) {
 }
 
 @Composable
-private fun StudyPathProgressCard(selectedStudyPath: StudyPath?) {
+private fun StudyPathProgressCard(
+    selectedStudyPath: StudyPath?,
+    isPremiumActive: Boolean
+) {
     if (selectedStudyPath == null) {
         EmptyState(
             title = "Choose a study path",
@@ -769,6 +783,15 @@ private fun StudyPathProgressCard(selectedStudyPath: StudyPath?) {
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold
             )
+            if (selectedStudyPath.isPremium && !isPremiumActive && selectedStudyPath.freePreviewCount > 0) {
+                Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+                Text(
+                    text = "Preview mode: progress uses only the visible preview items for this pack.",
+                    color = MaterialTheme.colorScheme.secondary,
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
             Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
             Text(
                 text = selectedStudyPath.description,

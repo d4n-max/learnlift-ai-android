@@ -48,6 +48,7 @@ fun StudyPathSelectionScreen(
     modifier: Modifier = Modifier
 ) {
     var lockedPath by remember { mutableStateOf<StudyPath?>(null) }
+    var comingSoonPath by remember { mutableStateOf<StudyPath?>(null) }
     val freePaths = studyPaths.filter { !it.isPremium }
     val premiumPaths = studyPaths.filter { it.isPremium }
 
@@ -63,7 +64,7 @@ fun StudyPathSelectionScreen(
             subtitle = "Pick the goal you want LearnLift AI to support first."
         )
         SectionHeader(
-            title = "Free Study Paths",
+            title = "Free Learning Paths",
             subtitle = "Start here without Premium."
         )
         freePaths.forEach { studyPath ->
@@ -85,7 +86,7 @@ fun StudyPathSelectionScreen(
                 isPremiumActive = isPremiumActive,
                 onSelect = {
                     when {
-                        studyPath.isComingSoon -> Unit
+                        studyPath.isComingSoon -> comingSoonPath = studyPath
                         isPremiumActive -> onStudyPathSelected(studyPath)
                         else -> lockedPath = studyPath
                     }
@@ -112,6 +113,17 @@ fun StudyPathSelectionScreen(
             onCancel = { lockedPath = null }
         )
     }
+
+    comingSoonPath?.let { path ->
+        ComingSoonPackDialog(
+            studyPath = path,
+            onViewPremium = {
+                comingSoonPath = null
+                onViewPremium()
+            },
+            onDismiss = { comingSoonPath = null }
+        )
+    }
 }
 
 @Composable
@@ -121,20 +133,33 @@ private fun StudyPathOptionCard(
     isPremiumActive: Boolean,
     onSelect: () -> Unit
 ) {
+    val contentSummary = studyPath.contentSummary
+    val isLockedPremium = studyPath.isPremium && !isPremiumActive && !studyPath.isComingSoon
     val border = if (isSelected) {
         BorderStroke(2.dp, MaterialTheme.colorScheme.secondary)
     } else {
-        null
+        BorderStroke(
+            1.dp,
+            if (studyPath.isPremium) {
+                MaterialTheme.colorScheme.secondary.copy(alpha = 0.28f)
+            } else {
+                MaterialTheme.colorScheme.outlineVariant
+            }
+        )
     }
 
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable(enabled = !studyPath.isComingSoon, onClick = onSelect),
+            .clickable(onClick = onSelect),
         shape = RoundedCornerShape(LearnLiftCorners.card),
         border = border,
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
+            containerColor = if (studyPath.isPremium) {
+                MaterialTheme.colorScheme.primaryContainer
+            } else {
+                MaterialTheme.colorScheme.surface
+            }
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = if (isSelected) 3.dp else 1.dp)
     ) {
@@ -159,7 +184,11 @@ private fun StudyPathOptionCard(
             Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
             Text(
                 text = studyPath.title,
-                color = MaterialTheme.colorScheme.primary,
+                color = if (studyPath.isPremium) {
+                    MaterialTheme.colorScheme.onPrimaryContainer
+                } else {
+                    MaterialTheme.colorScheme.primary
+                },
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold
             )
@@ -172,7 +201,7 @@ private fun StudyPathOptionCard(
                 }
                 if (studyPath.isComingSoon) {
                     StudyPathMetaLabel(text = "Coming soon")
-                } else if (studyPath.isPremium && !isPremiumActive && studyPath.freePreviewCount > 0) {
+                } else if (isLockedPremium && studyPath.freePreviewCount > 0) {
                     StudyPathMetaLabel(text = "Preview available")
                 }
                 StudyPathMetaLabel(text = studyPath.accentLabel)
@@ -190,6 +219,15 @@ private fun StudyPathOptionCard(
                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.72f),
                 style = MaterialTheme.typography.bodyMedium
             )
+            if (contentSummary != null) {
+                Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+                Text(
+                    text = contentSummary.countLabel,
+                    color = MaterialTheme.colorScheme.secondary,
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
             Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
             Row(
                 horizontalArrangement = Arrangement.spacedBy(LearnLiftSpacing.smallGap)
@@ -208,11 +246,11 @@ private fun StudyPathOptionCard(
                 text = when {
                     studyPath.isComingSoon -> "Coming soon"
                     isSelected -> "Keep this path"
-                    studyPath.isPremium && !isPremiumActive -> "Preview or unlock"
+                    isLockedPremium -> "Preview or unlock"
                     else -> "Select this path"
                 },
                 onClick = onSelect,
-                enabled = !studyPath.isComingSoon
+                enabled = true
             )
         }
     }
@@ -235,10 +273,31 @@ private fun PremiumPackLockDialog(
             )
         },
         text = {
-            Text(
-                text = "This pack is part of LearnLift AI Premium. Preview a few cards for free, or unlock the full pack with Premium.",
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+            Column(verticalArrangement = Arrangement.spacedBy(LearnLiftSpacing.smallGap)) {
+                Text(
+                    text = "This pack is part of LearnLift AI Premium. Preview a few cards for free, or unlock the full pack with Premium.",
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Text(
+                    text = studyPath.title,
+                    color = MaterialTheme.colorScheme.primary,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold
+                )
+                studyPath.contentSummary?.let { summary ->
+                    Text(
+                        text = summary.countLabel,
+                        color = MaterialTheme.colorScheme.secondary,
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                    Text(
+                        text = "Topics: ${summary.topicExamples}",
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+            }
         },
         confirmButton = {
             TextButton(onClick = onPreview) {
@@ -253,6 +312,40 @@ private fun PremiumPackLockDialog(
                 TextButton(onClick = onCancel) {
                     Text(text = "Cancel")
                 }
+            }
+        }
+    )
+}
+
+@Composable
+private fun ComingSoonPackDialog(
+    studyPath: StudyPath,
+    onViewPremium: () -> Unit,
+    onDismiss: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text(
+                text = studyPath.title,
+                color = MaterialTheme.colorScheme.primary,
+                fontWeight = FontWeight.Bold
+            )
+        },
+        text = {
+            Text(
+                text = "This Premium Study Pack is coming soon.",
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) {
+                Text(text = "OK")
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onViewPremium) {
+                Text(text = "View Premium")
             }
         }
     )
@@ -289,3 +382,46 @@ private fun StudyPathMetaLabel(text: String) {
         fontWeight = FontWeight.SemiBold
     )
 }
+
+private data class StudyPathContentSummary(
+    val flashcards: Int,
+    val quizQuestions: Int,
+    val topicExamples: String
+) {
+    val countLabel: String = "$flashcards cards • $quizQuestions questions"
+}
+
+private val StudyPath.contentSummary: StudyPathContentSummary?
+    get() = when (id) {
+        "english-vocabulary-speaking" -> StudyPathContentSummary(
+            flashcards = 84,
+            quizQuestions = 63,
+            topicExamples = "workplace English, speaking confidence, interview phrases"
+        )
+        "job-interview-prep" -> StudyPathContentSummary(
+            flashcards = 80,
+            quizQuestions = 60,
+            topicExamples = "STAR answers, behavioral questions, salary conversations"
+        )
+        "it-qa-interview-prep" -> StudyPathContentSummary(
+            flashcards = 60,
+            quizQuestions = 50,
+            topicExamples = "test cases, bug reports, API basics"
+        )
+        "sql-interview-prep" -> StudyPathContentSummary(
+            flashcards = 30,
+            quizQuestions = 25,
+            topicExamples = "joins, grouping, NULLs, indexes, CTEs"
+        )
+        "qa-advanced" -> StudyPathContentSummary(
+            flashcards = 30,
+            quizQuestions = 25,
+            topicExamples = "risk, coverage, triage, release readiness"
+        )
+        "automation-testing-basics" -> StudyPathContentSummary(
+            flashcards = 30,
+            quizQuestions = 25,
+            topicExamples = "pyramid, UI/API checks, selectors, flaky tests"
+        )
+        else -> null
+    }

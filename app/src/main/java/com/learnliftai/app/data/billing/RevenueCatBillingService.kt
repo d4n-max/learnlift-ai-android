@@ -47,7 +47,7 @@ class RevenueCatBillingService(
             return PremiumUiState(
                 isRevenueCatConfigured = false,
                 productsUnavailable = true,
-                message = "Premium products are not available yet."
+                message = PremiumPlansUnavailableMessage
             )
         }
 
@@ -62,7 +62,7 @@ class RevenueCatBillingService(
         val packageToPurchase = premiumPackage.revenueCatPackage ?: return PremiumUiState(
             isRevenueCatConfigured = hasConfiguredKey(),
             productsUnavailable = true,
-            message = "Premium products are not available yet."
+            message = PremiumPlansUnavailableMessage
         )
 
         val purchaseResult = Purchases.sharedInstance.awaitPurchase(
@@ -98,7 +98,7 @@ class RevenueCatBillingService(
             return PremiumUiState(
                 isRevenueCatConfigured = false,
                 productsUnavailable = true,
-                message = "Premium products are not available yet."
+                message = PremiumPlansUnavailableMessage
             )
         }
 
@@ -158,7 +158,7 @@ class RevenueCatBillingService(
                     id = MonthlyProductId,
                     title = "Monthly",
                     price = "€3.99 / month",
-                    helperText = "Flexible access"
+                    helperText = "Flexible"
                 )
             ),
             yearlyPackage = yearly.toPremiumPackage(
@@ -166,10 +166,10 @@ class RevenueCatBillingService(
                     id = YearlyProductId,
                     title = "Yearly",
                     price = "€24.99 / year",
-                    helperText = "Best value"
+                    helperText = "Save compared to monthly"
                 )
             ),
-            message = if (productsUnavailable) "Premium products are not available yet." else null,
+            message = if (productsUnavailable) PremiumPlansUnavailableMessage else null,
             managementUrl = customerInfo.managementURL?.toString()
         )
     }
@@ -279,6 +279,8 @@ class RevenueCatBillingService(
         const val LogTag = "LearnLiftPremium"
         var isConfigured = false
         const val TestStoreKeyPrefix = "test_"
+        const val PremiumPlansUnavailableMessage =
+            "Premium plans are temporarily unavailable. Please try again later."
         val PlaceholderRevenueCatKeys = setOf(
             "REVENUECAT_PUBLIC_API_KEY_HERE",
             "REVENUECAT_ANDROID_PUBLIC_API_KEY_HERE",

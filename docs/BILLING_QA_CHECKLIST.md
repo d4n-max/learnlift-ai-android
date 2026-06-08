@@ -20,6 +20,8 @@
 - Premium screen opens from Home.
 - Premium screen opens from Settings.
 - Premium screen opens from Progress teaser.
+- Premium screen opens from Premium Study Pack preview dialog.
+- Premium screen opens from preview-limit CTA.
 - Monthly package displays label `Monthly`.
 - Yearly or annual package displays label `Yearly`.
 - Yearly package shows `Best value`.
@@ -31,7 +33,7 @@
 - Purchase CTA is disabled while purchase is in progress.
 - Purchase CTA is disabled when Premium is active and shows `Premium active`.
 - Restore purchases button shows loading text while restoring.
-- Friendly message appears if products or offerings are unavailable.
+- Friendly message appears if products or offerings are unavailable: `Premium plans are temporarily unavailable. Please try again later.`
 
 ## A. RevenueCat Test Store QA
 
@@ -98,6 +100,9 @@
 - No feature is hard-blocked unexpectedly.
 - Closed testers can continue using the app if RevenueCat products are unavailable.
 - Free AI limit reached shows `View Premium`, keeps local explanation/recommendation visible, and does not offer repeated retry for a locally blocked request.
+- Free Premium Study Pack preview flow shows Preview pack, View Premium, and Cancel.
+- Premium active user opens available Premium Study Packs without preview limits.
+- Coming-soon Premium Study Packs do not open empty content.
 
 ## Data Safety
 

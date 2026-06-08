@@ -92,7 +92,7 @@ Premium local limits:
 Free limit reached message:
 
 ```text
-You've used today's free AI previews. Upgrade to Premium for more AI help, or continue with local study tools.
+You've used today's free AI Coach previews. Upgrade to Premium for more AI help, or continue with local explanations.
 ```
 
 When this message appears, the app blocks the AI call locally, keeps local explanations or Smart Coach guidance visible, and shows `View Premium`. It should not keep prompting users to retry the same locally blocked AI request.
@@ -159,7 +159,16 @@ Premium prompts are allowed in:
 
 Premium prompts should not interrupt onboarding, hide core study modes, or prevent Free users from using flashcards, quizzes, daily sessions, progress, Smart Coach, Smart Review, local explanations, or basic Adaptive Quiz.
 
-Premium prompts for study packs must include a respectful Preview pack option, a View Premium action, and a Cancel action.
+Premium prompts for study packs must include a respectful Preview pack option, a View Premium action, and a Cancel action. At the end of preview Flashcards, Free users should see:
+
+```text
+You've reached the free preview limit for this pack. Unlock Premium to continue.
+```
+
+Actions:
+
+- View Premium
+- Back to Study Paths
 
 ## Future Stronger Gating Plan
 
@@ -189,7 +198,9 @@ Before stronger gating ships, run full closed-testing QA and update Privacy Poli
 - RevenueCat unavailable does not crash app.
 - Existing three paths are not locked.
 - Free user can preview first 5 cards/questions from available Premium packs.
+- Free user sees Preview mode labels for available Premium pack previews.
+- Free user reaches preview limit and sees unlock CTA.
 - Premium active user can open full available Premium packs.
-- Coming soon Premium packs do not navigate to empty content.
+- Coming soon Premium packs show a coming-soon dialog and do not navigate to empty content.
 - Free user sees AI Study Plan teaser and `View Premium`.
 - Premium active user can generate AI Quiz Review and 7-day AI Study Plan within safety limits.

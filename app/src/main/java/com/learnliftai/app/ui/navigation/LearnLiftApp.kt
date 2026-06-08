@@ -416,6 +416,13 @@ fun LearnLiftApp() {
                     onContinueAllFlashcards = {
                         flashcardModeName = FlashcardMode.All.name
                     },
+                    onViewPremium = {
+                        isPremiumOpen = true
+                    },
+                    onBackToStudyPaths = {
+                        isChoosingStudyPath = true
+                        selectedDestinationName = LearnLiftDestination.Home.name
+                    },
                     modifier = Modifier.padding(innerPadding)
                 )
                 LearnLiftDestination.Quiz -> QuizScreen(

@@ -24,9 +24,9 @@ These paths remain Free and open normally.
 
 | Pack | Flashcards | Quiz questions | Preview |
 | --- | ---: | ---: | ---: |
-| SQL Interview Prep | 30 | 25 | First 5 cards and questions |
-| QA Advanced | 30 | 25 | First 5 cards and questions |
-| Automation Testing Basics | 30 | 25 | First 5 cards and questions |
+| SQL Interview Prep | 30 | 25 | First 5 cards and questions; includes query basics plus subquery/CTE preview |
+| QA Advanced | 30 | 25 | First 5 cards and questions; includes strategy, risk, coverage, and regression planning |
+| Automation Testing Basics | 30 | 25 | First 5 cards and questions; includes pyramid, UI/API checks, selectors, and flakiness |
 
 ## Coming Soon Premium Packs
 
@@ -58,6 +58,21 @@ Content is local JSON in `app/src/main/assets/study_content`.
 
 Preview mode filters the loaded local content before Flashcards, Quiz, Adaptive Quiz, Daily Session, Smart Review, Progress, and Weak Topics receive it. Existing progress and topic-performance flows continue using the pack `pathId`.
 
+## v3.4 Content QA Notes
+
+- Active local packs were reviewed in `docs/CONTENT_QA_REPORT_V3_4.md`.
+- Validation now checks schema, duplicate IDs, duplicate question text, option counts, correct answer IDs, difficulty values, topic presence, and summary counts.
+- Active packs now include a clearer easy/medium/hard difficulty spread.
+- Coming soon packs remain metadata-only and disabled until full content is created.
+
+## v3.5 UX Notes
+
+- Study Path Selection now shows richer Premium Study Pack cards with count summaries, Premium badges, Preview available badges, and Coming soon states.
+- Free users tapping an available Premium pack see a pack summary dialog with Preview pack, View Premium, and Cancel.
+- Flashcards preview mode now shows a clear preview-limit card at the final visible preview card.
+- Coming soon packs show a simple dialog and do not open empty content.
+- Premium active users bypass preview dialogs and receive full available pack content.
+
 ## Manual QA Checklist
 
 - Free paths still open normally.
@@ -65,6 +80,7 @@ Preview mode filters the loaded local content before Flashcards, Quiz, Adaptive 
 - Free user taps SQL pack and sees preview/paywall options.
 - Free user can preview limited SQL content.
 - Free user cannot access full premium pack.
+- Free user reaches preview limit and sees View Premium / Back to Study Paths.
 - View Premium opens Premium screen.
 - Premium active user can access full SQL pack.
 - Premium active user can access QA Advanced.

@@ -421,7 +421,8 @@ fun EmptyState(
 fun SmartCoachRecommendationCard(
     recommendation: SmartCoachRecommendation,
     modifier: Modifier = Modifier,
-    localGuidanceLabel: String? = "Local rule-based guidance"
+    localGuidanceLabel: String? = "Local rule-based guidance",
+    onActionClick: (() -> Unit)? = null
 ) {
     val accentColor = when (recommendation.type) {
         SmartCoachRecommendationType.Encouragement -> MaterialTheme.colorScheme.primary
@@ -456,7 +457,7 @@ fun SmartCoachRecommendationCard(
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold
                 )
-                if (recommendation.actionLabel != null) {
+                if (recommendation.actionLabel != null && onActionClick == null) {
                     Spacer(modifier = Modifier.height(3.dp))
                     Text(
                         text = recommendation.actionLabel,
@@ -495,6 +496,13 @@ fun SmartCoachRecommendationCard(
                 text = localGuidanceLabel,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 style = MaterialTheme.typography.bodySmall
+            )
+        }
+        if (recommendation.actionLabel != null && onActionClick != null) {
+            Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
+            SecondaryActionButton(
+                text = recommendation.actionLabel,
+                onClick = onActionClick
             )
         }
     }
