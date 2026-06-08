@@ -51,7 +51,7 @@ If AI fails, the quiz summary keeps the local rule-based Recommended Focus visib
 The Progress screen exposes an optional 7-day AI study plan action when a study path is selected:
 
 - Button: `Generate 7-Day Study Plan`
-- Loading text: `AI Coach is drafting...`
+- Loading text: `Building your 7-day study plan...`
 - Success card subtitle: `7-day plan`
 
 The plan displays:
@@ -106,15 +106,16 @@ Debug builds may log sanitized AI client diagnostics with the `LearnLiftAiCoach`
 
 Logs must not include OpenAI API keys, Supabase service role keys, full prompts, private secrets, or excessive response bodies.
 
-## Future Premium Positioning
+## v3.1 Premium Positioning
 
-Planned future behavior:
+Current v3.1 behavior:
 
-- Free users receive limited AI previews.
+- Free users receive limited AI Quiz Review previews through the `quiz_summary` allowance.
+- Free users see a Premium teaser for AI 7-Day Study Plan and no Supabase `study_plan` call is made.
 - Premium users receive higher local AI safety limits.
-- AI explanations, AI Study Review, and 7-day plans may become Premium features.
+- Premium users can generate AI Quiz Review and 7-day AI Study Plan.
 
-The current implementation limits only AI-powered calls. It does not hard-paywall core study features.
+The current implementation limits only AI-powered calls and Premium Study Pack full access. It does not hard-paywall core study features.
 
 ## Manual QA Checklist
 

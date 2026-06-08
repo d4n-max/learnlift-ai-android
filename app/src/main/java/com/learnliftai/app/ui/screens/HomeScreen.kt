@@ -74,6 +74,7 @@ fun HomeScreen(
                 selectedStudyPath = selectedStudyPath,
                 selectedStudyContent = selectedStudyContent,
                 dailyStudyMinutes = dailyStudyMinutes,
+                isPremiumActive = isPremiumActive,
                 onChangeStudyPath = onChooseStudyPath
             )
             QuickActions(
@@ -111,14 +112,14 @@ private fun HomePremiumTeaser(
     onViewPremium: () -> Unit
 ) {
     PremiumTeaserCard(
-        title = if (isPremiumActive) "Premium active" else "Want more AI help?",
+        title = if (isPremiumActive) "Premium Study Packs" else "Premium Study Packs",
         description = if (isPremiumActive) {
-            "Thanks for supporting LearnLift AI. Premium benefits will expand as new features roll out."
+            "SQL, QA Advanced, and Automation Testing packs are ready, with Python, JavaScript, Business English, and Technical Interview Prep planned next."
         } else {
-            "Premium unlocks higher AI Coach limits and more personalized study support."
+            "Unlock deeper practice with SQL, QA Advanced, Automation Testing, Python, JavaScript, Business English, and Technical Interview Prep."
         },
         label = if (isPremiumActive) "Active" else "Premium",
-        actionText = if (isPremiumActive) "View Premium" else "View benefits",
+        actionText = "Explore Premium Packs",
         onActionClick = onViewPremium
     )
 }
@@ -139,6 +140,7 @@ private fun SelectedPathOverview(
     selectedStudyPath: StudyPath,
     selectedStudyContent: StudyContent?,
     dailyStudyMinutes: Int?,
+    isPremiumActive: Boolean,
     onChangeStudyPath: () -> Unit
 ) {
     SectionHeader(
@@ -152,6 +154,15 @@ private fun SelectedPathOverview(
             style = MaterialTheme.typography.labelLarge,
             fontWeight = FontWeight.Bold
         )
+        if (selectedStudyPath.isPremium && !isPremiumActive) {
+            Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+            Text(
+                text = "Preview mode: first ${selectedStudyPath.freePreviewCount} flashcards and quiz questions",
+                color = MaterialTheme.colorScheme.secondary,
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.SemiBold
+            )
+        }
         Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
         Text(
             text = selectedStudyPath.title,

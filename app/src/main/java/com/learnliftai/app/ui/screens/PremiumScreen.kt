@@ -127,7 +127,7 @@ private fun PremiumHero(isPremiumActive: Boolean) {
         )
         Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
         Text(
-            text = "Get more AI help, smarter review, and deeper progress support.",
+            text = "Get AI Quiz Review, a 7-day AI Study Plan, Premium Study Packs, and higher AI limits.",
             color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.86f),
             style = MaterialTheme.typography.bodyLarge
         )
@@ -178,9 +178,22 @@ private fun PremiumBenefits() {
         )
         Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
         PremiumBenefitRow("More AI Coach explanations")
+        PremiumBenefitRow("AI Quiz Review")
+        PremiumBenefitRow("7-day AI Study Plan")
         PremiumBenefitRow("Higher AI daily limits")
-        PremiumBenefitRow("Premium AI access")
+        PremiumBenefitRow("Premium Study Packs")
         PremiumBenefitRow("Smart learning support")
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
+        Text(
+            text = "Premium Study Packs",
+            color = MaterialTheme.colorScheme.secondary,
+            style = MaterialTheme.typography.labelLarge,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+        PremiumBenefitRow("SQL Interview Prep")
+        PremiumBenefitRow("QA Advanced")
+        PremiumBenefitRow("Automation Testing Basics")
         Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
         Text(
             text = "Coming soon",
@@ -189,10 +202,10 @@ private fun PremiumBenefits() {
             fontWeight = FontWeight.Bold
         )
         Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
-        PremiumBenefitRow("Advanced progress insights")
-        PremiumBenefitRow("More study paths")
-        PremiumBenefitRow("Premium study packs")
-        PremiumBenefitRow("AI study plans")
+        PremiumBenefitRow("Python Basics")
+        PremiumBenefitRow("JavaScript Basics")
+        PremiumBenefitRow("Business English")
+        PremiumBenefitRow("Technical Interview Prep")
     }
 }
 

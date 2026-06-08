@@ -120,10 +120,36 @@ fun FlashcardsScreen(
             title = if (flashcardMode == FlashcardMode.SmartReview) "Smart Review" else "Flashcards",
             subtitle = if (flashcardMode == FlashcardMode.SmartReview) {
                 "Due cards first for ${selectedStudyPath.title}"
+            } else if (selectedStudyPath.isPremium && selectedStudyPath.freePreviewCount > 0 &&
+                flashcards.size <= selectedStudyPath.freePreviewCount
+            ) {
+                "${selectedStudyPath.title} preview mode"
             } else {
                 selectedStudyPath.title
             }
         )
+
+        if (selectedStudyPath.isPremium && selectedStudyPath.freePreviewCount > 0 &&
+            flashcards.size <= selectedStudyPath.freePreviewCount
+        ) {
+            LearnLiftCard(
+                borderColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.28f),
+                containerColor = MaterialTheme.colorScheme.primaryContainer
+            ) {
+                Text(
+                    text = "Preview mode",
+                    color = MaterialTheme.colorScheme.primary,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold
+                )
+                Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+                Text(
+                    text = "You can review the first ${selectedStudyPath.freePreviewCount} cards for free. Premium unlocks the full pack.",
+                    color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.82f),
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
+        }
 
         if (flashcardMode == FlashcardMode.SmartReview) {
             SmartReviewIntroCard(

@@ -214,6 +214,7 @@ The Supabase function:
 - Validates JSON body shape.
 - Validates action names.
 - Validates payload fields for each action.
+- Accepts only compact quiz review context and compact 7-day planning context.
 - Limits request size through `AI_PROXY_MAX_INPUT_CHARS`.
 - Uses structured JSON response schemas.
 - Parses AI output safely.
@@ -235,9 +236,9 @@ On a physical Android device:
 - Confirm a real AI explanation appears when backend quota is active.
 - Temporarily use a bad backend URL and confirm the local explanation remains visible.
 - Complete a quiz and tap `Generate AI Study Review`.
-- Confirm success response or local Smart Coach fallback.
+- Confirm success response or local quiz summary fallback.
 - Open Progress and tap `Generate 7-Day Study Plan`.
-- Confirm success response or local Recommended Focus fallback.
+- Confirm success response or daily-session/local tools fallback.
 - Turn off network and confirm no crash.
 - Confirm no automatic AI calls happen on screen load.
 - Confirm Android contains no OpenAI key.

@@ -101,10 +101,23 @@ $Body = @{
   action = "quiz_summary"
   payload = @{
     studyPathId = "job-interview-prep"
-    score = 6
+    studyPathTitle = "Job Interview Prep"
+    score = 60
     totalQuestions = 10
+    numberCorrect = 6
+    numberWrong = 4
     incorrectTopics = @("STAR method", "salary expectations")
     weakTopics = @("STAR method", "salary expectations")
+    wrongQuestions = @(
+      @{
+        question = "What is the best first step when answering behavioral questions?"
+        selectedAnswer = "Give a short yes or no answer"
+        correctAnswer = "Use a structured example such as STAR"
+        topic = "STAR method"
+        difficulty = "medium"
+      }
+    )
+    difficultySummary = "medium: 4"
   }
 } | ConvertTo-Json -Depth 6
 
@@ -132,7 +145,13 @@ $Body = @{
   action = "study_plan"
   payload = @{
     studyPathId = "it-qa-interview-prep"
-    goal = "Prepare for a QA interview"
+    studyPathTitle = "IT / QA Interview Prep"
+    onboardingGoal = "Prepare for IT / QA interviews"
+    dailyStudyMinutes = 10
+    weakTopics = @("regression testing", "bug reports")
+    dueSmartReviewCount = 3
+    recentQuizSummary = "Last quiz: 60% with 6 correct"
+    planState = "premium"
     days = 7
     level = "beginner"
   }
@@ -159,7 +178,7 @@ Expected success shape:
 }
 ```
 
-The `study_plan` action caps `days` at 7.
+The `study_plan` action caps `days` at 7 and validates the v3.1 Android payload before calling OpenAI.
 
 ## Redeploy After Backend Changes
 
@@ -278,7 +297,7 @@ All Android AI calls are user-initiated.
 4. Confirm Android shows friendly fallback messaging such as:
 
 ```text
-AI Coach is temporarily unavailable. Here's the local explanation instead.
+AI Study Review is temporarily unavailable. Here's your local summary instead.
 ```
 
 ### Success Testing

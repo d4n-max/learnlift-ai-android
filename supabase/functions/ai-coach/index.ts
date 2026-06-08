@@ -26,15 +26,34 @@ interface ExplainAnswerPayload {
 
 interface QuizSummaryPayload {
   studyPathId: string;
+  studyPathTitle: string;
   score: number;
   totalQuestions: number;
+  numberCorrect: number;
+  numberWrong: number;
   incorrectTopics: string[];
   weakTopics: string[];
+  wrongQuestions: WrongQuestionSample[];
+  difficultySummary: string;
+}
+
+interface WrongQuestionSample {
+  question: string;
+  selectedAnswer: string;
+  correctAnswer: string;
+  topic: string;
+  difficulty: string;
 }
 
 interface StudyPlanPayload {
   studyPathId: string;
-  goal: string;
+  studyPathTitle: string;
+  onboardingGoal: string;
+  dailyStudyMinutes: number;
+  weakTopics: string[];
+  dueSmartReviewCount: number;
+  recentQuizSummary: string;
+  planState: "free" | "premium";
   days: number;
   level: "beginner" | "intermediate" | "advanced";
 }
@@ -229,13 +248,32 @@ function buildExplainAnswerPrompt(payload: ExplainAnswerPayload): PromptConfig {
 }
 
 function buildQuizSummaryPrompt(payload: QuizSummaryPayload): PromptConfig {
+  const wrongQuestionLines = payload.wrongQuestions.length > 0
+    ? payload.wrongQuestions.map((item, index) =>
+      [
+        `Wrong question ${index + 1}: ${item.question}`,
+        `Selected: ${item.selectedAnswer}`,
+        `Correct: ${item.correctAnswer}`,
+        `Topic: ${item.topic}`,
+        `Difficulty: ${item.difficulty}`,
+      ].join(" | ")
+    ).join("\n")
+    : "none provided";
   return {
     system: `You are LearnLift AI Coach, a concise educational assistant for a study app.\n${globalPromptRules}`,
     user: [
       `Study path ID: ${payload.studyPathId}`,
-      `Score: ${payload.score} out of ${payload.totalQuestions}`,
-      `Incorrect topics: ${payload.incorrectTopics.join(", ") || "none provided"}`,
-      `Weak topics: ${payload.weakTopics.join(", ") || "none provided"}`,
+      `Study path title: ${payload.studyPathTitle}`,
+      `Quiz score: ${payload.score}%`,
+      `Correct answers: ${payload.numberCorrect}`,
+      `Wrong answers: ${payload.numberWrong}`,
+      `Total questions: ${payload.totalQuestions}`,
+      `Top wrong topics: ${payload.incorrectTopics.join(", ") || "none provided"}`,
+      `Selected weak topics: ${payload.weakTopics.join(", ") || "none provided"}`,
+      `Difficulty summary: ${payload.difficultySummary}`,
+      "",
+      "Small wrong question sample, maximum 3:",
+      wrongQuestionLines,
       "",
       "Write a concise quiz review.",
       "Recommend up to three focus topics.",
@@ -255,13 +293,22 @@ function buildStudyPlanPrompt(payload: StudyPlanPayload): PromptConfig {
     system: `You are LearnLift AI Coach, a concise educational assistant for a study app.\n${globalPromptRules}`,
     user: [
       `Study path ID: ${payload.studyPathId}`,
-      `Goal: ${payload.goal}`,
+      `Study path title: ${payload.studyPathTitle}`,
+      `Onboarding goal: ${payload.onboardingGoal || "not provided"}`,
+      `Daily study minutes: ${payload.dailyStudyMinutes}`,
+      `Weak topics: ${payload.weakTopics.join(", ") || "none provided"}`,
+      `Due Smart Review count: ${payload.dueSmartReviewCount}`,
+      `Recent quiz summary: ${payload.recentQuizSummary || "not available"}`,
+      `Plan state: ${payload.planState}`,
       `Days: ${payload.days}`,
       `Level: ${payload.level}`,
       "",
       `Create exactly ${payload.days} days of study tasks.`,
+      `Each day must fit about ${payload.dailyStudyMinutes} minutes of study time.`,
       "Each day must have one focus and two to three short, actionable tasks.",
       "Keep the plan realistic and grounded in the study path and goal.",
+      "Use weak topics and due Smart Review count only as prioritization hints.",
+      "Do not claim the plan guarantees interview, exam, career, or language fluency success.",
       "Required JSON keys: title, days. Each day requires day, focus, tasks.",
       "Return ONLY valid minified JSON matching those keys.",
     ].join("\n"),
@@ -558,27 +605,52 @@ function validateQuizSummaryPayload(
   payload: Record<string, unknown>,
 ): { ok: true; payload: QuizSummaryPayload } | { ok: false; error: string; message: string } {
   const studyPathId = readString(payload, "studyPathId", 80);
+  const studyPathTitle = readString(payload, "studyPathTitle", 160);
   const score = readInteger(payload.score);
   const totalQuestions = readInteger(payload.totalQuestions);
+  const numberCorrect = readInteger(payload.numberCorrect);
+  const numberWrong = readInteger(payload.numberWrong);
   const incorrectTopics = readStringArray(payload.incorrectTopics, 5, 120);
   const weakTopics = readStringArray(payload.weakTopics, 5, 120);
+  const wrongQuestions = readWrongQuestionSamples(payload.wrongQuestions);
+  const difficultySummary = readString(payload, "difficultySummary", 220);
 
-  if (!studyPathId || score === null || totalQuestions === null || !incorrectTopics || !weakTopics) {
+  if (
+    !studyPathId ||
+    !studyPathTitle ||
+    score === null ||
+    totalQuestions === null ||
+    numberCorrect === null ||
+    numberWrong === null ||
+    !incorrectTopics ||
+    !weakTopics ||
+    !wrongQuestions ||
+    !difficultySummary
+  ) {
     return validationError("INVALID_QUIZ_SUMMARY_PAYLOAD", "Quiz summary payload has missing or invalid fields.");
   }
 
-  if (totalQuestions < 1 || score < 0 || score > totalQuestions) {
-    return validationError("INVALID_QUIZ_SCORE", "Score must be between 0 and totalQuestions.");
+  if (totalQuestions < 1 || score < 0 || score > 100) {
+    return validationError("INVALID_QUIZ_SCORE", "Score must be a percentage between 0 and 100.");
+  }
+
+  if (numberCorrect < 0 || numberWrong < 0 || numberCorrect + numberWrong !== totalQuestions) {
+    return validationError("INVALID_QUIZ_COUNTS", "Quiz answer counts must match totalQuestions.");
   }
 
   return {
     ok: true,
     payload: {
       studyPathId,
+      studyPathTitle,
       score,
       totalQuestions,
+      numberCorrect,
+      numberWrong,
       incorrectTopics,
       weakTopics,
+      wrongQuestions,
+      difficultySummary,
     },
   };
 }
@@ -587,12 +659,35 @@ function validateStudyPlanPayload(
   payload: Record<string, unknown>,
 ): { ok: true; payload: StudyPlanPayload } | { ok: false; error: string; message: string } {
   const studyPathId = readString(payload, "studyPathId", 80);
-  const goal = readString(payload, "goal", 300);
+  const studyPathTitle = readString(payload, "studyPathTitle", 160);
+  const onboardingGoal = readOptionalString(payload, "onboardingGoal", 180) ?? "";
+  const dailyStudyMinutes = readInteger(payload.dailyStudyMinutes);
+  const weakTopics = readStringArray(payload.weakTopics, 5, 120);
+  const dueSmartReviewCount = readInteger(payload.dueSmartReviewCount);
+  const recentQuizSummary = readOptionalString(payload, "recentQuizSummary", 220) ?? "";
+  const planState = readString(payload, "planState", 20);
   const requestedDays = readInteger(payload.days);
   const level = readString(payload, "level", 40);
 
-  if (!studyPathId || !goal || requestedDays === null || !level) {
+  if (
+    !studyPathId ||
+    !studyPathTitle ||
+    dailyStudyMinutes === null ||
+    !weakTopics ||
+    dueSmartReviewCount === null ||
+    !planState ||
+    requestedDays === null ||
+    !level
+  ) {
     return validationError("INVALID_STUDY_PLAN_PAYLOAD", "Study plan payload has missing or invalid fields.");
+  }
+
+  if (dailyStudyMinutes < 5 || dailyStudyMinutes > 120 || dueSmartReviewCount < 0) {
+    return validationError("INVALID_STUDY_PLAN_CONTEXT", "Study plan context has invalid numeric fields.");
+  }
+
+  if (!["free", "premium"].includes(planState)) {
+    return validationError("INVALID_STUDY_PLAN_STATE", "Plan state must be free or premium.");
   }
 
   if (requestedDays < 1) {
@@ -607,7 +702,13 @@ function validateStudyPlanPayload(
     ok: true,
     payload: {
       studyPathId,
-      goal,
+      studyPathTitle,
+      onboardingGoal,
+      dailyStudyMinutes,
+      weakTopics,
+      dueSmartReviewCount,
+      recentQuizSummary,
+      planState: planState as StudyPlanPayload["planState"],
       days: Math.min(requestedDays, 7),
       level: level as StudyPlanPayload["level"],
     },
@@ -787,7 +888,7 @@ function normalizeQuizSummaryResult(value: unknown, payload: QuizSummaryPayload)
   return {
     result: {
       summary: summary ??
-        `You scored ${payload.score} out of ${payload.totalQuestions}. Review the topics that felt least certain.`,
+        `You scored ${payload.score}% with ${payload.numberCorrect} correct and ${payload.numberWrong} to review.`,
       recommendedFocus: recommendedFocus.length > 0 ? recommendedFocus : fallbackFocus,
       nextSessionSuggestion: nextSessionSuggestion ??
         "Review the recommended focus topics, then try one short quiz.",
@@ -842,9 +943,9 @@ function buildFallbackStudyPlan(payload: StudyPlanPayload) {
     day: index + 1,
     focus: index === 0 ? "Review the basics" : `Practice session ${index + 1}`,
     tasks: [
-      `Review flashcards for ${payload.studyPathId}`,
+      `Review flashcards for ${payload.studyPathTitle}`,
       "Take one short quiz or practice set",
-      "Note one topic to revisit tomorrow",
+      `Keep the session near ${payload.dailyStudyMinutes} minutes`,
     ],
   }));
 }
@@ -904,6 +1005,18 @@ function readString(payload: Record<string, unknown>, key: string, maxLength: nu
   return trimmed;
 }
 
+function readOptionalString(payload: Record<string, unknown>, key: string, maxLength: number): string | null {
+  const value = payload[key];
+  if (value === null || value === undefined) {
+    return null;
+  }
+  if (typeof value !== "string") {
+    return null;
+  }
+  const trimmed = value.trim();
+  return trimmed.length > 0 && trimmed.length <= maxLength ? trimmed : null;
+}
+
 function readStringArray(value: unknown, maxItems: number, maxItemLength: number): string[] | null {
   if (!Array.isArray(value) || value.length > maxItems) {
     return null;
@@ -922,6 +1035,39 @@ function readStringArray(value: unknown, maxItems: number, maxItemLength: number
   }
 
   return [...new Set(cleaned as string[])].slice(0, maxItems);
+}
+
+function readWrongQuestionSamples(value: unknown): WrongQuestionSample[] | null {
+  if (!Array.isArray(value) || value.length > 3) {
+    return null;
+  }
+
+  const samples = value.map((item) => {
+    if (!isObject(item)) {
+      return null;
+    }
+    const question = readString(item, "question", 500);
+    const selectedAnswer = readString(item, "selectedAnswer", 220);
+    const correctAnswer = readString(item, "correctAnswer", 220);
+    const topic = readString(item, "topic", 120);
+    const difficulty = readString(item, "difficulty", 40);
+    if (!question || !selectedAnswer || !correctAnswer || !topic || !difficulty) {
+      return null;
+    }
+    return {
+      question,
+      selectedAnswer,
+      correctAnswer,
+      topic,
+      difficulty,
+    };
+  });
+
+  if (samples.some((item) => item === null)) {
+    return null;
+  }
+
+  return samples as WrongQuestionSample[];
 }
 
 function readInteger(value: unknown): number | null {

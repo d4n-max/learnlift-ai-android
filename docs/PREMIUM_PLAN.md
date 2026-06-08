@@ -26,17 +26,30 @@ Premium is positioned as more AI help and deeper study support, not as a require
 Premium available now:
 
 - More AI Coach explanations.
+- AI Quiz Review.
+- 7-day AI Study Plan.
 - Higher local AI daily limits.
-- Premium AI access.
+- Premium Study Packs.
 - Smarter learning support.
 
 Premium coming soon or expanding:
 
 - Advanced progress insights.
-- More study paths.
-- Full study packs.
-- AI study plans.
+- More study pack content.
 - More personalized recommendations.
+
+Premium Study Packs available now:
+
+- SQL Interview Prep.
+- QA Advanced.
+- Automation Testing Basics.
+
+Premium Study Packs coming soon:
+
+- Python Basics.
+- JavaScript Basics.
+- Business English.
+- Technical Interview Prep.
 
 Premium features should avoid guaranteed exam, job, career, or certification success claims.
 
@@ -101,6 +114,10 @@ The current build includes:
 - Separate RevenueCat Android Store and Test Store public SDK key configuration.
 - Premium entitlement check.
 - Premium gating rules for higher AI usage limits.
+- Premium Study Packs foundation with Free preview access.
+- Local starter content for SQL Interview Prep, QA Advanced, and Automation Testing Basics.
+- Premium-ready AI Quiz Review on quiz summary.
+- Premium-gated 7-day AI Study Plan on Progress.
 - Monthly/yearly package display.
 - Current/default offering loading.
 - Real Google Play product ID recognition for `learnlift_premium_monthly` and `learnlift_premium_yearly`.
@@ -152,7 +169,7 @@ Premium prompts should appear after users experience value, especially when a Fr
 Primary conversion message:
 
 ```text
-You've used today's free AI Coach previews. Upgrade to Premium for more AI help, or continue with local explanations.
+You've used today's free AI previews. Upgrade to Premium for more AI help, or continue with local study tools.
 ```
 
 The app should keep local explanations visible, offer `View Premium`, and avoid repeated retry prompts when the request is blocked locally by usage limits.

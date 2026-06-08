@@ -15,11 +15,17 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -35,10 +41,16 @@ import com.learnliftai.app.ui.theme.LearnLiftSpacing
 fun StudyPathSelectionScreen(
     studyPaths: List<StudyPath>,
     selectedStudyPath: StudyPath?,
+    isPremiumActive: Boolean,
     onStudyPathSelected: (StudyPath) -> Unit,
+    onViewPremium: () -> Unit,
     onBackToHome: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    var lockedPath by remember { mutableStateOf<StudyPath?>(null) }
+    val freePaths = studyPaths.filter { !it.isPremium }
+    val premiumPaths = studyPaths.filter { it.isPremium }
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -50,16 +62,54 @@ fun StudyPathSelectionScreen(
             title = "Choose a study path",
             subtitle = "Pick the goal you want LearnLift AI to support first."
         )
-        studyPaths.forEach { studyPath ->
+        SectionHeader(
+            title = "Free Study Paths",
+            subtitle = "Start here without Premium."
+        )
+        freePaths.forEach { studyPath ->
             StudyPathOptionCard(
                 studyPath = studyPath,
                 isSelected = selectedStudyPath?.id == studyPath.id,
+                isPremiumActive = isPremiumActive,
                 onSelect = { onStudyPathSelected(studyPath) }
+            )
+        }
+        SectionHeader(
+            title = "Premium Study Packs",
+            subtitle = "Preview a few items for free, or unlock the full pack with Premium."
+        )
+        premiumPaths.forEach { studyPath ->
+            StudyPathOptionCard(
+                studyPath = studyPath,
+                isSelected = selectedStudyPath?.id == studyPath.id,
+                isPremiumActive = isPremiumActive,
+                onSelect = {
+                    when {
+                        studyPath.isComingSoon -> Unit
+                        isPremiumActive -> onStudyPathSelected(studyPath)
+                        else -> lockedPath = studyPath
+                    }
+                }
             )
         }
         SecondaryActionButton(
             text = "Back to Home",
             onClick = onBackToHome
+        )
+    }
+
+    lockedPath?.let { path ->
+        PremiumPackLockDialog(
+            studyPath = path,
+            onPreview = {
+                lockedPath = null
+                onStudyPathSelected(path)
+            },
+            onViewPremium = {
+                lockedPath = null
+                onViewPremium()
+            },
+            onCancel = { lockedPath = null }
         )
     }
 }
@@ -68,6 +118,7 @@ fun StudyPathSelectionScreen(
 private fun StudyPathOptionCard(
     studyPath: StudyPath,
     isSelected: Boolean,
+    isPremiumActive: Boolean,
     onSelect: () -> Unit
 ) {
     val border = if (isSelected) {
@@ -79,7 +130,7 @@ private fun StudyPathOptionCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable(onClick = onSelect),
+            .clickable(enabled = !studyPath.isComingSoon, onClick = onSelect),
         shape = RoundedCornerShape(LearnLiftCorners.card),
         border = border,
         colors = CardDefaults.cardColors(
@@ -95,7 +146,7 @@ private fun StudyPathOptionCard(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                StudyPathPill(text = studyPath.accentLabel)
+                StudyPathPill(text = studyPath.icon)
                 if (isSelected) {
                     Text(
                         text = "Selected",
@@ -112,6 +163,20 @@ private fun StudyPathOptionCard(
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold
             )
+            Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+            Column(
+                verticalArrangement = Arrangement.spacedBy(LearnLiftSpacing.smallGap)
+            ) {
+                if (studyPath.isPremium) {
+                    StudyPathMetaLabel(text = "Premium")
+                }
+                if (studyPath.isComingSoon) {
+                    StudyPathMetaLabel(text = "Coming soon")
+                } else if (studyPath.isPremium && !isPremiumActive && studyPath.freePreviewCount > 0) {
+                    StudyPathMetaLabel(text = "Preview available")
+                }
+                StudyPathMetaLabel(text = studyPath.accentLabel)
+            }
             Spacer(modifier = Modifier.height(6.dp))
             Text(
                 text = studyPath.subtitle,
@@ -132,13 +197,65 @@ private fun StudyPathOptionCard(
                 StudyPathMetaLabel(text = studyPath.difficultyLabel)
                 StudyPathMetaLabel(text = studyPath.estimatedDailyTime)
             }
+            Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+            Text(
+                text = "Recommended for: ${studyPath.recommendedFor}",
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.68f),
+                style = MaterialTheme.typography.bodySmall
+            )
             Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
             PrimaryActionButton(
-                text = if (isSelected) "Keep this path" else "Select this path",
-                onClick = onSelect
+                text = when {
+                    studyPath.isComingSoon -> "Coming soon"
+                    isSelected -> "Keep this path"
+                    studyPath.isPremium && !isPremiumActive -> "Preview or unlock"
+                    else -> "Select this path"
+                },
+                onClick = onSelect,
+                enabled = !studyPath.isComingSoon
             )
         }
     }
+}
+
+@Composable
+private fun PremiumPackLockDialog(
+    studyPath: StudyPath,
+    onPreview: () -> Unit,
+    onViewPremium: () -> Unit,
+    onCancel: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onCancel,
+        title = {
+            Text(
+                text = "Unlock Premium Study Packs",
+                color = MaterialTheme.colorScheme.primary,
+                fontWeight = FontWeight.Bold
+            )
+        },
+        text = {
+            Text(
+                text = "This pack is part of LearnLift AI Premium. Preview a few cards for free, or unlock the full pack with Premium.",
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        },
+        confirmButton = {
+            TextButton(onClick = onPreview) {
+                Text(text = "Preview pack")
+            }
+        },
+        dismissButton = {
+            Row {
+                TextButton(onClick = onViewPremium) {
+                    Text(text = "View Premium")
+                }
+                TextButton(onClick = onCancel) {
+                    Text(text = "Cancel")
+                }
+            }
+        }
+    )
 }
 
 @Composable

@@ -141,6 +141,9 @@ fun DailyStudySessionScreen(
                 selectedStudyPath = selectedStudyPath,
                 flashcardCount = sessionFlashcards.size,
                 quizQuestionCount = sessionQuestions.size,
+                isPreviewMode = selectedStudyPath.isPremium &&
+                    selectedStudyPath.freePreviewCount > 0 &&
+                    selectedStudyContent.flashcards.size <= selectedStudyPath.freePreviewCount,
                 onStart = {
                     phase = if (sessionFlashcards.isNotEmpty()) {
                         DailySessionPhase.Flashcards
@@ -294,6 +297,7 @@ private fun DailySessionIntro(
     selectedStudyPath: StudyPath,
     flashcardCount: Int,
     quizQuestionCount: Int,
+    isPreviewMode: Boolean,
     onStart: () -> Unit,
     onReturnHome: () -> Unit
 ) {
@@ -321,6 +325,15 @@ private fun DailySessionIntro(
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.76f),
             style = MaterialTheme.typography.bodyMedium
         )
+        if (isPreviewMode) {
+            Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+            Text(
+                text = "Preview mode: Premium unlocks the full pack.",
+                color = MaterialTheme.colorScheme.secondary,
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.SemiBold
+            )
+        }
         Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
         PrimaryActionButton(
             text = "Start session",

@@ -72,9 +72,10 @@ Premium adds or expands:
 - AI-powered answer explanations
 - AI Study Review
 - 7-day AI Study Plan access
+- Premium Study Packs such as SQL Interview Prep, QA Advanced, and Automation Testing Basics
 - Premium status and subscription support
 
-Some advanced Premium features, such as deeper progress insights and future study packs, may be marked as coming soon until available.
+Some advanced Premium features, such as deeper progress insights and future study packs, may be marked as coming soon until available. See `docs/PLAY_STORE_LISTING_V3_DRAFT.md` before updating the production listing for v3.
 
 LearnLift AI is designed for:
 

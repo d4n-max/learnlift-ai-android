@@ -20,10 +20,23 @@ data class ExplainAnswerResponse(
 
 data class QuizSummaryRequest(
     val studyPathId: String,
+    val studyPathTitle: String,
     val score: Int,
     val totalQuestions: Int,
+    val numberCorrect: Int,
+    val numberWrong: Int,
     val incorrectTopics: List<String>,
-    val weakTopics: List<String>
+    val weakTopics: List<String>,
+    val wrongQuestions: List<WrongQuestionSample>,
+    val difficultySummary: String
+)
+
+data class WrongQuestionSample(
+    val question: String,
+    val selectedAnswer: String,
+    val correctAnswer: String,
+    val topic: String,
+    val difficulty: String
 )
 
 data class QuizSummaryResponse(
@@ -35,7 +48,13 @@ data class QuizSummaryResponse(
 
 data class StudyPlanRequest(
     val studyPathId: String,
-    val goal: String,
+    val studyPathTitle: String,
+    val onboardingGoal: String?,
+    val dailyStudyMinutes: Int?,
+    val weakTopics: List<String>,
+    val dueSmartReviewCount: Int,
+    val recentQuizSummary: String?,
+    val planState: String,
     val days: Int,
     val level: String
 )

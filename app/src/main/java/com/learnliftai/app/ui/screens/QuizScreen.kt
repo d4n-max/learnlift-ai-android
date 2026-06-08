@@ -47,6 +47,7 @@ import com.learnliftai.app.data.ai.ExplainAnswerRequest
 import com.learnliftai.app.data.ai.ExplainAnswerResponse
 import com.learnliftai.app.data.ai.QuizSummaryRequest
 import com.learnliftai.app.data.ai.QuizSummaryResponse
+import com.learnliftai.app.data.ai.WrongQuestionSample
 import com.learnliftai.app.domain.AdaptiveQuizSelector
 import com.learnliftai.app.domain.QuizMode
 import com.learnliftai.app.domain.SmartCoachAdvisor
@@ -134,8 +135,36 @@ fun QuizScreen(
     ) {
         SectionHeader(
             title = if (quizMode == QuizMode.Adaptive) "Adaptive Quiz" else "Quiz",
-            subtitle = selectedStudyPath.title
+            subtitle = if (selectedStudyPath.isPremium && !isPremiumActive && selectedStudyPath.freePreviewCount > 0) {
+                "${selectedStudyPath.title} preview mode"
+            } else {
+                selectedStudyPath.title
+            }
         )
+        if (selectedStudyPath.isPremium && !isPremiumActive && selectedStudyPath.freePreviewCount > 0) {
+            LearnLiftCard(
+                borderColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.28f),
+                containerColor = MaterialTheme.colorScheme.primaryContainer
+            ) {
+                Text(
+                    text = "Preview mode",
+                    color = MaterialTheme.colorScheme.primary,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold
+                )
+                Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+                Text(
+                    text = "You can answer the first ${selectedStudyPath.freePreviewCount} quiz questions for free. Premium unlocks the full pack.",
+                    color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.82f),
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
+                SecondaryActionButton(
+                    text = "View Premium",
+                    onClick = onViewPremium
+                )
+            }
+        }
         if (quizMode == QuizMode.Adaptive) {
             AdaptiveQuizIntro(
                 focusedTopics = adaptiveSelection.focusedTopics,
@@ -147,6 +176,9 @@ fun QuizScreen(
         if (isQuizComplete) {
             QuizSummary(
                 studyPathId = selectedStudyPath.id,
+                studyPath = selectedStudyPath,
+                questions = quizQuestions,
+                selectedAnswers = selectedAnswers,
                 score = score,
                 weakTopics = rememberWeakTopics(quizQuestions, selectedAnswers, topicPerformance),
                 aiCoachRepository = aiCoachRepository,
@@ -472,6 +504,9 @@ private fun QuizScoreStats(score: QuizScore) {
 @Composable
 private fun QuizSummary(
     studyPathId: String,
+    studyPath: StudyPath,
+    questions: List<QuizQuestion>,
+    selectedAnswers: Map<String, String>,
     score: QuizScore,
     weakTopics: List<String>,
     aiCoachRepository: AiCoachRepository,
@@ -491,6 +526,37 @@ private fun QuizSummary(
     }
     var aiSummaryLimitReached by remember(score, weakTopics) {
         mutableStateOf(false)
+    }
+    val currentWrongQuestions = remember(questions, selectedAnswers) {
+        questions.filter { question ->
+            val selectedAnswerId = selectedAnswers[question.id]
+            selectedAnswerId != null && selectedAnswerId != question.correctAnswerId
+        }
+    }
+    val topWrongTopics = remember(currentWrongQuestions) {
+        currentWrongQuestions
+            .groupingBy { it.topic }
+            .eachCount()
+            .entries
+            .sortedWith(compareByDescending<Map.Entry<String, Int>> { it.value }.thenBy { it.key })
+            .map { it.key }
+            .take(5)
+    }
+    val wrongQuestionSamples = remember(currentWrongQuestions, selectedAnswers) {
+        currentWrongQuestions.take(3).map { question ->
+            WrongQuestionSample(
+                question = question.question,
+                selectedAnswer = question.options.firstOrNull { it.id == selectedAnswers[question.id] }?.text
+                    ?: "Not selected",
+                correctAnswer = question.options.firstOrNull { it.id == question.correctAnswerId }?.text
+                    ?: "Correct answer",
+                topic = question.topic,
+                difficulty = question.difficulty
+            )
+        }
+    }
+    val difficultySummary = remember(currentWrongQuestions) {
+        difficultySummaryFor(currentWrongQuestions)
     }
 
     LearnLiftCard {
@@ -548,7 +614,13 @@ private fun QuizSummary(
                 ) {
                     is AiUsageDecision.Blocked -> {
                         aiSummaryLimitReached = !isPremiumActive
-                        aiSummaryState = AiCoachUiState.Error(usageDecision.message)
+                        aiSummaryState = AiCoachUiState.Error(
+                            if (isPremiumActive) {
+                                usageDecision.message
+                            } else {
+                                "AI Quiz Review is part of Premium. Upgrade to get deeper feedback and personalized next steps."
+                            }
+                        )
                         return@launch
                     }
 
@@ -561,10 +633,15 @@ private fun QuizSummary(
                     val result = aiCoachRepository.quizSummary(
                         QuizSummaryRequest(
                             studyPathId = studyPathId,
-                            score = score.correctAnswers,
+                            studyPathTitle = studyPath.title,
+                            score = score.percentage,
                             totalQuestions = score.totalQuestions,
-                            incorrectTopics = weakTopics,
-                            weakTopics = weakTopics
+                            numberCorrect = score.correctAnswers,
+                            numberWrong = score.incorrectAnswers,
+                            incorrectTopics = topWrongTopics,
+                            weakTopics = weakTopics.take(5),
+                            wrongQuestions = wrongQuestionSamples,
+                            difficultySummary = difficultySummary
                         )
                     )
                 ) {
@@ -582,6 +659,18 @@ private fun QuizSummary(
         onGenerate = requestAiSummary,
         onViewPremium = onViewPremium
     )
+}
+
+private fun difficultySummaryFor(questions: List<QuizQuestion>): String {
+    if (questions.isEmpty()) {
+        return "No wrong-answer difficulty pattern from this quiz."
+    }
+    return questions
+        .groupingBy { it.difficulty.ifBlank { "unknown" } }
+        .eachCount()
+        .entries
+        .sortedWith(compareByDescending<Map.Entry<String, Int>> { it.value }.thenBy { it.key })
+        .joinToString(separator = ", ") { "${it.key}: ${it.value}" }
 }
 
 @Composable
@@ -843,7 +932,11 @@ private fun AiQuizSummarySection(
                 Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
                 AiCoachPanel(subtitle = "Local recommendation available") {
                     Text(
-                        text = "${state.message} The local Recommended Focus above is still available.",
+                        text = if (showUpgradeAction) {
+                            state.message
+                        } else {
+                            "AI Study Review is temporarily unavailable. Here's your local summary instead."
+                        },
                         color = MaterialTheme.colorScheme.secondary,
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.SemiBold

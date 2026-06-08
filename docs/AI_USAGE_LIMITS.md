@@ -63,7 +63,7 @@ No account login, backend database, analytics, or cloud sync is used for this fe
 Free limit reached:
 
 ```text
-You've used today's free AI Coach previews. Upgrade to Premium for more AI help, or continue with local explanations.
+You've used today's free AI previews. Upgrade to Premium for more AI help, or continue with local study tools.
 ```
 
 Premium limit reached:
@@ -103,8 +103,8 @@ A production abuse-protection plan should add server-side quotas with:
 - Blocked Free request does not hit Supabase.
 - Local explanation remains visible after the block.
 - `View Premium` opens the Premium screen.
-- Free user can send 1 `quiz_summary` request per day.
-- Free `study_plan` request is blocked locally and keeps Progress usable.
+- Free user can send 1 `quiz_summary` request per day when the AI Quiz Review preview is available.
+- Free `study_plan` is Premium-gated before any Supabase call and keeps Progress usable.
 - Premium entitlement active switches to Premium limits.
 - App restart preserves today's usage count.
 - Next-day reset is testable by changing device date or clearing app data in a test build.

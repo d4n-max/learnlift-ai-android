@@ -29,11 +29,12 @@ Premium focuses on more personalized help:
 
 - More AI Coach explanations.
 - Higher local AI daily limits.
-- Premium AI access.
+- AI Quiz Review.
+- 7-day AI Study Plan.
 - Smarter learning support.
+- Premium Study Packs.
 - Future advanced progress insights.
-- Future premium study packs.
-- Future AI study plans.
+- Future premium pack expansion.
 
 Premium copy must avoid guaranteed job, interview, exam, certification, fluency, or career-success claims.
 
@@ -50,7 +51,7 @@ Free AI previews left today: X
 When the Free limit is reached, the app blocks the AI call locally and shows:
 
 ```text
-You've used today's free AI Coach previews. Upgrade to Premium for more AI help, or continue with local explanations.
+You've used today's free AI previews. Upgrade to Premium for more AI help, or continue with local study tools.
 ```
 
 The local explanation remains visible. The primary CTA is:
@@ -85,21 +86,29 @@ Unlock LearnLift AI Premium
 Subtitle:
 
 ```text
-Get more AI help, smarter review, and deeper progress support.
+Get more AI help, Premium Study Packs, and deeper practice support.
 ```
 
 Available now:
 
 - More AI Coach explanations.
 - Higher AI daily limits.
-- Premium AI access.
+- Premium Study Packs.
 - Smarter learning support.
+
+Premium Study Packs available now:
+
+- SQL Interview Prep.
+- QA Advanced.
+- Automation Testing Basics.
 
 Coming soon:
 
 - Advanced progress insights.
-- More study paths.
-- Premium study packs.
+- Python Basics.
+- JavaScript Basics.
+- Business English.
+- Technical Interview Prep.
 - AI study plans.
 
 ## Pricing

@@ -465,7 +465,7 @@ private fun FutureFeaturesSection() {
         Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
         FutureFeatureRow(title = "Cloud sync", status = "Coming later")
         Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
-        FutureFeatureRow(title = "Premium study packs", status = "Future idea")
+        FutureFeatureRow(title = "Premium study packs", status = "Available")
     }
 }
 

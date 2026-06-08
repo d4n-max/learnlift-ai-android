@@ -6,7 +6,7 @@ Last updated: 2026-05-19
 
 LearnLift AI does not use a hard app-wide paywall. Free users and closed testers can still use the core v1 app even if RevenueCat, Google Play products, or purchases are unavailable.
 
-Premium gating currently applies only to AI-powered usage limits and Premium/Advanced Insights positioning.
+Premium gating currently applies to AI-powered usage limits, Premium/Advanced Insights positioning, and v3 Premium Study Pack full access.
 
 ## Free Features
 
@@ -28,6 +28,7 @@ Free users keep access to:
 - Adaptive Quiz basic access.
 - Basic due review counts.
 - Settings and local reset.
+- Preview access to available Premium Study Packs.
 
 Current v1 study paths must not be locked behind Premium.
 
@@ -43,11 +44,16 @@ Premium currently unlocks or expands:
 
 - Higher local AI Coach daily limits.
 - More AI answer explanations each day.
+- AI Quiz Review with Free preview allowance and Premium safety limits.
 - AI Study Review with higher daily limits.
 - 7-day AI Study Plan access.
 - Premium active/status UI.
 - Purchase and restore flow through RevenueCat.
 - Value-based paywall copy with Monthly and Yearly plans.
+- Full access to Premium Study Packs:
+  - SQL Interview Prep.
+  - QA Advanced.
+  - Automation Testing Basics.
 
 Premium does not remove local fallback behavior. If AI fails, the app still shows local explanations or Smart Coach recommendations.
 
@@ -57,18 +63,17 @@ These should be shown as planned or coming soon, not as fully implemented:
 
 - Advanced weakness tracking.
 - Deeper progress insights.
-- Premium study packs.
 - Future custom/adaptive practice.
 - Deeper adaptive practice.
 - Deeper spaced repetition insights.
 - Advanced review planning.
-- Future premium study packs:
-  - SQL Interview Prep.
-  - QA Advanced.
-  - Automation Basics.
+- Future Premium Study Packs:
   - Python Basics.
+  - JavaScript Basics.
+  - Business English.
+  - Technical Interview Prep.
 
-No new study content is added in this gating task.
+Available Premium Study Packs provide Free preview mode with the first 5 flashcards and first 5 quiz questions. Coming soon packs are visible but disabled.
 
 ## AI Limit Behavior
 
@@ -87,7 +92,7 @@ Premium local limits:
 Free limit reached message:
 
 ```text
-You've used today's free AI Coach previews. Upgrade to Premium for more AI help, or continue with local explanations.
+You've used today's free AI previews. Upgrade to Premium for more AI help, or continue with local study tools.
 ```
 
 When this message appears, the app blocks the AI call locally, keeps local explanations or Smart Coach guidance visible, and shows `View Premium`. It should not keep prompting users to retry the same locally blocked AI request.
@@ -148,8 +153,13 @@ Premium prompts are allowed in:
 - Progress Advanced Insights teaser.
 - Settings Premium section.
 - A subtle Home card for higher AI Coach limits.
+- Study Path Selection when a Free user taps an available Premium Study Pack.
+- Quiz Summary when Free AI Quiz Review allowance is used.
+- Progress when Free users view the AI Study Plan teaser.
 
 Premium prompts should not interrupt onboarding, hide core study modes, or prevent Free users from using flashcards, quizzes, daily sessions, progress, Smart Coach, Smart Review, local explanations, or basic Adaptive Quiz.
+
+Premium prompts for study packs must include a respectful Preview pack option, a View Premium action, and a Cancel action.
 
 ## Future Stronger Gating Plan
 
@@ -178,3 +188,8 @@ Before stronger gating ships, run full closed-testing QA and update Privacy Poli
 - Restore purchases updates plan.
 - RevenueCat unavailable does not crash app.
 - Existing three paths are not locked.
+- Free user can preview first 5 cards/questions from available Premium packs.
+- Premium active user can open full available Premium packs.
+- Coming soon Premium packs do not navigate to empty content.
+- Free user sees AI Study Plan teaser and `View Premium`.
+- Premium active user can generate AI Quiz Review and 7-day AI Study Plan within safety limits.

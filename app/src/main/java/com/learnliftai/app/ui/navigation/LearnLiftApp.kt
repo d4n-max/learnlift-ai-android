@@ -34,6 +34,7 @@ import com.learnliftai.app.domain.model.FlashcardMode
 import com.learnliftai.app.domain.model.OnboardingGoal
 import com.learnliftai.app.domain.model.OnboardingPreferences
 import com.learnliftai.app.domain.model.ReminderPreferences
+import com.learnliftai.app.domain.model.StudyContent
 import com.learnliftai.app.domain.model.UserProgress
 import com.learnliftai.app.domain.model.flashcardReviewSummaryFor
 import com.learnliftai.app.notifications.DailyReminderScheduler
@@ -92,9 +93,17 @@ fun LearnLiftApp() {
     val quizMode = QuizMode.valueOf(quizModeName)
     val flashcardMode = FlashcardMode.valueOf(flashcardModeName)
     val studyPaths = StudyPathRepository.studyPaths
+    val onboardingStudyPaths = studyPaths.filter { !it.isPremium }
     val selectedStudyPath = StudyPathRepository.findById(userProgress.selectedStudyPathId)
-    val selectedStudyContent = remember(userProgress.selectedStudyPathId) {
-        userProgress.selectedStudyPathId?.let { AssetStudyContentRepository.loadStudyContent(context, it) }
+    val selectedStudyContent = remember(userProgress.selectedStudyPathId, selectedStudyPath, premiumUiState.isPremiumActive) {
+        userProgress.selectedStudyPathId?.let { pathId ->
+            val content = AssetStudyContentRepository.loadStudyContent(context, pathId)
+            if (selectedStudyPath != null && selectedStudyPath.isPreviewMode(premiumUiState.isPremiumActive)) {
+                content?.preview(selectedStudyPath.freePreviewCount)
+            } else {
+                content
+            }
+        }
     }
     val selectedPathFlashcards = selectedStudyContent?.flashcards.orEmpty()
     val selectedFlashcardReviewSummary = flashcardReviewSummaryFor(
@@ -142,7 +151,7 @@ fun LearnLiftApp() {
     ) { innerPadding ->
         if (shouldShowOnboarding) {
             OnboardingScreen(
-                studyPaths = studyPaths,
+                studyPaths = onboardingStudyPaths,
                 existingSelectedPathId = userProgress.selectedStudyPathId,
                 onCompleteOnboarding = { goal, pathId, dailyMinutes ->
                     coroutineScope.launch {
@@ -321,12 +330,17 @@ fun LearnLiftApp() {
             StudyPathSelectionScreen(
                 studyPaths = studyPaths,
                 selectedStudyPath = selectedStudyPath,
+                isPremiumActive = premiumUiState.isPremiumActive,
                 onStudyPathSelected = {
                     coroutineScope.launch {
                         progressRepository.setSelectedStudyPathId(it.id)
                     }
                     isChoosingStudyPath = false
                     selectedDestinationName = LearnLiftDestination.Home.name
+                },
+                onViewPremium = {
+                    isChoosingStudyPath = false
+                    isPremiumOpen = true
                 },
                 onBackToHome = {
                     isChoosingStudyPath = false
@@ -436,6 +450,8 @@ fun LearnLiftApp() {
                 LearnLiftDestination.Progress -> ProgressScreen(
                     selectedStudyPath = selectedStudyPath,
                     userProgress = userProgress,
+                    onboardingGoal = onboardingPreferences.onboardingGoal,
+                    dailyStudyMinutes = onboardingPreferences.dailyStudyMinutes,
                     isPremiumActive = premiumUiState.isPremiumActive,
                     aiUsageState = aiUsageState,
                     aiUsageRepository = aiUsageRepository,
@@ -448,6 +464,9 @@ fun LearnLiftApp() {
                     onStartSmartReview = {
                         flashcardModeName = FlashcardMode.SmartReview.name
                         selectedDestinationName = LearnLiftDestination.Flashcards.name
+                    },
+                    onStartDailySession = {
+                        isDailySessionActive = true
                     },
                     onOpenSettings = { isSettingsOpen = true },
                     onViewPremium = { isPremiumOpen = true },
@@ -466,6 +485,17 @@ fun LearnLiftApp() {
 }
 
 private const val DefaultOnboardingPathId = "job-interview-prep"
+
+private fun com.learnliftai.app.domain.model.StudyPath.isPreviewMode(isPremiumActive: Boolean): Boolean {
+    return isPremium && !isPremiumActive && freePreviewCount > 0
+}
+
+private fun StudyContent.preview(previewCount: Int): StudyContent {
+    return copy(
+        flashcards = flashcards.take(previewCount),
+        quizQuestions = quizQuestions.take(previewCount)
+    )
+}
 
 @Composable
 private fun LearnLiftBottomNavigation(

@@ -42,10 +42,15 @@ class AiCoachService(
             action = "quiz_summary",
             payload = JSONObject()
                 .put("studyPathId", request.studyPathId)
+                .put("studyPathTitle", request.studyPathTitle)
                 .put("score", request.score)
                 .put("totalQuestions", request.totalQuestions)
+                .put("numberCorrect", request.numberCorrect)
+                .put("numberWrong", request.numberWrong)
                 .put("incorrectTopics", JSONArray(request.incorrectTopics))
-                .put("weakTopics", JSONArray(request.weakTopics)),
+                .put("weakTopics", JSONArray(request.weakTopics))
+                .put("wrongQuestions", request.wrongQuestions.toJsonArray())
+                .put("difficultySummary", request.difficultySummary),
             parser = { result ->
                 QuizSummaryResponse(
                     summary = result.getString("summary"),
@@ -62,7 +67,13 @@ class AiCoachService(
             action = "study_plan",
             payload = JSONObject()
                 .put("studyPathId", request.studyPathId)
-                .put("goal", request.goal)
+                .put("studyPathTitle", request.studyPathTitle)
+                .put("onboardingGoal", request.onboardingGoal)
+                .put("dailyStudyMinutes", request.dailyStudyMinutes)
+                .put("weakTopics", JSONArray(request.weakTopics))
+                .put("dueSmartReviewCount", request.dueSmartReviewCount)
+                .put("recentQuizSummary", request.recentQuizSummary)
+                .put("planState", request.planState)
                 .put("days", request.days)
                 .put("level", request.level),
             parser = { result ->
@@ -216,6 +227,17 @@ class AiCoachService(
                 tasks = day.getJSONArray("tasks").toStringList()
             )
         }
+    }
+
+    private fun List<WrongQuestionSample>.toJsonArray(): JSONArray {
+        return JSONArray(map { sample ->
+            JSONObject()
+                .put("question", sample.question)
+                .put("selectedAnswer", sample.selectedAnswer)
+                .put("correctAnswer", sample.correctAnswer)
+                .put("topic", sample.topic)
+                .put("difficulty", sample.difficulty)
+        })
     }
 
     private companion object {

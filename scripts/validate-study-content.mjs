@@ -15,14 +15,22 @@ const requiredQuizFields = [
 ];
 
 const minimums = {
-  "english-vocabulary-speaking": { flashcards: 80, quizQuestions: 60 },
-  "job-interview-prep": { flashcards: 80, quizQuestions: 60 },
-  "it-qa-interview-prep": { flashcards: 60, quizQuestions: 50 },
+  "english-vocabulary-speaking": { flashcards: 80, quizQuestions: 60, isPremium: false, isComingSoon: false },
+  "job-interview-prep": { flashcards: 80, quizQuestions: 60, isPremium: false, isComingSoon: false },
+  "it-qa-interview-prep": { flashcards: 60, quizQuestions: 50, isPremium: false, isComingSoon: false },
+  "sql-interview-prep": { flashcards: 30, quizQuestions: 25, isPremium: true, isComingSoon: false, freePreviewCount: 5 },
+  "qa-advanced": { flashcards: 30, quizQuestions: 25, isPremium: true, isComingSoon: false, freePreviewCount: 5 },
+  "automation-testing-basics": { flashcards: 30, quizQuestions: 25, isPremium: true, isComingSoon: false, freePreviewCount: 5 },
+  "python-basics": { flashcards: 0, quizQuestions: 0, isPremium: true, isComingSoon: true },
+  "javascript-basics": { flashcards: 0, quizQuestions: 0, isPremium: true, isComingSoon: true },
+  "business-english": { flashcards: 0, quizQuestions: 0, isPremium: true, isComingSoon: true },
+  "technical-interview-prep": { flashcards: 0, quizQuestions: 0, isPremium: true, isComingSoon: true },
 };
 
 const files = (await readdir(contentDir)).filter((file) => file.endsWith(".json"));
 const errors = [];
 const results = [];
+const seenPathIds = new Set();
 
 for (const file of files) {
   const fullPath = join(contentDir, file);
@@ -33,6 +41,11 @@ for (const file of files) {
   if (!expectedMinimum) {
     errors.push(`${file}: unexpected pathId "${content.pathId}"`);
     continue;
+  }
+  seenPathIds.add(content.pathId);
+
+  if (expectedMinimum.isComingSoon) {
+    errors.push(`${file}: coming soon path "${content.pathId}" should not have a content file yet`);
   }
 
   if (!Array.isArray(content.flashcards)) {
@@ -103,9 +116,24 @@ for (const file of files) {
   results.push({
     file,
     pathId: content.pathId,
+    isPremium: expectedMinimum.isPremium,
+    isComingSoon: expectedMinimum.isComingSoon,
+    freePreviewCount: expectedMinimum.freePreviewCount ?? 0,
     flashcards: content.flashcards.length,
     quizQuestions: content.quizQuestions.length,
   });
+}
+
+for (const [pathId, metadata] of Object.entries(minimums)) {
+  if (!metadata.isComingSoon && !seenPathIds.has(pathId)) {
+    errors.push(`${pathId}: expected local content file`);
+  }
+  if (metadata.isPremium && !metadata.isComingSoon && (!metadata.freePreviewCount || metadata.freePreviewCount < 1)) {
+    errors.push(`${pathId}: premium pack must define a positive freePreviewCount`);
+  }
+  if (!metadata.isPremium && metadata.freePreviewCount) {
+    errors.push(`${pathId}: free path should not define a premium preview count`);
+  }
 }
 
 console.table(results);

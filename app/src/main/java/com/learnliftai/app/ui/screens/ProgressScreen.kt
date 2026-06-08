@@ -60,6 +60,8 @@ import kotlinx.coroutines.launch
 fun ProgressScreen(
     selectedStudyPath: StudyPath?,
     userProgress: UserProgress,
+    onboardingGoal: String?,
+    dailyStudyMinutes: Int,
     isPremiumActive: Boolean,
     aiUsageState: AiUsageState,
     aiUsageRepository: AiUsageRepository,
@@ -67,6 +69,7 @@ fun ProgressScreen(
     flashcardReviewSummary: FlashcardReviewSummary,
     onStartAdaptiveQuiz: () -> Unit,
     onStartSmartReview: () -> Unit,
+    onStartDailySession: () -> Unit,
     onOpenSettings: () -> Unit,
     onViewPremium: () -> Unit,
     onResetProgress: () -> Unit,
@@ -133,7 +136,13 @@ fun ProgressScreen(
             isPremiumActive = isPremiumActive,
             aiUsageState = aiUsageState,
             aiUsageRepository = aiUsageRepository,
-            onViewPremium = onViewPremium
+            userProgress = userProgress,
+            topicPerformance = topicPerformance,
+            flashcardReviewSummary = flashcardReviewSummary,
+            onboardingGoal = onboardingGoal,
+            dailyStudyMinutes = dailyStudyMinutes,
+            onViewPremium = onViewPremium,
+            onStartDailySession = onStartDailySession
         )
         AdvancedInsightsTeaser(
             isPremiumActive = isPremiumActive,
@@ -234,7 +243,13 @@ private fun StudyPlanAiSection(
     isPremiumActive: Boolean,
     aiUsageState: AiUsageState,
     aiUsageRepository: AiUsageRepository,
-    onViewPremium: () -> Unit
+    userProgress: UserProgress,
+    topicPerformance: List<TopicPerformance>,
+    flashcardReviewSummary: FlashcardReviewSummary,
+    onboardingGoal: String?,
+    dailyStudyMinutes: Int,
+    onViewPremium: () -> Unit,
+    onStartDailySession: () -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
     var studyPlanState by remember(selectedStudyPath?.id) {
@@ -253,11 +268,35 @@ private fun StudyPlanAiSection(
         )
         Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
         Text(
-            text = "Optional AI planning based on your selected study path. No personal profile data is sent.",
+            text = if (isPremiumActive) {
+                "Premium AI planning uses your selected path, goal, weak topics, due review count, and recent quiz score."
+            } else {
+                "Premium helps you plan what to study next."
+            },
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.76f),
             style = MaterialTheme.typography.bodyMedium
         )
         Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
+        if (!isPremiumActive) {
+            Text(
+                text = "Create a 7-day AI Study Plan",
+                color = MaterialTheme.colorScheme.primary,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+            Text(
+                text = "Premium helps you plan what to study next while your local study tools stay available.",
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.76f),
+                style = MaterialTheme.typography.bodyMedium
+            )
+            Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
+            PrimaryActionButton(
+                text = "View Premium",
+                onClick = onViewPremium
+            )
+            return@LearnLiftCard
+        }
         ProgressAiUsageStatusText(
             action = AiUsageAction.StudyPlan,
             usageState = aiUsageState,
@@ -289,7 +328,13 @@ private fun StudyPlanAiSection(
                         val result = aiCoachRepository.studyPlan(
                             StudyPlanRequest(
                                 studyPathId = path.id,
-                                goal = "Build confidence with ${path.title}",
+                                studyPathTitle = path.title,
+                                onboardingGoal = onboardingGoal,
+                                dailyStudyMinutes = dailyStudyMinutes,
+                                weakTopics = topicPerformance.studyPlanWeakTopics(),
+                                dueSmartReviewCount = flashcardReviewSummary.dueToday,
+                                recentQuizSummary = userProgress.recentQuizSummary(),
+                                planState = if (isPremiumActive) "premium" else "free",
                                 days = 7,
                                 level = "beginner"
                             )
@@ -303,7 +348,7 @@ private fun StudyPlanAiSection(
         }
         PrimaryActionButton(
             text = if (studyPlanState is AiCoachUiState.Loading) {
-                "AI Coach is drafting..."
+                "Building your 7-day study plan..."
             } else {
                 "Generate 7-Day Study Plan"
             },
@@ -314,7 +359,7 @@ private fun StudyPlanAiSection(
             AiCoachUiState.Idle -> Unit
             AiCoachUiState.Loading -> {
                 Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
-                ProgressAiLoadingPanel(message = "AI Coach is drafting a short plan.")
+                ProgressAiLoadingPanel(message = "Building your 7-day study plan...")
             }
 
             is AiCoachUiState.Success -> {
@@ -334,6 +379,11 @@ private fun StudyPlanAiSection(
                             tasks = day.tasks
                         )
                     }
+                    Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+                    PrimaryActionButton(
+                        text = "Start Daily Session",
+                        onClick = onStartDailySession
+                    )
                 }
             }
 
@@ -341,7 +391,7 @@ private fun StudyPlanAiSection(
                 Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
                 ProgressAiPanel(subtitle = "Local recommendation available") {
                     Text(
-                        text = "${state.message} Keep using the local Recommended Focus above for now.",
+                        text = "AI Study Plan is temporarily unavailable. Try again later or continue with your daily session.",
                         color = MaterialTheme.colorScheme.secondary,
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.SemiBold
@@ -361,6 +411,26 @@ private fun StudyPlanAiSection(
                 }
             }
         }
+    }
+}
+
+private fun List<TopicPerformance>.studyPlanWeakTopics(): List<String> {
+    return sortedWith(
+        compareByDescending<TopicPerformance> { it.needsReview }
+            .thenByDescending { it.weaknessScore }
+            .thenByDescending { it.wrongAnswers }
+            .thenBy { it.topic.lowercase() }
+    )
+        .map { it.topic }
+        .distinct()
+        .take(5)
+}
+
+private fun UserProgress.recentQuizSummary(): String? {
+    return if (totalQuizzesCompleted <= 0) {
+        null
+    } else {
+        "Last quiz: $lastQuizPercentage% with $lastQuizScore correct"
     }
 }
 

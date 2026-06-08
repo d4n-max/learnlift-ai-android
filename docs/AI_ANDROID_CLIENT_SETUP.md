@@ -108,19 +108,21 @@ On the quiz summary screen, the user can tap:
 Generate AI Study Review
 ```
 
-The app sends only score, total question count, study path ID, and weak/missed topics.
+The app sends only study path ID/title, score percentage, correct/wrong counts, top wrong topics, selected weak topics, a wrong-question sample capped at 3, and a difficulty summary.
 
 When local topic weakness tracking is available, the weak topic payload may include top locally tracked weak topic names in addition to topics missed in the current quiz. The app does not send full study history or detailed per-topic performance records.
 
 ### Progress
 
-On Progress, the user can tap:
+On Progress, Premium users can tap:
 
 ```text
 Generate 7-Day Study Plan
 ```
 
-The app sends the selected study path ID, a short goal based on the selected path, `days = 7`, and `level = beginner`.
+The app sends the selected study path ID/title, onboarding goal if available, daily study minutes, up to 5 weak topic names, due Smart Review count, recent quiz score summary if available, `days = 7`, and `level = beginner`.
+
+Free users see a Premium teaser and no `study_plan` Supabase request is made.
 
 ## Fallback Behavior
 
@@ -129,8 +131,8 @@ All AI calls are optional and user-initiated.
 If the backend is unavailable, quota is exhausted, JSON parsing fails, or the device has no network:
 
 - Quiz wrong answer keeps the static local explanation visible.
-- Quiz summary keeps the rule-based Recommended Focus visible.
-- Progress keeps the local Recommended Focus visible.
+- Quiz summary keeps the local quiz summary and rule-based Recommended Focus visible.
+- Progress keeps local Recommended Focus, Weak Topics, Smart Review, and Daily Session available.
 - The app shows a friendly message instead of technical backend details.
 
 Common user-facing fallback:
