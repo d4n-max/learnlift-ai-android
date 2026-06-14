@@ -63,6 +63,31 @@ Release must fail if any of these are found:
 - [ ] `local.properties` or secrets staged
 - [ ] `versionCode` not incremented above the previous Play upload
 
+## v3.6 Release-Specific Checks
+
+| Check | Status | Device | Tester | Date | Notes |
+| --- | --- | --- | --- | --- | --- |
+| SQL Interview Prep Premium pack preview works for Free users | [ ] |  |  |  |  |
+| QA Advanced Premium pack preview works for Free users | [ ] |  |  |  |  |
+| Automation Testing Basics Premium pack preview works for Free users | [ ] |  |  |  |  |
+| Premium active unlocks full SQL Interview Prep | [ ] |  |  |  |  |
+| Premium active unlocks full QA Advanced | [ ] |  |  |  |  |
+| Premium active unlocks full Automation Testing Basics | [ ] |  |  |  |  |
+| Python Basics appears only as coming soon | [ ] |  |  |  |  |
+| JavaScript Basics appears only as coming soon | [ ] |  |  |  |  |
+| Business English appears only as coming soon | [ ] |  |  |  |  |
+| Technical Interview Prep appears only as coming soon | [ ] |  |  |  |  |
+| Premium Study Pack preview dialog opens Premium screen | [ ] |  |  |  |  |
+| Flashcards preview-limit CTA opens Premium screen | [ ] |  |  |  |  |
+| Progress `Start Adaptive Quiz` CTA opens Adaptive Quiz | [ ] |  |  |  | Fixed once; retest on release candidate. |
+| AI Quiz Review works online or falls back cleanly | [ ] |  |  |  |  |
+| Premium 7-Day AI Study Plan works online or falls back cleanly | [ ] |  |  |  |  |
+| Release build does not use RevenueCat Test Store | [ ] |  |  |  |  |
+| Play-installed purchase activates entitlement `premium` | [ ] |  |  |  | Manual Play testing required. |
+| Restore purchases activates entitlement `premium` when eligible | [ ] |  |  |  | Manual Play testing required. |
+| Store screenshots match shipped functionality | [ ] |  |  |  | Use `docs/SCREENSHOT_PLAN_V3_6.md`. |
+| Feature graphic avoids unavailable-feature and success-guarantee claims | [ ] |  |  |  | Use `docs/FEATURE_GRAPHIC_V3_6_PLAN.md`. |
+
 ## 1. App Launch And Startup
 
 | Check | Status | Device | Tester | Date | Notes |
