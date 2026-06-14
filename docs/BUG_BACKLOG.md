@@ -1,6 +1,6 @@
 # LearnLift AI Bug Backlog
 
-Last updated: 2026-05-26
+Last updated: 2026-06-08
 
 ## Open
 
@@ -8,8 +8,9 @@ Last updated: 2026-05-26
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | BUG-011 | Medium | Store Listing | `docs/PLAY_STORE_LISTING_DRAFT.md` still contains older launch wording that says there are no payments, no live AI Coach, and starter content only. | Review the Play Store listing draft before release upload. | Store copy matches the current candidate: expanded content, AI Coach backend with fallback, Premium screen, and RevenueCat readiness. | Draft includes stale limitation notes from the earlier MVP. | Update the listing draft after final closed-testing QA and before production submission. | Open |
 | BUG-012 | High | Billing QA | Google Play closed-testing purchase flow has not been verified from a Play-installed build in this QA pass. | Install the app from the Play testing track and buy monthly/yearly test subscriptions. | Google Play purchase sheet opens, successful purchases activate entitlement `premium`, cancellations do not crash, and restore updates plan state. | RevenueCat Test Store has been confirmed, but Play track purchase behavior still needs device QA. | Complete the Google Play Closed Testing section in `docs/BILLING_QA_CHECKLIST.md`. | Open |
-| BUG-013 | Medium | Store Assets | Final Play Store screenshots and feature graphic are not confirmed ready. | Prepare Play Console store listing assets. | Screenshots and feature graphic reflect current Home, study paths, Flashcards, Quiz, Progress, Settings, Premium, and AI fallback behavior. | Asset readiness remains pending. | Capture final screenshots from a Play-ready build and prepare the feature graphic before production access request. | Open |
-| BUG-016 | High | AI QA | Real AI success path needs retest after OpenAI billing/quota enablement and Task 41 backend hardening. | Deploy the latest Supabase `ai-coach` function, configure `SUPABASE_AI_COACH_URL`, and tap each AI action on a physical device. | Wrong-answer explanation, quiz summary review, and 7-day study plan return real AI responses when backend quota is active, and fallback safely when unavailable. | Build-time checks pass, but live backend success was not verified from this shell. | Run `docs/AI_BACKEND_TESTING.md` PowerShell examples and physical-device AI smoke tests. | Open |
+| BUG-013 | Medium | Store Assets | Final v3.8 Play Store screenshots and feature graphic are not confirmed ready. | Prepare Play Console store listing assets. | Screenshots and feature graphic reflect current Home, Premium Study Packs, Flashcards, Quiz, Adaptive Quiz, Progress, Premium, and AI fallback behavior. | Asset readiness remains pending. | Use `docs/SCREENSHOT_PLAN_V3_6.md` and `docs/FEATURE_GRAPHIC_V3_6_PLAN.md` or newer v3.8 assets to capture final assets before release upload. | Open |
+| BUG-016 | High | AI QA | Real AI success path needs retest for v3.8 release readiness. | Deploy the latest Supabase `ai-coach` function, configure `SUPABASE_AI_COACH_URL`, and tap each AI action on a physical device or Play-installed build. | Wrong-answer explanation, quiz summary review, and 7-day study plan return real AI responses when backend quota is active, and fallback safely when unavailable. | Build-time checks can pass, but live backend success still needs final release smoke testing. | Complete `docs/SUPABASE_AI_RELEASE_CHECKLIST_V3_6.md` and `docs/AI_BACKEND_TESTING.md`. | Open |
+| BUG-030 | High | Release Build | Signed v3.8 AAB has not been generated, uploaded, or verified from Google Play. | Generate the release app bundle and upload to Play Console closed testing or production. | Play accepts the AAB, install source is Google Play, and no release signing/config warnings block rollout. | This release-prep pass does not generate or commit a signed AAB. | Generate signed AAB only after final QA and upload it manually; do not commit generated artifacts. | Open |
 
 ## Fixed
 
@@ -37,6 +38,23 @@ Last updated: 2026-05-26
 | BUG-027 | Low | Premium Conversion UX | Premium touchpoints needed clearer value copy, friendlier RevenueCat fallback, and a stronger wrong-answer AI limit escape hatch. | Use Free AI previews, open Premium, Settings, Home, Progress, and Study Path Selection. | Upgrade moments are clear, respectful, and preserve Free study tools. RevenueCat unavailable state is friendly. | Prior copy was functional but inconsistent across touchpoints. | Polished Premium screen, Home/Settings/Progress copy, AI limit actions, RevenueCat unavailable messaging, and monetization docs. | Fixed |
 | BUG-028 | Low | Content QA | Active study content had flat difficulty distribution and one duplicate English/SQL-style flashcard question across packs. | Run the v3.4 content audit and stricter `scripts/validate-study-content.mjs`. | Content has unique question text where required, useful topics, valid schema, and a healthier easy/medium/hard spread. | Previous validation allowed duplicate question text and did not surface flat difficulty distribution. | Fixed duplicate wording, rebalanced difficulty labels, added SQL subquery/CTE/constraint coverage, and expanded validation/reporting. | Fixed |
 | BUG-029 | Low | Premium Pack UX | Premium Study Pack preview flow needed clearer pack summaries, preview-limit CTA, and coming-soon behavior before v3.5 release candidate QA. | As a Free user, open Study Path Selection, tap an available Premium pack, preview Flashcards, and tap a coming-soon pack. | Available packs show a clear preview dialog and preview-limit CTA. Coming-soon packs show a safe message and never open empty content. | Earlier flow had a basic dialog, disabled coming-soon cards, and no explicit Flashcards preview-limit CTA. | Added richer premium pack cards, pack summary dialog, coming-soon dialog, Flashcards preview-limit CTA, Premium screen pack copy, and v3.5 release docs. | Fixed |
+| BUG-031 | Medium | Progress | Progress `Start Adaptive Quiz` CTA was visible but did not navigate during emulator QA. | Open Progress and tap `Start Adaptive Quiz`. | Adaptive Quiz opens. | CTA previously had no navigation action. | Wired the CTA to the existing Adaptive Quiz route and retested on emulator. | Fixed |
+
+## v3.8 Release Prep Notes
+
+Open release blockers before signed AAB upload:
+
+- BUG-012: Play-installed subscription purchase and restore QA is still required.
+- BUG-013: Final v3.8 screenshots and feature graphic still need capture/upload.
+- BUG-016: Supabase AI production smoke tests for `explain_answer`, `quiz_summary`, and `study_plan` are still required.
+- BUG-030: Signed v3.8 AAB generation and Play Console validation are still required.
+
+Resolved before v3.8 release prep:
+
+- BUG-031: Progress `Start Adaptive Quiz` CTA navigation was fixed and emulator-retested.
+- BUG-029: Premium Study Pack preview and coming-soon UX is documented as fixed.
+- BUG-028: Premium content QA issues are documented as fixed.
+- BUG-023: RevenueCat package matching and unavailable-product fallback are documented as fixed.
 
 ## Deferred
 
