@@ -4,10 +4,14 @@
 
 - App launches with the public RevenueCat SDK key configured.
 - App launches with `REVENUECAT_ANDROID_PUBLIC_API_KEY` configured for Google Play / Closed Testing.
+- RevenueCat keys can be loaded from Gradle properties, environment variables, or uncommitted `local.properties`.
+- `local.properties` contains `REVENUECAT_ANDROID_PUBLIC_API_KEY`, `REVENUECAT_TEST_STORE_API_KEY`, and `USE_REVENUECAT_TEST_STORE=false`.
 - Debug builds use the Android Store key by default.
 - Debug builds use RevenueCat Test Store only when `USE_REVENUECAT_TEST_STORE=true`.
 - Release builds always use the Android Store key and never the Test Store key.
+- Release build fails if `REVENUECAT_ANDROID_PUBLIC_API_KEY` is missing or `REVENUECAT_ANDROID_PUBLIC_API_KEY_HERE`.
 - Release build fails clearly if `REVENUECAT_ANDROID_PUBLIC_API_KEY` starts with `test_`.
+- Gradle logs only safe RevenueCat key metadata: source, startsWithTest, and isPlaceholder.
 - No OpenAI keys, RevenueCat private keys, or Supabase service role keys are in Android code/resources.
 - Gradle dependency resolves `com.revenuecat.purchases:purchases:10.6.0`.
 - Merged manifest includes `com.android.vending.BILLING`.
@@ -25,6 +29,12 @@
 - Monthly package displays label `Monthly`.
 - Yearly or annual package displays label `Yearly`.
 - Yearly package shows `Best value`.
+- Monthly helper copy says `Flexible access to more AI help and full Premium Study Packs.`
+- Yearly helper copy says `Best value for steady weekly practice.` and `Save compared to monthly`.
+- No trial copy appears unless RevenueCat/Google Play returns a real configured introductory offer.
+- Premium headline says `Study with more AI help every day`.
+- Premium subtitle mentions explanations, AI quiz feedback, 7-day plans, and full Premium Study Packs.
+- Active Premium Study Packs are separated from coming-soon packs.
 - Test Store prices are displayed only when explicitly enabled for debug Test Store testing.
 - Google Play prices are displayed as returned by RevenueCat/Play Console.
 - Test Store prices should not appear if real Google Play packages are available in the current/default offering.
@@ -33,6 +43,7 @@
 - Purchase CTA is disabled while purchase is in progress.
 - Purchase CTA is disabled when Premium is active and shows `Premium active`.
 - Restore purchases button shows loading text while restoring.
+- Manage subscription appears for active Premium users when RevenueCat returns a management URL.
 - Friendly message appears if products or offerings are unavailable: `Premium plans are temporarily unavailable. Please try again later.`
 
 ## A. RevenueCat Test Store QA
@@ -54,6 +65,7 @@
 
 - App is installed from Google Play internal or closed testing track.
 - App uses `REVENUECAT_ANDROID_PUBLIC_API_KEY`, not `REVENUECAT_TEST_STORE_API_KEY`.
+- `USE_REVENUECAT_TEST_STORE=false`.
 - Purchase dialog does not say `Test Store Purchase`.
 - Tester account is a license tester and/or closed tester.
 - Monthly package is visible.
@@ -68,6 +80,7 @@
 - Cancelled purchase does not crash and leaves user in Free or existing Premium state.
 - Failed purchase shows a friendly error.
 - Restore purchases works.
+- Manage subscription opens the RevenueCat/Google Play management URL when available.
 - Entitlement `premium` remains active after app restart.
 - RevenueCat customer profile shows the matching Google Play product and active entitlement `premium`.
 
@@ -100,7 +113,10 @@
 - No feature is hard-blocked unexpectedly.
 - Closed testers can continue using the app if RevenueCat products are unavailable.
 - Free AI limit reached shows `View Premium`, keeps local explanation/recommendation visible, and does not offer repeated retry for a locally blocked request.
+- Free AI limit reached says: `You've used today's free AI Coach explanations. Premium gives you more AI help for mistakes like this, and the local explanation is still available.`
 - Free Premium Study Pack preview flow shows Preview pack, View Premium, and Cancel.
+- Free Premium Study Pack preview dialog explains that Premium unlocks every card and quiz question in SQL Interview Prep, QA Advanced, and Automation Testing Basics.
+- Preview limit says: `That's the free preview for this pack. Premium unlocks the full pack so you can keep practicing.`
 - Premium active user opens available Premium Study Packs without preview limits.
 - Coming-soon Premium Study Packs do not open empty content.
 

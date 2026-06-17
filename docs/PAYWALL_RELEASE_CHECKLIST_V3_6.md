@@ -1,6 +1,6 @@
 # Paywall Release Checklist v3.6
 
-Last updated: 2026-06-08
+Last updated: 2026-06-17
 
 Use this checklist before uploading a v3.6 build with Premium subscriptions enabled.
 
@@ -10,6 +10,9 @@ Use this checklist before uploading a v3.6 build with Premium subscriptions enab
 - [ ] `REVENUECAT_ANDROID_PUBLIC_API_KEY` is configured locally for Google Play / Closed Testing.
 - [ ] `REVENUECAT_TEST_STORE_API_KEY` is present only for explicit debug Test Store testing.
 - [ ] `USE_REVENUECAT_TEST_STORE=false` for release and Play-installed testing.
+- [ ] Gradle logs RevenueCat key source as Gradle property, environment variable, or `local.properties`, without printing key values.
+- [ ] `BuildConfig.REVENUECAT_PUBLIC_API_KEY` is not `REVENUECAT_ANDROID_PUBLIC_API_KEY_HERE` for debug or release builds used for billing QA.
+- [ ] Release build fails if `REVENUECAT_ANDROID_PUBLIC_API_KEY` is missing or placeholder.
 - [ ] Release build does not use a `test_` RevenueCat key.
 - [ ] No RevenueCat private keys are in Android code or repository docs.
 - [ ] No `.aab`, `.apk`, `.jks`, `.keystore`, `app/build`, `.gradle`, or `local.properties` files are committed.
@@ -58,6 +61,7 @@ Use this checklist before uploading a v3.6 build with Premium subscriptions enab
 
 - [ ] Purchase opens Google Play purchase sheet from a Play-installed build.
 - [ ] Test Store dialog does not appear in production/release build.
+- [ ] `USE_REVENUECAT_TEST_STORE=false` has been confirmed for Play-installed testing.
 - [ ] Cancelled purchase is handled gracefully.
 - [ ] Failed purchase is handled gracefully.
 - [ ] Successful monthly purchase activates `premium`.

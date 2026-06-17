@@ -23,14 +23,14 @@ The Free plan currently includes:
 
 Premium is positioned as more AI help and deeper study support, not as a requirement to use the app.
 
-Premium available now:
+Available with Premium:
 
-- More AI Coach explanations.
-- AI Quiz Review.
+- More AI Coach explanations for wrong answers.
+- Higher daily AI limits.
+- AI Study Review after quizzes.
 - 7-day AI Study Plans.
-- Higher local AI daily limits.
-- Premium Study Packs.
-- Smarter learning support.
+- Full Premium Study Packs.
+- Smarter support for what to practice next.
 
 Premium coming soon or expanding:
 
@@ -59,12 +59,13 @@ Planned public pricing:
 
 - Monthly: `€3.99 / month`
 - Yearly: `€24.99 / year`
+- Trial: none at launch
 
 When RevenueCat offerings are configured, the app displays prices returned by RevenueCat. RevenueCat Test Store may return test prices such as `$9.99` and `$79.98`; Google Play closed testing and production prices should come from Play Console products.
 
 Placeholder prices are used only when RevenueCat offerings or packages are unavailable.
 
-The Yearly plan should be visually recommended with a `Best value` badge while keeping the Monthly plan visible and selectable.
+The Yearly plan should be visually recommended with a `Best value` badge and `Save compared to monthly` helper while keeping the Monthly plan visible and selectable. Do not mention a 7-day or 14-day trial unless Google Play and RevenueCat return a real configured introductory offer.
 
 ## RevenueCat Configuration
 
@@ -119,6 +120,15 @@ The current build includes:
 - Local starter content for SQL Interview Prep, QA Advanced, and Automation Testing Basics.
 - Premium-ready AI Quiz Review on quiz summary.
 - Premium-gated 7-day AI Study Plan on Progress.
+- Production paywall headline: `Study with more AI help every day`.
+- Production paywall subtitle: `Unlock more explanations, AI quiz feedback, 7-day plans, and full Premium Study Packs when you want deeper practice.`
+- Clearer 7-Day Study Plan teaser copy for Free users:
+  - `Create a 7-day AI Study Plan`
+  - `Create a 7-day plan from your selected path, daily goal, weak topics, quiz results, and cards due for review.`
+  - `View Premium`
+- Premium benefits section copy uses `Available with Premium` instead of `Available now`.
+- Premium active state copy explains that more AI help, AI Study Review, 7-day plans, and full Premium Study Packs are unlocked.
+- Active subscribers see `Manage subscription` when RevenueCat returns a management URL.
 - Monthly/yearly package display.
 - Current/default offering loading.
 - Real Google Play product ID recognition for `learnlift_premium_monthly` and `learnlift_premium_yearly`.
@@ -170,7 +180,7 @@ Premium prompts should appear after users experience value, especially when a Fr
 Primary conversion message:
 
 ```text
-You've used today's free AI Coach previews. Upgrade to Premium for more AI help, or continue with local explanations.
+You've used today's free AI Coach explanations. Premium gives you more AI help for mistakes like this, and the local explanation is still available.
 ```
 
 The app should keep local explanations visible, offer `View Premium`, and avoid repeated retry prompts when the request is blocked locally by usage limits.

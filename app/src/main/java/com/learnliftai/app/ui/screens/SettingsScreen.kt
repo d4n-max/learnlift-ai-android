@@ -1,8 +1,11 @@
 package com.learnliftai.app.ui.screens
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
+import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
@@ -24,6 +27,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
 import androidx.core.content.ContextCompat
 import com.learnliftai.app.BuildConfig
@@ -54,6 +58,8 @@ fun SettingsScreen(
     onViewPremium: () -> Unit,
     onReminderEnabledChange: (Boolean) -> Unit,
     onReminderTimeSelected: (hour: Int, minute: Int) -> Unit,
+    onNotificationPermissionDenied: () -> Unit,
+    onRateLearnLift: () -> Unit,
     onResetProgress: () -> Unit,
     onRestorePurchases: () -> Unit,
     onResetOnboarding: () -> Unit,
@@ -84,8 +90,10 @@ fun SettingsScreen(
             reminderPreferences = reminderPreferences,
             dailyStudyMinutes = dailyStudyMinutes,
             onReminderEnabledChange = onReminderEnabledChange,
-            onReminderTimeSelected = onReminderTimeSelected
+            onReminderTimeSelected = onReminderTimeSelected,
+            onNotificationPermissionDenied = onNotificationPermissionDenied
         )
+        RateLearnLiftSettingsSection(onRateLearnLift = onRateLearnLift)
         AppInfoSection()
         FutureFeaturesSection()
         OnboardingSettingsSection(onResetOnboarding = onResetOnboarding)
@@ -150,7 +158,8 @@ private fun DailyReminderSettingsSection(
     reminderPreferences: ReminderPreferences,
     dailyStudyMinutes: Int,
     onReminderEnabledChange: (Boolean) -> Unit,
-    onReminderTimeSelected: (hour: Int, minute: Int) -> Unit
+    onReminderTimeSelected: (hour: Int, minute: Int) -> Unit,
+    onNotificationPermissionDenied: () -> Unit
 ) {
     val context = LocalContext.current
     var permissionDenied by remember { mutableStateOf(false) }
@@ -158,6 +167,9 @@ private fun DailyReminderSettingsSection(
         contract = ActivityResultContracts.RequestPermission()
     ) { granted ->
         permissionDenied = !granted
+        if (!granted) {
+            onNotificationPermissionDenied()
+        }
         onReminderEnabledChange(granted)
     }
 
@@ -227,7 +239,7 @@ private fun PrimaryReminderToggle(
     onDisable: () -> Unit
 ) {
     val status = when {
-        permissionDenied -> "Notification permission is disabled."
+        permissionDenied -> "Notifications are off. You can enable them later from Android settings."
         reminderPreferences.remindersEnabled -> "Reminder enabled for ${reminderPreferences.reminderTimeLabel}."
         else -> "Reminder is off."
     }
@@ -238,6 +250,19 @@ private fun PrimaryReminderToggle(
         fontWeight = if (permissionDenied) FontWeight.SemiBold else FontWeight.Normal
     )
     Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
+    if (permissionDenied) {
+        val context = LocalContext.current
+        SecondaryActionButton(
+            text = "Open notification settings",
+            onClick = {
+                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                    data = Uri.fromParts("package", context.packageName, null)
+                }
+                context.startActivity(intent)
+            }
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+    }
     if (reminderPreferences.remindersEnabled) {
         SecondaryActionButton(
             text = "Disable daily study reminder",
@@ -302,6 +327,8 @@ private fun PremiumSettingsSection(
     onViewPremium: () -> Unit,
     onRestorePurchases: () -> Unit
 ) {
+    val uriHandler = LocalUriHandler.current
+    val managementUrl = premiumUiState.managementUrl
     SectionHeader(title = "Premium")
     LearnLiftCard {
         Text(
@@ -324,9 +351,9 @@ private fun PremiumSettingsSection(
         Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
         Text(
             text = if (premiumUiState.entitlement == PremiumEntitlement.Premium) {
-                "Premium is active. You have higher AI Coach limits, AI Study Review, 7-day plans, and Premium Study Packs."
+                "Premium is active. More AI explanations, AI Study Review, 7-day plans, and full Premium Study Packs are unlocked."
             } else {
-                "Free plan includes flashcards, quizzes, daily sessions, progress, Smart Coach, and limited AI previews."
+                "Free includes flashcards, quizzes, daily sessions, progress, Smart Coach, and a few AI previews each day."
             },
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.76f),
             style = MaterialTheme.typography.bodyMedium
@@ -368,7 +395,7 @@ private fun PremiumSettingsSection(
             PremiumPlanStatus.PremiumComingSoon.label
         },
         description = if (premiumUiState.isPremiumActive) {
-            "More AI help, AI Study Review, 7-day plans, and Premium Study Packs are active."
+            "Premium active. More AI help, AI Study Review, 7-day plans, and full Premium Study Packs are unlocked."
         } else {
             "Upgrade for higher AI Coach limits, AI Study Review, 7-day plans, and Premium Study Packs."
         },
@@ -381,6 +408,38 @@ private fun PremiumSettingsSection(
         onClick = onRestorePurchases,
         enabled = !premiumUiState.isRestoring
     )
+    if (premiumUiState.isPremiumActive && !managementUrl.isNullOrBlank()) {
+        SecondaryActionButton(
+            text = "Manage subscription",
+            onClick = { uriHandler.openUri(managementUrl) }
+        )
+    }
+}
+
+@Composable
+private fun RateLearnLiftSettingsSection(
+    onRateLearnLift: () -> Unit
+) {
+    SectionHeader(title = "Reviews")
+    LearnLiftCard {
+        Text(
+            text = "Rate LearnLift",
+            color = MaterialTheme.colorScheme.primary,
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+        Text(
+            text = "Share a quick rating on Google Play.",
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.76f),
+            style = MaterialTheme.typography.bodyMedium
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
+        SecondaryActionButton(
+            text = "Rate LearnLift",
+            onClick = onRateLearnLift
+        )
+    }
 }
 
 @Composable

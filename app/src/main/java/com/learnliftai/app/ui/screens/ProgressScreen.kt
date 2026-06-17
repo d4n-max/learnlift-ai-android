@@ -30,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.learnliftai.app.BuildConfig
 import com.learnliftai.app.data.ai.AiCoachRepository
 import com.learnliftai.app.data.ai.AiCoachResult
 import com.learnliftai.app.data.ai.AiCoachUiState
@@ -39,6 +40,7 @@ import com.learnliftai.app.data.ai.AiUsageRepository
 import com.learnliftai.app.data.ai.AiUsageState
 import com.learnliftai.app.data.ai.StudyPlanRequest
 import com.learnliftai.app.data.ai.StudyPlanResponse
+import com.learnliftai.app.data.ai.StudyPlanDay
 import com.learnliftai.app.domain.SmartCoachAdvisor
 import com.learnliftai.app.domain.model.FlashcardReviewSummary
 import com.learnliftai.app.domain.model.StudyPath
@@ -77,6 +79,10 @@ fun ProgressScreen(
 ) {
     var showResetConfirmation by remember { mutableStateOf(false) }
     val aiCoachRepository = remember { AiCoachRepository() }
+    val showScreenshotDemoStudyPlan = ScreenshotDemoStudyPlan.isEnabled(
+        isDebug = BuildConfig.DEBUG,
+        buildFlagEnabled = BuildConfig.SCREENSHOT_DEMO_STUDY_PLAN
+    )
 
     Column(
         modifier = modifier
@@ -148,26 +154,30 @@ fun ProgressScreen(
             onViewPremium = onViewPremium,
             onStartDailySession = onStartDailySession
         )
-        AdvancedInsightsTeaser(
-            isPremiumActive = isPremiumActive,
-            onViewPremium = onViewPremium
-        )
+        if (!showScreenshotDemoStudyPlan) {
+            AdvancedInsightsTeaser(
+                isPremiumActive = isPremiumActive,
+                onViewPremium = onViewPremium
+            )
+        }
 
-        SecondaryActionButton(
-            text = "Reset Progress Stats",
-            onClick = { showResetConfirmation = true }
-        )
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center
-        ) {
-            TextButton(onClick = onOpenSettings) {
-                Text(
-                    text = "Settings",
-                    color = MaterialTheme.colorScheme.primary,
-                    style = MaterialTheme.typography.labelMedium,
-                    fontWeight = FontWeight.SemiBold
-                )
+        if (!showScreenshotDemoStudyPlan) {
+            SecondaryActionButton(
+                text = "Reset Progress Stats",
+                onClick = { showResetConfirmation = true }
+            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                TextButton(onClick = onOpenSettings) {
+                    Text(
+                        text = "Settings",
+                        color = MaterialTheme.colorScheme.primary,
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                }
             }
         }
     }
@@ -256,8 +266,19 @@ private fun StudyPlanAiSection(
     onStartDailySession: () -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
+    val showScreenshotDemoPlan = ScreenshotDemoStudyPlan.isEnabled(
+        isDebug = BuildConfig.DEBUG,
+        buildFlagEnabled = BuildConfig.SCREENSHOT_DEMO_STUDY_PLAN
+    )
+    val effectivePremiumActive = isPremiumActive || showScreenshotDemoPlan
     var studyPlanState by remember(selectedStudyPath?.id) {
-        mutableStateOf<AiCoachUiState<StudyPlanResponse>>(AiCoachUiState.Idle)
+        mutableStateOf<AiCoachUiState<StudyPlanResponse>>(
+            if (showScreenshotDemoPlan) {
+                AiCoachUiState.Success(ScreenshotDemoStudyPlan.response(selectedStudyPath?.title))
+            } else {
+                AiCoachUiState.Idle
+            }
+        )
     }
     var studyPlanLimitReached by remember(selectedStudyPath?.id) {
         mutableStateOf(false)
@@ -271,17 +292,15 @@ private fun StudyPlanAiSection(
             fontWeight = FontWeight.Bold
         )
         Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
-        Text(
-            text = if (isPremiumActive) {
-                "Premium AI planning uses your selected path, goal, weak topics, due review count, and recent quiz score."
-            } else {
-                "Premium helps you plan what to study next."
-            },
-            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.76f),
-            style = MaterialTheme.typography.bodyMedium
-        )
-        Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
-        if (!isPremiumActive) {
+        if (!showScreenshotDemoPlan && effectivePremiumActive) {
+            Text(
+                text = "Premium AI planning uses your selected path, goal, weak topics, due review count, and recent quiz score.",
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.76f),
+                style = MaterialTheme.typography.bodyMedium
+            )
+            Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
+        }
+        if (!effectivePremiumActive) {
             Text(
                 text = "Create a 7-day AI Study Plan",
                 color = MaterialTheme.colorScheme.primary,
@@ -290,7 +309,7 @@ private fun StudyPlanAiSection(
             )
             Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
             Text(
-                text = "Premium helps you plan what to study next while your local study tools stay available.",
+                text = "Create a 7-day plan from your selected path, daily goal, weak topics, quiz results, and cards due for review.",
                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.76f),
                 style = MaterialTheme.typography.bodyMedium
             )
@@ -301,24 +320,26 @@ private fun StudyPlanAiSection(
             )
             return@LearnLiftCard
         }
-        ProgressAiUsageStatusText(
-            action = AiUsageAction.StudyPlan,
-            usageState = aiUsageState,
-            isPremiumActive = isPremiumActive
-        )
-        Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+        if (!showScreenshotDemoPlan) {
+            ProgressAiUsageStatusText(
+                action = AiUsageAction.StudyPlan,
+                usageState = aiUsageState,
+                isPremiumActive = isPremiumActive
+            )
+            Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+        }
         val requestStudyPlan = {
             val path = selectedStudyPath
-            if (path != null && studyPlanState !is AiCoachUiState.Loading) {
+            if (path != null && !showScreenshotDemoPlan && studyPlanState !is AiCoachUiState.Loading) {
                 coroutineScope.launch {
                     when (
                         val usageDecision = aiUsageRepository.consumeIfAvailable(
                             action = AiUsageAction.StudyPlan,
-                            isPremium = isPremiumActive
+                            isPremium = effectivePremiumActive
                         )
                     ) {
                         is AiUsageDecision.Blocked -> {
-                            studyPlanLimitReached = !isPremiumActive
+                            studyPlanLimitReached = !effectivePremiumActive
                             studyPlanState = AiCoachUiState.Error(usageDecision.message)
                             return@launch
                         }
@@ -338,7 +359,7 @@ private fun StudyPlanAiSection(
                                 weakTopics = topicPerformance.studyPlanWeakTopics(),
                                 dueSmartReviewCount = flashcardReviewSummary.dueToday,
                                 recentQuizSummary = userProgress.recentQuizSummary(),
-                                planState = if (isPremiumActive) "premium" else "free",
+                                planState = if (effectivePremiumActive) "premium" else "free",
                                 days = 7,
                                 level = "beginner"
                             )
@@ -350,44 +371,63 @@ private fun StudyPlanAiSection(
                 }
             }
         }
-        PrimaryActionButton(
-            text = if (studyPlanState is AiCoachUiState.Loading) {
-                "Building your 7-day study plan..."
-            } else {
-                "Generate 7-Day Study Plan"
-            },
-            onClick = requestStudyPlan,
-            enabled = selectedStudyPath != null && studyPlanState !is AiCoachUiState.Loading
-        )
+        if (!showScreenshotDemoPlan) {
+            PrimaryActionButton(
+                text = if (studyPlanState is AiCoachUiState.Loading) {
+                    "Building your 7-day study plan..."
+                } else {
+                    "Generate 7-Day Study Plan"
+                },
+                onClick = requestStudyPlan,
+                enabled = selectedStudyPath != null && studyPlanState !is AiCoachUiState.Loading
+            )
+        }
         when (val state = studyPlanState) {
             AiCoachUiState.Idle -> Unit
             AiCoachUiState.Loading -> {
-                Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+                if (!showScreenshotDemoPlan) {
+                    Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+                }
                 ProgressAiLoadingPanel(message = "Building your 7-day study plan...")
             }
 
             is AiCoachUiState.Success -> {
-                Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
-                ProgressAiPanel(subtitle = "7-day plan") {
+                if (!showScreenshotDemoPlan) {
+                    Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
+                }
+                if (showScreenshotDemoPlan) {
                     Text(
                         text = state.data.title,
                         color = MaterialTheme.colorScheme.primary,
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold
                     )
-                    Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
+                    Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
                     state.data.days.forEach { day ->
-                        ProgressAiDayBlock(
-                            day = day.day,
-                            focus = day.focus,
-                            tasks = day.tasks
+                        ScreenshotDemoStudyPlanDayCard(day = day)
+                    }
+                } else {
+                    ProgressAiPanel(subtitle = "7-day plan") {
+                        Text(
+                            text = state.data.title,
+                            color = MaterialTheme.colorScheme.primary,
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
+                        state.data.days.forEach { day ->
+                            ProgressAiDayBlock(
+                                day = day.day,
+                                focus = day.focus,
+                                tasks = day.tasks
+                            )
+                        }
+                        Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+                        PrimaryActionButton(
+                            text = "Start Daily Session",
+                            onClick = onStartDailySession
                         )
                     }
-                    Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
-                    PrimaryActionButton(
-                        text = "Start Daily Session",
-                        onClick = onStartDailySession
-                    )
                 }
             }
 
@@ -401,7 +441,7 @@ private fun StudyPlanAiSection(
                         fontWeight = FontWeight.SemiBold
                     )
                     Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
-                    if (studyPlanLimitReached && !isPremiumActive) {
+                    if (studyPlanLimitReached && !effectivePremiumActive) {
                         PrimaryActionButton(
                             text = "View Premium",
                             onClick = onViewPremium
@@ -508,6 +548,44 @@ private fun ProgressAiLoadingPanel(message: String) {
             )
         }
     }
+}
+
+@Composable
+private fun ScreenshotDemoStudyPlanDayCard(day: StudyPlanDay) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .border(
+                width = 1.dp,
+                color = MaterialTheme.colorScheme.secondary.copy(alpha = 0.22f),
+                shape = RoundedCornerShape(LearnLiftCorners.small)
+            )
+            .background(
+                color = MaterialTheme.colorScheme.surface.copy(alpha = 0.72f),
+                shape = RoundedCornerShape(LearnLiftCorners.small)
+            )
+            .padding(horizontal = LearnLiftSpacing.mediumGap, vertical = LearnLiftSpacing.smallGap)
+    ) {
+        Text(
+            text = "Day ${day.day}",
+            color = MaterialTheme.colorScheme.secondary,
+            style = MaterialTheme.typography.labelMedium,
+            fontWeight = FontWeight.Bold
+        )
+        Text(
+            text = day.focus,
+            color = MaterialTheme.colorScheme.primary,
+            style = MaterialTheme.typography.bodySmall,
+            fontWeight = FontWeight.SemiBold
+        )
+        Spacer(modifier = Modifier.height(2.dp))
+        Text(
+            text = day.tasks.joinToString(separator = "\n") { "- $it" },
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.78f),
+            style = MaterialTheme.typography.labelSmall
+        )
+    }
+    Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
 }
 
 @Composable

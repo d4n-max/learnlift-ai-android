@@ -27,6 +27,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.learnliftai.app.data.billing.PremiumEntitlement
@@ -51,7 +52,9 @@ fun PremiumScreen(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
+    val uriHandler = LocalUriHandler.current
     val activity = context.findActivity()
+    val managementUrl = premiumUiState.managementUrl
     var selectedPackageId by remember {
         mutableStateOf(premiumUiState.yearlyPackage.id)
     }
@@ -104,6 +107,12 @@ fun PremiumScreen(
             onClick = onRestorePurchases,
             enabled = !premiumUiState.isRestoring
         )
+        if (premiumUiState.isPremiumActive && !managementUrl.isNullOrBlank()) {
+            SecondaryActionButton(
+                text = "Manage subscription",
+                onClick = { uriHandler.openUri(managementUrl) }
+            )
+        }
         SecondaryActionButton(
             text = "Maybe later",
             onClick = onBack
@@ -121,14 +130,14 @@ private fun PremiumHero(isPremiumActive: Boolean) {
         )
         Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
         Text(
-            text = "Unlock LearnLift AI Premium",
+            text = "Study with more AI help every day",
             color = MaterialTheme.colorScheme.onPrimary,
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold
         )
         Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
         Text(
-            text = "Get more AI help, Premium Study Packs, and smarter practice support.",
+            text = "Unlock more explanations, AI quiz feedback, 7-day plans, and full Premium Study Packs when you want deeper practice.",
             color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.86f),
             style = MaterialTheme.typography.bodyLarge
         )
@@ -154,7 +163,7 @@ private fun PremiumStatus(premiumUiState: PremiumUiState) {
         Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
         Text(
             text = premiumUiState.message ?: if (premiumUiState.isPremiumActive) {
-                "Premium is active on this device."
+                "Premium active. More AI help, AI Study Review, 7-day plans, and full Premium Study Packs are unlocked."
             } else {
                 "Core study features remain available while Premium is optional."
             },
@@ -168,22 +177,22 @@ private fun PremiumStatus(premiumUiState: PremiumUiState) {
 private fun PremiumBenefits() {
     SectionHeader(
         title = "Premium benefits",
-        subtitle = "More AI support now, with deeper study tools expanding over time."
+        subtitle = "Unlock more AI support, study plans, and Premium Study Packs."
     )
     LearnLiftCard {
         Text(
-            text = "Available now",
+            text = "Available with Premium",
             color = MaterialTheme.colorScheme.secondary,
             style = MaterialTheme.typography.labelLarge,
             fontWeight = FontWeight.Bold
         )
         Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
-        PremiumBenefitRow("More AI Coach explanations")
-        PremiumBenefitRow("AI Quiz Review")
+        PremiumBenefitRow("More AI Coach explanations for wrong answers")
+        PremiumBenefitRow("Higher daily AI limits")
+        PremiumBenefitRow("AI Study Review after quizzes")
         PremiumBenefitRow("7-day AI Study Plans")
-        PremiumBenefitRow("Higher AI daily limits")
-        PremiumBenefitRow("Premium Study Packs")
-        PremiumBenefitRow("Smart learning support")
+        PremiumBenefitRow("Full Premium Study Packs")
+        PremiumBenefitRow("Smarter support for what to practice next")
         Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
         Text(
             text = "Premium Study Packs include",
@@ -195,13 +204,21 @@ private fun PremiumBenefits() {
         PremiumBenefitRow("SQL Interview Prep")
         PremiumBenefitRow("QA Advanced")
         PremiumBenefitRow("Automation Testing Basics")
-        PremiumBenefitRow("Python Basics (coming soon)")
-        PremiumBenefitRow("JavaScript Basics (coming soon)")
-        PremiumBenefitRow("Business English (coming soon)")
-        PremiumBenefitRow("Technical Interview Prep (coming soon)")
         Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
         Text(
             text = "Coming soon",
+            color = MaterialTheme.colorScheme.secondary,
+            style = MaterialTheme.typography.labelLarge,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+        PremiumBenefitRow("Python Basics")
+        PremiumBenefitRow("JavaScript Basics")
+        PremiumBenefitRow("Business English")
+        PremiumBenefitRow("Technical Interview Prep")
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
+        Text(
+            text = "Expanding later",
             color = MaterialTheme.colorScheme.secondary,
             style = MaterialTheme.typography.labelLarge,
             fontWeight = FontWeight.Bold
@@ -255,14 +272,14 @@ private fun PremiumTrustSupport(premiumUiState: PremiumUiState) {
         )
         Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
         Text(
-            text = "Cancel anytime through Google Play. Restore purchases if you already subscribed.",
+            text = "Purchases are handled securely by Google Play through RevenueCat. Cancel anytime in Google Play. Your free study tools stay available.",
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.76f),
             style = MaterialTheme.typography.bodyMedium
         )
         Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
         Text(
             text = if (premiumUiState.isPremiumActive) {
-                "Premium benefits are active on this device."
+                "Premium active. More AI help, AI Study Review, 7-day plans, and full Premium Study Packs are unlocked."
             } else {
                 "Your free learning tools stay available."
             },
@@ -323,6 +340,15 @@ private fun PricingCard(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 style = MaterialTheme.typography.bodySmall
             )
+            if (badgeText != null) {
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = "Save compared to monthly",
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    style = MaterialTheme.typography.bodySmall,
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
         }
     }
 }

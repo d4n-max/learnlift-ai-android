@@ -82,6 +82,9 @@ Release must fail if any of these are found:
 | Progress `Start Adaptive Quiz` CTA opens Adaptive Quiz | [ ] |  |  |  | Fixed once; retest on release candidate. |
 | AI Quiz Review works online or falls back cleanly | [ ] |  |  |  |  |
 | Premium 7-Day AI Study Plan works online or falls back cleanly | [ ] |  |  |  |  |
+| Free 7-Day Study Plan teaser explains selected path, daily goal, weak topics, quiz results, due review cards, and `View Premium` remains visible | [ ] |  |  |  |  |
+| Debug-only screenshot demo shows a generated 7-Day Study Plan without `View Premium` or unavailable AI copy when `LEARNLIFT_SCREENSHOT_DEMO_STUDY_PLAN=true` | [ ] |  |  |  | Screenshot capture only. |
+| Release build does not enable the screenshot demo Study Plan state | [ ] |  |  |  |  |
 | Release build does not use RevenueCat Test Store | [ ] |  |  |  |  |
 | Play-installed purchase activates entitlement `premium` | [ ] |  |  |  | Manual Play testing required. |
 | Restore purchases activates entitlement `premium` when eligible | [ ] |  |  |  | Manual Play testing required. |
@@ -126,7 +129,7 @@ Release must fail if any of these are found:
 | Quiz CTA works | [ ] |  |  |  |  |
 | Smart Review entry works | [ ] |  |  |  |  |
 | Adaptive Quiz entry works | [ ] |  |  |  |  |
-| Premium Study Packs entry works | [ ] |  |  |  |  |
+| Premium teaser says more AI help and full Study Packs, then opens Premium | [ ] |  |  |  |  |
 | Premium teaser does not block core usage | [ ] |  |  |  |  |
 | Home reloads correctly after app restart | [ ] |  |  |  |  |
 
@@ -261,6 +264,7 @@ Release must fail if any of these are found:
 | Retry works | [ ] |  |  |  |  |
 | No technical errors shown to user | [ ] |  |  |  |  |
 | AI usage limit blocks calls locally | [ ] |  |  |  |  |
+| AI limit reached copy says local explanation is still available | [ ] |  |  |  |  |
 | No Supabase call after local limit reached | [ ] |  |  |  |  |
 | Free and Premium limits differ correctly | [ ] |  |  |  |  |
 
@@ -270,6 +274,7 @@ Release must fail if any of these are found:
 | --- | --- | --- | --- | --- | --- |
 | Local quiz summary visible for all users | [ ] |  |  |  |  |
 | Free user sees Premium teaser or limited preview | [ ] |  |  |  |  |
+| Free AI Study Review gate says the local quiz summary stays free | [ ] |  |  |  |  |
 | Premium user can generate AI Study Review | [ ] |  |  |  |  |
 | Loading state works | [ ] |  |  |  |  |
 | AI response card shows summary | [ ] |  |  |  |  |
@@ -286,6 +291,7 @@ Release must fail if any of these are found:
 | --- | --- | --- | --- | --- | --- |
 | Free user sees Premium teaser | [ ] |  |  |  |  |
 | Premium user can generate 7-day study plan | [ ] |  |  |  |  |
+| Screenshot demo flag is disabled by default and forced off in release builds | [ ] |  |  |  |  |
 | Plan shows 7 days | [ ] |  |  |  |  |
 | Each day has focus | [ ] |  |  |  |  |
 | Each day has tasks | [ ] |  |  |  |  |
@@ -299,9 +305,14 @@ Release must fail if any of these are found:
 | Check | Status | Device | Tester | Date | Notes |
 | --- | --- | --- | --- | --- | --- |
 | Premium screen opens | [ ] |  |  |  |  |
+| Premium benefits section says `Available with Premium`, not `Available now` | [ ] |  |  |  |  |
+| Premium headline says `Study with more AI help every day` | [ ] |  |  |  |  |
+| Premium intro copy mentions AI quiz feedback, 7-day plans, and full Premium Study Packs without overpromising outcomes | [ ] |  |  |  |  |
+| Active Premium Study Packs are separated from coming-soon packs | [ ] |  |  |  |  |
 | Monthly plan shown | [ ] |  |  |  |  |
 | Yearly plan shown | [ ] |  |  |  |  |
 | Yearly marked Best value | [ ] |  |  |  |  |
+| No trial copy appears at launch | [ ] |  |  |  |  |
 | Localized RevenueCat prices shown when available | [ ] |  |  |  |  |
 | No Test Store products in production build | [ ] |  |  |  |  |
 | No `test_` RevenueCat key in release | [ ] |  |  |  |  |
@@ -311,6 +322,7 @@ Release must fail if any of these are found:
 | Restore purchases works | [ ] |  |  |  |  |
 | Premium active state shown | [ ] |  |  |  |  |
 | Premium active disables duplicate purchase CTA | [ ] |  |  |  |  |
+| Manage subscription appears for Premium users when RevenueCat returns a management URL | [ ] |  |  |  |  |
 | RevenueCat unavailable does not crash app | [ ] |  |  |  |  |
 
 ## 15. Premium Study Packs
@@ -320,6 +332,7 @@ Release must fail if any of these are found:
 | Free user sees Premium pack lock/preview flow | [ ] |  |  |  |  |
 | Preview pack works | [ ] |  |  |  |  |
 | Preview limit message appears | [ ] |  |  |  |  |
+| Preview dialog says Premium unlocks every card and quiz question in active packs | [ ] |  |  |  |  |
 | View Premium opens Premium screen | [ ] |  |  |  |  |
 | Premium active user opens full pack | [ ] |  |  |  |  |
 | Flashcards work for premium packs | [ ] |  |  |  |  |
@@ -335,15 +348,53 @@ Release must fail if any of these are found:
 | --- | --- | --- | --- | --- | --- |
 | Reminders disabled by default | [ ] |  |  |  |  |
 | Enabling reminders requests notification permission on Android 13+ | [ ] |  |  |  |  |
+| Notification permission is not requested on first launch | [ ] |  |  |  |  |
+| Notification permission is not requested during onboarding | [ ] |  |  |  |  |
 | Permission denial handled gracefully | [ ] |  |  |  |  |
+| Permanently denied permission can guide user to notification settings if implemented | [ ] |  |  |  |  |
 | Reminder time can be changed | [ ] |  |  |  |  |
 | Notification appears | [ ] |  |  |  |  |
+| Notification copy is calm and avoids guilt, fear, streak pressure, or guaranteed outcomes | [ ] |  |  |  |  |
 | Notification icon is current LearnLift icon, not old LA icon | [ ] |  |  |  |  |
 | Tapping notification opens app | [ ] |  |  |  |  |
 | Disabling reminder cancels future reminders | [ ] |  |  |  |  |
 | Settings persist after restart | [ ] |  |  |  |  |
+| No duplicate daily notifications | [ ] |  |  |  |  |
+| Smart Review due notification works only if implemented | [ ] |  |  |  |  |
+| Post-session reminder setup card does not show on first launch or during onboarding | [ ] |  |  |  |  |
+| Post-session reminder setup card shows only after successful Daily Session when reminders are disabled | [ ] |  |  |  |  |
+| `Set reminder` requests notification permission only after tap on Android 13+ | [ ] |  |  |  |  |
+| `Maybe later` dismisses the post-session reminder setup card and cooldown works | [ ] |  |  |  |  |
+| Permission denial keeps post-session reminder setup usable and reminders disabled | [ ] |  |  |  |  |
+| App remains usable without notification permission | [ ] |  |  |  |  |
 
-## 17. Settings
+## 17. In-App Review Prompt
+
+Use `docs/REVIEWS_AND_NOTIFICATIONS_IMPLEMENTATION_PLAN.md` as the source of truth.
+Phase 1 implementation details are in `docs/REVIEWS_AND_NOTIFICATIONS_PHASE_1_IMPLEMENTATION.md`.
+Phase 2 Light implementation details are in `docs/REVIEWS_AND_NOTIFICATIONS_PHASE_2_IMPLEMENTATION.md`.
+
+| Check | Status | Device | Tester | Date | Notes |
+| --- | --- | --- | --- | --- | --- |
+| First launch does not show review prompt | [ ] |  |  |  |  |
+| Onboarding does not show review prompt | [ ] |  |  |  |  |
+| Prompt appears only after successful learning threshold | [ ] |  |  |  |  |
+| Prompt requires at least 2 app-open days | [ ] |  |  |  |  |
+| Prompt appears only after positive completion screen | [ ] |  |  |  |  |
+| Prompt does not appear after wrong answer | [ ] |  |  |  |  |
+| Prompt does not appear after AI error or fallback | [ ] |  |  |  |  |
+| Prompt does not appear after purchase failure or cancellation | [ ] |  |  |  |  |
+| Prompt does not appear after notification permission denial | [ ] |  |  |  |  |
+| `Not now` dismisses prompt and starts cooldown | [ ] |  |  |  |  |
+| `Rate LearnLift` calls Google Play In-App Review API | [ ] |  |  |  |  |
+| Settings `Rate LearnLift` entry appears | [ ] |  |  |  |  |
+| Settings `Rate LearnLift` does not block app usage | [ ] |  |  |  |  |
+| Settings `Rate LearnLift` has no `5 stars` copy | [ ] |  |  |  |  |
+| App continues normally if Play review dialog does not appear | [ ] |  |  |  |  |
+| Prompt cooldown persists after app restart | [ ] |  |  |  |  |
+| No feature is gated behind review prompt | [ ] |  |  |  |  |
+
+## 18. Settings
 
 | Check | Status | Device | Tester | Date | Notes |
 | --- | --- | --- | --- | --- | --- |
@@ -354,9 +405,10 @@ Release must fail if any of these are found:
 | Reset Progress works | [ ] |  |  |  |  |
 | Restart onboarding works | [ ] |  |  |  |  |
 | Reminder settings work | [ ] |  |  |  |  |
+| Optional Rate LearnLift entry works | [ ] |  |  |  |  |
 | App info/data notes clear | [ ] |  |  |  |  |
 
-## 18. Content Validation
+## 19. Content Validation
 
 Run:
 
@@ -375,7 +427,7 @@ node scripts\validate-study-content.mjs
 | No duplicate or near-duplicate obvious content | [ ] |  |  |  |  |
 | First 5 preview items are high quality | [ ] |  |  |  |  |
 
-## 19. Supabase AI Backend
+## 20. Supabase AI Backend
 
 | Check | Status | Device | Tester | Date | Notes |
 | --- | --- | --- | --- | --- | --- |
@@ -389,7 +441,7 @@ node scripts\validate-study-content.mjs
 | Android never contains OpenAI key | [ ] |  |  |  |  |
 | Android never contains Supabase service role key | [ ] |  |  |  |  |
 
-## 20. Data Safety / Privacy
+## 21. Data Safety / Privacy
 
 | Check | Status | Device | Tester | Date | Notes |
 | --- | --- | --- | --- | --- | --- |
@@ -400,9 +452,11 @@ node scripts\validate-study-content.mjs
 | Only limited study context sent to AI backend | [ ] |  |  |  |  |
 | RevenueCat/Google Play used for purchases | [ ] |  |  |  |  |
 | No ads | [ ] |  |  |  |  |
+| No analytics added by review/notification work | [ ] |  |  |  |  |
+| No Firebase, push notifications, login, backend database, or cloud sync added by review/notification work | [ ] |  |  |  |  |
 | Reset progress works | [ ] |  |  |  |  |
 
-## 21. UI Polish
+## 22. UI Polish
 
 | Check | Status | Device | Tester | Date | Notes |
 | --- | --- | --- | --- | --- | --- |
@@ -418,7 +472,7 @@ node scripts\validate-study-content.mjs
 | Buttons not hidden by bottom nav | [ ] |  |  |  |  |
 | Small screen layout readable | [ ] |  |  |  |  |
 
-## 22. Build / Release Checks
+## 23. Build / Release Checks
 
 | Check | Status | Device | Tester | Date | Notes |
 | --- | --- | --- | --- | --- | --- |
@@ -435,7 +489,7 @@ node scripts\validate-study-content.mjs
 | `USE_REVENUECAT_TEST_STORE=false` for release | [ ] |  |  |  |  |
 | Upload `app-release.aab`, not `app-debug.aab` | [ ] |  |  |  |  |
 
-## 23. Google Play Testing
+## 24. Google Play Testing
 
 | Check | Status | Device | Tester | Date | Notes |
 | --- | --- | --- | --- | --- | --- |

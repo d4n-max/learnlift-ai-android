@@ -44,8 +44,11 @@ The backend validates exactly 7 days for the v3.1 request.
 Free users see a teaser:
 
 ```text
-Create a 7-day AI Study Plan
-Premium helps you plan what to study next.
+7-Day Study Plan
+Create a focused 7-day plan based on your current path and weak topics.
+Premium feature
+Unlock AI-powered weekly planning while your local study tools stay available.
+View Premium
 ```
 
 The Free CTA opens Premium. Free users do not call Supabase for study plans.

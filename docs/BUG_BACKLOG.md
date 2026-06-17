@@ -1,6 +1,6 @@
 # LearnLift AI Bug Backlog
 
-Last updated: 2026-06-08
+Last updated: 2026-06-17
 
 ## Open
 
@@ -11,6 +11,7 @@ Last updated: 2026-06-08
 | BUG-013 | Medium | Store Assets | Final v3.8 Play Store screenshots and feature graphic are not confirmed ready. | Prepare Play Console store listing assets. | Screenshots and feature graphic reflect current Home, Premium Study Packs, Flashcards, Quiz, Adaptive Quiz, Progress, Premium, and AI fallback behavior. | Asset readiness remains pending. | Use `docs/SCREENSHOT_PLAN_V3_6.md` and `docs/FEATURE_GRAPHIC_V3_6_PLAN.md` or newer v3.8 assets to capture final assets before release upload. | Open |
 | BUG-016 | High | AI QA | Real AI success path needs retest for v3.8 release readiness. | Deploy the latest Supabase `ai-coach` function, configure `SUPABASE_AI_COACH_URL`, and tap each AI action on a physical device or Play-installed build. | Wrong-answer explanation, quiz summary review, and 7-day study plan return real AI responses when backend quota is active, and fallback safely when unavailable. | Build-time checks can pass, but live backend success still needs final release smoke testing. | Complete `docs/SUPABASE_AI_RELEASE_CHECKLIST_V3_6.md` and `docs/AI_BACKEND_TESTING.md`. | Open |
 | BUG-030 | High | Release Build | Signed v3.8 AAB has not been generated, uploaded, or verified from Google Play. | Generate the release app bundle and upload to Play Console closed testing or production. | Play accepts the AAB, install source is Google Play, and no release signing/config warnings block rollout. | This release-prep pass does not generate or commit a signed AAB. | Generate signed AAB only after final QA and upload it manually; do not commit generated artifacts. | Open |
+| BUG-032 | Low | Premium Copy | Premium copy clarity needs screenshot QA after production pricing/paywall copy updates. | Open Home, Progress as a Free user, Settings, Premium screen, and Premium Study Pack preview on small and normal screens. | Paywall headline is outcome-driven, 7-Day Study Plan teaser is non-repetitive, Premium benefits say `Available with Premium`, active and coming-soon packs are split, Manage subscription appears only when available, buttons remain visible, and no text clips or white rectangle artifacts appear. | Production copy has been updated in code, but final screenshot/device QA is still pending. | Capture final Play Store screenshot pass and complete the Premium/Progress/UI polish checks in `docs/QA_CHECKLIST.md`. | Open |
 
 ## Fixed
 
@@ -39,6 +40,10 @@ Last updated: 2026-06-08
 | BUG-028 | Low | Content QA | Active study content had flat difficulty distribution and one duplicate English/SQL-style flashcard question across packs. | Run the v3.4 content audit and stricter `scripts/validate-study-content.mjs`. | Content has unique question text where required, useful topics, valid schema, and a healthier easy/medium/hard spread. | Previous validation allowed duplicate question text and did not surface flat difficulty distribution. | Fixed duplicate wording, rebalanced difficulty labels, added SQL subquery/CTE/constraint coverage, and expanded validation/reporting. | Fixed |
 | BUG-029 | Low | Premium Pack UX | Premium Study Pack preview flow needed clearer pack summaries, preview-limit CTA, and coming-soon behavior before v3.5 release candidate QA. | As a Free user, open Study Path Selection, tap an available Premium pack, preview Flashcards, and tap a coming-soon pack. | Available packs show a clear preview dialog and preview-limit CTA. Coming-soon packs show a safe message and never open empty content. | Earlier flow had a basic dialog, disabled coming-soon cards, and no explicit Flashcards preview-limit CTA. | Added richer premium pack cards, pack summary dialog, coming-soon dialog, Flashcards preview-limit CTA, Premium screen pack copy, and v3.5 release docs. | Fixed |
 | BUG-031 | Medium | Progress | Progress `Start Adaptive Quiz` CTA was visible but did not navigate during emulator QA. | Open Progress and tap `Start Adaptive Quiz`. | Adaptive Quiz opens. | CTA previously had no navigation action. | Wired the CTA to the existing Adaptive Quiz route and retested on emulator. | Fixed |
+| BUG-033 | High | Billing Config | RevenueCat keys in `local.properties` were not loaded by normal Gradle/Android Studio builds, so APKs could receive placeholder keys and RevenueCat returned `InvalidCredentialsError`. | Build without manually injecting RevenueCat environment variables, then open Premium. | BuildConfig should use the Android RevenueCat public SDK key from Gradle properties, environment variables, or `local.properties`; release builds should fail if the key is missing, placeholder, or starts with `test_`. | Normal shell builds could generate `REVENUECAT_PUBLIC_API_KEY_HERE`, and runtime RevenueCat calls returned HTTP 401 invalid key. | Gradle now loads RevenueCat config from Gradle property, environment variable, then `local.properties`, logs safe metadata only, and enforces release guards. | Fixed |
+| BUG-034 | Medium | Reviews | Google Play In-App Review prompt was not implemented yet. | Complete multiple positive learning sessions after production install. | App should offer a low-pressure review prompt only after positive usage thresholds and call the official Google Play In-App Review API. | No review prompt dependency, local review state, or trigger policy existed. | Added local review prompt DataStore state, pure prompt policy, low-pressure pre-prompt, Play Review wrapper, and Daily Session / Quiz Summary triggers. Manual device QA still required. | Fixed |
+| BUG-035 | Low | Notifications | Daily reminders existed, but review/notification planning identified polish before the next retention update. | Enable reminders from Settings on Android 13+ and review notification copy/permission states. | Permission ask stays opt-in, denied states are friendly, notification copy avoids guilt/streak pressure, and duplicate notifications are prevented. | Settings lacked an open-notification-settings path and reminder copy could mention streak pressure. | Replaced reminder notification with calm Phase 1 copy and added friendly denied-permission copy plus Android settings shortcut. Manual notification QA still required. | Fixed |
+| BUG-036 | Low | Reviews / Notifications | Phase 2 Light retention surfaces were not implemented yet. | Open Settings, complete a successful Daily Session with reminders disabled, and review reminder/review surfaces. | Settings has a non-blocking `Rate LearnLift` entry, and Home can show a gentle post-session reminder setup card with cooldown after successful Daily Session. | Phase 1 deferred Settings rating and post-session reminder setup. | Added Settings `Rate LearnLift`, local reminder suggestion cooldown state, and optional post-session reminder setup card. Smart Review due reminder remains deferred to Phase 2B. Manual QA still required. | Fixed |
 
 ## v3.8 Release Prep Notes
 
@@ -48,9 +53,14 @@ Open release blockers before signed AAB upload:
 - BUG-013: Final v3.8 screenshots and feature graphic still need capture/upload.
 - BUG-016: Supabase AI production smoke tests for `explain_answer`, `quiz_summary`, and `study_plan` are still required.
 - BUG-030: Signed v3.8 AAB generation and Play Console validation are still required.
+- BUG-032: Premium copy clarity screenshot QA is still required after this copy update.
+- BUG-034: In-app review prompt implementation is built; manual device QA is still required.
+- BUG-035: Reminder UX/copy polish is built; manual notification QA is still required.
+- BUG-036: Phase 2 Light Settings rating and post-session reminder setup are built; manual device QA is still required.
 
 Resolved before v3.8 release prep:
 
+- BUG-033: RevenueCat key loading from `local.properties` was fixed and release key guards were added.
 - BUG-031: Progress `Start Adaptive Quiz` CTA navigation was fixed and emulator-retested.
 - BUG-029: Premium Study Pack preview and coming-soon UX is documented as fixed.
 - BUG-028: Premium content QA issues are documented as fixed.

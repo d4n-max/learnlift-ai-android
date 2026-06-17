@@ -275,7 +275,7 @@ private fun PremiumPackLockDialog(
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(LearnLiftSpacing.smallGap)) {
                 Text(
-                    text = "This pack is part of LearnLift AI Premium. Preview a few cards for free, or unlock the full pack with Premium.",
+                    text = "Preview this pack before you upgrade. Premium unlocks every card and quiz question in SQL Interview Prep, QA Advanced, and Automation Testing Basics.",
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Text(

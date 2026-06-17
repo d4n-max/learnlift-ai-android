@@ -1,5 +1,10 @@
 package com.learnliftai.app.ui.screens
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,9 +21,12 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.core.content.ContextCompat
 import com.learnliftai.app.domain.SmartCoachAdvisor
 import com.learnliftai.app.domain.model.FlashcardReviewSummary
+import com.learnliftai.app.domain.model.ReminderPreferences
 import com.learnliftai.app.domain.model.StudyContent
 import com.learnliftai.app.domain.model.StudyPath
 import com.learnliftai.app.domain.model.TopicPerformance
@@ -42,6 +50,8 @@ fun HomeScreen(
     dailyStudyMinutes: Int?,
     topicPerformance: List<TopicPerformance>,
     flashcardReviewSummary: FlashcardReviewSummary,
+    reminderPreferences: ReminderPreferences,
+    shouldShowPostSessionReminderSuggestion: Boolean,
     isPremiumActive: Boolean,
     onChooseStudyPath: () -> Unit,
     onOpenSettings: () -> Unit,
@@ -51,8 +61,23 @@ fun HomeScreen(
     onStartSmartReview: () -> Unit,
     onStartQuiz: () -> Unit,
     onStartAdaptiveQuiz: () -> Unit,
+    onSetDailyReminder: () -> Unit,
+    onDismissReminderSuggestion: () -> Unit,
+    onNotificationPermissionDenied: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { granted ->
+        if (granted) {
+            onSetDailyReminder()
+        } else {
+            onNotificationPermissionDenied()
+            onDismissReminderSuggestion()
+        }
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -77,6 +102,23 @@ fun HomeScreen(
                 isPremiumActive = isPremiumActive,
                 onChangeStudyPath = onChooseStudyPath
             )
+            if (shouldShowPostSessionReminderSuggestion && !reminderPreferences.remindersEnabled) {
+                PostSessionReminderSuggestionCard(
+                    onSetReminder = {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+                            ContextCompat.checkSelfPermission(
+                                context,
+                                Manifest.permission.POST_NOTIFICATIONS
+                            ) != PackageManager.PERMISSION_GRANTED
+                        ) {
+                            permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                        } else {
+                            onSetDailyReminder()
+                        }
+                    },
+                    onMaybeLater = onDismissReminderSuggestion
+                )
+            }
             QuickActions(
                 onStartDailySession = onStartDailySession,
                 onStartFlashcards = onStartFlashcards,
@@ -95,7 +137,7 @@ fun HomeScreen(
             )
             HomePremiumTeaser(
                 isPremiumActive = isPremiumActive,
-                onExplorePremiumPacks = onChooseStudyPath
+                onViewPremium = onViewPremium
             )
             DashboardStats(
                 selectedStudyPath = selectedStudyPath,
@@ -109,15 +151,53 @@ fun HomeScreen(
 @Composable
 private fun HomePremiumTeaser(
     isPremiumActive: Boolean,
-    onExplorePremiumPacks: () -> Unit
+    onViewPremium: () -> Unit
 ) {
     PremiumTeaserCard(
-        title = "Premium Study Packs",
-        description = "Go deeper with SQL, QA Advanced, Automation Testing, Python, JavaScript, Business English, and Technical Interview Prep.",
+        title = if (isPremiumActive) "Premium active" else "Want more AI help?",
+        description = if (isPremiumActive) {
+            "Premium adds more AI help and full Study Packs."
+        } else {
+            "Premium unlocks more AI explanations, study plans, and full Study Packs."
+        },
         label = if (isPremiumActive) "Active" else "Premium",
-        actionText = "Explore Premium Packs",
-        onActionClick = onExplorePremiumPacks
+        actionText = "View Premium",
+        onActionClick = onViewPremium
     )
+}
+
+@Composable
+private fun PostSessionReminderSuggestionCard(
+    onSetReminder: () -> Unit,
+    onMaybeLater: () -> Unit
+) {
+    LearnLiftCard(
+        containerColor = MaterialTheme.colorScheme.primaryContainer,
+        borderColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.24f)
+    ) {
+        Text(
+            text = "Want a daily study reminder?",
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+        Text(
+            text = "Set a gentle reminder for short practice sessions.",
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            style = MaterialTheme.typography.bodyMedium
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.contentGap))
+        PrimaryActionButton(
+            text = "Set reminder",
+            onClick = onSetReminder
+        )
+        Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+        SecondaryActionButton(
+            text = "Maybe later",
+            onClick = onMaybeLater
+        )
+    }
 }
 
 @Composable

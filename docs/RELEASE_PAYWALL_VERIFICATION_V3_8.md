@@ -1,6 +1,6 @@
 # Release Paywall Verification v3.8
 
-Last updated: 2026-06-08
+Last updated: 2026-06-17
 
 Use this checklist before generating the signed v3.8 AAB and again after installing the uploaded build from Google Play.
 
@@ -10,6 +10,9 @@ Use this checklist before generating the signed v3.8 AAB and again after install
 - [ ] `REVENUECAT_ANDROID_PUBLIC_API_KEY` is configured locally for Google Play or Closed Testing.
 - [ ] `REVENUECAT_TEST_STORE_API_KEY` is present only for explicit debug Test Store testing.
 - [ ] `USE_REVENUECAT_TEST_STORE=false` for release and Play-installed testing.
+- [ ] RevenueCat config loads from Gradle property, environment variable, or `local.properties`.
+- [ ] Gradle config log shows safe metadata only and does not print full key values.
+- [ ] Release build fails if the Android public key is missing or placeholder.
 - [ ] Release build uses the Android RevenueCat public SDK key.
 - [ ] Release build does not use a key starting with `test_`.
 - [ ] No RevenueCat private or secret API keys are committed.
@@ -34,6 +37,7 @@ Use this checklist before generating the signed v3.8 AAB and again after install
 - [ ] Premium screen opens from Progress.
 - [ ] Premium screen opens from Premium Study Pack preview flow.
 - [ ] Monthly and yearly plans are visible.
+- [ ] `BuildConfig.REVENUECAT_PUBLIC_API_KEY` is not placeholder for the tested build.
 - [ ] Purchase CTA is disabled when products are unavailable.
 - [ ] Restore purchases remains available.
 - [ ] Free study paths remain usable if RevenueCat is unavailable.

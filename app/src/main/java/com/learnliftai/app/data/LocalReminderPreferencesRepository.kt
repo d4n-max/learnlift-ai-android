@@ -35,7 +35,10 @@ class LocalReminderPreferencesRepository(
                 remindersEnabled = preferences[ReminderKeys.RemindersEnabled] ?: false,
                 reminderHour = preferences[ReminderKeys.ReminderHour] ?: 19,
                 reminderMinute = preferences[ReminderKeys.ReminderMinute] ?: 0,
-                lastReminderScheduledAt = preferences[ReminderKeys.LastReminderScheduledAt]
+                lastReminderScheduledAt = preferences[ReminderKeys.LastReminderScheduledAt],
+                lastReminderSuggestionDismissedAt = preferences[ReminderKeys.LastReminderSuggestionDismissedAt],
+                reminderSuggestionDismissCount = preferences[ReminderKeys.ReminderSuggestionDismissCount] ?: 0,
+                lastNotificationPermissionDeniedAt = preferences[ReminderKeys.LastNotificationPermissionDeniedAt]
             )
         }
 
@@ -61,10 +64,27 @@ class LocalReminderPreferencesRepository(
         }
     }
 
+    suspend fun markReminderSuggestionDismissed() {
+        context.learnLiftReminderDataStore.edit { preferences ->
+            preferences[ReminderKeys.LastReminderSuggestionDismissedAt] = System.currentTimeMillis()
+            preferences[ReminderKeys.ReminderSuggestionDismissCount] =
+                (preferences[ReminderKeys.ReminderSuggestionDismissCount] ?: 0) + 1
+        }
+    }
+
+    suspend fun markNotificationPermissionDenied() {
+        context.learnLiftReminderDataStore.edit { preferences ->
+            preferences[ReminderKeys.LastNotificationPermissionDeniedAt] = System.currentTimeMillis()
+        }
+    }
+
     private object ReminderKeys {
         val RemindersEnabled = booleanPreferencesKey("remindersEnabled")
         val ReminderHour = intPreferencesKey("reminderHour")
         val ReminderMinute = intPreferencesKey("reminderMinute")
         val LastReminderScheduledAt = longPreferencesKey("lastReminderScheduledAt")
+        val LastReminderSuggestionDismissedAt = longPreferencesKey("lastReminderSuggestionDismissedAt")
+        val ReminderSuggestionDismissCount = intPreferencesKey("reminderSuggestionDismissCount")
+        val LastNotificationPermissionDeniedAt = longPreferencesKey("lastNotificationPermissionDeniedAt")
     }
 }

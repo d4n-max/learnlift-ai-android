@@ -24,6 +24,7 @@ import com.learnliftai.app.data.LocalFlashcardReviewRepository
 import com.learnliftai.app.data.LocalOnboardingRepository
 import com.learnliftai.app.data.LocalProgressRepository
 import com.learnliftai.app.data.LocalReminderPreferencesRepository
+import com.learnliftai.app.data.LocalReviewPromptRepository
 import com.learnliftai.app.data.LocalTopicPerformanceRepository
 import com.learnliftai.app.data.ai.AiUsageRepository
 import com.learnliftai.app.data.ai.AiUsageState
@@ -38,6 +39,9 @@ import com.learnliftai.app.domain.model.StudyContent
 import com.learnliftai.app.domain.model.UserProgress
 import com.learnliftai.app.domain.model.flashcardReviewSummaryFor
 import com.learnliftai.app.notifications.DailyReminderScheduler
+import com.learnliftai.app.reviews.PlayReviewPrompter
+import com.learnliftai.app.reviews.ReviewPromptDialog
+import com.learnliftai.app.reviews.ReviewPromptPolicy
 import com.learnliftai.app.ui.screens.DailyStudySessionScreen
 import com.learnliftai.app.ui.screens.FlashcardsScreen
 import com.learnliftai.app.ui.screens.HomeScreen
@@ -55,7 +59,9 @@ fun LearnLiftApp() {
     val progressRepository = remember { LocalProgressRepository(context.applicationContext) }
     val onboardingRepository = remember { LocalOnboardingRepository(context.applicationContext) }
     val reminderPreferencesRepository = remember { LocalReminderPreferencesRepository(context.applicationContext) }
+    val reviewPromptRepository = remember { LocalReviewPromptRepository(context.applicationContext) }
     val reminderScheduler = remember { DailyReminderScheduler(context.applicationContext) }
+    val playReviewPrompter = remember { PlayReviewPrompter() }
     val topicPerformanceRepository = remember { LocalTopicPerformanceRepository(context.applicationContext) }
     val flashcardReviewRepository = remember { LocalFlashcardReviewRepository(context.applicationContext) }
     val premiumRepository = remember { PremiumRepository(context.applicationContext) }
@@ -89,6 +95,12 @@ fun LearnLiftApp() {
     var flashcardModeName by rememberSaveable {
         mutableStateOf(FlashcardMode.All.name)
     }
+    var shouldShowReviewPrompt by rememberSaveable {
+        mutableStateOf(false)
+    }
+    var shouldShowPostSessionReminderSuggestion by rememberSaveable {
+        mutableStateOf(false)
+    }
     val selectedDestination = LearnLiftDestination.valueOf(selectedDestinationName)
     val quizMode = QuizMode.valueOf(quizModeName)
     val flashcardMode = FlashcardMode.valueOf(flashcardModeName)
@@ -116,6 +128,20 @@ fun LearnLiftApp() {
 
     LaunchedEffect(Unit) {
         premiumRepository.refreshPremiumState()
+        reviewPromptRepository.recordAppOpenDay()
+    }
+
+    val evaluateReviewPrompt = { state: com.learnliftai.app.domain.model.ReviewPromptState ->
+        val canPrompt = ReviewPromptPolicy.canPrompt(
+            state = state,
+            hasCompletedOnboarding = onboardingPreferences.hasCompletedOnboarding,
+            isPositiveCompletion = true,
+            hasRecentNegativeState = false
+        )
+        if (canPrompt) {
+            shouldShowReviewPrompt = true
+        }
+        canPrompt
     }
 
     BackHandler(enabled = isSubFlowOpen) {
@@ -161,12 +187,12 @@ fun LearnLiftApp() {
                             dailyStudyMinutes = dailyMinutes
                         )
                         progressRepository.setSelectedStudyPathId(pathId)
+                        isSettingsOpen = false
+                        isChoosingStudyPath = false
+                        isDailySessionActive = true
+                        isPremiumOpen = false
+                        selectedDestinationName = LearnLiftDestination.Home.name
                     }
-                    isSettingsOpen = false
-                    isChoosingStudyPath = false
-                    isDailySessionActive = false
-                    isPremiumOpen = false
-                    selectedDestinationName = LearnLiftDestination.Home.name
                 },
                 onSkipOnboarding = {
                     coroutineScope.launch {
@@ -229,6 +255,7 @@ fun LearnLiftApp() {
                         if (enabled) {
                             reminderScheduler.scheduleDailyReminder(reminderPreferences.copy(remindersEnabled = true))
                             reminderPreferencesRepository.markReminderScheduled()
+                            shouldShowPostSessionReminderSuggestion = false
                         } else {
                             reminderScheduler.cancelDailyReminder()
                         }
@@ -246,6 +273,15 @@ fun LearnLiftApp() {
                             reminderPreferencesRepository.markReminderScheduled()
                         }
                     }
+                },
+                onNotificationPermissionDenied = {
+                    coroutineScope.launch {
+                        reminderPreferencesRepository.markNotificationPermissionDenied()
+                        shouldShowPostSessionReminderSuggestion = false
+                    }
+                },
+                onRateLearnLift = {
+                    playReviewPrompter.launchReviewFlow(context)
                 },
                 onResetProgress = {
                     coroutineScope.launch {
@@ -316,6 +352,14 @@ fun LearnLiftApp() {
                             quizCorrect = quizCorrect,
                             quizPercentage = quizPercentage
                         )
+                        val updatedReviewState = reviewPromptRepository.recordDailySessionCompleted(
+                            successful = reviewedCards > 0 || quizAnswered > 0
+                        )
+                        val reviewPromptQueued = evaluateReviewPrompt(updatedReviewState)
+                        shouldShowPostSessionReminderSuggestion =
+                            (reviewedCards > 0 || quizAnswered > 0) &&
+                                !reviewPromptQueued &&
+                                reminderPreferences.canShowPostSessionSuggestion()
                     }
                 },
                 onReturnHome = {
@@ -358,6 +402,10 @@ fun LearnLiftApp() {
                     dailyStudyMinutes = onboardingPreferences.dailyStudyMinutes,
                     topicPerformance = topicPerformance.filter { it.pathId == selectedStudyPath?.id },
                     flashcardReviewSummary = selectedFlashcardReviewSummary,
+                    reminderPreferences = reminderPreferences,
+                    shouldShowPostSessionReminderSuggestion =
+                        shouldShowPostSessionReminderSuggestion &&
+                            reminderPreferences.canShowPostSessionSuggestion(),
                     isPremiumActive = premiumUiState.isPremiumActive,
                     onChooseStudyPath = { isChoosingStudyPath = true },
                     onOpenSettings = { isSettingsOpen = true },
@@ -382,6 +430,26 @@ fun LearnLiftApp() {
                         isChoosingStudyPath = false
                         quizModeName = QuizMode.Adaptive.name
                         selectedDestinationName = LearnLiftDestination.Quiz.name
+                    },
+                    onSetDailyReminder = {
+                        coroutineScope.launch {
+                            reminderPreferencesRepository.setRemindersEnabled(true)
+                            reminderScheduler.scheduleDailyReminder(reminderPreferences.copy(remindersEnabled = true))
+                            reminderPreferencesRepository.markReminderScheduled()
+                            shouldShowPostSessionReminderSuggestion = false
+                        }
+                    },
+                    onDismissReminderSuggestion = {
+                        coroutineScope.launch {
+                            reminderPreferencesRepository.markReminderSuggestionDismissed()
+                            shouldShowPostSessionReminderSuggestion = false
+                        }
+                    },
+                    onNotificationPermissionDenied = {
+                        coroutineScope.launch {
+                            reminderPreferencesRepository.markNotificationPermissionDenied()
+                            shouldShowPostSessionReminderSuggestion = false
+                        }
                     },
                     modifier = Modifier.padding(innerPadding)
                 )
@@ -450,6 +518,10 @@ fun LearnLiftApp() {
                                 score = score,
                                 percentage = percentage
                             )
+                            if (percentage >= ReviewPromptQuizThreshold) {
+                                val updatedReviewState = reviewPromptRepository.recordSuccessfulQuizCompleted()
+                                evaluateReviewPrompt(updatedReviewState)
+                            }
                         }
                     },
                     modifier = Modifier.padding(innerPadding)
@@ -489,9 +561,52 @@ fun LearnLiftApp() {
             }
         }
     }
+
+    if (shouldShowReviewPrompt) {
+        ReviewPromptDialog(
+            onRateLearnLift = {
+                shouldShowReviewPrompt = false
+                coroutineScope.launch {
+                    reviewPromptRepository.markReviewPromptAttempted()
+                    playReviewPrompter.launchReviewFlow(context)
+                }
+            },
+            onNotNow = {
+                shouldShowReviewPrompt = false
+                coroutineScope.launch {
+                    reviewPromptRepository.markReviewPromptDismissed()
+                }
+            },
+            onDismiss = {
+                shouldShowReviewPrompt = false
+                coroutineScope.launch {
+                    reviewPromptRepository.markReviewPromptDismissed()
+                }
+            }
+        )
+    }
 }
 
 private const val DefaultOnboardingPathId = "job-interview-prep"
+private const val ReviewPromptQuizThreshold = 70
+private const val ReminderSuggestionCooldownMillis = 7L * 24L * 60L * 60L * 1000L
+private const val NotificationDeniedCooldownMillis = 24L * 60L * 60L * 1000L
+private const val ReminderSuggestionDismissLimit = 3
+
+private fun ReminderPreferences.canShowPostSessionSuggestion(nowMillis: Long = System.currentTimeMillis()): Boolean {
+    if (remindersEnabled) return false
+    if (reminderSuggestionDismissCount >= ReminderSuggestionDismissLimit) return false
+
+    val dismissedRecently = lastReminderSuggestionDismissedAt?.let {
+        nowMillis - it < ReminderSuggestionCooldownMillis
+    } ?: false
+    if (dismissedRecently) return false
+
+    val permissionDeniedRecently = lastNotificationPermissionDeniedAt?.let {
+        nowMillis - it < NotificationDeniedCooldownMillis
+    } ?: false
+    return !permissionDeniedRecently
+}
 
 private fun com.learnliftai.app.domain.model.StudyPath.isPreviewMode(isPremiumActive: Boolean): Boolean {
     return isPremium && !isPremiumActive && freePreviewCount > 0

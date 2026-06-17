@@ -160,7 +160,7 @@ class AiUsageRepository(
         return if (isPremium) {
             "You've reached today's AI Coach safety limit. Please try again tomorrow."
         } else {
-            "You've used today's free AI Coach previews. Upgrade to Premium for more AI help, or continue with local explanations."
+            "You've used today's free AI Coach explanations. Premium gives you more AI help for mistakes like this, and the local explanation is still available."
         }
     }
 

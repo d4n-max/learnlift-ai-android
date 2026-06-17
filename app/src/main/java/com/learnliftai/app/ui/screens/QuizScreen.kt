@@ -621,7 +621,7 @@ private fun QuizSummary(
                             if (isPremiumActive) {
                                 usageDecision.message
                             } else {
-                                "AI Quiz Review is part of Premium. Upgrade to get deeper feedback and personalized next steps."
+                                "AI Study Review is part of Premium. Your quiz summary stays free; Premium adds deeper feedback and next-session suggestions."
                             }
                         )
                         return@launch
@@ -889,7 +889,7 @@ private fun AiQuizSummarySection(
             text = if (isPremiumActive) {
                 "Generate deeper feedback, recommended focus areas, and next-session suggestions."
             } else {
-                "AI Study Review is part of Premium. Get deeper feedback, recommended focus areas, and next-session suggestions."
+                "Get an AI review of what went wrong, which topics to revisit, and what to practice next."
             },
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.76f),
             style = MaterialTheme.typography.bodyMedium

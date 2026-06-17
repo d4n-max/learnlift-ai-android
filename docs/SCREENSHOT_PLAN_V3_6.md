@@ -12,6 +12,8 @@ Use this plan to capture Google Play screenshots after the v3.6 release candidat
 - Show active Premium packs as available: SQL Interview Prep, QA Advanced, Automation Testing Basics.
 - Show Python, JavaScript, Business English, and Technical Interview Prep only as coming soon unless full content is added later.
 - Prefer clean demo progress with at least two weak topics.
+- Do not capture the Free 7-Day Study Plan teaser for the `Build a 7-day study plan` screenshot.
+- Do not show `View Premium`, unavailable AI messages, debug overlays, or fake billing/Test Store UI in final store screenshots.
 
 ## Recommended Screenshots
 
@@ -23,7 +25,7 @@ Use this plan to capture Google Play screenshots after the v3.6 release candidat
 | 4 | SQL Interview Prep flashcards | Practice SQL, QA, and automation | Free preview or Premium | No | SQL selected; if Free, show preview mode clearly | Flashcard UI with SQL question, polished card, purple/pink LearnLift brand | Keep coming-soon packs out of this screenshot unless they are clearly marked as coming soon. |
 | 5 | Adaptive Quiz / Weak Topic practice | Focus on your weakest topics | Free or Premium | No | Weak topic such as SELECT basics, regression testing, or bug reports | Adaptive Quiz intro and focused topics, clean progress signal, no white artifacts | Phone preferred; include question if readable. |
 | 6 | AI Coach explanation | Turn mistakes into clear explanations | Free or Premium | Yes | Wrong answer state and successful AI explanation | AI Coach response card, explanation sections, calm study coaching feel | Use real safe response; avoid technical errors or loading states. |
-| 7 | AI Study Review or 7-Day Study Plan | Build a 7-day study plan | Premium | Yes | Premium active or demo state; plan visible with 7 days | AI plan card with day blocks, Premium study support, clean high-value moment | Only use if backend/response is working and text is readable. |
+| 7 | 7-Day Study Plan | Build a 7-day study plan | Premium | Yes | Premium-active state or debug-only screenshot demo; plan visible with 7 generated days | AI plan card with day blocks, Premium study support, clean high-value moment | Must show generated day cards, not the Free teaser. |
 | 8 | Progress / Weak Topics | Track progress and keep improving | Free or Premium | No | Streak, selected path, weak topics visible | Progress screen with weak topics and local Smart Coach recommendation | Great tablet candidate if layout breathes. |
 | 9 | Premium screen | Get more AI help and study packs | Free state, products configured if possible | No | Monthly/yearly visible; no unavailable state | Premium paywall with Monthly, Yearly, Best value, trust/support copy | Capture only when real prices or acceptable placeholder state is approved. |
 
@@ -48,6 +50,22 @@ Use this plan to capture Google Play screenshots after the v3.6 release candidat
 - [ ] AI Coach response generated successfully.
 - [ ] Premium screen does not show a broken/unavailable state unless intentionally documenting fallback.
 - [ ] Coming-soon packs remain visibly marked as coming soon.
+- [ ] 7-Day Study Plan screenshot shows 7 generated day cards with short focus text and 2-3 tasks per day.
+- [ ] 7-Day Study Plan screenshot does not show `View Premium`, unavailable AI copy, debug UI, or Test Store billing UI.
+
+## 7-Day Study Plan Screenshot Demo
+
+The app includes a debug-only generated 7-Day Study Plan state for screenshot capture. It is disabled by default and forced off in release builds.
+
+Use it only for the `Build a 7-day study plan` screenshot when a real Premium entitlement and AI response are not practical for screenshot capture:
+
+```powershell
+.\gradlew.bat assembleDebug -PLEARNLIFT_SCREENSHOT_DEMO_STUDY_PLAN=true
+```
+
+Install that debug APK, open Progress, and scroll to `7-Day Study Plan`. The card should show realistic Job Interview Prep-style demo content with 7 generated days. This flag does not change RevenueCat entitlement logic, package name, versionCode, versionName, or release build behavior.
+
+Before uploading production screenshots, confirm the final image does not include Android debug overlays, unavailable billing text, Test Store UI, or the Free teaser state.
 
 ## Phone Notes
 

@@ -86,7 +86,7 @@ class RevenueCatBillingService(
         return latestState.copy(
             entitlement = entitlement,
             message = if (entitlement == PremiumEntitlement.Premium) {
-                "Premium is active. Thank you for supporting LearnLift AI."
+                "Premium active. More AI help, AI Study Review, 7-day plans, and full Premium Study Packs are unlocked."
             } else {
                 "Purchase completed, but Premium entitlement is not active yet. Check RevenueCat product-entitlement setup."
             }
@@ -119,7 +119,7 @@ class RevenueCatBillingService(
         return latestState.copy(
             entitlement = entitlement,
             message = if (entitlement == PremiumEntitlement.Premium) {
-                "Premium restored."
+                "Premium active. More AI help, AI Study Review, 7-day plans, and full Premium Study Packs are unlocked."
             } else {
                 "No active Premium subscription was found."
             }
@@ -158,7 +158,7 @@ class RevenueCatBillingService(
                     id = MonthlyProductId,
                     title = "Monthly",
                     price = "€3.99 / month",
-                    helperText = "Flexible"
+                    helperText = "Flexible access to more AI help and full Premium Study Packs."
                 )
             ),
             yearlyPackage = yearly.toPremiumPackage(
@@ -166,7 +166,7 @@ class RevenueCatBillingService(
                     id = YearlyProductId,
                     title = "Yearly",
                     price = "€24.99 / year",
-                    helperText = "Save compared to monthly"
+                    helperText = "Best value for steady weekly practice."
                 )
             ),
             message = if (productsUnavailable) PremiumPlansUnavailableMessage else null,

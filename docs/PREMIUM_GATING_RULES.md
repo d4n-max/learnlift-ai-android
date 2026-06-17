@@ -1,6 +1,6 @@
 # Premium Gating Rules
 
-Last updated: 2026-05-19
+Last updated: 2026-06-17
 
 ## Tester-Safe Policy
 
@@ -92,7 +92,7 @@ Premium local limits:
 Free limit reached message:
 
 ```text
-You've used today's free AI Coach previews. Upgrade to Premium for more AI help, or continue with local explanations.
+You've used today's free AI Coach explanations. Premium gives you more AI help for mistakes like this, and the local explanation is still available.
 ```
 
 When this message appears, the app blocks the AI call locally, keeps local explanations or Smart Coach guidance visible, and shows `View Premium`. It should not keep prompting users to retry the same locally blocked AI request.
@@ -159,10 +159,34 @@ Premium prompts are allowed in:
 
 Premium prompts should not interrupt onboarding, hide core study modes, or prevent Free users from using flashcards, quizzes, daily sessions, progress, Smart Coach, Smart Review, local explanations, or basic Adaptive Quiz.
 
+The Free user 7-Day Study Plan teaser should use clear Premium positioning without repeating `Premium helps...` copy:
+
+```text
+Create a 7-day AI Study Plan
+Create a 7-day plan from your selected path, daily goal, weak topics, quiz results, and cards due for review.
+View Premium
+```
+
+The Premium benefits section should label current Premium benefits as:
+
+```text
+Available with Premium
+```
+
+Avoid `Available now` for Premium-only benefits because it can imply Free availability.
+
+For Google Play screenshot capture only, debug builds may enable:
+
+```text
+LEARNLIFT_SCREENSHOT_DEMO_STUDY_PLAN=true
+```
+
+That flag shows a generated Premium-style 7-Day Study Plan demo in Progress without calling AI. It must stay debug-only and is forced off in release builds. It must not change RevenueCat entitlement detection, package name, versionCode, versionName, Free gating, or production Premium behavior.
+
 Premium prompts for study packs must include a respectful Preview pack option, a View Premium action, and a Cancel action. At the end of preview Flashcards, Free users should see:
 
 ```text
-You've reached the free preview limit for this pack. Unlock Premium to continue.
+That's the free preview for this pack. Premium unlocks the full pack so you can keep practicing.
 ```
 
 Actions:
@@ -192,8 +216,9 @@ Before stronger gating ships, run full closed-testing QA and update Privacy Poli
 - Free AI limit reached shows upgrade CTA.
 - `View Premium` opens Premium screen.
 - Premium active increases AI limits.
-- Premium screen separates Available now from Coming soon.
+- Premium screen separates Available with Premium from Coming soon.
 - Premium screen does not show fake claims.
+- 7-Day Study Plan Free teaser copy is clear, non-repetitive, and does not imply guaranteed outcomes.
 - Restore purchases updates plan.
 - RevenueCat unavailable does not crash app.
 - Existing three paths are not locked.
@@ -204,3 +229,4 @@ Before stronger gating ships, run full closed-testing QA and update Privacy Poli
 - Coming soon Premium packs show a coming-soon dialog and do not navigate to empty content.
 - Free user sees AI Study Plan teaser and `View Premium`.
 - Premium active user can generate AI Quiz Review and 7-day AI Study Plan within safety limits.
+- Release build cannot enable the screenshot demo Study Plan state.

@@ -73,7 +73,7 @@ Explain with AI Coach
 When the Free limit is reached:
 
 ```text
-You've used today's free AI Coach previews. Upgrade to Premium for more AI help, or continue with local explanations.
+You've used today's free AI Coach explanations. Premium gives you more AI help for mistakes like this, and the local explanation is still available.
 ```
 
 Buttons:
@@ -88,7 +88,13 @@ The local explanation remains visible. The app does not call Supabase after a lo
 Free users keep the local quiz summary. The AI Study Review card explains:
 
 ```text
-AI Study Review is part of Premium. Get deeper feedback, recommended focus areas, and next-session suggestions.
+Get an AI review of what went wrong, which topics to revisit, and what to practice next.
+```
+
+When Free users are gated:
+
+```text
+AI Study Review is part of Premium. Your quiz summary stays free; Premium adds deeper feedback and next-session suggestions.
 ```
 
 Premium users can generate AI Study Review within the `quiz_summary` safety limit.
@@ -98,8 +104,10 @@ Premium users can generate AI Study Review within the `quiz_summary` safety limi
 Free users see:
 
 ```text
+7-Day Study Plan
 Create a 7-day AI Study Plan
-Premium helps you plan what to study next.
+Create a 7-day plan from your selected path, daily goal, weak topics, quiz results, and cards due for review.
+View Premium
 ```
 
 Premium users can generate a 7-day plan within the `study_plan` safety limit.
@@ -119,23 +127,36 @@ Premium users open full packs normally. Coming soon packs remain visible and dis
 Header:
 
 ```text
-Unlock LearnLift AI Premium
+Study with more AI help every day
 ```
 
 Subtitle:
 
 ```text
-Get more AI help, smarter review, and deeper progress support.
+Unlock more explanations, AI quiz feedback, 7-day plans, and full Premium Study Packs when you want deeper practice.
 ```
 
-Available now:
+Available with Premium:
 
-- More AI Coach explanations.
-- Higher AI daily limits.
-- AI Quiz Review.
+- More AI Coach explanations for wrong answers.
+- Higher daily AI limits.
+- AI Study Review after quizzes.
 - 7-day AI Study Plans.
-- Premium Study Packs.
-- Smart learning support.
+- Full Premium Study Packs.
+- Smarter support for what to practice next.
+
+Premium Study Packs include:
+
+- SQL Interview Prep.
+- QA Advanced.
+- Automation Testing Basics.
+
+Coming soon:
+
+- Python Basics.
+- JavaScript Basics.
+- Business English.
+- Technical Interview Prep.
 
 Coming soon / expanding:
 
@@ -146,7 +167,10 @@ Coming soon / expanding:
 Trust/support:
 
 - Restore purchases.
-- Cancel anytime through Google Play.
+- Manage subscription when RevenueCat returns a management URL.
+- Purchases are handled securely by Google Play through RevenueCat.
+- Cancel anytime in Google Play.
+- Free study tools stay available.
 - Premium status: Free / Premium active.
 
 ## Pricing
@@ -169,6 +193,8 @@ The Yearly plan uses a `Best value` badge and copy:
 ```text
 Save compared to monthly
 ```
+
+No trial launches by default. The Free tier and AI previews act as the trial while conversion is validated.
 
 ## RevenueCat Rules
 

@@ -7,31 +7,12 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.core.content.ContextCompat
-import com.learnliftai.app.data.LocalOnboardingRepository
-import com.learnliftai.app.data.LocalProgressRepository
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
 
 class DailyReminderReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent?) {
         if (!canPostNotifications(context)) return
 
-        val pendingResult = goAsync()
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                val progress = LocalProgressRepository(context.applicationContext).progress.first()
-                val onboarding = LocalOnboardingRepository(context.applicationContext).preferences.first()
-                DailyReminderScheduler.showReminderNotification(
-                    context = context.applicationContext,
-                    userProgress = progress,
-                    dailyStudyMinutes = onboarding.dailyStudyMinutes
-                )
-            } finally {
-                pendingResult.finish()
-            }
-        }
+        DailyReminderScheduler.showReminderNotification(context.applicationContext)
     }
 
     private fun canPostNotifications(context: Context): Boolean {

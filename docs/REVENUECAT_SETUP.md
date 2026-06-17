@@ -66,6 +66,7 @@ Production target pricing:
 
 - Monthly: `€3.99 / month`
 - Yearly: `€24.99 / year`
+- Trial: none at launch
 
 The app checks only `customerInfo.entitlements["premium"]?.isActive == true` for Premium. Do not use `LearnLift AI Premium`, `monthly`, `yearly`, `annual`, `learnlift_premium_monthly`, or `learnlift_premium_yearly` as entitlement identifiers.
 
@@ -85,11 +86,22 @@ The app displays localized package prices returned by RevenueCat. If RevenueCat 
 
 If offerings or packages are unavailable, the app falls back to placeholder prices `Monthly €3.99 / month` and `Yearly €24.99 / year`, shows `Premium plans are temporarily unavailable. Please try again later.`, and disables purchase CTA until a RevenueCat package is available.
 
-The paywall marks Yearly as `Best value` while keeping Monthly visible and selectable. RevenueCat localized prices always take priority over placeholders when packages are available.
+The paywall marks Yearly as `Best value` while keeping Monthly visible and selectable. Yearly uses `Save compared to monthly` copy instead of calculating a localized savings claim. RevenueCat localized prices always take priority over placeholders when packages are available.
+
+Do not show trial copy unless Google Play and RevenueCat return a real configured introductory offer. The Free tier and limited AI previews act as the launch trial.
+
+When RevenueCat returns `CustomerInfo.managementURL`, active Premium users see a `Manage subscription` action. The app opens that returned URL and does not hardcode a Google Play subscription management URL.
+
+RevenueCat config is loaded in this priority order:
+
+1. Gradle property.
+2. Environment variable.
+3. `local.properties`.
+4. Debug placeholder fallback only.
 
 Debug builds use the Android Store public SDK key by default. To use RevenueCat Test Store locally, explicitly set `USE_REVENUECAT_TEST_STORE=true`.
 
-Release builds always use `REVENUECAT_ANDROID_PUBLIC_API_KEY`. They never use the Test Store key, and Gradle fails the release build if the Android Store key starts with `test_`.
+Release builds always use `REVENUECAT_ANDROID_PUBLIC_API_KEY`. They never use the Test Store key, and Gradle fails the release build if the Android Store key is missing, blank, `REVENUECAT_ANDROID_PUBLIC_API_KEY_HERE`, or starts with `test_`.
 
 ## Google Play Console Setup
 
@@ -213,7 +225,17 @@ REVENUECAT_ANDROID_PUBLIC_API_KEY_HERE
 REVENUECAT_TEST_STORE_API_KEY_HERE
 ```
 
-For local/testing builds, pass keys as Gradle properties:
+For local Android Studio builds and signed release AAB builds from Android Studio, use `local.properties`:
+
+```properties
+REVENUECAT_ANDROID_PUBLIC_API_KEY=public_android_store_sdk_key_here
+REVENUECAT_TEST_STORE_API_KEY=test_store_public_sdk_key_here
+USE_REVENUECAT_TEST_STORE=false
+```
+
+`local.properties` must stay local and must not be committed.
+
+For CI or one-off shell builds, pass keys as Gradle properties:
 
 ```powershell
 .\gradlew.bat assembleDebug -PREVENUECAT_ANDROID_PUBLIC_API_KEY=public_android_store_sdk_key_here
@@ -226,6 +248,8 @@ To opt into Test Store explicitly for debug-only local testing:
 ```
 
 Do not set `USE_REVENUECAT_TEST_STORE=true` for Play closed-testing or release builds.
+
+Gradle logs only safe RevenueCat metadata: key source, whether the selected key starts with `test_`, and whether it is a placeholder. It does not print full key values.
 
 RevenueCat is configured once in `LearnLiftApplication.onCreate()`. Premium state refreshes use RevenueCat customer info and offerings through `PremiumRepository`.
 

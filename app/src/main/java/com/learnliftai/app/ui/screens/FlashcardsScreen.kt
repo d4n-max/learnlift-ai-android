@@ -246,7 +246,7 @@ private fun PreviewLimitCard(
         )
         Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
         Text(
-            text = "You've reached the free preview limit for this pack. Unlock Premium to continue.",
+            text = "That's the free preview for this pack. Premium unlocks the full pack so you can keep practicing.",
             color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.82f),
             style = MaterialTheme.typography.bodyMedium
         )

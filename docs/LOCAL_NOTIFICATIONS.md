@@ -1,6 +1,6 @@
 # Local Notifications
 
-Last updated: 2026-05-20
+Last updated: 2026-06-17
 
 ## Overview
 
@@ -18,6 +18,9 @@ Stored fields:
 - `reminderHour`
 - `reminderMinute`
 - `lastReminderScheduledAt`
+- `lastReminderSuggestionDismissedAt`
+- `reminderSuggestionDismissCount`
+- `lastNotificationPermissionDeniedAt`
 
 Default state:
 
@@ -38,7 +41,8 @@ If permission is denied:
 
 - the app does not crash.
 - reminders remain disabled.
-- Settings shows `Notification permission is disabled.`
+- Settings shows `Notifications are off. You can enable them later from Android settings.`
+- Settings can open Android app notification/settings controls through `Open notification settings`.
 
 ## Notification Channel
 
@@ -97,20 +101,39 @@ No heavy work is performed on boot.
 Notification title:
 
 ```text
-LearnLift AI
+Time for a quick study session
 ```
 
-Body uses local state when available:
+Notification body:
 
-- `Keep your 3-day streak going.`
-- `Ready for today's 10-minute study session?`
-- `Review a few flashcards today.`
+```text
+Open LearnLift AI for a short focused practice session.
+```
+
+The copy intentionally avoids guilt, fear, streak pressure, spammy urgency, and guaranteed outcomes.
 
 Tapping the notification opens the app. It currently opens the normal app entry point rather than deep-linking directly into Daily Session.
 
 ## Onboarding Relation
 
 Onboarding does not force notification opt-in. The selected daily study minutes can be used in reminder copy and Settings shows the current daily goal.
+
+After a successful Daily Session, Home can show an optional reminder setup card only when reminders are disabled and local cooldown rules allow it.
+
+Post-session reminder setup copy:
+
+```text
+Title: Want a daily study reminder?
+Body: Set a gentle reminder for short practice sessions.
+Actions: Set reminder / Maybe later
+```
+
+Cooldown rules:
+
+- `Maybe later` suppresses the card for 7 days.
+- The card stops after 3 dismissals.
+- A notification permission denial suppresses the card for 24 hours.
+- Android 13+ notification permission is requested only after `Set reminder`.
 
 ## Privacy
 
@@ -120,21 +143,27 @@ Reminder preferences stay on the device. No notification data is sent to a serve
 
 - Add a custom time picker instead of fixed time presets.
 - Avoid reminding later the same day after a completed Daily Session.
-- Add an optional onboarding final-step reminder opt-in after more QA.
 - Deep-link notification taps directly into Daily Session.
+- Add Smart Review due reminders in Phase 2B only after a duplicate-safe once-per-day scheduler is designed.
+- Add weekly progress reminders only if users ask for them or Progress needs a gentle opt-in nudge.
 
 ## Manual QA Checklist
 
 - Reminders are disabled by default.
 - Enabling reminder requests permission on Android 13+.
 - Denying permission does not crash app.
+- Denied permission shows friendly copy and optional Android settings action.
 - Granting permission schedules reminder.
 - Changing reminder time reschedules.
 - Disabling reminder cancels.
 - App opens from notification tap.
 - Notification does not show the old pink `LA` icon.
 - Notification small icon appears as a clean LearnLift-style monochrome mark.
+- Notification copy uses the calm Phase 1 title and body.
 - Settings shows correct reminder status.
+- Post-session reminder setup card appears only after successful Daily Session when reminders are disabled.
+- `Maybe later` dismissal cooldown works.
+- Android 13+ permission is requested only after `Set reminder`.
 - Restart app preserves reminder setting.
 - Reboot reschedules only if reminders are enabled.
 - Light/dark Settings UI is readable.

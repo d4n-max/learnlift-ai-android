@@ -11,7 +11,6 @@ import androidx.core.app.NotificationCompat
 import com.learnliftai.app.MainActivity
 import com.learnliftai.app.R
 import com.learnliftai.app.domain.model.ReminderPreferences
-import com.learnliftai.app.domain.model.UserProgress
 import java.util.Calendar
 
 class DailyReminderScheduler(
@@ -71,19 +70,14 @@ class DailyReminderScheduler(
         }
 
         fun showReminderNotification(
-            context: Context,
-            userProgress: UserProgress,
-            dailyStudyMinutes: Int
+            context: Context
         ) {
             createNotificationChannel(context)
-            val body = when {
-                userProgress.currentStudyStreak > 0 -> "Keep your ${userProgress.currentStudyStreak}-day streak going."
-                dailyStudyMinutes > 0 -> "Ready for today's $dailyStudyMinutes-minute study session?"
-                else -> "Review a few flashcards today."
-            }
+            val title = "Time for a quick study session"
+            val body = "Open LearnLift AI for a short focused practice session."
             val notification = NotificationCompat.Builder(context, ChannelId)
                 .setSmallIcon(R.drawable.ic_notification_learnlift)
-                .setContentTitle("LearnLift AI")
+                .setContentTitle(title)
                 .setContentText(body)
                 .setStyle(NotificationCompat.BigTextStyle().bigText(body))
                 .setContentIntent(openAppPendingIntent(context))

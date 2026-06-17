@@ -261,11 +261,17 @@ private fun OnboardingRecommendedPathStep(
                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.76f),
                 style = MaterialTheme.typography.bodyMedium
             )
+            Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+            Text(
+                text = "After quiz mistakes, AI Coach can explain what went wrong and suggest what to review next.",
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.76f),
+                style = MaterialTheme.typography.bodyMedium
+            )
         }
     }
 
     PrimaryActionButton(
-        text = "Start learning",
+        text = "Start first session",
         onClick = onStartLearning
     )
     SecondaryActionButton(
