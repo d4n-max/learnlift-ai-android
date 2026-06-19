@@ -16,6 +16,7 @@ import com.revenuecat.purchases.awaitCustomerInfo
 import com.revenuecat.purchases.awaitOfferings
 import com.revenuecat.purchases.awaitPurchase
 import com.revenuecat.purchases.awaitRestore
+import com.revenuecat.purchases.models.googleProduct
 import com.revenuecat.purchases.Package as RevenueCatPackage
 
 class RevenueCatBillingService(
@@ -244,6 +245,7 @@ class RevenueCatBillingService(
     private fun List<RevenueCatPackage>.selectMonthlyPackage(): RevenueCatPackage? {
         return selectExpectedPackage(
             expectedProductId = MonthlyProductId,
+            expectedBasePlanId = MonthlyPackageId,
             fallbackPackageIds = setOf(MonthlyPackageId),
             expectedPackageType = PackageType.MONTHLY
         )
@@ -252,6 +254,7 @@ class RevenueCatBillingService(
     private fun List<RevenueCatPackage>.selectYearlyPackage(): RevenueCatPackage? {
         return selectExpectedPackage(
             expectedProductId = YearlyProductId,
+            expectedBasePlanId = YearlyPackageId,
             fallbackPackageIds = setOf(YearlyPackageId, AnnualPackageId),
             expectedPackageType = PackageType.ANNUAL
         )
@@ -259,10 +262,16 @@ class RevenueCatBillingService(
 
     private fun List<RevenueCatPackage>.selectExpectedPackage(
         expectedProductId: String,
+        expectedBasePlanId: String,
         fallbackPackageIds: Set<String>,
         expectedPackageType: PackageType
     ): RevenueCatPackage? {
-        return firstOrNull { it.product.id.equals(expectedProductId, ignoreCase = true) }
+        return firstOrNull {
+            it.matchesExpectedPlaySubscription(
+                expectedProductId = expectedProductId,
+                expectedBasePlanId = expectedBasePlanId
+            )
+        }
             ?: takeIf { BuildConfig.DEBUG && BuildConfig.USE_REVENUECAT_TEST_STORE }
                 ?.firstOrNull { revenueCatPackage ->
                     val packageId = revenueCatPackage.identifier.lowercase()
@@ -273,6 +282,30 @@ class RevenueCatBillingService(
                             expectedId in productId
                     } || revenueCatPackage.packageType == expectedPackageType
                 }
+    }
+
+    private fun RevenueCatPackage.matchesExpectedPlaySubscription(
+        expectedProductId: String,
+        expectedBasePlanId: String
+    ): Boolean {
+        val googleProduct = product.googleProduct
+        if (googleProduct != null) {
+            return googleProduct.productId.equals(expectedProductId, ignoreCase = true) &&
+                googleProduct.basePlanId.equals(expectedBasePlanId, ignoreCase = true)
+        }
+
+        return product.id.matchesExpectedPlayProductId(
+            expectedProductId = expectedProductId,
+            expectedBasePlanId = expectedBasePlanId
+        )
+    }
+
+    private fun String.matchesExpectedPlayProductId(
+        expectedProductId: String,
+        expectedBasePlanId: String
+    ): Boolean {
+        return equals(expectedProductId, ignoreCase = true) ||
+            equals("$expectedProductId:$expectedBasePlanId", ignoreCase = true)
     }
 
     private fun RevenueCatPackage.displayTitle(fallbackTitle: String): String {
@@ -384,8 +417,18 @@ class RevenueCatBillingService(
         if (offering == null) return "current_and_default_offering_missing"
 
         val productIds = offering.availablePackages.map { it.product.id }.sorted()
-        val hasExpectedMonthlyProduct = productIds.any { it.equals(MonthlyProductId, ignoreCase = true) }
-        val hasExpectedYearlyProduct = productIds.any { it.equals(YearlyProductId, ignoreCase = true) }
+        val hasExpectedMonthlyProduct = offering.availablePackages.any {
+            it.matchesExpectedPlaySubscription(
+                expectedProductId = MonthlyProductId,
+                expectedBasePlanId = MonthlyPackageId
+            )
+        }
+        val hasExpectedYearlyProduct = offering.availablePackages.any {
+            it.matchesExpectedPlaySubscription(
+                expectedProductId = YearlyProductId,
+                expectedBasePlanId = YearlyPackageId
+            )
+        }
 
         val reasons = buildList {
             if (monthly == null) add("monthly_package_missing_or_product_id_mismatch")

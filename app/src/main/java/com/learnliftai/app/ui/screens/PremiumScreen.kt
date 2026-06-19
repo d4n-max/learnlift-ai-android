@@ -3,6 +3,7 @@ package com.learnliftai.app.ui.screens
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -85,7 +86,9 @@ fun PremiumScreen(
             onPackageSelected = { selectedPackageId = it.id }
         )
         PremiumTrustSupport(premiumUiState = premiumUiState)
-        BillingNotice(premiumUiState = premiumUiState)
+        if (premiumUiState.productsUnavailable || !premiumUiState.isRevenueCatConfigured) {
+            BillingNotice(premiumUiState = premiumUiState)
+        }
         PrimaryActionButton(
             text = when {
                 premiumUiState.isPremiumActive -> "Premium active"
@@ -95,6 +98,7 @@ fun PremiumScreen(
             },
             onClick = {
                 if (activity != null) {
+                    logStartPremiumTap(selectedPackage)
                     onPurchasePackage(selectedPackage, activity)
                 }
             },
@@ -171,7 +175,11 @@ private fun PremiumStatus(premiumUiState: PremiumUiState) {
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.76f),
             style = MaterialTheme.typography.bodyMedium
         )
-        if (BuildConfig.DEBUG && premiumUiState.debugUnavailableReason != null) {
+        if (
+            BuildConfig.DEBUG &&
+            premiumUiState.productsUnavailable &&
+            premiumUiState.debugUnavailableReason != null
+        ) {
             Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
             Text(
                 text = "Debug billing reason: ${premiumUiState.debugUnavailableReason}",
@@ -248,7 +256,11 @@ private fun PricingOptions(
 ) {
     SectionHeader(
         title = "Choose a plan",
-        subtitle = if (BuildConfig.DEBUG && premiumUiState.debugUnavailableReason != null) {
+        subtitle = if (
+            BuildConfig.DEBUG &&
+            premiumUiState.productsUnavailable &&
+            premiumUiState.debugUnavailableReason != null
+        ) {
             "Debug: ${premiumUiState.debugUnavailableReason}"
         } else if (premiumUiState.productsUnavailable) {
             "Premium plans are temporarily unavailable. Please try again later."
@@ -412,3 +424,17 @@ private tailrec fun Context.findActivity(): Activity? {
         else -> null
     }
 }
+
+private fun logStartPremiumTap(selectedPackage: PremiumPackage) {
+    if (!BuildConfig.DEBUG) return
+
+    val revenueCatPackage = selectedPackage.revenueCatPackage
+    Log.d(
+        PremiumLogTag,
+        "start_premium_tap selectedPlan=${selectedPackage.title}, " +
+            "packageId=${revenueCatPackage?.identifier}, " +
+            "productId=${revenueCatPackage?.product?.id}"
+    )
+}
+
+private const val PremiumLogTag = "LearnLiftPremium"

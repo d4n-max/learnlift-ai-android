@@ -2,6 +2,7 @@ package com.learnliftai.app.data.billing
 
 import android.app.Activity
 import android.content.Context
+import android.util.Log
 import com.learnliftai.app.BuildConfig
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -30,12 +31,21 @@ class PremiumRepository(
 
     suspend fun purchase(activity: Activity, premiumPackage: PremiumPackage) {
         _uiState.value = _uiState.value.copy(isPurchasing = true, message = null)
+        logPurchaseEvent("purchase_start", premiumPackage)
         _uiState.value = runCatching {
             billingService.purchase(activity, premiumPackage)
+        }.onSuccess {
+            logPurchaseEvent("purchase_success", premiumPackage)
         }.getOrElse { error ->
+            val cancellationMessage = billingService.userCancelledMessage(error)
+            logPurchaseEvent(
+                event = if (cancellationMessage != null) "purchase_cancel" else "purchase_failure",
+                premiumPackage = premiumPackage,
+                error = error
+            )
             _uiState.value.copy(
                 isPurchasing = false,
-                message = billingService.userCancelledMessage(error)
+                message = cancellationMessage
                     ?: "Premium purchase could not be completed. Please try again later.",
                 debugUnavailableReason = debugReason("premium_purchase_failure:${error.javaClass.simpleName}")
             )
@@ -57,5 +67,26 @@ class PremiumRepository(
 
     private fun debugReason(reason: String): String? {
         return reason.takeIf { BuildConfig.DEBUG }
+    }
+
+    private fun logPurchaseEvent(
+        event: String,
+        premiumPackage: PremiumPackage,
+        error: Throwable? = null
+    ) {
+        if (!BuildConfig.DEBUG) return
+
+        val revenueCatPackage = premiumPackage.revenueCatPackage
+        Log.d(
+            PremiumLogTag,
+            "$event selectedPlan=${premiumPackage.title}, " +
+                "packageId=${revenueCatPackage?.identifier}, " +
+                "productId=${revenueCatPackage?.product?.id}, " +
+                "error=${error?.javaClass?.simpleName}"
+        )
+    }
+
+    private companion object {
+        const val PremiumLogTag = "LearnLiftPremium"
     }
 }
