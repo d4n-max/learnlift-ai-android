@@ -30,6 +30,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.learnliftai.app.BuildConfig
 import com.learnliftai.app.data.billing.PremiumEntitlement
 import com.learnliftai.app.data.billing.PremiumPackage
 import com.learnliftai.app.data.billing.PremiumUiState
@@ -170,6 +171,15 @@ private fun PremiumStatus(premiumUiState: PremiumUiState) {
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.76f),
             style = MaterialTheme.typography.bodyMedium
         )
+        if (BuildConfig.DEBUG && premiumUiState.debugUnavailableReason != null) {
+            Spacer(modifier = Modifier.height(LearnLiftSpacing.smallGap))
+            Text(
+                text = "Debug billing reason: ${premiumUiState.debugUnavailableReason}",
+                color = MaterialTheme.colorScheme.error,
+                style = MaterialTheme.typography.bodySmall,
+                fontWeight = FontWeight.SemiBold
+            )
+        }
     }
 }
 
@@ -238,7 +248,9 @@ private fun PricingOptions(
 ) {
     SectionHeader(
         title = "Choose a plan",
-        subtitle = if (premiumUiState.productsUnavailable) {
+        subtitle = if (BuildConfig.DEBUG && premiumUiState.debugUnavailableReason != null) {
+            "Debug: ${premiumUiState.debugUnavailableReason}"
+        } else if (premiumUiState.productsUnavailable) {
             "Premium plans are temporarily unavailable. Please try again later."
         } else {
             "Localized prices are loaded from RevenueCat when available."

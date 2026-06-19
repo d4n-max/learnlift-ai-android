@@ -2,6 +2,7 @@ package com.learnliftai.app.data.billing
 
 import android.app.Activity
 import android.content.Context
+import com.learnliftai.app.BuildConfig
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -21,7 +22,8 @@ class PremiumRepository(
             PremiumUiState(
                 isRevenueCatConfigured = false,
                 productsUnavailable = true,
-                message = "Premium status could not be refreshed right now."
+                message = "Premium status could not be refreshed right now.",
+                debugUnavailableReason = debugReason("premium_state_refresh_failure:${it.javaClass.simpleName}")
             )
         }
     }
@@ -34,7 +36,8 @@ class PremiumRepository(
             _uiState.value.copy(
                 isPurchasing = false,
                 message = billingService.userCancelledMessage(error)
-                    ?: "Premium purchase could not be completed. Please try again later."
+                    ?: "Premium purchase could not be completed. Please try again later.",
+                debugUnavailableReason = debugReason("premium_purchase_failure:${error.javaClass.simpleName}")
             )
         }
     }
@@ -46,8 +49,13 @@ class PremiumRepository(
         }.getOrElse {
             _uiState.value.copy(
                 isRestoring = false,
-                message = "Purchases could not be restored right now."
+                message = "Purchases could not be restored right now.",
+                debugUnavailableReason = debugReason("premium_restore_failure:${it.javaClass.simpleName}")
             )
         }
+    }
+
+    private fun debugReason(reason: String): String? {
+        return reason.takeIf { BuildConfig.DEBUG }
     }
 }

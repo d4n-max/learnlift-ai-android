@@ -113,11 +113,13 @@ android {
         applicationId = "com.learnliftai.app"
         minSdk = 24
         targetSdk = 35
-        versionCode = 7
+        versionCode = 8
         versionName = "1.0.0"
         buildConfigField("String", "SUPABASE_AI_COACH_URL", "\"$aiCoachUrl\"")
         buildConfigField("String", "REVENUECAT_ANDROID_PUBLIC_API_KEY", "\"${revenueCatAndroidPublicApiKey.value}\"")
         buildConfigField("String", "REVENUECAT_TEST_STORE_API_KEY", "\"${revenueCatTestStoreApiKey.value}\"")
+        buildConfigField("String", "REVENUECAT_ANDROID_PUBLIC_API_KEY_SOURCE", "\"${revenueCatAndroidPublicApiKey.source}\"")
+        buildConfigField("String", "REVENUECAT_TEST_STORE_API_KEY_SOURCE", "\"${revenueCatTestStoreApiKey.source}\"")
     }
 
     buildTypes {
@@ -139,12 +141,14 @@ android {
             buildConfigField("Boolean", "SCREENSHOT_DEMO_STUDY_PLAN", screenshotDemoStudyPlan.toString())
             buildConfigField("Boolean", "USE_REVENUECAT_TEST_STORE", useRevenueCatTestStoreValue.toString())
             buildConfigField("String", "REVENUECAT_PUBLIC_API_KEY", "\"${selectedRevenueCatKey.value}\"")
+            buildConfigField("String", "REVENUECAT_PUBLIC_API_KEY_SOURCE", "\"${selectedRevenueCatKey.source}\"")
         }
 
         release {
             buildConfigField("Boolean", "SCREENSHOT_DEMO_STUDY_PLAN", "false")
             buildConfigField("Boolean", "USE_REVENUECAT_TEST_STORE", "false")
             buildConfigField("String", "REVENUECAT_PUBLIC_API_KEY", "\"${revenueCatAndroidPublicApiKey.value}\"")
+            buildConfigField("String", "REVENUECAT_PUBLIC_API_KEY_SOURCE", "\"${revenueCatAndroidPublicApiKey.source}\"")
         }
     }
 

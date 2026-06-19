@@ -35,6 +35,7 @@ data class PremiumUiState(
         helperText = "Best value for steady weekly practice."
     ),
     val message: String? = null,
+    val debugUnavailableReason: String? = null,
     val managementUrl: String? = null
 ) {
     val isPremiumActive: Boolean = entitlement == PremiumEntitlement.Premium

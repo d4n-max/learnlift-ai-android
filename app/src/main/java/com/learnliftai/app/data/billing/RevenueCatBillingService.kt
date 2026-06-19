@@ -23,7 +23,9 @@ class RevenueCatBillingService(
     private val publicApiKey: String = BuildConfig.REVENUECAT_PUBLIC_API_KEY
 ) {
     fun configureIfAvailable(): Boolean {
+        logKeyDiagnostics("configure")
         if (!hasConfiguredKey()) {
+            debugLog("configure skipped reason=revenuecat_key_missing_or_placeholder")
             return false
         }
         if (!BuildConfig.DEBUG && publicApiKey.startsWith(TestStoreKeyPrefix)) {
@@ -47,7 +49,8 @@ class RevenueCatBillingService(
             return PremiumUiState(
                 isRevenueCatConfigured = false,
                 productsUnavailable = true,
-                message = PremiumPlansUnavailableMessage
+                message = PremiumPlansUnavailableMessage,
+                debugUnavailableReason = unavailableReason("revenuecat_key_missing_or_placeholder")
             )
         }
 
@@ -62,7 +65,8 @@ class RevenueCatBillingService(
         val packageToPurchase = premiumPackage.revenueCatPackage ?: return PremiumUiState(
             isRevenueCatConfigured = hasConfiguredKey(),
             productsUnavailable = true,
-            message = PremiumPlansUnavailableMessage
+            message = PremiumPlansUnavailableMessage,
+            debugUnavailableReason = unavailableReason("selected_revenuecat_package_missing")
         )
 
         val purchaseResult = Purchases.sharedInstance.awaitPurchase(
@@ -98,7 +102,8 @@ class RevenueCatBillingService(
             return PremiumUiState(
                 isRevenueCatConfigured = false,
                 productsUnavailable = true,
-                message = PremiumPlansUnavailableMessage
+                message = PremiumPlansUnavailableMessage,
+                debugUnavailableReason = unavailableReason("revenuecat_key_missing_or_placeholder")
             )
         }
 
@@ -135,9 +140,38 @@ class RevenueCatBillingService(
     }
 
     private suspend fun fetchPremiumState(customerInfo: CustomerInfo): PremiumUiState {
-        val offerings = Purchases.sharedInstance.awaitOfferings()
-        val offering = offerings.current ?: offerings.getOffering(DefaultOfferingId)
         logCustomerInfo("state_update", customerInfo)
+        val offerings = runCatching {
+            Purchases.sharedInstance.awaitOfferings()
+        }.getOrElse { error ->
+            debugLog("offerings_fetch_failure error=${error.javaClass.simpleName}")
+            return PremiumUiState(
+                entitlement = entitlementFrom(customerInfo),
+                isRevenueCatConfigured = true,
+                productsUnavailable = true,
+                message = PremiumPlansUnavailableMessage,
+                debugUnavailableReason = unavailableReason("offerings_fetch_failure:${error.javaClass.simpleName}"),
+                managementUrl = customerInfo.managementURL?.toString()
+            )
+        }
+        logOfferings(offerings)
+        val currentOffering = offerings.current
+        val defaultOffering = offerings.getOffering(DefaultOfferingId)
+        val offering = currentOffering ?: defaultOffering
+        when {
+            currentOffering == null && defaultOffering == null -> {
+                debugLog("offering_selection reason=current_and_default_offering_missing")
+            }
+            currentOffering == null -> {
+                debugLog("offering_selection reason=current_offering_missing using=$DefaultOfferingId")
+            }
+            defaultOffering == null -> {
+                debugLog("offering_selection reason=default_offering_missing using_current=${currentOffering.identifier}")
+            }
+            else -> {
+                debugLog("offering_selection using_current=${currentOffering.identifier}")
+            }
+        }
         return buildPremiumState(customerInfo, offering)
     }
 
@@ -145,9 +179,18 @@ class RevenueCatBillingService(
         customerInfo: CustomerInfo,
         offering: Offering?
     ): PremiumUiState {
-        val monthly = offering?.availablePackages?.selectMonthlyPackage() ?: offering?.monthly
-        val yearly = offering?.availablePackages?.selectYearlyPackage() ?: offering?.annual
+        val availablePackages = offering?.availablePackages.orEmpty()
+        val monthly = availablePackages.selectMonthlyPackage()
+        val yearly = availablePackages.selectYearlyPackage()
         val productsUnavailable = monthly == null && yearly == null
+        val debugUnavailableReason = unavailableReason(
+            buildUnavailableReason(
+                offering = offering,
+                monthly = monthly,
+                yearly = yearly
+            )
+        )
+        logPackageResolution(offering, monthly, yearly, debugUnavailableReason)
 
         return PremiumUiState(
             entitlement = entitlementFrom(customerInfo),
@@ -170,6 +213,7 @@ class RevenueCatBillingService(
                 )
             ),
             message = if (productsUnavailable) PremiumPlansUnavailableMessage else null,
+            debugUnavailableReason = debugUnavailableReason,
             managementUrl = customerInfo.managementURL?.toString()
         )
     }
@@ -198,30 +242,37 @@ class RevenueCatBillingService(
     }
 
     private fun List<RevenueCatPackage>.selectMonthlyPackage(): RevenueCatPackage? {
-        return firstOrNull { it.product.id.equals(MonthlyProductId, ignoreCase = true) }
-            ?: firstOrNull { revenueCatPackage ->
-                val packageId = revenueCatPackage.identifier.lowercase()
-                val productId = revenueCatPackage.product.id.lowercase()
-                packageId == MonthlyPackageId ||
-                    MonthlyPackageId in packageId ||
-                    revenueCatPackage.packageType == PackageType.MONTHLY ||
-                    MonthlyPackageId in productId
-            }
+        return selectExpectedPackage(
+            expectedProductId = MonthlyProductId,
+            fallbackPackageIds = setOf(MonthlyPackageId),
+            expectedPackageType = PackageType.MONTHLY
+        )
     }
 
     private fun List<RevenueCatPackage>.selectYearlyPackage(): RevenueCatPackage? {
-        return firstOrNull { it.product.id.equals(YearlyProductId, ignoreCase = true) }
-            ?: firstOrNull { revenueCatPackage ->
-                val packageId = revenueCatPackage.identifier.lowercase()
-                val productId = revenueCatPackage.product.id.lowercase()
-                packageId == YearlyPackageId ||
-                    packageId == AnnualPackageId ||
-                    YearlyPackageId in packageId ||
-                    AnnualPackageId in packageId ||
-                    revenueCatPackage.packageType == PackageType.ANNUAL ||
-                    YearlyPackageId in productId ||
-                    AnnualPackageId in productId
-            }
+        return selectExpectedPackage(
+            expectedProductId = YearlyProductId,
+            fallbackPackageIds = setOf(YearlyPackageId, AnnualPackageId),
+            expectedPackageType = PackageType.ANNUAL
+        )
+    }
+
+    private fun List<RevenueCatPackage>.selectExpectedPackage(
+        expectedProductId: String,
+        fallbackPackageIds: Set<String>,
+        expectedPackageType: PackageType
+    ): RevenueCatPackage? {
+        return firstOrNull { it.product.id.equals(expectedProductId, ignoreCase = true) }
+            ?: takeIf { BuildConfig.DEBUG && BuildConfig.USE_REVENUECAT_TEST_STORE }
+                ?.firstOrNull { revenueCatPackage ->
+                    val packageId = revenueCatPackage.identifier.lowercase()
+                    val productId = revenueCatPackage.product.id.lowercase()
+                    fallbackPackageIds.any { expectedId ->
+                        packageId == expectedId ||
+                            expectedId in packageId ||
+                            expectedId in productId
+                    } || revenueCatPackage.packageType == expectedPackageType
+                }
     }
 
     private fun RevenueCatPackage.displayTitle(fallbackTitle: String): String {
@@ -271,8 +322,98 @@ class RevenueCatBillingService(
         )
     }
 
+    private fun logKeyDiagnostics(event: String) {
+        if (!BuildConfig.DEBUG) return
+
+        Log.d(
+            LogTag,
+            "$event keyPresent=${publicApiKey.isNotBlank()}, " +
+                "keyPlaceholder=${isPlaceholderKey(publicApiKey)}, " +
+                "keyStartsWithTest=${publicApiKey.startsWith(TestStoreKeyPrefix)}, " +
+                "keySource=${BuildConfig.REVENUECAT_PUBLIC_API_KEY_SOURCE}, " +
+                "useRevenueCatTestStore=${BuildConfig.USE_REVENUECAT_TEST_STORE}"
+        )
+    }
+
+    private fun logOfferings(offerings: com.revenuecat.purchases.Offerings) {
+        if (!BuildConfig.DEBUG) return
+
+        val offeringIds = offerings.all.keys.sorted()
+        Log.d(
+            LogTag,
+            "offerings_fetch_success currentOfferingId=${offerings.current?.identifier}, " +
+                "defaultOfferingPresent=${offerings.getOffering(DefaultOfferingId) != null}, " +
+                "offeringIds=$offeringIds"
+        )
+        offerings.all.values
+            .sortedBy { it.identifier }
+            .forEach { offering ->
+                offering.availablePackages.forEach { revenueCatPackage ->
+                    Log.d(
+                        LogTag,
+                        "offering_package offeringId=${offering.identifier}, " +
+                            "packageId=${revenueCatPackage.identifier}, " +
+                            "packageType=${revenueCatPackage.packageType}, " +
+                            "productId=${revenueCatPackage.product.id}"
+                    )
+                }
+            }
+    }
+
+    private fun logPackageResolution(
+        offering: Offering?,
+        monthly: RevenueCatPackage?,
+        yearly: RevenueCatPackage?,
+        debugUnavailableReason: String?
+    ) {
+        if (!BuildConfig.DEBUG) return
+
+        debugLog(
+            "package_resolution selectedOfferingId=${offering?.identifier}, " +
+                "monthlyProductId=${monthly?.product?.id}, " +
+                "yearlyProductId=${yearly?.product?.id}, " +
+                "reason=${debugUnavailableReason ?: "available"}"
+        )
+    }
+
+    private fun buildUnavailableReason(
+        offering: Offering?,
+        monthly: RevenueCatPackage?,
+        yearly: RevenueCatPackage?
+    ): String? {
+        if (offering == null) return "current_and_default_offering_missing"
+
+        val productIds = offering.availablePackages.map { it.product.id }.sorted()
+        val hasExpectedMonthlyProduct = productIds.any { it.equals(MonthlyProductId, ignoreCase = true) }
+        val hasExpectedYearlyProduct = productIds.any { it.equals(YearlyProductId, ignoreCase = true) }
+
+        val reasons = buildList {
+            if (monthly == null) add("monthly_package_missing_or_product_id_mismatch")
+            if (yearly == null) add("yearly_package_missing_or_product_id_mismatch")
+            if (offering.availablePackages.isNotEmpty() && (!hasExpectedMonthlyProduct || !hasExpectedYearlyProduct)) {
+                add("packages_present_product_ids=${productIds.joinToString("|")}")
+            }
+        }
+
+        return reasons.takeIf { it.isNotEmpty() }?.joinToString(";")
+    }
+
+    private fun unavailableReason(reason: String?): String? {
+        return reason?.takeIf { BuildConfig.DEBUG }
+    }
+
+    private fun debugLog(message: String) {
+        if (!BuildConfig.DEBUG) return
+
+        Log.d(LogTag, message)
+    }
+
     private fun hasConfiguredKey(): Boolean {
-        return publicApiKey.isNotBlank() && publicApiKey !in PlaceholderRevenueCatKeys
+        return publicApiKey.isNotBlank() && !isPlaceholderKey(publicApiKey)
+    }
+
+    private fun isPlaceholderKey(key: String): Boolean {
+        return key in PlaceholderRevenueCatKeys || key.endsWith("_HERE")
     }
 
     private companion object {
