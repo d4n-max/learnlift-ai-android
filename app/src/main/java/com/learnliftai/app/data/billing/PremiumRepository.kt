@@ -3,13 +3,16 @@ package com.learnliftai.app.data.billing
 import android.app.Activity
 import android.content.Context
 import android.util.Log
+import com.learnliftai.app.analytics.AnalyticsResult
+import com.learnliftai.app.analytics.AnalyticsTracker
 import com.learnliftai.app.BuildConfig
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class PremiumRepository(
-    context: Context
+    context: Context,
+    private val analyticsTracker: AnalyticsTracker
 ) {
     private val billingService = RevenueCatBillingService(context.applicationContext)
     private val _uiState = MutableStateFlow(PremiumUiState())
@@ -32,16 +35,23 @@ class PremiumRepository(
     suspend fun purchase(activity: Activity, premiumPackage: PremiumPackage) {
         _uiState.value = _uiState.value.copy(isPurchasing = true, message = null)
         logPurchaseEvent("purchase_start", premiumPackage)
+        analyticsTracker.purchaseStarted(plan = premiumPackage.analyticsPlan)
         _uiState.value = runCatching {
             billingService.purchase(activity, premiumPackage)
         }.onSuccess {
             logPurchaseEvent("purchase_success", premiumPackage)
+            analyticsTracker.purchaseSuccess(plan = premiumPackage.analyticsPlan)
         }.getOrElse { error ->
             val cancellationMessage = billingService.userCancelledMessage(error)
             logPurchaseEvent(
                 event = if (cancellationMessage != null) "purchase_cancel" else "purchase_failure",
                 premiumPackage = premiumPackage,
                 error = error
+            )
+            analyticsTracker.purchaseFailed(
+                plan = premiumPackage.analyticsPlan,
+                result = if (cancellationMessage != null) AnalyticsResult.Cancelled else AnalyticsResult.Failure,
+                errorType = if (cancellationMessage != null) "user_cancelled" else error.javaClass.simpleName
             )
             _uiState.value.copy(
                 isPurchasing = false,
@@ -90,3 +100,10 @@ class PremiumRepository(
         const val PremiumLogTag = "LearnLiftPremium"
     }
 }
+
+val PremiumPackage.analyticsPlan: String
+    get() = when (id) {
+        MonthlyProductId -> "monthly"
+        YearlyProductId -> "yearly"
+        else -> "unknown"
+    }

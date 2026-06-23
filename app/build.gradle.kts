@@ -5,6 +5,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.compose")
+    id("com.google.gms.google-services")
 }
 
 val localProperties = Properties().apply {
@@ -175,6 +176,8 @@ dependencies {
     implementation("androidx.compose.material3:material3:1.2.1")
     implementation("androidx.datastore:datastore-preferences:1.1.1")
     implementation("com.google.android.play:review-ktx:2.0.2")
+    implementation(platform("com.google.firebase:firebase-bom:34.14.1"))
+    implementation("com.google.firebase:firebase-analytics")
     implementation("com.revenuecat.purchases:purchases:10.6.0")
 
     debugImplementation("androidx.compose.ui:ui-tooling:1.6.6")

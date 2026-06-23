@@ -19,6 +19,10 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import com.learnliftai.app.analytics.AnalyticsResult
+import com.learnliftai.app.analytics.AnalyticsScreen
+import com.learnliftai.app.analytics.AnalyticsSource
+import com.learnliftai.app.analytics.AnalyticsTracker
 import com.learnliftai.app.data.AssetStudyContentRepository
 import com.learnliftai.app.data.LocalFlashcardReviewRepository
 import com.learnliftai.app.data.LocalOnboardingRepository
@@ -28,6 +32,7 @@ import com.learnliftai.app.data.LocalReviewPromptRepository
 import com.learnliftai.app.data.LocalTopicPerformanceRepository
 import com.learnliftai.app.data.ai.AiUsageRepository
 import com.learnliftai.app.data.ai.AiUsageState
+import com.learnliftai.app.data.billing.analyticsPlan
 import com.learnliftai.app.data.billing.PremiumRepository
 import com.learnliftai.app.data.StudyPathRepository
 import com.learnliftai.app.domain.QuizMode
@@ -64,7 +69,8 @@ fun LearnLiftApp() {
     val playReviewPrompter = remember { PlayReviewPrompter() }
     val topicPerformanceRepository = remember { LocalTopicPerformanceRepository(context.applicationContext) }
     val flashcardReviewRepository = remember { LocalFlashcardReviewRepository(context.applicationContext) }
-    val premiumRepository = remember { PremiumRepository(context.applicationContext) }
+    val analyticsTracker = remember { AnalyticsTracker(context.applicationContext) }
+    val premiumRepository = remember { PremiumRepository(context.applicationContext, analyticsTracker) }
     val aiUsageRepository = remember { AiUsageRepository(context.applicationContext) }
     val userProgress by progressRepository.progress.collectAsState(initial = UserProgress())
     val onboardingPreferences by onboardingRepository.preferences.collectAsState(initial = OnboardingPreferences())
@@ -89,6 +95,9 @@ fun LearnLiftApp() {
     var isPremiumOpen by rememberSaveable {
         mutableStateOf(false)
     }
+    var premiumSourceName by rememberSaveable {
+        mutableStateOf(AnalyticsSource.Home.name)
+    }
     var quizModeName by rememberSaveable {
         mutableStateOf(QuizMode.Normal.name)
     }
@@ -102,6 +111,7 @@ fun LearnLiftApp() {
         mutableStateOf(false)
     }
     val selectedDestination = LearnLiftDestination.valueOf(selectedDestinationName)
+    val premiumSource = AnalyticsSource.valueOf(premiumSourceName)
     val quizMode = QuizMode.valueOf(quizModeName)
     val flashcardMode = FlashcardMode.valueOf(flashcardModeName)
     val studyPaths = StudyPathRepository.studyPaths
@@ -131,6 +141,28 @@ fun LearnLiftApp() {
         reviewPromptRepository.recordAppOpenDay()
     }
 
+    val currentScreen = when {
+        shouldShowOnboarding -> AnalyticsScreen.Onboarding
+        isPremiumOpen -> AnalyticsScreen.Paywall
+        isSettingsOpen -> AnalyticsScreen.Settings
+        isDailySessionActive -> AnalyticsScreen.DailySession
+        isChoosingStudyPath -> AnalyticsScreen.StudyPaths
+        selectedDestination == LearnLiftDestination.Home -> AnalyticsScreen.Home
+        selectedDestination == LearnLiftDestination.Flashcards -> AnalyticsScreen.Flashcards
+        selectedDestination == LearnLiftDestination.Quiz -> AnalyticsScreen.Quiz
+        selectedDestination == LearnLiftDestination.Progress -> AnalyticsScreen.Progress
+        else -> AnalyticsScreen.Home
+    }
+
+    LaunchedEffect(currentScreen, premiumSource) {
+        analyticsTracker.trackScreenView(currentScreen)
+        when (currentScreen) {
+            AnalyticsScreen.Onboarding -> analyticsTracker.onboardingStarted()
+            AnalyticsScreen.Paywall -> analyticsTracker.paywallViewed(source = premiumSource)
+            else -> Unit
+        }
+    }
+
     val evaluateReviewPrompt = { state: com.learnliftai.app.domain.model.ReviewPromptState ->
         val canPrompt = ReviewPromptPolicy.canPrompt(
             state = state,
@@ -142,6 +174,16 @@ fun LearnLiftApp() {
             shouldShowReviewPrompt = true
         }
         canPrompt
+    }
+
+    val openPremium = { source: AnalyticsSource ->
+        premiumSourceName = source.name
+        isPremiumOpen = true
+    }
+
+    val openSettings = { source: AnalyticsSource ->
+        analyticsTracker.settingsOpened(source = source)
+        isSettingsOpen = true
     }
 
     BackHandler(enabled = isSubFlowOpen) {
@@ -187,6 +229,7 @@ fun LearnLiftApp() {
                             dailyStudyMinutes = dailyMinutes
                         )
                         progressRepository.setSelectedStudyPathId(pathId)
+                        analyticsTracker.onboardingCompleted(result = AnalyticsResult.Completed)
                         isSettingsOpen = false
                         isChoosingStudyPath = false
                         isDailySessionActive = true
@@ -202,6 +245,7 @@ fun LearnLiftApp() {
                             dailyStudyMinutes = 10
                         )
                         progressRepository.setSelectedStudyPathId(DefaultOnboardingPathId)
+                        analyticsTracker.onboardingCompleted(result = AnalyticsResult.Skipped)
                     }
                     isSettingsOpen = false
                     isChoosingStudyPath = false
@@ -220,6 +264,10 @@ fun LearnLiftApp() {
                     }
                 },
                 onPurchasePackage = { premiumPackage, activity ->
+                    analyticsTracker.premiumCtaClicked(
+                        source = premiumSource,
+                        plan = premiumPackage.analyticsPlan
+                    )
                     coroutineScope.launch {
                         premiumRepository.purchase(activity, premiumPackage)
                     }
@@ -247,7 +295,7 @@ fun LearnLiftApp() {
                 },
                 onViewPremium = {
                     isSettingsOpen = false
-                    isPremiumOpen = true
+                    openPremium(AnalyticsSource.Settings)
                 },
                 onReminderEnabledChange = { enabled ->
                     coroutineScope.launch {
@@ -384,7 +432,7 @@ fun LearnLiftApp() {
                 },
                 onViewPremium = {
                     isChoosingStudyPath = false
-                    isPremiumOpen = true
+                    openPremium(AnalyticsSource.StudyPaths)
                 },
                 onBackToHome = {
                     isChoosingStudyPath = false
@@ -408,8 +456,8 @@ fun LearnLiftApp() {
                             reminderPreferences.canShowPostSessionSuggestion(),
                     isPremiumActive = premiumUiState.isPremiumActive,
                     onChooseStudyPath = { isChoosingStudyPath = true },
-                    onOpenSettings = { isSettingsOpen = true },
-                    onViewPremium = { isPremiumOpen = true },
+                    onOpenSettings = { openSettings(AnalyticsSource.Home) },
+                    onViewPremium = { openPremium(AnalyticsSource.Home) },
                     onStartDailySession = { isDailySessionActive = true },
                     onStartFlashcards = {
                         isChoosingStudyPath = false
@@ -485,7 +533,7 @@ fun LearnLiftApp() {
                         flashcardModeName = FlashcardMode.All.name
                     },
                     onViewPremium = {
-                        isPremiumOpen = true
+                        openPremium(AnalyticsSource.Flashcards)
                     },
                     onBackToStudyPaths = {
                         isChoosingStudyPath = true
@@ -501,7 +549,7 @@ fun LearnLiftApp() {
                     aiUsageRepository = aiUsageRepository,
                     topicPerformance = topicPerformance.filter { it.pathId == selectedStudyPath?.id },
                     quizMode = quizMode,
-                    onViewPremium = { isPremiumOpen = true },
+                    onViewPremium = { openPremium(AnalyticsSource.Quiz) },
                     onQuizTopicAnswered = { question, isCorrect ->
                         coroutineScope.launch {
                             topicPerformanceRepository.recordQuizAnswer(
@@ -547,8 +595,8 @@ fun LearnLiftApp() {
                     onStartDailySession = {
                         isDailySessionActive = true
                     },
-                    onOpenSettings = { isSettingsOpen = true },
-                    onViewPremium = { isPremiumOpen = true },
+                    onOpenSettings = { openSettings(AnalyticsSource.Progress) },
+                    onViewPremium = { openPremium(AnalyticsSource.Progress) },
                     onResetProgress = {
                         coroutineScope.launch {
                             progressRepository.resetProgressStats()
