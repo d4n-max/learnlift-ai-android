@@ -400,6 +400,16 @@ fun LearnLiftApp() {
                             quizCorrect = quizCorrect,
                             quizPercentage = quizPercentage
                         )
+                        selectedStudyPath?.let { studyPath ->
+                            analyticsTracker.dailySessionCompleted(
+                                studyPathId = studyPath.id,
+                                studyPathTitle = studyPath.title,
+                                questionsCount = quizAnswered,
+                                correctCount = quizCorrect,
+                                scorePercent = quizPercentage,
+                                isPremiumActive = premiumUiState.isPremiumActive
+                            )
+                        }
                         val updatedReviewState = reviewPromptRepository.recordDailySessionCompleted(
                             successful = reviewedCards > 0 || quizAnswered > 0
                         )

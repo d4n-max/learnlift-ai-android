@@ -16,6 +16,7 @@ class PremiumRepository(
 ) {
     private val billingService = RevenueCatBillingService(context.applicationContext)
     private val _uiState = MutableStateFlow(PremiumUiState())
+    private var hasLoggedPremiumEntitlementActive = false
     val uiState: StateFlow<PremiumUiState> = _uiState.asStateFlow()
 
     suspend fun refreshPremiumState() {
@@ -30,17 +31,21 @@ class PremiumRepository(
                 debugUnavailableReason = debugReason("premium_state_refresh_failure:${it.javaClass.simpleName}")
             )
         }
+        logPremiumEntitlementActiveIfConfirmed()
     }
 
     suspend fun purchase(activity: Activity, premiumPackage: PremiumPackage) {
         _uiState.value = _uiState.value.copy(isPurchasing = true, message = null)
         logPurchaseEvent("purchase_start", premiumPackage)
         analyticsTracker.purchaseStarted(plan = premiumPackage.analyticsPlan)
-        _uiState.value = runCatching {
+        val updatedState = runCatching {
             billingService.purchase(activity, premiumPackage)
-        }.onSuccess {
+        }.onSuccess { state ->
             logPurchaseEvent("purchase_success", premiumPackage)
             analyticsTracker.purchaseSuccess(plan = premiumPackage.analyticsPlan)
+            if (state.isPremiumActive) {
+                logPurchaseEvent("premium_entitlement_active", premiumPackage)
+            }
         }.getOrElse { error ->
             val cancellationMessage = billingService.userCancelledMessage(error)
             logPurchaseEvent(
@@ -48,11 +53,15 @@ class PremiumRepository(
                 premiumPackage = premiumPackage,
                 error = error
             )
-            analyticsTracker.purchaseFailed(
-                plan = premiumPackage.analyticsPlan,
-                result = if (cancellationMessage != null) AnalyticsResult.Cancelled else AnalyticsResult.Failure,
-                errorType = if (cancellationMessage != null) "user_cancelled" else error.javaClass.simpleName
-            )
+            if (cancellationMessage != null) {
+                analyticsTracker.purchaseCancelled(plan = premiumPackage.analyticsPlan)
+            } else {
+                analyticsTracker.purchaseFailed(
+                    plan = premiumPackage.analyticsPlan,
+                    result = AnalyticsResult.Failure,
+                    errorType = error.javaClass.simpleName
+                )
+            }
             _uiState.value.copy(
                 isPurchasing = false,
                 message = cancellationMessage
@@ -60,6 +69,8 @@ class PremiumRepository(
                 debugUnavailableReason = debugReason("premium_purchase_failure:${error.javaClass.simpleName}")
             )
         }
+        _uiState.value = updatedState
+        logPremiumEntitlementActiveIfConfirmed(plan = premiumPackage.analyticsPlan)
     }
 
     suspend fun restorePurchases() {
@@ -73,6 +84,14 @@ class PremiumRepository(
                 debugUnavailableReason = debugReason("premium_restore_failure:${it.javaClass.simpleName}")
             )
         }
+        logPremiumEntitlementActiveIfConfirmed()
+    }
+
+    private fun logPremiumEntitlementActiveIfConfirmed(plan: String? = null) {
+        if (!_uiState.value.isPremiumActive || hasLoggedPremiumEntitlementActive) return
+
+        hasLoggedPremiumEntitlementActive = true
+        analyticsTracker.premiumEntitlementActive(plan = plan)
     }
 
     private fun debugReason(reason: String): String? {

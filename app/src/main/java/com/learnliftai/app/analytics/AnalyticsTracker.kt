@@ -64,6 +64,23 @@ class AnalyticsTracker(context: Context) {
         logPurchaseEvent(EventPurchaseSuccess, plan, AnalyticsResult.Success, source)
     }
 
+    fun purchaseCancelled(
+        plan: String,
+        errorType: String = "user_cancelled",
+        source: AnalyticsSource = AnalyticsSource.Paywall
+    ) {
+        logEvent(
+            name = EventPurchaseCancelled,
+            params = mapOf(
+                ParamScreen to AnalyticsScreen.Paywall.analyticsName,
+                ParamSource to source.value,
+                ParamPlan to plan,
+                ParamResult to AnalyticsResult.Cancelled.value,
+                ParamErrorType to errorType
+            )
+        )
+    }
+
     fun purchaseFailed(
         plan: String,
         result: AnalyticsResult,
@@ -78,6 +95,43 @@ class AnalyticsTracker(context: Context) {
                 ParamPlan to plan,
                 ParamResult to result.value,
                 ParamErrorType to errorType
+            )
+        )
+    }
+
+    fun premiumEntitlementActive(plan: String? = null, source: AnalyticsSource = AnalyticsSource.Paywall) {
+        logEvent(
+            name = EventPremiumEntitlementActive,
+            params = buildMap {
+                put(ParamScreen, AnalyticsScreen.Paywall.analyticsName)
+                put(ParamSource, source.value)
+                put(ParamEntitlementId, PremiumEntitlementIdValue)
+                put(ParamPremiumStatus, PremiumStatusPremium)
+                if (!plan.isNullOrBlank()) {
+                    put(ParamPlan, plan)
+                }
+            }
+        )
+    }
+
+    fun dailySessionCompleted(
+        studyPathId: String,
+        studyPathTitle: String,
+        questionsCount: Int,
+        correctCount: Int,
+        scorePercent: Int,
+        isPremiumActive: Boolean
+    ) {
+        logEvent(
+            name = EventDailySessionCompleted,
+            params = mapOf(
+                ParamStudyPathId to studyPathId,
+                ParamStudyPathTitle to studyPathTitle,
+                ParamQuestionsCount to questionsCount,
+                ParamCorrectCount to correctCount,
+                ParamScorePercent to scorePercent,
+                ParamPremiumStatus to if (isPremiumActive) PremiumStatusPremium else PremiumStatusFree,
+                ParamSourceScreen to AnalyticsScreen.DailySession.analyticsName
             )
         )
     }
@@ -109,15 +163,22 @@ class AnalyticsTracker(context: Context) {
         )
     }
 
-    private fun logEvent(name: String, params: Map<String, String>) {
+    private fun logEvent(name: String, params: Map<String, Any>) {
         val bundle = Bundle().apply {
             params.forEach { (key, value) ->
-                putString(key, value.take(MaxParamValueLength))
+                when (value) {
+                    is Int -> putInt(key, value)
+                    is Long -> putLong(key, value)
+                    is Double -> putDouble(key, value)
+                    is Float -> putDouble(key, value.toDouble())
+                    is Boolean -> putString(key, value.toString())
+                    else -> putString(key, value.toString().take(MaxParamValueLength))
+                }
             }
         }
         firebaseAnalytics.logEvent(name, bundle)
         if (BuildConfig.DEBUG) {
-            Log.d(LogTag, "event=$name params=$params")
+            Log.d(LogTag, "firebase_event name=$name params=$params")
         }
     }
 
@@ -132,13 +193,28 @@ class AnalyticsTracker(context: Context) {
         const val EventPurchaseStarted = "purchase_started"
         const val EventPurchaseSuccess = "purchase_success"
         const val EventPurchaseFailed = "purchase_failed"
+        const val EventPurchaseCancelled = "purchase_cancelled"
+        const val EventPremiumEntitlementActive = "premium_entitlement_active"
+        const val EventDailySessionCompleted = "daily_session_completed"
         const val EventSettingsOpened = "settings_opened"
 
         const val ParamScreen = "screen"
         const val ParamSource = "source"
+        const val ParamSourceScreen = "source_screen"
         const val ParamPlan = "plan"
         const val ParamResult = "result"
         const val ParamErrorType = "error_type"
+        const val ParamEntitlementId = "entitlement_id"
+        const val ParamPremiumStatus = "premium_status"
+        const val ParamStudyPathId = "study_path_id"
+        const val ParamStudyPathTitle = "study_path_title"
+        const val ParamQuestionsCount = "questions_count"
+        const val ParamCorrectCount = "correct_count"
+        const val ParamScorePercent = "score_percent"
+
+        const val PremiumEntitlementIdValue = "premium"
+        const val PremiumStatusFree = "free"
+        const val PremiumStatusPremium = "premium"
     }
 }
 
