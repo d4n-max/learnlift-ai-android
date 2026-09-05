@@ -71,7 +71,7 @@ val PlaceholderRevenueCatValues = setOf(
 
 android {
     namespace = "com.learnliftai.app"
-    compileSdk = 35
+    compileSdk = 36
     val aiCoachUrl = providers
         .gradleProperty("SUPABASE_AI_COACH_URL")
         .orElse("https://hfeyfsqfggtajowlaeap.supabase.co/functions/v1/ai-coach")
@@ -113,9 +113,9 @@ android {
     defaultConfig {
         applicationId = "com.learnliftai.app"
         minSdk = 24
-        targetSdk = 35
-        versionCode = 12
-        versionName = "0.3.3"
+        targetSdk = 36
+        versionCode = 13
+        versionName = "0.3.4"
         buildConfigField("String", "SUPABASE_AI_COACH_URL", "\"$aiCoachUrl\"")
         buildConfigField("String", "REVENUECAT_ANDROID_PUBLIC_API_KEY", "\"${revenueCatAndroidPublicApiKey.value}\"")
         buildConfigField("String", "REVENUECAT_TEST_STORE_API_KEY", "\"${revenueCatTestStoreApiKey.value}\"")
@@ -178,7 +178,7 @@ dependencies {
     implementation("com.google.android.play:review-ktx:2.0.2")
     implementation(platform("com.google.firebase:firebase-bom:34.14.1"))
     implementation("com.google.firebase:firebase-analytics")
-    implementation("com.revenuecat.purchases:purchases:10.6.0")
+    implementation("com.revenuecat.purchases:purchases:10.6.2")
 
     debugImplementation("androidx.compose.ui:ui-tooling:1.6.6")
     testImplementation("junit:junit:4.13.2")
