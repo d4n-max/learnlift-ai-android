@@ -13,7 +13,7 @@
 - Release build fails clearly if `REVENUECAT_ANDROID_PUBLIC_API_KEY` starts with `test_`.
 - Gradle logs only safe RevenueCat key metadata: source, startsWithTest, and isPlaceholder.
 - No OpenAI keys, RevenueCat private keys, or Supabase service role keys are in Android code/resources.
-- Gradle dependency resolves `com.revenuecat.purchases:purchases:10.6.0`.
+- Gradle dependency resolves `com.revenuecat.purchases:purchases:10.6.2`.
 - Merged manifest includes `com.android.vending.BILLING`.
 - App checks entitlement identifier `premium` only.
 - App loads RevenueCat current offering first, with offering `default` as fallback.

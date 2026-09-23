@@ -9,7 +9,7 @@ RevenueCat public SDK keys are safe to ship in the Android app. Do not add Reven
 Android SDK dependency:
 
 ```kotlin
-implementation("com.revenuecat.purchases:purchases:10.6.0")
+implementation("com.revenuecat.purchases:purchases:10.6.2")
 ```
 
 The app uses separate public SDK key configuration for Google Play and RevenueCat Test Store. Do not commit real keys to this repository.

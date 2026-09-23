@@ -114,7 +114,7 @@ android {
         applicationId = "com.learnliftai.app"
         minSdk = 24
         targetSdk = 36
-        versionCode = 13
+        versionCode = 14
         versionName = "0.3.4"
         buildConfigField("String", "SUPABASE_AI_COACH_URL", "\"$aiCoachUrl\"")
         buildConfigField("String", "REVENUECAT_ANDROID_PUBLIC_API_KEY", "\"${revenueCatAndroidPublicApiKey.value}\"")

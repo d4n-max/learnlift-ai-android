@@ -111,7 +111,7 @@ Debug builds use the Android Store key by default. Test Store is used only when 
 
 The current build includes:
 
-- RevenueCat Android SDK `10.6.0`.
+- RevenueCat Android SDK `10.6.2`.
 - Separate RevenueCat Android Store and Test Store public SDK key configuration.
 - Premium entitlement check.
 - Premium gating rules for higher AI usage limits.
